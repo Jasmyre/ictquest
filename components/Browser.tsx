@@ -5,11 +5,11 @@ interface BrowserProps {
 }
 const Browser = ({ children }: BrowserProps) => {
   return (
-		<div className="border rounded-xl">
-			<header className="bg-primary rounded-[.75rem_.75rem_0_0] p-2 px-4 text-primary-foreground">
+		<div className="rounded-xl border-gray-200 dark:border-gray-700">
+			<header className="border-none bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-600 dark:hover:bg-indigo-600 rounded-[.75rem_.75rem_0_0] p-2 px-4 text-primary-foreground">
 				<p>Browser</p>
 			</header>
-			<div className="browser p-2 px-4 py-10 min-h-[20vh] bg-white text-black">
+			<div className="browser p-2 px-4 py-10 min-h-[20vh] border border-gray-300 dark:border-gray-900 bg-gray-100 text-black rounded-[0_0_.75rem_.75rem]">
 				{children}
 			</div>
 		</div>

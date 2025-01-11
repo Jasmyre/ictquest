@@ -32,35 +32,47 @@ const lessonContent: LessonContentProps = {
       contents: [
         {
           submit: {
-            label: "continue",
+            label: "Continue",
           },
           content: [
             {
               id: 0,
               type: "text",
+              label: "Before you realize it, we'll be creating real-life projects. Let's start with HTML."
+            }
+          ]
+        },
+        {
+          submit: {
+            label: "continue",
+          },
+          content: [
+            {
+              id: 1,
+              type: "text",
               label:
                 "Hypertext Markup Language, or HTML, is the computer language that structures the web pages on the internet.",
             },
             {
-              id: 1,
+              id: 2,
               type: "text",
               label:
                 "On top of HTML, you can build stunning web pages with buttons, images, and lots more.",
             },
             {
-              id: 2,
+              id: 3,
               type: "element",
               label: (
                 <Browser>
                   <div className="flex flex-col items-center justify-center text-center">
                     <h1 className="text-blue-500">Guess the letter</h1>
                     <br />
-                    <h1>_ O G</h1>
+                    <h1>C A _</h1>
                     <br />
                     <div className="flex gap-2">
-                      <button className="">Q</button>
-                      <button>R</button>
-                      <button>D</button>
+                      <button className="hover:bg-gray-200">H</button>
+                      <button className="hover:bg-gray-200">Y</button>
+                      <button className="hover:bg-gray-200">T</button>
                     </div>
                   </div>
                 </Browser>
@@ -74,7 +86,7 @@ const lessonContent: LessonContentProps = {
           },
           content: [
             {
-              id: 0,
+              id: 4,
               type: "element",
               label: (
                 <p>
@@ -86,15 +98,15 @@ const lessonContent: LessonContentProps = {
                 </p>
               ),
             },
-			{
-				id: 1,
-				type: "element",
-				label: (
-					<CodeBlock language="HTML">
-						&lt;button&gt;Like&lt;/button&gt;
-					</CodeBlock>
-				)
-			}
+            {
+              id: 5,
+              type: "element",
+              label: (
+                <CodeBlock language="HTML">
+                  &lt;button&gt;Like&lt;/button&gt;
+                </CodeBlock>
+              )
+            }
           ],
         },
       ],
@@ -128,7 +140,7 @@ export default async function LessonPage(
       <div className="py-10">
         <header>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold leading-tight text-gray-900">
+            <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-white">
               {lesson.title}
             </h1>
           </div>
@@ -136,7 +148,7 @@ export default async function LessonPage(
         <main className="min-h-[65vh]">
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="px-4 py-8 sm:px-0">
-              <Card>
+              <Card className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
                 <CardHeader>
                   <CardTitle className="text-2xl font-semibold text-gray-900"></CardTitle>
                 </CardHeader>
@@ -157,7 +169,9 @@ export default async function LessonPage(
                 </CardContent>
               </Card>
               <div className="mt-6 flex justify-between">
-                <BackButton />
+                <BackButton>
+                  Go Back
+                </BackButton>
                 <Link
                   href={`/lessons/${params.topic}/${params.subtopic}/${index}`}
                 >

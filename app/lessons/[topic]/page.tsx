@@ -1,8 +1,9 @@
-import Layout from '../../components/layout'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, ArrowRight, Book } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ArrowRight, Book } from 'lucide-react'
 import Link from 'next/link'
+import BackButton from '../../../components/BackButton';
+import Layout from '../../components/layout'
 
 const topics = {
   "html-basics": {
@@ -95,12 +96,9 @@ export default async function TopicPage({ params }: Readonly<{ params: Promise<{
                 </CardContent>
               </Card>
               <div className="mt-6">
-                <Link href="/lessons">
-                  <Button variant="outline" className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back to All Lessons
-                  </Button>
-                </Link>
+                <BackButton>
+                  Go Back
+                </BackButton>
               </div>
             </div>
           </div>
