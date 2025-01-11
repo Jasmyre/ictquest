@@ -1,11 +1,11 @@
+import { ReactNode } from "react";
 import SubmitButton from "@/components/SubmitButton";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
 import BackButton from "../../../../../components/BackButton";
 import Layout from "../../../../components/layout";
-import { ReactNode } from "react";
-import Browser from "../../../../../components/Browser";
-import CodeBlock from "@/components/Code";
+import Index3 from "@/components/lessons/html_basics/intro_to_html/Index3";
+import Index2 from "@/components/lessons/html_basics/intro_to_html/Index2";
+import Index1 from "@/components/lessons/html_basics/intro_to_html/Index1";
+import Link from "next/link";
 
 interface LessonContentProps {
   [topic: string]: {
@@ -37,10 +37,10 @@ const lessonContent: LessonContentProps = {
           content: [
             {
               id: 0,
-              type: "text",
-              label: "Before you realize it, we'll be creating real-life projects. Let's start with HTML."
-            }
-          ]
+              type: "element",
+              label: <Index1 />,
+            },
+          ],
         },
         {
           submit: {
@@ -49,34 +49,8 @@ const lessonContent: LessonContentProps = {
           content: [
             {
               id: 1,
-              type: "text",
-              label:
-                "Hypertext Markup Language, or HTML, is the computer language that structures the web pages on the internet.",
-            },
-            {
-              id: 2,
-              type: "text",
-              label:
-                "On top of HTML, you can build stunning web pages with buttons, images, and lots more.",
-            },
-            {
-              id: 3,
               type: "element",
-              label: (
-                <Browser>
-                  <div className="flex flex-col items-center justify-center text-center">
-                    <h1 className="text-blue-500">Guess the letter</h1>
-                    <br />
-                    <h1>C A _</h1>
-                    <br />
-                    <div className="flex gap-2">
-                      <button className="hover:bg-gray-200">H</button>
-                      <button className="hover:bg-gray-200">Y</button>
-                      <button className="hover:bg-gray-200">T</button>
-                    </div>
-                  </div>
-                </Browser>
-              ),
+              label: <Index2 />,
             },
           ],
         },
@@ -88,25 +62,8 @@ const lessonContent: LessonContentProps = {
             {
               id: 4,
               type: "element",
-              label: (
-                <p>
-                  By adding the HTML code{" "}
-                  <code className="border bg-accent  rounded font-bold text-accent-foreground">
-                    &lt;button&gt;Like&lt;/button&gt;
-                  </code>
-                  , you can create a button with the label &quot;Like&quot;.
-                </p>
-              ),
+              label: <Index3 />,
             },
-            {
-              id: 5,
-              type: "element",
-              label: (
-                <CodeBlock language="HTML">
-                  &lt;button&gt;Like&lt;/button&gt;
-                </CodeBlock>
-              )
-            }
           ],
         },
       ],
@@ -148,30 +105,19 @@ export default async function LessonPage(
         <main className="min-h-[65vh]">
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="px-4 py-8 sm:px-0">
-              <Card className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
-                <CardHeader>
-                  <CardTitle className="text-2xl font-semibold text-gray-900"></CardTitle>
-                </CardHeader>
-                <CardContent className="min-h-[65vh]">
-                  <div className="prose max-w-none ">
-                    {content.content.map((text) => {
-                      return (
-                        <div key={text.id}>
-                          {text.type == "text" ? <p>{text.label}</p> : null}
-                          {text.type == "element" ? (
-                            <div>{text.label}</div>
-                          ) : null}
-                          <br />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="prose max-w-none ">
+                {content.content.map((text) => {
+                  return (
+                    <div key={text.id}>
+                      {text.type == "text" ? <p>{text.label}</p> : null}
+                      {text.type == "element" ? <div>{text.label}</div> : null}
+                      <br />
+                    </div>
+                  );
+                })}
+              </div>
               <div className="mt-6 flex justify-between">
-                <BackButton>
-                  Go Back
-                </BackButton>
+                <BackButton>Go Back</BackButton>
                 <Link
                   href={`/lessons/${params.topic}/${params.subtopic}/${index}`}
                 >

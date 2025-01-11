@@ -5,7 +5,7 @@ interface BrowserProps {
 }
 const Browser = ({ children }: BrowserProps) => {
   return (
-		<div className="rounded-xl border-gray-200 dark:border-gray-700">
+		<div className="w-full rounded-xl border-gray-200 dark:border-gray-700">
 			<header className="border-none bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-600 dark:hover:bg-indigo-600 rounded-[.75rem_.75rem_0_0] p-2 px-4 text-primary-foreground">
 				<p>Browser</p>
 			</header>
