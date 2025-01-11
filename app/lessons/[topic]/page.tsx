@@ -43,8 +43,9 @@ const topics = {
   },
 }
 
-export default function TopicPage({ params }: Readonly<{ params: { topic: string } }>) {
-  const topic = topics[params.topic as keyof typeof topics]
+export default async function TopicPage({ params }: Readonly<{ params: Promise<{ topic: string }> }>) {
+  const paramsTopic = (await params).topic;
+  const topic = topics[(await params).topic as keyof typeof topics]
 
   if (!topic) {
     return <div>Topic not found</div>
@@ -80,7 +81,7 @@ export default function TopicPage({ params }: Readonly<{ params: { topic: string
                             </p>
                           </div>
                           <div>
-                            <Link href={`/lessons/${params.topic}/${subtopic.slug}/0`}>
+                            <Link href={`/lessons/${paramsTopic}/${subtopic.slug}/0`}>
                               <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-700 dark:hover:bg-indigo-600">
                                 Start Lesson
                                 <ArrowRight className="ml-2 h-4 w-4" />
