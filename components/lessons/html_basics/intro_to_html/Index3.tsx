@@ -16,7 +16,7 @@ const Index3 = () => {
       <br />
       <CodeBlock language="HTML">&lt;button&gt;Like&lt;/button&gt;</CodeBlock>
       <br />
-      <div className="flex justify-center gap-4">
+      <div className="flex justify-center gap-4 flex-wrap">
         <ButtonChoice>
           &lt;/button&gt;
         </ButtonChoice>
