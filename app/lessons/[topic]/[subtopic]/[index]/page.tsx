@@ -1,11 +1,12 @@
-import { ReactNode } from "react";
+import { CustomProgress } from "@/components/CustomProgress";
+import Index1 from "@/components/lessons/html_basics/intro_to_html/Index1";
+import Index2 from "@/components/lessons/html_basics/intro_to_html/Index2";
+import Index3 from "@/components/lessons/html_basics/intro_to_html/Index3";
 import SubmitButton from "@/components/SubmitButton";
+import Link from "next/link";
+import { ReactNode } from "react";
 import BackButton from "../../../../../components/BackButton";
 import Layout from "../../../../components/layout";
-import Index3 from "@/components/lessons/html_basics/intro_to_html/Index3";
-import Index2 from "@/components/lessons/html_basics/intro_to_html/Index2";
-import Index1 from "@/components/lessons/html_basics/intro_to_html/Index1";
-import Link from "next/link";
 
 interface LessonContentProps {
   [topic: string]: {
@@ -81,16 +82,25 @@ export default async function LessonPage(
     lessonContent[params.topic as keyof typeof lessonContent]?.[
       params.subtopic
     ];
-
-  if (!lesson) {
-    return <div>Lesson not found</div>;
+    
+    if (!lesson) {
+      return <div>Lesson not found</div>;
   }
+
+  const numberOfContent = lesson.contents.length;
+  
+  if (Number (params.index) >= numberOfContent) {
+    params.index = (numberOfContent - 1).toString();
+  }
+
+  let index = Number(params.index);
+  console.log(index);
 
   const content = lesson.contents[Number(params.index)];
 
-  let index = Number(params.index);
 
-  index += 1;
+  const singleProgress = 100 / numberOfContent;
+  console.log(singleProgress);
 
   return (
     <Layout>
@@ -99,6 +109,12 @@ export default async function LessonPage(
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-white">
               {lesson.title}
+              <br />
+              <CustomProgress
+                initialValue={(singleProgress * index) - singleProgress}
+                finalValue={singleProgress * index}
+                delay={100}
+              />
             </h1>
           </div>
         </header>
@@ -119,7 +135,7 @@ export default async function LessonPage(
               <div className="mt-6 flex justify-between">
                 <BackButton>Go Back</BackButton>
                 <Link
-                  href={`/lessons/${params.topic}/${params.subtopic}/${index}`}
+                  href={`/lessons/${params.topic}/${params.subtopic}/${++index}`}
                 >
                   <SubmitButton label={content.submit.label}></SubmitButton>
                 </Link>

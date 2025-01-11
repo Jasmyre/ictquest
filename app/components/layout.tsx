@@ -19,7 +19,7 @@ export default function Layout({ children }: Readonly<{ children: React.ReactNod
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Navigation */}
-      <nav className="bg-white dark:bg-gray-800 shadow-sm">
+      <nav className="bg-white dark:bg-gray-800 shadow-lg sticky top-0 left-0 z-[9999990] border-b-2 border-indigo-500/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
