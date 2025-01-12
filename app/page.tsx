@@ -70,7 +70,7 @@ export default function LandingPage() {
                 height={400}
                 className="drop-shadow-2xl"
               />
-              <Zap className="absolute scale-[4] top-0 right-[-25px] text-yellow-200 dark:text-yellow-300 h-20 w-20 animate-float" />
+              <Zap className="absolute top-0 right-0 text-yellow-200 dark:text-yellow-300 h-6 w-6 scale-[3.25]" />
             </div>
           </div>
         </div>
