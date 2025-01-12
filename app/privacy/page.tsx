@@ -18,12 +18,12 @@ export default function PrivacyPolicyPage() {
                 <CardHeader>
                   <CardTitle className="flex items-center text-2xl font-semibold text-gray-900 dark:text-gray-100">
                     <Shield className="h-6 w-6 text-indigo-600 dark:text-indigo-400 mr-2" />
-                    HTMLMaster Privacy Policy
+                    ICTQuest Privacy Policy
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="prose dark:prose-invert max-w-none">
-                    <p className="text-gray-600 dark:text-gray-300">At HTMLMaster, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information.</p>
+                    <p className="text-gray-600 dark:text-gray-300">At ICTQuest, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information.</p>
 
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">1. Information We Collect</h2>
                     <p className="text-gray-600 dark:text-gray-300">We collect information you provide directly to us, such as when you create an account, participate in interactive features, or contact us for support. This may include your name, email address, and learning progress.</p>
@@ -38,13 +38,13 @@ export default function PrivacyPolicyPage() {
                     <p className="text-gray-600 dark:text-gray-300">We take reasonable measures to help protect your personal information from loss, theft, misuse, and unauthorized access, disclosure, alteration, and destruction.</p>
 
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">5. Your Choices</h2>
-                    <p className="text-gray-600 dark:text-gray-300">You can access and update certain information about you from within your HTMLMaster account. You may also opt out of receiving promotional communications from us by following the instructions in those messages.</p>
+                    <p className="text-gray-600 dark:text-gray-300">You can access and update certain information about you from within your ICTQuest account. You may also opt out of receiving promotional communications from us by following the instructions in those messages.</p>
 
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">6. Changes to This Policy</h2>
                     <p className="text-gray-600 dark:text-gray-300">We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
 
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">7. Contact Us</h2>
-                    <p className="text-gray-600 dark:text-gray-300">If you have any questions about this Privacy Policy, please contact us at privacy@htmlmaster.com.</p>
+                    <p className="text-gray-600 dark:text-gray-300">If you have any questions about this Privacy Policy, please contact us at privacy@ICTQuest.com.</p>
                   </div>
                 </CardContent>
               </Card>

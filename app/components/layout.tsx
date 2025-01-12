@@ -25,7 +25,7 @@ export default function Layout({ children }: Readonly<{ children: React.ReactNod
             <div className="flex">
               <Link href="/" className="flex-shrink-0 flex items-center">
                 <Book className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
-                <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">HTMLMaster</span>
+                <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">ICTQuest</span>
               </Link>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                 <Link href="/" className="border-indigo-500 text-gray-900 dark:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
@@ -111,7 +111,7 @@ export default function Layout({ children }: Readonly<{ children: React.ReactNod
           </div>
           <div className="mt-8 md:mt-0 md:order-1">
             <p className="text-center text-base text-gray-400 dark:text-gray-300">
-              &copy; 2023 HTMLMaster, Inc. All rights reserved.
+              &copy; 2025 ICTQuest. All rights reserved.
             </p>
           </div>
         </div>

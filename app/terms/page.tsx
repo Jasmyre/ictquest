@@ -18,33 +18,33 @@ export default function TermsOfUsePage() {
                 <CardHeader>
                   <CardTitle className="flex items-center text-2xl font-semibold text-gray-900 dark:text-gray-100">
                     <ScrollText className="h-6 w-6 text-indigo-600 dark:text-indigo-400 mr-2" />
-                    HTMLMaster Terms of Use
+                    ICTQuest Terms of Use
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="prose dark:prose-invert max-w-none">
-                    <p className="text-gray-600 dark:text-gray-300">Welcome to HTMLMaster. By using our website and services, you agree to comply with and be bound by the following terms and conditions:</p>
+                    <p className="text-gray-600 dark:text-gray-300">Welcome to ICTQuest. By using our website and services, you agree to comply with and be bound by the following terms and conditions:</p>
 
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">1. Acceptance of Terms</h2>
-                    <p className="text-gray-600 dark:text-gray-300">By accessing or using HTMLMaster, you agree to be bound by these Terms of Use and all applicable laws and regulations. If you do not agree with any part of these terms, you may not use our services.</p>
+                    <p className="text-gray-600 dark:text-gray-300">By accessing or using ICTQuest, you agree to be bound by these Terms of Use and all applicable laws and regulations. If you do not agree with any part of these terms, you may not use our services.</p>
 
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">2. Use of Service</h2>
-                    <p className="text-gray-600 dark:text-gray-300">You may use HTMLMaster for your personal, non-commercial use only. You must not use HTMLMaster for any illegal or unauthorized purpose.</p>
+                    <p className="text-gray-600 dark:text-gray-300">You may use ICTQuest for your personal, non-commercial use only. You must not use ICTQuest for any illegal or unauthorized purpose.</p>
 
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">3. User Account</h2>
-                    <p className="text-gray-600 dark:text-gray-300">To access certain features of HTMLMaster, you may be required to create an account. You are responsible for maintaining the confidentiality of your account and password.</p>
+                    <p className="text-gray-600 dark:text-gray-300">To access certain features of ICTQuest, you may be required to create an account. You are responsible for maintaining the confidentiality of your account and password.</p>
 
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">4. Intellectual Property</h2>
-                    <p className="text-gray-600 dark:text-gray-300">The content on HTMLMaster, including text, graphics, logos, and software, is the property of HTMLMaster or its content suppliers and is protected by copyright and other intellectual property laws.</p>
+                    <p className="text-gray-600 dark:text-gray-300">The content on ICTQuest, including text, graphics, logos, and software, is the property of ICTQuest or its content suppliers and is protected by copyright and other intellectual property laws.</p>
 
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">5. Limitation of Liability</h2>
-                    <p className="text-gray-600 dark:text-gray-300">HTMLMaster shall not be liable for any indirect, incidental, special, consequential or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses.</p>
+                    <p className="text-gray-600 dark:text-gray-300">ICTQuest shall not be liable for any indirect, incidental, special, consequential or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses.</p>
 
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">6. Changes to Terms</h2>
-                    <p className="text-gray-600 dark:text-gray-300">HTMLMaster reserves the right to modify or replace these Terms of Use at any time. It is your responsibility to check these Terms periodically for changes.</p>
+                    <p className="text-gray-600 dark:text-gray-300">ICTQuest reserves the right to modify or replace these Terms of Use at any time. It is your responsibility to check these Terms periodically for changes.</p>
 
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">7. Contact Information</h2>
-                    <p className="text-gray-600 dark:text-gray-300">If you have any questions about these Terms, please contact us at terms@htmlmaster.com.</p>
+                    <p className="text-gray-600 dark:text-gray-300">If you have any questions about these Terms, please contact us at terms@ICTQuest.com.</p>
                   </div>
                 </CardContent>
               </Card>
