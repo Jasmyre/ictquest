@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     url: new URL(BASE_URL),
     images: [
       {
-        url: "",
+        url: "/thumbnail.png",
         width: 1200,
         height: 630,
         alt: "Thumbnail image for " + BASE_URL,
