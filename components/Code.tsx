@@ -6,7 +6,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 interface BrowserProps {
-  children: ReactNode;
+  children?: ReactNode;
   language: string;
 }
 
