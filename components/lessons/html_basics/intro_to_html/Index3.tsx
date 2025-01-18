@@ -4,6 +4,10 @@ import CodeBlock from "@/components/Code";
 import LessonCard from "@/components/LessonCard";
 import ButtonChoice from "../../../ButtonChoice";
 import CodeHighlight from "../../../CodeHighlight";
+
+import { Button } from "@/components/ui/button";
+import { shuffle } from "@/lib/utils";
+import { RotateCcw } from "lucide-react";
 import { useState } from "react";
 
 const data = {
@@ -23,6 +27,8 @@ const data = {
   ],
 };
 
+const shuffledData = shuffle(data.choices);
+
 console.log(data);
 
 const Index3 = () => {
@@ -33,6 +39,12 @@ const Index3 = () => {
     setCode(() => code + label);
     setDisabledButtons((prevDisabled) => [...prevDisabled, label]);
   };
+
+  const handleReset = () => {
+    setCode("");
+    setDisabledButtons([]);
+  }
+
   return (
     <LessonCard>
       <p>
@@ -42,12 +54,17 @@ const Index3 = () => {
       </p>
       <br />
       <CodeBlock language="HTML">
-        {/* &lt;button&gt;Like&lt;/button&gt; */}
         {code}
       </CodeBlock>
       <br />
+      <div className="flex justify-start">
+        <Button onClick={handleReset} className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 hover:text-900 dark:text-gray-400 dark:hover:text-gray-200">
+          <RotateCcw />
+        </Button>
+      </div>
+      <br />
       <div className="flex justify-center gap-4 flex-wrap">
-        {data.choices.map((choice) => {
+        {shuffledData.map((choice) => {
           return (
             <ButtonChoice
               key={choice.label}

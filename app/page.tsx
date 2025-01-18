@@ -51,7 +51,7 @@ export default function LandingPage() {
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <Link href="/about">
+                <Link href="/lessons">
                   <Button
                     size="lg"
                     variant="outline"
@@ -102,24 +102,24 @@ export default function LandingPage() {
                   "Monitor your learning journey with detailed progress reports and performance analytics.",
                 icon: Award,
               },
-              {
-                title: "Expert Support",
-                description:
-                  "Get help from our community of experts and fellow learners whenever you need it.",
-                icon: Users,
-              },
-              {
-                title: "Real-world Projects",
-                description:
-                  "Apply your skills to practical, industry-relevant projects that build your portfolio.",
-                icon: Laptop,
-              },
-              {
-                title: "Cutting-edge Content",
-                description:
-                  "Stay up-to-date with the latest HTML trends and best practices in web development.",
-                icon: Zap,
-              },
+              // {
+              //   title: "Expert Support",
+              //   description:
+              //     "Get help from our community of experts and fellow learners whenever you need it.",
+              //   icon: Users,
+              // },
+              // {
+              //   title: "Real-world Projects",
+              //   description:
+              //     "Apply your skills to practical, industry-relevant projects that build your portfolio.",
+              //   icon: Laptop,
+              // },
+              // {
+              //   title: "Cutting-edge Content",
+              //   description:
+              //     "Stay up-to-date with the latest HTML trends and best practices in web development.",
+              //   icon: Zap,
+              // },
             ].map((feature, index) => (
               <Card
                 key={index++}
@@ -217,19 +217,19 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                name: "Alex Johnson",
+                name: "John A.",
                 role: "Frontend Developer",
                 quote:
                   "ICTQuest transformed my understanding of web development. The interactive lessons made learning HTML enjoyable and effective.",
               },
               {
-                name: "Samantha Lee",
+                name: "Jane A.",
                 role: "UX Designer",
                 quote:
                   "As a designer, understanding HTML was crucial. ICTQuest's curriculum provided the perfect balance of theory and practical application.",
               },
               {
-                name: "Michael Chen",
+                name: "John B.",
                 role: "Student",
                 quote:
                   "I started with zero coding knowledge, and now I'm building my own websites. ICTQuest's step-by-step approach made it possible.",
@@ -273,7 +273,7 @@ export default function LandingPage() {
             Ready to become an HTML master?
           </h2>
           <p className="text-xl mb-10 text-gray-100">
-            Join thousands of learners who have transformed their careers with
+            Join our learners who have transformed their careers with
             ICTQuest.
           </p>
           <Link href="/lessons">
@@ -281,7 +281,7 @@ export default function LandingPage() {
               size="lg"
               className="bg-white text-indigo-600 hover:bg-gray-100 dark:bg-gray-200 dark:text-indigo-800 dark:hover:bg-gray-300"
             >
-              Start Your Free Trial
+              Start Learning
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>

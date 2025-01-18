@@ -37,13 +37,7 @@ export default function PrivacyPolicyPage() {
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">4. Data Security</h2>
                     <p className="text-gray-600 dark:text-gray-300">We take reasonable measures to help protect your personal information from loss, theft, misuse, and unauthorized access, disclosure, alteration, and destruction.</p>
 
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">5. Your Choices</h2>
-                    <p className="text-gray-600 dark:text-gray-300">You can access and update certain information about you from within your ICTQuest account. You may also opt out of receiving promotional communications from us by following the instructions in those messages.</p>
-
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">6. Changes to This Policy</h2>
-                    <p className="text-gray-600 dark:text-gray-300">We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
-
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">7. Contact Us</h2>
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">5. Contact Us</h2>
                     <p className="text-gray-600 dark:text-gray-300">If you have any questions about this Privacy Policy, please contact us at privacy@ICTQuest.com.</p>
                   </div>
                 </CardContent>

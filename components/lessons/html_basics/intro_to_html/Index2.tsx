@@ -22,7 +22,7 @@ const Index2 = () => {
             <h1>C A _</h1>
             <br />
             <div className="flex gap-2">
-              <button className="hover:bg-gray-200">H</button>
+              <button className="hover:bg-gray-200 py-2 px-2 border">Hello</button>
               <button className="hover:bg-gray-200">Y</button>
               <button className="hover:bg-gray-200">T</button>
             </div>
