@@ -6,41 +6,29 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.browser {
-  @apply font-[16px];
+.browserCode {
+  all: initial;
+  box-sizing: border-box;
 }
 
-.browser h1 {
-  @apply text-[2em] font-[700];
+.browserCode * {
+  all: inherit;
 }
 
-.browser h2 {
-  @apply text-[1.5em] font-[700];
+.browserCode button,
+.browserCode input,
+.browserCode select,
+.browserCode textarea {
+  border: initial; /* Reset border to default */
+  padding: initial; /* Reset padding to default */
+  margin: initial; /* Reset margin to default */
+  background: initial; /* Reset background to default */
+  color: initial; /* Reset text color to default */
+  font: initial; /* Reset font styles to default */
+  line-height: initial; /* Reset line height to default */
+  appearance: auto; /* Reset appearance to default */
 }
 
-.browser h3 {
-  @apply text-[1.17em] font-[700];
-}
-
-.browser h4 {
-  @apply text-[1em] font-[700];
-}
-
-.browser h5 {
-  @apply text-[0.83em] font-[700];
-}
-
-.browser h6 {
-  @apply text-[0.67em] font-[400];
-}
-
-.browser a {
-  @apply text-[16px] font-[700] text-blue-500;
-}
-
-.browser button {
-  @apply box-content cursor-pointer rounded-[1px] border border-solid border-black bg-transparent p-1 px-3 text-[16px] font-[400] outline-blue-300 ;
-}
 
 @layer utilities {
   .text-balance {
