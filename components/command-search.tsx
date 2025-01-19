@@ -1,8 +1,8 @@
 "use client";
 
 import { Book, Circle, Home, Search, Settings, User } from "lucide-react";
-import * as React from "react";
 import { useRouter } from "next/navigation";
+import * as React from "react";
 
 import {
   Command,
@@ -16,17 +16,15 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogTrigger,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 type ItemType = {
   icon: React.ElementType;
   name: string;
-  href: string;
   action: () => string;
 };
 
@@ -42,19 +40,16 @@ const items: ItemsProps = [
       {
         icon: Home,
         name: "Home",
-        href: "/",
         action: () => "/",
       },
       {
         icon: User,
         name: "Profile",
-        href: "/profile",
         action: () => "/profile",
       },
       {
         icon: Book,
         name: "Lessons",
-        href: "/lessons",
         action: () => "/lessons",
       },
     ],
@@ -65,36 +60,31 @@ const items: ItemsProps = [
       {
         icon: Circle,
         name: "HTML Basics",
-        href: "/lessons/html-basics",
         action: () => "/lessons/html-basics",
       },
       {
         icon: Circle,
         name: "HTML Elements",
-        href: "/lessons/html-elements",
         action: () => "/lessons/html-elements",
       },
       {
         icon: Circle,
         name: "HTML Forms",
-        href: "/lessons/html-forms",
         action: () => "/lessons/html-forms",
       },
       {
         icon: Circle,
         name: "HTML5 features",
-        href: "/lessons/html5-features",
         action: () => "/lessons/html5-features",
       },
     ],
   },
   {
-    category: "Settings",
+    category: "Others",
     items: [
       {
         icon: Settings,
         name: "Settings",
-        href: "/settings",
         action: () => "/settings",
       },
     ],
@@ -119,25 +109,12 @@ export function CommandSearch() {
 
   const runCommand = React.useCallback(
     (command: () => string) => {
-      setOpen(false);
       const path = command();
       router.push(path);
+      setOpen(false);
     },
     [router],
   );
-
-  const renderItem = (item: ItemType) => {
-    return (
-      <CommandItem
-        key={item.name}
-        onSelect={() => runCommand(item.action)}
-        className="hover:bg-gray-200 dark:hover:bg-gray-700"
-      >
-        <item.icon className="mr-2 h-4 w-4" />
-        <span>{item.name}</span>
-      </CommandItem>
-    );
-  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -147,12 +124,9 @@ export function CommandSearch() {
           className="w-full justify-between text-sm bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
         >
           <div className="flex w-[150px] justify-between items-center">
-            Search...
+            Search
             <Search className="h-4 w-4" />
           </div>
-          {/* <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
-            <span className="text-xs">⌘</span>K
-          </kbd> */}
         </Button>
       </DialogTrigger>
       <DialogTitle>
@@ -166,14 +140,14 @@ export function CommandSearch() {
             {items.map((group) => (
               <CommandGroup key={group.category} heading={group.category}>
                 {group.items.map((item) => (
-                  <Link
+                  <CommandItem
                     key={item.name}
-                    href={item.href}
-                    passHref
-                    legacyBehavior
+                    onSelect={() => runCommand(item.action)}
+                    className="hover:bg-gray-200 dark:hover:bg-gray-700"
                   >
-                    {renderItem(item)}
-                  </Link>
+                    <item.icon className="mr-2 h-4 w-4" />
+                    <span>{item.name}</span>
+                  </CommandItem>
                 ))}
               </CommandGroup>
             ))}
