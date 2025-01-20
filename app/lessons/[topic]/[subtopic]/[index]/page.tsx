@@ -199,15 +199,15 @@ export default function LessonPage({
     return null;
   }
 
-  const params = use(paramsPromise);
-  const lesson = lessonContent[params.topic]?.[params.subtopic];
+  const {topic, subtopic, index: indexString} = use(paramsPromise);
+  const lesson = lessonContent[topic]?.[subtopic];
 
   if (!lesson) {
     return <div>Lesson not found</div>;
   }
 
   const numberOfContent = lesson.contents.length;
-  let index = Number(params.index);
+  let index = Number(indexString);
 
   if (index >= numberOfContent) {
     index = numberOfContent - 1;
@@ -218,9 +218,9 @@ export default function LessonPage({
 
   const handleNext = () => {
     if (index < numberOfContent - 1) {
-      router.push(`/lessons/${params.topic}/${params.subtopic}/${index + 1}`);
+      router.push(`/lessons/${topic}/${subtopic}/${index + 1}`);
     } else {
-      router.push(`/lessons/${params.topic}`);
+      router.push(`/compliments?topic=${topic}`);
     }
   };
 
