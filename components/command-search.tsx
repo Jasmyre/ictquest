@@ -121,10 +121,13 @@ export function CommandSearch() {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-between text-sm bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+          className="w-full justify-between text-sm bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-300"
         >
-          <div className="flex w-[150px] justify-between items-center">
+          <div className="flex w-[225px] justify-between items-center text-gary-600 dark:text-gray-400">
+            <div className="flex gap-4">
             Search
+            {/* <kbd className="bg-white dark:bg-gray-800 text-gray-400 px-1 border border-gray-500">CRT + K</kbd> */}
+            </div>
             <Search className="h-4 w-4" />
           </div>
         </Button>
@@ -135,7 +138,7 @@ export function CommandSearch() {
       <DialogContent className="p-0 border-none">
         <Command className="rounded-lg border shadow-md bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
           <CommandInput placeholder="Type a command or search" />
-          <CommandList>
+          <CommandList className="">
             <CommandEmpty>No results found.</CommandEmpty>
             {items.map((group) => (
               <CommandGroup key={group.category} heading={group.category}>

@@ -6,40 +6,24 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.browserCode {
-  all: initial;
-  box-sizing: border-box;
-}
-
-.browserCode * {
-  all: inherit;
-}
-
-.browserCode button,
-.browserCode input,
-.browserCode select,
-.browserCode textarea {
-  border: initial; /* Reset border to default */
-  padding: initial; /* Reset padding to default */
-  margin: initial; /* Reset margin to default */
-  background: initial; /* Reset background to default */
-  color: initial; /* Reset text color to default */
-  font: initial; /* Reset font styles to default */
-  line-height: initial; /* Reset line height to default */
-  appearance: auto; /* Reset appearance to default */
-}
-
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }
 
-
 @layer base {
-  
-  :root  {
+  :root {
     --background: 264 50% 95%;
     --foreground: 264 5% 10%;
     --card: 264 50% 90%;
@@ -61,7 +45,7 @@ body {
     --ring: 264 72% 47%;
     --radius: 0.5rem;
   }
-  .dark  {
+  .dark {
     --background: 264 50% 10%;
     --foreground: 264 5% 90%;
     --card: 264 50% 10%;
@@ -83,15 +67,35 @@ body {
     --ring: 264 72% 47%;
     --radius: 0.5rem;
   }
-
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-50 dark:bg-gray-900;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 dark:bg-gray-600 rounded-md;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500
   }
 }
 

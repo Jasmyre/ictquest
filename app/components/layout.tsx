@@ -2,7 +2,7 @@
 
 import { CommandSearch } from "@/components/command-search"
 import { Button } from "@/components/ui/button"
-import { Book, FileText, Menu, Moon, Shield, Sun, User, X } from 'lucide-react'
+import { Book, FileText, Menu, Moon, Shield, Sun, X } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -54,15 +54,6 @@ export default function Layout({ children }: Readonly<{ children: React.ReactNod
               <div className="relative">
                 <CommandSearch />
               </div>
-              <Link href="/profile">
-                <Button
-                  variant="ghost"
-                  className="ml-3 text-gray-500 dark:text-gray-300"
-                >
-                  <User className="h-5 w-5" />
-                  <span className="ml-2">Profile</span>
-                </Button>
-              </Link>
               <Button
                 variant="ghost"
                 className="ml-3 text-gray-500 dark:text-gray-300"
