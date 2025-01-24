@@ -16,7 +16,6 @@ import {
 import Image from "next/image";
 import Confetti from "../../components/Confetti";
 import ContinueLearningButton from "../../components/ContinueLearningButton";
-import Layout from "../components/layout";
 
 const compliments = [
   { text: "Great job! You've mastered the basics of HTML!", icon: Trophy },
@@ -65,7 +64,7 @@ export default function ComplimentsPage() {
     compliments[Math.floor(Math.random() * compliments.length)];
 
   return (
-    <Layout>
+    <main>
       <Confetti />
       <div className="py-10">
         <header>
@@ -187,6 +186,6 @@ export default function ComplimentsPage() {
           </div>
         </main>
       </div>
-    </Layout>
+    </main>
   );
 }

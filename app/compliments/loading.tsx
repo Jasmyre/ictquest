@@ -1,5 +1,5 @@
 import ContinueLearningButton from "@/components/ContinueLearningButton";
-import Loading from '@/components/Loading';
+import Loading from "@/components/Loading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Award,
@@ -12,7 +12,6 @@ import {
   Trophy,
   Zap,
 } from "lucide-react";
-import Layout from "../components/layout";
 
 const compliments = [
   { text: "Great job! You've mastered the basics of HTML!", icon: Trophy },
@@ -59,7 +58,7 @@ const loading = () => {
     compliments[Math.floor(Math.random() * compliments.length)];
 
   return (
-    <Layout>
+    <main>
       <div className="py-10">
         <header>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -74,9 +73,7 @@ const loading = () => {
               <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                 <CardHeader>
                   <CardTitle className="flex items-center text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                    <span
-                      aria-label={compliment.text}
-                    >
+                    <span aria-label={compliment.text}>
                       <compliment.icon className="h-8 w-8 text-yellow-400 mr-2" />
                     </span>
                     {compliment.text}
@@ -84,11 +81,10 @@ const loading = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="flex justify-center items-center">
-                    <Loading className="w-[400px] h-[300px]"/>
+                    <Loading className="w-[400px] h-[300px]" />
                   </div>
                   <div className="space-y-6">
-                    <span
-                    >
+                    <span>
                       <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
                         Your Progress
                       </h2>
@@ -98,8 +94,7 @@ const loading = () => {
                         paying off!
                       </p>
                     </span>
-                    <span
-                    >
+                    <span>
                       <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
                         New Achievements
                       </h2>
@@ -123,8 +118,7 @@ const loading = () => {
                       </div>
                     </span>
 
-                    <span
-                    >
+                    <span>
                       <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
                         Next Steps
                       </h2>
@@ -135,9 +129,7 @@ const loading = () => {
                       </p>
                     </span>
                   </div>
-                  <span
-                    className="mt-8"
-                  >
+                  <span className="mt-8">
                     <ContinueLearningButton />
                   </span>
                 </CardContent>
@@ -146,7 +138,7 @@ const loading = () => {
           </div>
         </main>
       </div>
-    </Layout>
+    </main>
   );
 };
 

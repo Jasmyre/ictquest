@@ -3,17 +3,16 @@ import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Book } from "lucide-react";
-import Layout from "../../components/layout";
 
 export default function loading() {
   return (
-    <Layout>
+    <main>
       <div className="py-10">
         <header>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Loading className="w-[325px] h-[32px]" />
+            <Loading className="sm:w-[325px] h-[32px]" />
             <br />
-            <Loading className="w-[500px] h-[16px]" />
+            <Loading className="sm:w-[500px] h-[16px]" />
           </div>
         </header>
         <main className="min-h-[65vh]">
@@ -37,7 +36,7 @@ export default function loading() {
                             <Book className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <Loading className="w-[325px] h-[16px]" />
+                            <Loading className="sm:w-[325px] h-[16px]" />
                           </div>
                           <div>
                             <Button
@@ -61,6 +60,6 @@ export default function loading() {
           </div>
         </main>
       </div>
-    </Layout>
+    </main>
   );
 }

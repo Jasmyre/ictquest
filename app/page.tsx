@@ -1,4 +1,3 @@
-import Layout from "./components/layout";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,25 +6,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { wait } from "@/lib/utils";
 import {
   ArrowRight,
+  Award,
   Book,
   CheckCircle,
-  Users,
-  Award,
   Code,
-  Laptop,
-  Zap,
-  Globe,
-  Star,
   Coffee,
+  Globe,
+  Laptop,
+  Star,
+  Users,
+  Zap,
 } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function LandingPage() {
+  await wait(1000);
   return (
-    <Layout>
+    <main>
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br rounded-lg from-indigo-600 to-purple-700 dark:from-indigo-900 dark:to-purple-950 text-white py-20">
         <div className="container mx-auto px-4">
@@ -273,8 +274,7 @@ export default async function LandingPage() {
             Ready to become an HTML master?
           </h2>
           <p className="text-xl mb-10 text-gray-100">
-            Join our learners who have transformed their careers with
-            ICTQuest.
+            Join our learners who have transformed their careers with ICTQuest.
           </p>
           <Link href="/lessons">
             <Button
@@ -290,6 +290,6 @@ export default async function LandingPage() {
         <Coffee className="absolute bottom-5 left-10 text-indigo-200 dark:text-indigo-300 h-8 w-8 animate-float" />
         <Code className="absolute top-5 right-10 text-indigo-200 dark:text-indigo-300 h-10 w-10 animate-float-delayed" />
       </section>
-    </Layout>
+    </main>
   );
 }

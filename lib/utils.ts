@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function shuffle<T>(array: T[]): T[] {
+export const shuffle = <T>(array: T[]): T[] => {
   let currentIndex = array.length;
 
   while (currentIndex !== 0) {
@@ -19,4 +19,8 @@ export function shuffle<T>(array: T[]): T[] {
   }
 
   return array;
+}
+
+export const wait = (time: number) => {
+  return new Promise(res => setTimeout(res, time))
 }

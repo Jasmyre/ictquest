@@ -6,7 +6,7 @@ export default function Loading({className, ...props}: Readonly<{className?: str
   return (
     <Skeleton
       className={cn(
-        "w-[100%] h-[16px] rounded-md bg-gray-300 dark:bg-gray-700",
+        "w-full h-[16px] rounded-md bg-gray-300 dark:bg-gray-700",
         className,
       )}
       {...props}

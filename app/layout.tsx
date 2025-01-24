@@ -5,6 +5,7 @@ import { ThemeProvider } from "../components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
+import Layout from './components/layout';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -85,7 +86,9 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem
         >
+          <Layout>
           {children}
+          </Layout>
         </ThemeProvider>
         <Analytics />
       </body>
