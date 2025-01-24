@@ -1,6 +1,6 @@
 "use client";
 
-import { Book, Circle, Home, Search, Settings, User } from "lucide-react";
+import { Book, Circle, FileText, Home, Search, Settings, Shield, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 
@@ -87,6 +87,16 @@ const items: ItemsProps = [
         name: "Settings",
         action: () => "/settings",
       },
+      {
+        icon: FileText,
+        name: "Terms of use",
+        action: () => "/terms"
+      },
+      {
+        icon: Shield,
+        name: "Privacy policy",
+        action: () => "/privacy"
+      }
     ],
   },
 ];

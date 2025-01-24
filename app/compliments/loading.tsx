@@ -1,7 +1,6 @@
-"use client";
-
+import ContinueLearningButton from "@/components/ContinueLearningButton";
+import Loading from '@/components/Loading';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { motion } from "framer-motion";
 import {
   Award,
   BookOpen,
@@ -13,9 +12,6 @@ import {
   Trophy,
   Zap,
 } from "lucide-react";
-import Image from "next/image";
-import Confetti from "../../components/Confetti";
-import ContinueLearningButton from "../../components/ContinueLearningButton";
 import Layout from "../components/layout";
 
 const compliments = [
@@ -34,8 +30,6 @@ const compliments = [
     icon: Smile,
   },
 ];
-
-const image = "https://fonts.gstatic.com/s/e/notoemoji/latest/1f929/512.gif";
 
 const achievements = [
   {
@@ -60,24 +54,18 @@ const achievements = [
   },
 ];
 
-export default function ComplimentsPage() {
+const loading = () => {
   const compliment =
     compliments[Math.floor(Math.random() * compliments.length)];
 
   return (
     <Layout>
-      <Confetti />
       <div className="py-10">
         <header>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.h1
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-4xl font-extrabold leading-tight text-gray-900 dark:text-gray-100"
-            >
+            <span className="text-4xl font-extrabold leading-tight text-gray-900 dark:text-gray-100">
               Congratulations!
-            </motion.h1>
+            </span>
           </div>
         </header>
         <main>
@@ -86,34 +74,20 @@ export default function ComplimentsPage() {
               <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                 <CardHeader>
                   <CardTitle className="flex items-center text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                    <motion.div
-                      initial={{ rotate: -10, scale: 0.5 }}
-                      animate={{ rotate: 0, scale: 1 }}
-                      transition={{ duration: 0.5 }}
+                    <span
                       aria-label={compliment.text}
                     >
                       <compliment.icon className="h-8 w-8 text-yellow-400 mr-2" />
-                    </motion.div>
+                    </span>
                     {compliment.text}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex justify-center items-center">
-                    <Image
-                      unoptimized
-                      priority
-                      src={image || "/placeholder.svg"}
-                      alt="Celebration"
-                      width={400}
-                      height={300}
-                      className="rounded-lg"
-                    />
+                    <Loading className="w-[400px] h-[300px]"/>
                   </div>
                   <div className="space-y-6">
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.2 }}
+                    <span
                     >
                       <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
                         Your Progress
@@ -123,25 +97,16 @@ export default function ComplimentsPage() {
                         great understanding of HTML concepts. Your hard work is
                         paying off!
                       </p>
-                    </motion.div>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
+                    </span>
+                    <span
                     >
                       <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
                         New Achievements
                       </h2>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {achievements.map((achievement, index) => (
-                          <motion.div
+                        {achievements.map((achievement) => (
+                          <span
                             key={achievement.name}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{
-                              duration: 0.5,
-                              delay: 0.6 + index * 0.1,
-                            }}
                             className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-700 p-3 rounded-lg"
                           >
                             <achievement.icon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
@@ -153,15 +118,12 @@ export default function ComplimentsPage() {
                                 {achievement.description}
                               </p>
                             </div>
-                          </motion.div>
+                          </span>
                         ))}
                       </div>
-                    </motion.div>
+                    </span>
 
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.8 }}
+                    <span
                     >
                       <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
                         Next Steps
@@ -171,16 +133,13 @@ export default function ComplimentsPage() {
                         Explore more advanced topics and keep building your web
                         development expertise!
                       </p>
-                    </motion.div>
+                    </span>
                   </div>
-                  <motion.div
+                  <span
                     className="mt-8"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 1 }}
                   >
                     <ContinueLearningButton />
-                  </motion.div>
+                  </span>
                 </CardContent>
               </Card>
             </div>
@@ -189,4 +148,6 @@ export default function ComplimentsPage() {
       </div>
     </Layout>
   );
-}
+};
+
+export default loading;

@@ -23,7 +23,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 
-export default function LandingPage() {
+export default async function LandingPage() {
   return (
     <Layout>
       {/* Hero Section */}

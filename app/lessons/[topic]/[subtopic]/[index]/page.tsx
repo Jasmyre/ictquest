@@ -83,9 +83,7 @@ const lessonContent: LessonContentProps = {
               id: 3,
               type: "element",
               label: (
-                <CodeBlock language="HTML">
-                  {`<p>This is a paragraph.</p>`}
-                </CodeBlock>
+                <CodeBlock language="HTML">{`<p>This is a paragraph.</p>`}</CodeBlock>
               ),
             },
             {
@@ -188,6 +186,14 @@ export default function LessonPage({
 }: Readonly<{
   params: Promise<{ topic: string; subtopic: string; index: string }>;
 }>) {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log("hello");
+      
+    }, 3000); // Delay for 3000 milliseconds (3 seconds)
+
+    return () => clearTimeout(timer); // Cleanup on unmount
+  }, []);
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
 
@@ -199,7 +205,8 @@ export default function LessonPage({
     return null;
   }
 
-  const {topic, subtopic, index: indexString} = use(paramsPromise);
+  const params = use(paramsPromise);
+  const { topic, subtopic, index: indexString } = params;
   const lesson = lessonContent[topic]?.[subtopic];
 
   if (!lesson) {
