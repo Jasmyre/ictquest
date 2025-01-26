@@ -9,7 +9,7 @@ const lessons = [
     description: "Learn the fundamentals of HTML",
     slug: "html-basics",
     topics: [
-      { name: "Introduction to HTML", slug: "intro-to-html/0" },
+      { name: "Introduction to HTML", slug: "intro-to-html" },
       { name: "HTML Document Structure", slug: "html-structure" },
       { name: "Text Formatting", slug: "text-formatting" },
     ],

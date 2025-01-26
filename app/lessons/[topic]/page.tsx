@@ -93,7 +93,7 @@ export default async function TopicPage({
                           </div>
                           <div>
                             <Link
-                              href={`/lessons/${paramsTopic}/${subtopic.slug}/0`}
+                              href={`/lessons/${paramsTopic}/${subtopic.slug}`}
                             >
                               <Button
                                 size="sm"

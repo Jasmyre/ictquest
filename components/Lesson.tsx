@@ -10,7 +10,7 @@ import { shuffle } from "@/lib/utils";
 import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface LessonContentProps {
   [topic: string]: {
@@ -180,48 +180,34 @@ function InteractiveCodeExample() {
   );
 }
 
-export default function LessonPage({topic, subtopic, indexString}: Readonly<{topic: string, subtopic: string, indexString: string}>) {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log("hello");
-    }, 3000); // Delay for 3000 milliseconds (3 seconds)
-
-    return () => clearTimeout(timer); // Cleanup on unmount
-  }, []);
-  const router = useRouter();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null;
-  }
-  
+export default function LessonPage({topic, subtopic}: Readonly<{topic: string, subtopic: string}>) {
   const lesson = lessonContent[topic]?.[subtopic];
+  const [index, setIndex] = useState(0);
+  const router = useRouter();
+
+  const handleNext = () => {
+    if (index < numberOfContent - 1) {
+      setIndex((prev) => ++prev);
+      console.log(index);
+      
+    } else {
+      router.push(`/compliments?topic=${topic}`);
+    }
+  };
 
   if (!lesson) {
     return <div>Lesson not found</div>;
   }
 
   const numberOfContent = lesson.contents.length;
-  let index = Number(indexString);
+  
 
   if (index >= numberOfContent) {
-    index = numberOfContent - 1;
+    setIndex(numberOfContent - 1);
   }
 
   const content = lesson.contents[index];
   const singleProgress = 100 / numberOfContent;
-
-  const handleNext = () => {
-    if (index < numberOfContent - 1) {
-      router.push(`/lessons/${topic}/${subtopic}/${index + 1}`);
-    } else {
-      router.push(`/compliments?topic=${topic}`);
-    }
-  };
 
   return (
       <div className="py-10">
