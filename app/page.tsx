@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { wait } from "@/lib/utils";
 import {
   ArrowRight,
   Award,
@@ -24,7 +23,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function LandingPage() {
-  await wait(1000);
   return (
     <main>
       {/* Hero Section */}
