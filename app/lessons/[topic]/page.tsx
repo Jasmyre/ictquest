@@ -46,7 +46,6 @@ const topics = {
 export default async function TopicPage({
   params,
 }: Readonly<{ params: Promise<{ topic: string }> }>) {
-  const paramsTopic = (await params).topic;
   const topic = topics[(await params).topic as keyof typeof topics];
 
   if (!topic) {
@@ -93,7 +92,7 @@ export default async function TopicPage({
                           </div>
                           <div>
                             <Link
-                              href={`/lessons/${paramsTopic}/${subtopic.slug}`}
+                              href={`/lessons/subtopic/${subtopic.slug}?topic=${topic.title}`}
                             >
                               <Button
                                 size="sm"

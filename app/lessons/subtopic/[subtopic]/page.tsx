@@ -1,11 +1,13 @@
 import LessonPage from "@/components/Lesson";
 
 export default async function page({
-  params,
+  params, searchParams
 }: Readonly<{
-  params: Promise<{ topic: string; subtopic: string;}>;
+  params: Promise<{ subtopic: string;}>;
+  searchParams: Promise<{ topic: string }>;
 }>) {
-  const { topic, subtopic} = await params;
+  const { subtopic } = await params;
+  const { topic } = await searchParams
 
   return (
     <main>

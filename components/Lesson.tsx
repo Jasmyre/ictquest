@@ -15,7 +15,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-// Define the interface for lesson content
+
 interface LessonContentProps {
   [topic: string]: {
     [subtopic: string]: {
@@ -30,7 +30,7 @@ interface LessonContentProps {
             | React.ReactNode
             | ((props: {
                 setIsFinished: (value: boolean) => void;
-              }) => React.ReactNode); // Allow for inline elements or component references
+              }) => React.ReactNode);
           id: number;
         }[];
       }[];
@@ -38,7 +38,7 @@ interface LessonContentProps {
   };
 }
 
-// Example lesson content with inline elements and component references
+
 const lessonContent: LessonContentProps = {
   "html-basics": {
     "intro-to-html": {
@@ -213,7 +213,9 @@ export default function LessonPage({
   topic,
   subtopic,
 }: Readonly<{ topic: string; subtopic: string }>) {
-  const lesson = lessonContent[topic]?.[subtopic];
+  console.log(topic);
+  
+  const lesson = lessonContent[topic.toLocaleLowerCase().replace(/ /, "-")]?.[subtopic];
   const [index, setIndex] = useState<number>(0);
   const [isFinished, setIsFinished] = useState<boolean>(false);
   const router = useRouter();

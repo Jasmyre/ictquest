@@ -63,6 +63,7 @@ export default async function LandingPage() {
             </div>
             <div className="lg:w-1/2 mt-10 lg:mt-0 relative">
               <Image
+                priority
                 src="/mockup/Frame 11.svg"
                 alt="HTML code visualization"
                 width={600}
