@@ -9,7 +9,7 @@ export default async function page({
 
   return (
     <main>
-      <LessonPage topic={topic} subtopic={subtopic} />;
+      <LessonPage topic={topic} subtopic={subtopic} />
     </main>
   );
 }
