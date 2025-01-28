@@ -215,7 +215,7 @@ export default function LessonPage({
 }: Readonly<{ topic: string; subtopic: string }>) {
   console.log(topic);
   
-  const lesson = lessonContent[topic.toLocaleLowerCase().replace(/ /, "-")]?.[subtopic];
+  const lesson = lessonContent[topic.toLowerCase().replace(/ /, "-")]?.[subtopic];
   const [index, setIndex] = useState<number>(0);
   const [isFinished, setIsFinished] = useState<boolean>(false);
   const router = useRouter();

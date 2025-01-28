@@ -92,7 +92,7 @@ export default async function TopicPage({
                           </div>
                           <div>
                             <Link
-                              href={`/lessons/subtopic/${subtopic.slug}?topic=${topic.title}`}
+                              href={`/lessons/subtopic/${subtopic.slug}?topic=${topic.title.toLowerCase().replace(/ /, "-")}`}
                             >
                               <Button
                                 size="sm"
