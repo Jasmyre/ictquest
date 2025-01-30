@@ -1,3 +1,3 @@
 
 ## Live preview
-- preview: https://ctquest.vercel.app
+- preview: https://ictquest.vercel.app
