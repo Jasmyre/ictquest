@@ -6,15 +6,11 @@ import CodeBlock from "@/components/Code";
 import { CustomProgress } from "@/components/CustomProgress";
 import LessonCard from "@/components/LessonCard";
 import { Button } from "@/components/ui/button";
-import {
-  setSessionStorageItem,
-  shuffle
-} from "@/lib/utils";
+import { setSessionStorageItem, shuffle } from "@/lib/utils";
 import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-
 
 interface LessonContentProps {
   [topic: string]: {
@@ -37,7 +33,6 @@ interface LessonContentProps {
     };
   };
 }
-
 
 const lessonContent: LessonContentProps = {
   "html-basics": {
@@ -118,7 +113,22 @@ const lessonContent: LessonContentProps = {
               type: "element",
               label: (props: { setIsFinished: (value: boolean) => void }) => (
                 <InteractiveCodeExample {...props} />
-              ), // Use a function to pass props
+              ),
+            },
+          ],
+        },
+
+        {
+          submit: {
+            label: "Continue",
+          },
+          content: [
+            {
+              id: 7,
+              type: "element",
+              label: (props: { setIsFinished: (value: boolean) => void }) => (
+                <MultipleChoice {...props} />
+              ),
             },
           ],
         },
@@ -147,6 +157,8 @@ function InteractiveCodeExample({
   const correctCode = "<button>Click me!</button>";
 
   React.useEffect(() => {
+    setIsFinished(false);
+
     if (code === correctCode) {
       setIsFinished(true);
     } else {
@@ -174,9 +186,9 @@ function InteractiveCodeExample({
   return (
     <div>
       <CodeBlock language="HTML">{code}</CodeBlock>
-      <div className="flex justify-start mt-2">
+      <div className="mt-2 flex justify-start">
         <Button
-          className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 hover:text-900 dark:text-gray-400 dark:hover:text-gray-200"
+          className="hover:text-900 border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
           onClick={handleReset}
           variant="outline"
           size="sm"
@@ -185,7 +197,7 @@ function InteractiveCodeExample({
           Reset
         </Button>
       </div>
-      <div className="flex justify-center gap-4 flex-wrap mt-4">
+      <div className="mt-4 flex flex-wrap justify-center gap-4">
         {shuffledData.map((choice) => (
           <ButtonChoice
             key={choice.label}
@@ -209,15 +221,118 @@ function InteractiveCodeExample({
   );
 }
 
+function MultipleChoice({
+  setIsFinished,
+}: Readonly<{
+  setIsFinished: (value: boolean) => void;
+}>) {
+  const [choice, setChoice] = useState("");
+  const [disabledButtons, setDisabledButtons] = useState<string[]>([]);
+
+  const choices = {
+    options: ["p", "html", "h1", "element"],
+    answer: "h1",
+  };
+
+  console.log(choice);
+
+  React.useEffect(() => {
+    if (choice === choices.answer) {
+      setIsFinished(true);
+      
+
+    } else {
+      setIsFinished(false);
+    }
+  }, [choice, choices.answer, setIsFinished]);
+
+  const renderMessage = () => {
+    if (!choice) return null;
+
+    if (choice === choices.answer) {
+      return (
+        <div className="rounded bg-green-600 p-2">
+          <p className="text-green-200">
+            Correct! h1 creates the largest heading.
+          </p>
+        </div>
+      );
+    } else {
+      return (
+        <div className="rounded bg-red-600 p-2">
+          <p className="text-red-200">Incorrect! Try again.</p>
+        </div>
+      );
+    }
+  };
+
+  const handleMultipleChoiceClick = (label: string) => {
+    setChoice((prevChoice) => {
+      const newChoice = prevChoice !== choices.answer ? prevChoice + label : prevChoice;
+      if (newChoice === choices.answer) {
+        setSessionStorageItem("finish", true);
+      }
+      return newChoice;
+    });
+    setDisabledButtons(choices.options.filter((option) => option !== label));
+  };
+
+  const handleReset = () => {
+    setChoice("");
+    setDisabledButtons([]);
+    setIsFinished(false);
+  };
+
+  return (
+    <div>
+      <div>Which of the following elements create the larges heading?</div>
+      <br />
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {choices.options.map((option) => {
+          return (
+            <Button
+              className="dark:border-gray-200 dark:bg-gray-700 dark:hover:border-gray-700 dark:hover:bg-indigo-500"
+              key={option}
+              onClick={() => handleMultipleChoiceClick(option)}
+              disabled={disabledButtons.includes(option)}
+            >
+              {option}
+            </Button>
+          );
+        })}
+      </div>
+      <div className="mt-2 flex justify-start">
+        <Button
+          className="hover:text-900 border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+          onClick={handleReset}
+          variant="outline"
+          size="sm"
+        >
+          <RotateCcw className="mr-2 h-4 w-4" />
+          Reset
+        </Button>
+      </div>
+      <br />
+      <div className="hidden rounded bg-green-600 p-2">
+        <p className="text-green-200">
+          Correct! h1 creates the largest heading.
+        </p>
+      </div>
+      {renderMessage()}
+    </div>
+  );
+}
+
 export default function LessonPage({
   topic,
   subtopic,
 }: Readonly<{ topic: string; subtopic: string }>) {
   console.log(topic);
-  
-  const lesson = lessonContent[topic.toLowerCase().replace(/ /, "-")]?.[subtopic];
+
+  const lesson =
+    lessonContent[topic.toLowerCase().replace(/ /, "-")]?.[subtopic];
   const [index, setIndex] = useState<number>(0);
-  const [isFinished, setIsFinished] = useState<boolean>(false);
+  const [isFinished, setIsFinished] = useState<boolean>(true);
   const router = useRouter();
 
   const numberOfContent = lesson.contents.length;
@@ -230,7 +345,7 @@ export default function LessonPage({
 
   const handleNextButton = () => {
     console.log(isFinished);
-    
+
     if (index < numberOfContent - 1) {
       setIndex((prev) => prev + 1);
     } else if (index === numberOfContent - 1 && isFinished) {
@@ -266,7 +381,7 @@ export default function LessonPage({
       <main className="mt-10">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <LessonCard>
-            <div className="flex flex-col justify-between min-h-[65vh]">
+            <div className="flex min-h-[65vh] flex-col justify-between">
               <div className="prose dark:prose-invert max-w-none">
                 {content.content.map((item) => (
                   <div key={item.id}>
@@ -286,7 +401,7 @@ export default function LessonPage({
               <br />
               <div className="mt-6 flex justify-between">
                 <Button
-                  className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 hover:text-900 dark:text-gray-400 dark:hover:text-gray-200"
+                  className="hover:text-900 border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
                   variant="outline"
                   onClick={handleBackButton}
                   disabled={index === 0}
@@ -296,8 +411,8 @@ export default function LessonPage({
                 </Button>
                 <Button
                   onClick={handleNextButton}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-700 dark:hover:bg-indigo-600"
-                  disabled={index === numberOfContent - 1 && !isFinished}
+                  className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
+                  disabled={!isFinished}
                 >
                   {content.submit.label}
                   <ArrowRight className="ml-2 h-4 w-4" />
