@@ -11,6 +11,7 @@ import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { MultipleChoiceButton } from './MultipleChoiceButton';
 
 interface LessonContentProps {
   [topic: string]: {
@@ -239,8 +240,6 @@ function MultipleChoice({
   React.useEffect(() => {
     if (choice === choices.answer) {
       setIsFinished(true);
-      
-
     } else {
       setIsFinished(false);
     }
@@ -290,13 +289,7 @@ function MultipleChoice({
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {choices.options.map((option) => {
           return (
-              <ButtonChoice
-                key={option}
-                onClick={() => handleMultipleChoiceClick(option)}
-                disabled={disabledButtons.includes(option)}
-              >
-                {option}
-              </ButtonChoice>
+            <MultipleChoiceButton key={option} disabledButtons={disabledButtons} handleMultipleChoiceClick={handleMultipleChoiceClick} label={option}/>
           );
         })}
       </div>
