@@ -11,7 +11,7 @@ import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { MultipleChoiceButton } from './MultipleChoiceButton';
+import { MultipleChoiceButton } from "./MultipleChoiceButton";
 
 interface LessonContentProps {
   [topic: string]: {
@@ -267,12 +267,14 @@ function MultipleChoice({
 
   const handleMultipleChoiceClick = (label: string) => {
     setChoice((prevChoice) => {
-      const newChoice = prevChoice !== choices.answer ? prevChoice + label : prevChoice;
+      const newChoice =
+        prevChoice !== choices.answer ? prevChoice + label : prevChoice;
       if (newChoice === choices.answer) {
         setSessionStorageItem("finish", true);
       }
       return newChoice;
     });
+
     setDisabledButtons(choices.options.filter((option) => option !== label));
   };
 
@@ -289,7 +291,12 @@ function MultipleChoice({
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {choices.options.map((option) => {
           return (
-            <MultipleChoiceButton key={option} disabledButtons={disabledButtons} handleMultipleChoiceClick={handleMultipleChoiceClick} label={option}/>
+            <MultipleChoiceButton
+              key={option}
+              disabledButtons={disabledButtons}
+              handleMultipleChoiceClick={handleMultipleChoiceClick}
+              label={option}
+            />
           );
         })}
       </div>
@@ -319,8 +326,6 @@ export default function LessonPage({
   topic,
   subtopic,
 }: Readonly<{ topic: string; subtopic: string }>) {
-  console.log(topic);
-
   const lesson =
     lessonContent[topic.toLowerCase().replace(/ /, "-")]?.[subtopic];
   const [index, setIndex] = useState<number>(0);
@@ -333,6 +338,14 @@ export default function LessonPage({
     setIsFinished(true);
     if (index > 0) {
       setIndex((prev) => prev - 1);
+      setTimeout(
+        () =>
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          }),
+        0,
+      );
     }
   };
 
@@ -344,6 +357,14 @@ export default function LessonPage({
     } else if (index === numberOfContent - 1 && isFinished) {
       router.push(`/compliments?topic=${topic}`);
     }
+    setTimeout(
+      () =>
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        }),
+      10,
+    );
   };
 
   if (!lesson) {
