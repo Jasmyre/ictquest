@@ -290,14 +290,13 @@ function MultipleChoice({
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {choices.options.map((option) => {
           return (
-            <Button
-              className="dark:border-gray-200 dark:bg-gray-700 dark:hover:border-gray-700 dark:hover:bg-indigo-500"
-              key={option}
-              onClick={() => handleMultipleChoiceClick(option)}
-              disabled={disabledButtons.includes(option)}
-            >
-              {option}
-            </Button>
+              <ButtonChoice
+                key={option}
+                onClick={() => handleMultipleChoiceClick(option)}
+                disabled={disabledButtons.includes(option)}
+              >
+                {option}
+              </ButtonChoice>
           );
         })}
       </div>
@@ -338,6 +337,7 @@ export default function LessonPage({
   const numberOfContent = lesson.contents.length;
 
   const handleBackButton = () => {
+    setIsFinished(true);
     if (index > 0) {
       setIndex((prev) => prev - 1);
     }
