@@ -1,7 +1,5 @@
 "use client";
 
-import Browser from "@/components/Browser";
-import ButtonChoice from "@/components/ButtonChoice";
 import CodeBlock from "@/components/Code";
 import { CustomProgress } from "@/components/CustomProgress";
 import LessonCard from "@/components/LessonCard";
@@ -12,6 +10,20 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { MultipleChoiceButton } from "./MultipleChoiceButton";
+import { Practice } from "./Practice";
+
+export type Choices = {
+  options: {
+    label: string;
+    priority: number;
+  }[];
+  answer: string;
+};
+
+export type ShuffledData = {
+  label: string;
+  priority: number;
+}[];
 
 interface LessonContentProps {
   [topic: string]: {
@@ -25,7 +37,9 @@ interface LessonContentProps {
           type: string;
           label:
             | React.ReactNode
-            | ((props: {
+            | (({
+                setIsFinished,
+              }: {
                 setIsFinished: (value: boolean) => void;
               }) => React.ReactNode);
           id: number;
@@ -112,9 +126,25 @@ const lessonContent: LessonContentProps = {
             {
               id: 6,
               type: "element",
-              label: (props: { setIsFinished: (value: boolean) => void }) => (
-                <InteractiveCodeExample {...props} />
-              ),
+              label: ({ setIsFinished}) => {
+                const choices = {
+                  options: [
+                    { label: "<button>", priority: 1 },
+                    { label: "Click me!", priority: 2 },
+                    { label: "</button>", priority: 3 },
+                  ],
+                  answer: "<button>Click me!</button>",
+                };
+
+                const shuffledData = shuffle(choices.options);
+
+                return (
+                <Practice
+                  setIsFinished={setIsFinished}
+                  choices={choices}
+                  shuffledData={shuffledData}
+                />
+              )},
             },
           ],
         },
@@ -127,8 +157,8 @@ const lessonContent: LessonContentProps = {
             {
               id: 7,
               type: "element",
-              label: (props: { setIsFinished: (value: boolean) => void }) => (
-                <MultipleChoice {...props} />
+              label: ({setIsFinished}) => (
+                <MultipleChoice setIsFinished={setIsFinished} />
               ),
             },
           ],
@@ -137,90 +167,6 @@ const lessonContent: LessonContentProps = {
     },
   },
 };
-
-const data = {
-  choices: [
-    { label: "<button>", priority: 1 },
-    { label: "Click me!", priority: 2 },
-    { label: "</button>", priority: 3 },
-  ],
-};
-
-const shuffledData = shuffle(data.choices);
-
-function InteractiveCodeExample({
-  setIsFinished,
-}: Readonly<{
-  setIsFinished: (value: boolean) => void;
-}>) {
-  const [code, setCode] = useState<string>("");
-  const [disabledButtons, setDisabledButtons] = useState<string[]>([]);
-  const correctCode = "<button>Click me!</button>";
-
-  React.useEffect(() => {
-    setIsFinished(false);
-
-    if (code === correctCode) {
-      setIsFinished(true);
-    } else {
-      setIsFinished(false);
-    }
-  }, [code, correctCode, setIsFinished]);
-
-  const handleClick = (label: string) => {
-    setCode((prevCode) => {
-      const newCode = prevCode + label;
-      if (newCode === correctCode) {
-        setSessionStorageItem("finish", true);
-      }
-      return newCode;
-    });
-    setDisabledButtons((prevDisabled) => [...prevDisabled, label]);
-  };
-
-  const handleReset = () => {
-    setCode("");
-    setDisabledButtons([]);
-    setIsFinished(false);
-  };
-
-  return (
-    <div>
-      <CodeBlock language="HTML">{code}</CodeBlock>
-      <div className="mt-2 flex justify-start">
-        <Button
-          className="hover:text-900 border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
-          onClick={handleReset}
-          variant="outline"
-          size="sm"
-        >
-          <RotateCcw className="mr-2 h-4 w-4" />
-          Reset
-        </Button>
-      </div>
-      <div className="mt-4 flex flex-wrap justify-center gap-4">
-        {shuffledData.map((choice) => (
-          <ButtonChoice
-            key={choice.label}
-            onClick={() => handleClick(choice.label)}
-            disabled={disabledButtons.includes(choice.label)}
-          >
-            {choice.label}
-          </ButtonChoice>
-        ))}
-      </div>
-      <br />
-      {code === correctCode && (
-        <Browser
-          title="Great job! You've created a button in HTML."
-          content={correctCode}
-        />
-      )}
-      <br />
-      <br />
-    </div>
-  );
-}
 
 function MultipleChoice({
   setIsFinished,
@@ -404,7 +350,7 @@ export default function LessonPage({
                     {item.type === "element" && (
                       <div>
                         {typeof item.label === "function"
-                          ? item.label({ setIsFinished })
+                          ? item.label({ setIsFinished: setIsFinished})
                           : item.label}
                       </div>
                     )}
