@@ -25,7 +25,7 @@ import Link from "next/link";
 export default async function LandingPage() {
   return (
     <main>
-      {/* Hero Section */}
+      
       <section className="relative overflow-hidden bg-gradient-to-br rounded-lg from-indigo-600 to-purple-700 dark:from-indigo-900 dark:to-purple-950 text-white py-20">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row-reverse gap-4 items-center">
@@ -76,7 +76,6 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">
@@ -102,24 +101,6 @@ export default async function LandingPage() {
                   "Monitor your learning journey with detailed progress reports and performance analytics.",
                 icon: Award,
               },
-              // {
-              //   title: "Expert Support",
-              //   description:
-              //     "Get help from our community of experts and fellow learners whenever you need it.",
-              //   icon: Users,
-              // },
-              // {
-              //   title: "Real-world Projects",
-              //   description:
-              //     "Apply your skills to practical, industry-relevant projects that build your portfolio.",
-              //   icon: Laptop,
-              // },
-              // {
-              //   title: "Cutting-edge Content",
-              //   description:
-              //     "Stay up-to-date with the latest HTML trends and best practices in web development.",
-              //   icon: Zap,
-              // },
             ].map((feature, index) => (
               <Card
                 key={index++}
@@ -144,7 +125,6 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* Learning Path Section */}
       <section className="py-20 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">
@@ -207,8 +187,7 @@ export default async function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* Testimonial Section */}
+      
       <section className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">
@@ -266,7 +245,6 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="rounded-lg bg-gradient-to-br from-indigo-600 to-purple-700 dark:from-indigo-900 dark:to-purple-950 text-white py-20 relative overflow-hidden">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">
@@ -285,7 +263,7 @@ export default async function LandingPage() {
             </Button>
           </Link>
         </div>
-        {/* Floating icons */}
+        
         <Coffee className="absolute bottom-5 left-10 text-indigo-200 dark:text-indigo-300 h-8 w-8 animate-float" />
         <Code className="absolute top-5 right-10 text-indigo-200 dark:text-indigo-300 h-10 w-10 animate-float-delayed" />
       </section>
