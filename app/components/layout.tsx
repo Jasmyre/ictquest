@@ -145,7 +145,7 @@ export default function Layout({
           </div>
           <div className="mt-8 md:order-1 md:mt-0">
             <p className="text-center text-base text-gray-400 dark:text-gray-300">
-              &copy; 2025 ICTQuest. All rights reserved. <a href="https://github.com/Jasmyre/ictquest">View Source Code</a>
+              &copy; 2025 ICTQuest. All rights reserved. <a class="text-indigo-500" href="https://github.com/Jasmyre/ictquest">View Source Code</a>
             </p>
           </div>
         </div>
