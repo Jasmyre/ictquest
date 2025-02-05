@@ -23,7 +23,6 @@ export default function Layout({
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation */}
       <nav className="sticky left-0 top-0 z-[50] border-b-2 border-indigo-500/20 bg-white shadow-lg dark:bg-gray-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
@@ -87,7 +86,6 @@ export default function Layout({
           </div>
         </div>
 
-        {/* Mobile menu */}
         {isMobileMenuOpen && (
           <div className="sm:hidden">
             <div className="space-y-1 pb-3 pt-2">
@@ -123,12 +121,10 @@ export default function Layout({
         )}
       </nav>
 
-      {/* Main content */}
       <main>
         <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">{children}</div>
       </main>
 
-      {/* Footer */}
       <footer className="bg-white dark:bg-gray-800">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
           <div className="flex justify-center space-x-6 md:order-2">
@@ -149,7 +145,7 @@ export default function Layout({
           </div>
           <div className="mt-8 md:order-1 md:mt-0">
             <p className="text-center text-base text-gray-400 dark:text-gray-300">
-              &copy; 2025 ICTQuest. All rights reserved.
+              &copy; 2025 ICTQuest. All rights reserved. <a href="https://github.com/Jasmyre/ictquest">View Source Code</a>
             </p>
           </div>
         </div>
