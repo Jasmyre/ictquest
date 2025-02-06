@@ -10,7 +10,7 @@ const lessons = [
     slug: "html-basics",
     topics: [
       { name: "Introduction to HTML", slug: "intro-to-html" },
-      { name: "HTML Document Structure", slug: "intro-to-html" },
+      { name: "HTML Document Structure", slug: "html-document-structure" },
       { name: "Text Formatting", slug: "intro-to-html" },
     ],
   },

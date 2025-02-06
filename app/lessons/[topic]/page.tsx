@@ -10,35 +10,35 @@ const topics = {
     description: "Learn the fundamentals of HTML",
     subtopics: [
       { name: "Introduction to HTML", slug: "intro-to-html" },
-      { name: "HTML Document Structure", slug: "html-structure" },
-      { name: "Text Formatting", slug: "text-formatting" },
+      { name: "HTML Document Structure", slug: "html-document-structure" },
+      { name: "Text Formatting", slug: "intro-to-html" },
     ],
   },
   "html-elements": {
     title: "HTML Elements",
     description: "Explore common HTML elements",
     subtopics: [
-      { name: "Links and Anchors", slug: "links-and-anchors" },
-      { name: "Images and Multimedia", slug: "images-and-multimedia" },
-      { name: "Lists and Tables", slug: "lists-and-tables" },
+      { name: "Links and Anchors", slug: "intro-to-html" },
+      { name: "Images and Multimedia", slug: "intro-to-html" },
+      { name: "Lists and Tables", slug: "intro-to-html" },
     ],
   },
   "html-forms": {
     title: "HTML Forms",
     description: "Master creating interactive forms",
     subtopics: [
-      { name: "Form Basics", slug: "form-basics" },
-      { name: "Input Types", slug: "input-types" },
-      { name: "Form Validation", slug: "form-validation" },
+      { name: "Form Basics", slug: "intro-to-html" },
+      { name: "Input Types", slug: "intro-to-html" },
+      { name: "Form Validation", slug: "intro-to-html" },
     ],
   },
   "html5-features": {
     title: "HTML5 Features",
     description: "Discover new HTML5 elements and APIs",
     subtopics: [
-      { name: "Semantic Elements", slug: "semantic-elements" },
-      { name: "Audio and Video", slug: "audio-and-video" },
-      { name: "Canvas and SVG", slug: "canvas-and-svg" },
+      { name: "Semantic Elements", slug: "intro-to-html" },
+      { name: "Audio and Video", slug: "intro-to-html" },
+      { name: "Canvas and SVG", slug: "intro-to-html" },
     ],
   },
 };

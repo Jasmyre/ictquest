@@ -49,8 +49,6 @@ const image = [
   "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60e/512.gif",
   "https://fonts.gstatic.com/s/e/notoemoji/latest/1f978/512.gif",
   "https://fonts.gstatic.com/s/e/notoemoji/latest/1f996/512.gif",
-
-
 ];
 
 const achievements = [
