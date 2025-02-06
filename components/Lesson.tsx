@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { MultipleChoice } from "./MultipleChoice";
 import { Practice } from "./Practice";
+import CodeHighlight from "./CodeHighlight";
 
 export type Choices = {
   options: {
@@ -106,9 +107,14 @@ const lessonContent: LessonContentProps = {
             },
             {
               id: 4,
-              type: "text",
-              label:
-                "In this example, <p> is the opening tag, and </p> is the closing tag. The content is between these tags.",
+              type: "element",
+              label: (
+                <p>
+                  In this example, <CodeHighlight>&lt;p&gt;</CodeHighlight> is
+                  the opening tag, and <CodeHighlight>&lt;/p&gt;</CodeHighlight>{" "}
+                  is the closing tag. The content is between these tags.
+                </p>
+              ),
             },
           ],
         },
@@ -163,7 +169,7 @@ const lessonContent: LessonContentProps = {
                   options: ["p", "html", "h1", "element"],
                   answer: "h1",
                 };
-                
+
                 return (
                   <MultipleChoice
                     setIsFinished={setIsFinished}
