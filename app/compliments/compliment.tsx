@@ -34,7 +34,7 @@ const compliments = [
   },
 ];
 
-const image = "https://fonts.gstatic.com/s/e/notoemoji/latest/1f929/512.gif";
+const image = ["https://fonts.gstatic.com/s/e/notoemoji/latest/1f929/512.gif", "https://fonts.gstatic.com/s/e/notoemoji/latest/1f603/512.gif"];
 
 const achievements = [
   {
@@ -66,7 +66,7 @@ export default function Compliment() {
     <main>
       <Confetti />
       <div className="py-10">
-        <header>
+        {/* <header>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.h1
               initial={{ opacity: 0, y: -20 }}
@@ -77,7 +77,7 @@ export default function Compliment() {
               Congratulations!
             </motion.h1>
           </div>
-        </header>
+        </header> */}
         <main>
           <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div className="px-4 py-8 sm:px-0">
@@ -100,7 +100,7 @@ export default function Compliment() {
                     <Image
                       unoptimized
                       priority
-                      src={image || "/placeholder.svg"}
+                      src={image[Math.floor(Math.random() * image.length)] || "/placeholder.svg"}
                       alt="Celebration"
                       width={400}
                       height={300}

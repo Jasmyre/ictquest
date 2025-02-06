@@ -29,14 +29,17 @@ export const Practice = ({
   const [code, setCode] = useState<string>("");
   const [disabledButtons, setDisabledButtons] = useState<string[]>([]);
   const correctCode = choices?.answer;
+  const [isCorrect, setIsCorrect] = useState<boolean>(false);
 
   React.useEffect(() => {
     setIsFinished(false);
 
     if (code === correctCode) {
       setIsFinished(true);
+      setIsCorrect(true)
     } else {
       setIsFinished(false);
+      setIsCorrect(false)
     }
   }, [code, correctCode, setIsFinished]);
 
@@ -55,6 +58,21 @@ export const Practice = ({
     setCode("");
     setDisabledButtons([]);
     setIsFinished(false);
+    setIsCorrect(false)
+  };
+
+  const renderMessage = () => {
+    if (disabledButtons.length !== shuffledData?.length || !code) return null;
+
+    if (code === correctCode) {
+      console.log(isCorrect);
+    } else {
+      return (
+        <div className="rounded bg-red-600 p-2">
+          <p className="text-red-200">Incorrect! Try again.</p>
+        </div>
+      );
+    }
   };
 
   return (
@@ -83,6 +101,7 @@ export const Practice = ({
         ))}
       </div>
       <br />
+      {renderMessage()}
       {code === correctCode && (
         <Browser
           title="Great job! You've created a button in HTML."

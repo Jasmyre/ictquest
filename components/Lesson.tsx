@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import { MultipleChoice } from "./MultipleChoice";
 import { Practice } from "./Practice";
 import CodeHighlight from "./CodeHighlight";
+import Browser from "./Browser";
 
 export type Choices = {
   options: {
@@ -114,6 +115,47 @@ const lessonContent: LessonContentProps = {
                   the opening tag, and <CodeHighlight>&lt;/p&gt;</CodeHighlight>{" "}
                   is the closing tag. The content is between these tags.
                 </p>
+              ),
+            },
+          ],
+        },
+        {
+          submit: {
+            label: "Continue",
+          },
+          content: [
+            {
+              id: 2,
+              type: "text",
+              label:
+                "HTML uses tags to define elements. Let's look at a simple example:",
+            },
+            {
+              id: 3,
+              type: "element",
+              label: (
+                <CodeBlock language="HTML">{`<p>This is a paragraph.</p>`}</CodeBlock>
+              ),
+            },
+            {
+              id: 4,
+              type: "element",
+              label: (
+                <p>
+                  In this example, <CodeHighlight>&lt;p&gt;</CodeHighlight> is
+                  the opening tag, and <CodeHighlight>&lt;/p&gt;</CodeHighlight>{" "}
+                  is the closing tag. The content is between these tags.
+                </p>
+              ),
+            },
+            {
+              id: 5,
+              type: "element",
+              label: (
+                <Browser
+                  content={"<p>This is a paragraph.</p>"}
+                  title={"Browser"}
+                />
               ),
             },
           ],
