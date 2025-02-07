@@ -132,7 +132,7 @@ export const Practice = ({
       {renderMessage()}
       {code === correctCode && (
         <Browser
-          title="Great job! You've created a button in HTML."
+          title="Document"
           content={correctCode}
         />
       )}

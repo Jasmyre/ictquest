@@ -1,16 +1,14 @@
 "use client";
 
-import { Globe } from "lucide-react";
-import React, { useEffect, useRef, ReactNode } from "react";
+import { Globe, RotateCw } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 interface BrowserProps {
-  children?: ReactNode;
   title?: string;
   content?: string;
 }
 const Browser = ({
-  children = "",
-  title = "Great job!",
+  title = "Browser",
   content = "",
 }: BrowserProps) => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -29,34 +27,36 @@ const Browser = ({
     }
   });
 
-  console.log(title);
-  console.log(children);
-  
-
   return (
     <div className="mt-2 flex flex-col gap-2 rounded-lg">
       <div className="w-full rounded-xl border-gray-200 dark:border-gray-700">
-        <header className="flex gap-4 rounded-[.75rem_.75rem_0_0] border-none bg-indigo-600 p-2 px-4 text-primary-foreground text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600">
+        <header className="flex gap-4 rounded-[.75rem_.75rem_0_0] border-none bg-indigo-600 p-2 px-4 text-primary-foreground text-white dark:bg-indigo-500">
           <Globe />
-          <p>Browser</p>
+          <p>{title}</p>
         </header>
-        <div className="min-h-[20vh] rounded-md rounded-tl-none rounded-tr-none border border-gray-300 bg-gray-100 p-2 px-4 py-10 text-black dark:border-gray-900">
-          <div className="browserCode">{children}</div>
-          <div
-            className="browser"
-            style={{ width: "100%", height: "100%", border: "1px solid #ccc" }}
-          >
-            <iframe
-              title="Browser"
-              ref={iframeRef}
-              style={{
-                width: "100%",
-                height: "100%",
-                border: "none",
-                background: "white",
-              }}
-            />
+        <div className="flex items-center gap-2 border-b bg-gray-100 px-4 py-1 text-gray-700">
+          <span className="w-2 h-2 bg-red-500 rounded-full" />
+          <span className="w-2 h-2 bg-yellow-500 rounded-full" />
+          <span className="w-2 h-2 bg-green-500 rounded-full" />
+
+          <RotateCw className="h-4 w-4" />
+
+          <div className="border px-4 flex-1 ml-2 rounded bg-gray-200 place-self-end">
+            http://localhost:3000/
           </div>
+        </div>
+        <div className="">
+          <iframe
+            className="px-2 py-4"
+            title="Browser"
+            ref={iframeRef}
+            style={{
+              width: "100%",
+              height: "100%",
+              border: "none",
+              background: "white",
+            }}
+          />
         </div>
       </div>
     </div>
