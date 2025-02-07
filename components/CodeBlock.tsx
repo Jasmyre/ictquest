@@ -1,23 +1,37 @@
-"use client"
+"use client";
 
-import { useEffect } from "react";
-import hljs from "highlight.js";
-import "highlight.js/styles/github.css";
 
 interface CodeBlockProps {
-    content: string;
+  content: string;
 }
 
-const CodeBlock = ({ content }: CodeBlockProps) => {
-	useEffect(() => {
-		hljs.highlightAll();
-	}, []);
+const escapeHtml = (unsafe: string) => {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+};
 
-	return (
-		<pre>
-			<code className="language-html">{content}</code>
-		</pre>
-	);
+const CodeBlock = ({ content }: CodeBlockProps) => {
+  // this is not a code
+  // useEffect(() => {
+  //   Prism.highlightAll();
+  // }, []);
+
+  return (
+    <pre>
+      <code
+        className="language-html"
+        dangerouslySetInnerHTML={{
+          __html: escapeHtml(
+            content,
+          ),
+        }}
+      ></code>
+    </pre>
+  );
 };
 
 export default CodeBlock;

@@ -30,6 +30,7 @@ export const Practice = ({
   title?: string[]
   response?: {
     negative: string;
+    positive?: string;
   }
 }) => {
   const [code, setCode] = useState<string>("");
@@ -71,8 +72,19 @@ export const Practice = ({
     if (disabledButtons.length !== shuffledData?.length || !code) return null;
 
     if (code === correctCode) {
+      if (!response?.positive) return null;
       console.log(isCorrect);
+      return (
+        <div className="rounded bg-green-600 p-2 shadow">
+          <p className="flex gap-2 text-green-200">
+            <CircleAlert />
+            {response?.positive}
+          </p>
+        </div>
+      );
     } else {
+      if (!response?.negative) return null;
+
       return (
         <div className="rounded bg-red-600 p-2 shadow">
           <p className="text-red-200 flex gap-2"><CircleAlert />{response?.negative}</p>
@@ -108,11 +120,11 @@ export const Practice = ({
       <div className="mt-4 flex flex-wrap justify-center gap-4">
         {shuffledData?.map((option) => (
           <ButtonChoice
-            key={option.label}
+            key={option.label.trim()}
             onClick={() => handleClick(option.label)}
             disabled={disabledButtons.includes(option.label)}
           >
-            {option.label}
+            {option.label.trim()}
           </ButtonChoice>
         ))}
       </div>

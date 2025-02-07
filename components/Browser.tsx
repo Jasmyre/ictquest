@@ -1,5 +1,6 @@
-"use client"
+"use client";
 
+import { Globe } from "lucide-react";
 import React, { useEffect, useRef, ReactNode } from "react";
 
 interface BrowserProps {
@@ -10,33 +11,36 @@ interface BrowserProps {
 const Browser = ({
   children = "",
   title = "Great job!",
-  content = ""
+  content = "",
 }: BrowserProps) => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
-  
-    useEffect(() => {
-      if (iframeRef.current) {
-        const doc =
-          iframeRef.current.contentDocument ||
-          iframeRef.current.contentWindow?.document;
-  
-        if (doc) {
-          doc.open();
-          doc.write(`${content}`);
-          doc.close();
-        }
+
+  useEffect(() => {
+    if (iframeRef.current) {
+      const doc =
+        iframeRef.current.contentDocument ||
+        iframeRef.current.contentWindow?.document;
+
+      if (doc) {
+        doc.open();
+        doc.write(`${content}`);
+        doc.close();
       }
-    });
+    }
+  });
+
+  console.log(title);
+  console.log(children);
+  
 
   return (
-    <div className="mt-2 p-2 bg-emerald-500 dark:bg-emerald-800 rounded-lg flex flex-col gap-2">
-      <p className="text-green-100 dark:text-green-200">{title}</p>
-      <div className="w-full rounded-xl border-gray-200 dark:border-gray-700 ">
-        {/* <header className="flex gap-4 p-2 px-4  border-none bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-600 dark:hover:bg-indigo-600 rounded-[.75rem_.75rem_0_0] text-primary-foreground">
-        <Globe />
-        <p>Browser</p>
-      </header> */}
-        {/* <div className="rounded-md p-2 px-4 py-10 min-h-[20vh] border border-gray-300 dark:border-gray-900 bg-gray-100 text-black "> */}
+    <div className="mt-2 flex flex-col gap-2 rounded-lg">
+      <div className="w-full rounded-xl border-gray-200 dark:border-gray-700">
+        <header className="flex gap-4 rounded-[.75rem_.75rem_0_0] border-none bg-indigo-600 p-2 px-4 text-primary-foreground text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600">
+          <Globe />
+          <p>Browser</p>
+        </header>
+        <div className="min-h-[20vh] rounded-md rounded-tl-none rounded-tr-none border border-gray-300 bg-gray-100 p-2 px-4 py-10 text-black dark:border-gray-900">
           <div className="browserCode">{children}</div>
           <div
             className="browser"
@@ -53,7 +57,7 @@ const Browser = ({
               }}
             />
           </div>
-        {/* </div> */}
+        </div>
       </div>
     </div>
   );

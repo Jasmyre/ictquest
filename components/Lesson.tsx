@@ -7,12 +7,13 @@ import { Button } from "@/components/ui/button";
 import { shuffle } from "@/lib/utils";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CodeHighlight from "./CodeHighlight";
 import { MultipleChoice } from "./MultipleChoice";
 import { Practice } from "./Practice";
 import Browser from "./Browser";
 import Image from "next/image";
+import Prism from "prismjs";
 
 export type Choices = {
   options: {
@@ -534,7 +535,7 @@ const lessonContent: LessonContentProps = {
                     title={[
                       "Now, let's try creating a button using HTML. Can you put the pieces in the correct order?",
                     ]}
-                    response={{negative: "Incorrect, Please try again!"}}
+                    response={{ negative: "Incorrect, Please try again!" }}
                   />
                 );
               },
@@ -889,12 +890,27 @@ const lessonContent: LessonContentProps = {
               label: ({ setIsFinished }) => {
                 const choices = {
                   options: [
-                    { label: "<ul>", priority: 1 },
-                    { label: "<li>Item 1</li>", priority: 2 },
-                    { label: "<li>Item 2</li>", priority: 3 },
+                    {
+                      label: `<ul>
+  `,
+                      priority: 1,
+                    },
+                    {
+                      label: `<li>Item 1</li>
+  `,
+                      priority: 2,
+                    },
+                    {
+                      label: `<li>Item 2</li>
+`,
+                      priority: 3,
+                    },
                     { label: "</ul>", priority: 4 },
                   ],
-                  answer: "<ul><li>Item 1</li><li>Item 2</li></ul>",
+                  answer: `<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+</ul>`,
                 };
 
                 const shuffledData = shuffle(choices.options);
@@ -1046,6 +1062,10 @@ export default function LessonPage({
   const router = useRouter();
 
   const numberOfContent = lesson.contents.length;
+
+  useEffect(() => {
+    Prism.highlightAll();
+  })
 
   const handleBackButton = () => {
     setIsFinished(true);
