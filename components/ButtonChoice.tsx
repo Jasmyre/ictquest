@@ -2,12 +2,22 @@ import Prism from "prismjs";
 import React, { ReactNode, useEffect } from "react";
 import { Button } from "./ui/button";
 
-const ButtonChoice = ({ children, onClick, language = "html", disabled, ...props }: { language: string, children: ReactNode, disabled: boolean, onClick: (e: React.MouseEvent) => void }) => {
-
+const ButtonChoice = ({
+  children,
+  onClick,
+  language = "html",
+  disabled,
+  ...props
+}: {
+  language?: string;
+  children: ReactNode;
+  disabled: boolean;
+  onClick: (e: React.MouseEvent) => void;
+}) => {
   useEffect(() => {
     Prism.highlightAll();
-  })
-  
+  });
+
   const escapeHtml = (unsafe: string) => {
     return unsafe
       .replace(/&/g, "&amp;")
@@ -16,7 +26,7 @@ const ButtonChoice = ({ children, onClick, language = "html", disabled, ...props
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
   };
-  
+
   return (
     <Button
       disabled={disabled}
@@ -32,7 +42,7 @@ const ButtonChoice = ({ children, onClick, language = "html", disabled, ...props
           border: "none",
           background: "initial",
         }}
-        className="m-0 p-2 "
+        className="m-0 p-2"
       >
         <code
           className={`language-${language} m-0 h-full min-h-[20vh] rounded-[0_0_.75rem_.75rem] border-none bg-[#282C34]`}
