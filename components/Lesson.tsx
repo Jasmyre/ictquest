@@ -52,7 +52,349 @@ interface LessonContentProps {
 }
 
 const lessonContent: LessonContentProps = {
-  "html-basics": {
+  "introduction-to-html": {
+    "what-is-html": {
+      title: "What is HTML?",
+      contents: [
+        // Page 1: Intro text (non-interactive)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 0,
+              type: "text",
+              label:
+                "Welcome to the 'What is HTML?' lesson. In this lesson, we will explore what HTML is and how it started.",
+            },
+          ],
+        },
+        // Page 2: What is HTML? (interactive multiple choice)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 1,
+              type: "text",
+              label:
+                "HTML stands for HyperText Markup Language. It is used to structure web pages.",
+            },
+            {
+              id: 2,
+              type: "element",
+              label: ({ setIsFinished }) => (
+                <MultipleChoice
+                  setIsFinished={setIsFinished}
+                  choices={{
+                    options: [
+                      "HighText Markup Language",
+                      "HyperText Markup Language",
+                      "Hyperlinks Markup Language",
+                      "Home Tool Markup Language",
+                    ],
+                    answer: "HyperText Markup Language",
+                  }}
+                />
+              ),
+            },
+          ],
+        },
+        // Page 3: Basic tag example (interactive multiple choice)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 3,
+              type: "text",
+              label:
+                "HTML uses tags to create elements. For example, the paragraph tag is <p>.",
+            },
+            {
+              id: 4,
+              type: "element",
+              label: ({ setIsFinished }) => (
+                <MultipleChoice
+                  setIsFinished={setIsFinished}
+                  choices={{
+                    options: ["<p>", "<div>", "<span>", "<header>"],
+                    answer: "<p>",
+                  }}
+                />
+              ),
+            },
+          ],
+        },
+        // Page 4: Arrange basic HTML structure (interactive practice)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 5,
+              type: "text",
+              label:
+                "Arrange the basic HTML document structure in the correct order.",
+            },
+            {
+              id: 6,
+              type: "element",
+              label: ({ setIsFinished }) => {
+                const choices = {
+                  options: [
+                    { label: "<!DOCTYPE html>", priority: 1 },
+                    { label: "<html>", priority: 2 },
+                    { label: "<head>", priority: 3 },
+                    { label: "<body>", priority: 4 },
+                    { label: "</body>", priority: 5 },
+                    { label: "</html>", priority: 6 },
+                  ],
+                  answer: "<!DOCTYPE html><html><head><body></body></html>",
+                };
+                const shuffledData = shuffle(choices.options);
+                return (
+                  <Practice
+                    setIsFinished={setIsFinished}
+                    choices={choices}
+                    shuffledData={shuffledData}
+                  />
+                );
+              },
+            },
+          ],
+        },
+        // Page 5: History text (non-interactive)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 7,
+              type: "text",
+              label:
+                "HTML was first developed by Tim Berners-Lee in 1991 as a simple way to share documents over the Internet.",
+            },
+          ],
+        },
+        // Page 6: Who created HTML? (interactive multiple choice)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 8,
+              type: "text",
+              label: "Let's test your HTML history knowledge.",
+            },
+            {
+              id: 9,
+              type: "element",
+              label: ({ setIsFinished }) => (
+                <MultipleChoice
+                  setIsFinished={setIsFinished}
+                  choices={{
+                    options: [
+                      "Bill Gates",
+                      "Tim Berners-Lee",
+                      "Steve Jobs",
+                      "Mark Zuckerberg",
+                    ],
+                    answer: "Tim Berners-Lee",
+                  }}
+                />
+              ),
+            },
+          ],
+        },
+        // Page 7: More history explanation (non-interactive)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 10,
+              type: "text",
+              label:
+                "HTML started as a tool to share research documents at CERN and quickly evolved as the web grew.",
+            },
+          ],
+        },
+        // Page 8: When was HTML introduced? (interactive multiple choice)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 11,
+              type: "text",
+              label: "When was HTML first introduced?",
+            },
+            {
+              id: 12,
+              type: "element",
+              label: ({ setIsFinished }) => (
+                <MultipleChoice
+                  setIsFinished={setIsFinished}
+                  choices={{
+                    options: ["1989", "1991", "1995", "2000"],
+                    answer: "1991",
+                  }}
+                />
+              ),
+            },
+          ],
+        },
+        // Page 9: Arrange timeline events (interactive practice)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 13,
+              type: "text",
+              label:
+                "Arrange the following timeline events in the correct order:",
+            },
+          ],
+        },
+        // Page 10: Evolution explanation (non-interactive)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 15,
+              type: "text",
+              label:
+                "HTML has evolved through many versions, adapting to modern web needs.",
+            },
+          ],
+        },
+        // Page 11: Semantic elements question (interactive multiple choice)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 16,
+              type: "text",
+              label: "Which version of HTML introduced many semantic elements?",
+            },
+            {
+              id: 17,
+              type: "element",
+              label: ({ setIsFinished }) => (
+                <MultipleChoice
+                  setIsFinished={setIsFinished}
+                  choices={{
+                    options: ["HTML4", "HTML5", "XHTML", "HTML 2.0"],
+                    answer: "HTML5",
+                  }}
+                />
+              ),
+            },
+          ],
+        },
+        // Page 12: Reflection on evolution (non-interactive)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 18,
+              type: "text",
+              label:
+                "The evolution of HTML mirrors the explosive growth of the web over time.",
+            },
+          ],
+        },
+        // Page 13: HTML popularity reason (interactive multiple choice)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 19,
+              type: "text",
+              label: "What is one key reason HTML became so popular?",
+            },
+            {
+              id: 20,
+              type: "element",
+              label: ({ setIsFinished }) => (
+                <MultipleChoice
+                  setIsFinished={setIsFinished}
+                  choices={{
+                    options: [
+                      "Ease of learning",
+                      "Complex syntax",
+                      "High cost",
+                      "Proprietary standards",
+                    ],
+                    answer: "Ease of learning",
+                  }}
+                />
+              ),
+            },
+          ],
+        },
+        // Page 14: HTML evolved from SGML (non-interactive)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 21,
+              type: "text",
+              label:
+                "HTML evolved from SGML (Standard Generalized Markup Language), which influenced its design.",
+            },
+          ],
+        },
+        // Page 15: True HTML history fact (interactive multiple choice)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 22,
+              type: "text",
+              label: "Which statement is true about HTML history?",
+            },
+            {
+              id: 23,
+              type: "element",
+              label: ({ setIsFinished }) => (
+                <MultipleChoice
+                  setIsFinished={setIsFinished}
+                  choices={{
+                    options: [
+                      "HTML was created in the 1980s",
+                      "HTML evolved from SGML",
+                      "HTML is a programming language",
+                      "HTML has never changed",
+                    ],
+                    answer: "HTML evolved from SGML",
+                  }}
+                />
+              ),
+            },
+          ],
+        },
+        // Page 16: Final true/false check (interactive multiple choice)
+        {
+          submit: { label: "Continue" },
+          content: [
+            {
+              id: 24,
+              type: "text",
+              label: "HTML is the foundation of all web pages.",
+            },
+            {
+              id: 25,
+              type: "element",
+              label: ({ setIsFinished }) => (
+                <MultipleChoice
+                  setIsFinished={setIsFinished}
+                  choices={{
+                    options: ["True", "False"],
+                    answer: "True",
+                  }}
+                />
+              ),
+            },
+          ],
+        },
+      ],
+    },
+  },
+  "html-craps": {
     "intro-to-html": {
       title: "Introduction to HTML",
       contents: [
@@ -170,12 +512,6 @@ const lessonContent: LessonContentProps = {
           },
           content: [
             {
-              id: 5,
-              type: "text",
-              label:
-                "Now, let's try creating a button using HTML. Can you put the pieces in the correct order?",
-            },
-            {
               id: 6,
               type: "element",
               label: ({ setIsFinished }) => {
@@ -195,6 +531,10 @@ const lessonContent: LessonContentProps = {
                     setIsFinished={setIsFinished}
                     choices={choices}
                     shuffledData={shuffledData}
+                    title={[
+                      "Now, let's try creating a button using HTML. Can you put the pieces in the correct order?",
+                    ]}
+                    response={{negative: "Incorrect, Please try again!"}}
                   />
                 );
               },
@@ -773,7 +1113,9 @@ export default function LessonPage({
                 {content.content.map((item) => (
                   <div key={item.id}>
                     {item.type === "text" &&
-                      typeof item.label !== "function" && <div>{item.label}</div>}
+                      typeof item.label !== "function" && (
+                        <div>{item.label}</div>
+                      )}
                     {item.type === "element" && (
                       <div>
                         {typeof item.label === "function"

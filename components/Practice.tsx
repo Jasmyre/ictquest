@@ -1,8 +1,8 @@
 "use client";
 
 import { setSessionStorageItem } from "@/lib/utils";
-import { RotateCcw } from "lucide-react";
-import React, { useState } from "react";
+import { CircleAlert, RotateCcw } from "lucide-react";
+import React, { JSX, useState } from "react";
 import Browser from "./Browser";
 import ButtonChoice from "./ButtonChoice";
 import CodeBlock from "./Code";
@@ -12,6 +12,8 @@ export const Practice = ({
   choices,
   setIsFinished,
   shuffledData,
+  title,
+  response = { negative: "Incorrect, Please try again!"}
 }: {
   setIsFinished: (value: boolean) => void;
   shuffledData?: {
@@ -23,8 +25,12 @@ export const Practice = ({
       label: string;
       priority: number;
     }[];
-    answer: string;
+    answer: string | JSX.Element;
   };
+  title?: string[]
+  response?: {
+    negative: string;
+  }
 }) => {
   const [code, setCode] = useState<string>("");
   const [disabledButtons, setDisabledButtons] = useState<string[]>([]);
@@ -68,8 +74,8 @@ export const Practice = ({
       console.log(isCorrect);
     } else {
       return (
-        <div className="rounded bg-red-600 p-2">
-          <p className="text-red-200">Incorrect! Try again.</p>
+        <div className="rounded bg-red-600 p-2 shadow">
+          <p className="text-red-200 flex gap-2"><CircleAlert />{response?.negative}</p>
         </div>
       );
     }
@@ -77,6 +83,16 @@ export const Practice = ({
 
   return (
     <div>
+      <div>
+        {title?.map(item => {
+          return (
+            <div key={item}>
+              <p >{item}</p>
+              <br />
+            </div>
+          )
+        })}
+      </div>
       <CodeBlock language="HTML">{code}</CodeBlock>
       <div className="mt-2 flex justify-start">
         <Button

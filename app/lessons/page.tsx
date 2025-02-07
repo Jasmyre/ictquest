@@ -7,12 +7,21 @@ const lessons = [
   {
     title: "HTML Basics",
     description: "Learn the fundamentals of HTML",
-    slug: "html-basics",
+    slug: "introduction-to-html",
     topics: [
-      { name: "Introduction to HTML", slug: "intro-to-html" },
+      { name: "What is HTML?", slug: "what-is-html" },
       { name: "HTML Document Structure", slug: "html-document-structure" },
       { name: "Text Formatting", slug: "intro-to-html" },
     ],
+  },
+  {
+    title: "HTML Crap",
+    description: "This is nothing",
+    slug: "html-craps",
+    topics: [
+      {name: "Introduction To HTML", slug: "intro-to-html"},
+      {name: "HTML Document Structure", slug: "html-document-structure"}
+    ]
   },
   {
     title: "HTML Elements",
