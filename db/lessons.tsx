@@ -44,12 +44,11 @@ export const lessons: Lesson[] = [
     description:
       "Introduction to HTML, its History, and HTML Document structure",
     slug: "introduction-to-html",
-    topics: [{ name: "What is HTML?", slug: "what-is-html" }],
+    topics: [{ name: "HTML Introduction", slug: "what-is-html" }],
     content: {
       "what-is-html": {
         title: "What is HTML and Its History",
         contents: [
-          // Page 1
           {
             submit: { label: "Continue" },
             content: [
@@ -74,7 +73,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 2
           {
             submit: { label: "Continue" },
             content: [
@@ -109,7 +107,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 3
           {
             submit: { label: "Continue" },
             content: [
@@ -234,7 +231,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 4
           {
             submit: { label: "Continue" },
             content: [
@@ -269,7 +265,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 5
           {
             submit: { label: "Continue" },
             content: [
@@ -281,7 +276,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 6
           {
             submit: { label: "Continue" },
             content: [
@@ -293,7 +287,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 7
           {
             submit: { label: "Continue" },
             content: [
@@ -319,7 +312,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 8
           {
             submit: { label: "Continue" },
             content: [
@@ -331,7 +323,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 9
           {
             submit: { label: "Continue" },
             content: [
@@ -361,7 +352,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 10
           {
             submit: { label: "Continue" },
             content: [
@@ -373,7 +363,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 11
           {
             submit: { label: "Continue" },
             content: [
@@ -385,7 +374,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 12
           {
             submit: { label: "Continue" },
             content: [
@@ -412,7 +400,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 13
           {
             submit: { label: "Continue" },
             content: [
@@ -424,7 +411,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 14
           {
             submit: { label: "Continue" },
             content: [
@@ -436,7 +422,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 15
           {
             submit: { label: "Continue" },
             content: [
@@ -448,7 +433,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 16
           {
             submit: { label: "Continue" },
             content: [
@@ -460,7 +444,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 17
           {
             submit: { label: "Continue" },
             content: [
@@ -472,7 +455,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 18
           {
             submit: { label: "Continue" },
             content: [
@@ -502,7 +484,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 19
           {
             submit: { label: "Continue" },
             content: [
@@ -514,7 +495,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 20
           {
             submit: { label: "Continue" },
             content: [
@@ -526,7 +506,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 21
           {
             submit: { label: "Continue" },
             content: [
@@ -538,7 +517,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 22
           {
             submit: { label: "Continue" },
             content: [
@@ -564,7 +542,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 23
           {
             submit: { label: "Continue" },
             content: [
@@ -576,7 +553,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 24
           {
             submit: { label: "Continue" },
             content: [
@@ -588,7 +564,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 25
           {
             submit: { label: "Continue" },
             content: [
@@ -600,7 +575,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 26
           {
             submit: { label: "Continue" },
             content: [
@@ -612,7 +586,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 27
           {
             submit: { label: "Continue" },
             content: [
@@ -624,7 +597,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 28
           {
             submit: { label: "Continue" },
             content: [
@@ -636,7 +608,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 29
           {
             submit: { label: "Continue" },
             content: [
@@ -671,7 +642,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 30
           {
             submit: { label: "Continue" },
             content: [
@@ -683,7 +653,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 31
           {
             submit: { label: "Continue" },
             content: [
@@ -695,7 +664,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 32
           {
             submit: { label: "Continue" },
             content: [
@@ -707,7 +675,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 33
           {
             submit: { label: "Continue" },
             content: [
@@ -719,7 +686,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 34
           {
             submit: { label: "Continue" },
             content: [
@@ -749,7 +715,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 35
           {
             submit: { label: "Continue" },
             content: [
@@ -761,7 +726,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 36
           {
             submit: { label: "Continue" },
             content: [
@@ -787,7 +751,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 37
           {
             submit: { label: "Continue" },
             content: [
@@ -799,7 +762,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 38
           {
             submit: { label: "Continue" },
             content: [
@@ -834,7 +796,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 39
           {
             submit: { label: "Continue" },
             content: [
@@ -846,7 +807,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 40
           {
             submit: { label: "Continue" },
             content: [
