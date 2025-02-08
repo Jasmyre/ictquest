@@ -44,7 +44,10 @@ export const lessons: Lesson[] = [
     description:
       "Introduction to HTML, its History, and HTML Document structure",
     slug: "introduction-to-html",
-    topics: [{ name: "HTML Introduction", slug: "what-is-html" }],
+    topics: [
+      { name: "HTML Introduction", slug: "what-is-html" },
+      { name: "HTML Brief Examples", slug: "html-brief-examples" },
+    ],
     content: {
       "what-is-html": {
         title: "What is HTML and Its History",
@@ -190,6 +193,7 @@ export const lessons: Lesson[] = [
                 label: (
                   <Browser
                     content={"<p>This is a paragraph.</p>"}
+                    
                     title={"Browser"}
                   />
                 ),
@@ -224,7 +228,10 @@ export const lessons: Lesson[] = [
                       title={[
                         "Now, let's try creating a button using HTML. Can you put the pieces in the correct order?",
                       ]}
-                      response={{ negative: "Incorrect, Please try again!", positive: "Correct, you are a fast learner!" }}
+                      response={{
+                        negative: "Incorrect, Please try again!",
+                        positive: "Correct, you are a fast learner!",
+                      }}
                     />
                   );
                 },
@@ -815,6 +822,548 @@ export const lessons: Lesson[] = [
                 type: "text",
                 label:
                   "Alright, that's a wrap on our journey through HTML and its history! Hope you had fun and learned a thing or two. Now you're all set to explore more about web development!",
+              },
+            ],
+          },
+        ],
+      },
+
+      "html-brief-examples": {
+        title: "HTML Brief Examples",
+        contents: [
+          // Page 1: Welcome
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 0,
+                type: "text",
+                label:
+                  "Welcome to HTML Brief Examples! In this lesson we're gonna build a simple website using basic HTML elements. Let's dive in!",
+              },
+              {
+                id: 1,
+                type: "element",
+                label: (
+                  <Image
+                    src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f916/512.gif"
+                    alt="Simple Website"
+                    width={400}
+                    height={300}
+                    className="mt-4 rounded-lg shadow-md"
+                  />
+                ),
+              },
+            ],
+          },
+          // Page 2: Basic HTML Structure Introduction
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 2,
+                type: "text",
+                label:
+                  "Every HTML document starts with a basic structure. Check out the code below:",
+              },
+              {
+                id: 3,
+                type: "element",
+                label: (
+                  <CodeBlock language="html">
+                    {`<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Website</title>
+  </head>
+  <body>
+    <!-- Content goes here -->
+  </body>
+</html>`}
+                  </CodeBlock>
+                ),
+              },
+            ],
+          },
+          // Page 3: Practice Basic Structure Arrangement
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 4,
+                type: "text",
+                label:
+                  "Now, let's practice arranging the basic HTML structure. Drag and drop the pieces to form the correct document:",
+              },
+              // {
+              //   id: 5,
+              //   type: "element",
+              //   label: ({ setIsFinished }) => {
+              //     const choices = {
+              //       options: [
+              //         { label: `<!DOCTYPE html>\n`, priority: 1 },
+              //         { label: `<html>\n`, priority: 2 },
+              //         { label: `  <head>\n`, priority: 3 },
+              //         { label: `    <title>My Website</title>\n`, priority: 4 },
+              //         { label: `  </head>\n`, priority: 5 },
+              //         { label: `  <body>\n`, priority: 6 },
+              //         {
+              //           label: `    <!-- Content goes here -->\n`,
+              //           priority: 7,
+              //         },
+              //         { label: `  </body>\n`, priority: 8 },
+              //         { label: `</html>`, priority: 9 },
+              //       ],
+              //       answer: `<!DOCTYPE html>\n<html>\n  <head>\n    <title>My Website</title>\n  </head>\n  <body>\n    <!-- Content goes here -->\n  </body>\n</html>`,
+              //     };
+
+              //     const shuffledData = shuffle(choices.options);
+              //     return (
+              //       <div>
+              //         <p>
+              //           Arrange the code blocks to form the correct HTML
+              //           structure:
+              //         </p>
+              //         <br />
+              //         <Practice
+              //           setIsFinishedAction={setIsFinished}
+              //           choices={choices}
+              //           shuffledData={shuffledData}
+              //         />
+              //       </div>
+              //     );
+              //   },
+              // },
+            ],
+          },
+          // Page 4: Header Element
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 6,
+                type: "text",
+                label:
+                  "Let's add a header to our website using the <h1> tag. It displays the main title.",
+              },
+              {
+                id: 7,
+                type: "element",
+                label: (
+                  <CodeBlock language="html">
+                    {`<h1>Welcome to My Website</h1>`}
+                  </CodeBlock>
+                ),
+              },
+              {
+                id: 8,
+                type: "element",
+                label: ({ setIsFinished }) => (
+                  <MultipleChoice
+                    setIsFinishedAction={setIsFinished}
+                    title={["Which tag is used for the main heading?"]}
+                    choices={{
+                      options: ["h1", "p", "div", "span"],
+                      answer: "h1",
+                    }}
+                    response={{
+                      positive: "Correct! The <h1> tag is for main headings.",
+                      negative: "Oops, try again!",
+                    }}
+                  />
+                ),
+              },
+            ],
+          },
+          // Page 5: Paragraph Element
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 9,
+                type: "text",
+                label:
+                  "Next, add a paragraph using the <p> tag. This tag holds text content.",
+              },
+              {
+                id: 10,
+                type: "element",
+                label: (
+                  <CodeBlock language="html">
+                    {`<p>This is my first webpage.</p>`}
+                  </CodeBlock>
+                ),
+              },
+              {
+                id: 11,
+                type: "element",
+                label: ({ setIsFinished }) => (
+                  <MultipleChoice
+                    setIsFinishedAction={setIsFinished}
+                    title={["Which tag is used for paragraphs?"]}
+                    choices={{
+                      options: ["p", "h1", "ul", "a"],
+                      answer: "p",
+                    }}
+                    response={{
+                      positive: "Exactly!",
+                      negative: "Not quite, think about it.",
+                    }}
+                  />
+                ),
+              },
+            ],
+          },
+          // Page 6: Link Element
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 12,
+                type: "text",
+                label:
+                  "Links are created with the <a> tag. They let you navigate to other pages.",
+              },
+              {
+                id: 13,
+                type: "element",
+                label: (
+                  <CodeBlock language="html">
+                    {`<a href="https://example.com">Visit Example</a>`}
+                  </CodeBlock>
+                ),
+              },
+              {
+                id: 14,
+                type: "element",
+                label: ({ setIsFinished }) => (
+                  <MultipleChoice
+                    setIsFinishedAction={setIsFinished}
+                    title={["Which attribute holds the URL in an anchor tag?"]}
+                    choices={{
+                      options: ["href", "src", "alt", "title"],
+                      answer: "href",
+                    }}
+                    response={{
+                      positive: "Correct!",
+                      negative: "That's not it, try again.",
+                    }}
+                  />
+                ),
+              },
+            ],
+          },
+          // Page 7: Image Element
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 15,
+                type: "text",
+                label:
+                  "Images are added with the <img> tag. They display pictures on your webpage.",
+              },
+              {
+                id: 16,
+                type: "element",
+                label: (
+                  <CodeBlock language="html">
+                    {`<img src="image.jpg" alt="A beautiful scene" />`}
+                  </CodeBlock>
+                ),
+              },
+              {
+                id: 17,
+                type: "element",
+                label: ({ setIsFinished }) => (
+                  <MultipleChoice
+                    setIsFinishedAction={setIsFinished}
+                    title={["Which tag is used for images?"]}
+                    choices={{
+                      options: ["img", "picture", "div", "image"],
+                      answer: "img",
+                    }}
+                    response={{
+                      positive: "You're right!",
+                      negative: "Nope, think again.",
+                    }}
+                  />
+                ),
+              },
+            ],
+          },
+          // Page 8: Unordered List Practice
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 18,
+                type: "text",
+                label:
+                  "Lists help organize content. Let's create an unordered list for navigation:",
+              },
+              {
+                id: 19,
+                type: "element",
+                label: ({ setIsFinished }) => {
+                  const choices = {
+                    options: [
+                      { label: `<ul>\n  `, priority: 1 },
+                      { label: `<li>Home</li>\n  `, priority: 2 },
+                      { label: `<li>About</li>\n  `, priority: 3 },
+                      { label: `<li>Contact</li>\n`, priority: 4 },
+                      { label: `</ul>`, priority: 5 },
+                    ],
+                    answer: `<ul>
+  <li>Home</li>
+  <li>About</li>
+  <li>Contact</li>
+</ul>`,
+                  };
+
+                  const shuffledData = shuffle(choices.options);
+                  return (
+                    <div>
+                      <p>
+                        Arrange the tags to form an unordered list for
+                        navigation:
+                      </p>
+                      <br />
+                      <Practice
+                        setIsFinishedAction={setIsFinished}
+                        choices={choices}
+                        shuffledData={shuffledData}
+                      />
+                    </div>
+                  );
+                },
+              },
+            ],
+          },
+          // Page 9: Complete Simple Website Example
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 20,
+                type: "text",
+                label:
+                  "Now let's put it all together to create a simple website:",
+              },
+              {
+                id: 21,
+                type: "element",
+                label: (
+                  <CodeBlock language="html">
+                    {`<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Website</title>
+  </head>
+  <body>
+    <h1>Welcome to My Website</h1>
+    <p>This is my first webpage.</p>
+    <a href="http://localhost:3000/lessons/subtopic/html-brief-examples?topic=introduction-to-html">Visit Example</a>
+    <img src="image.jpg" alt="A beautiful scene" />
+    <ul>
+      <li>Home</li>
+      <li>About</li>
+      <li>Contact</li>
+    </ul>
+  </body>
+</html>`}
+                  </CodeBlock>
+                ),
+              },
+            ],
+          },
+          // Page 10: Practice Arranging Body Content
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 22,
+                type: "text",
+                label:
+                  "Practice: Arrange the following code blocks to form the body section of the website.",
+              },
+              {
+                id: 23,
+                type: "element",
+                label: ({ setIsFinished }) => {
+                  const choices = {
+                    options: [
+                      {
+                        label: `<h1>Welcome to My Website</h1>\n`,
+                        priority: 1,
+                      },
+                      {
+                        label: `<p>This is my first webpage.</p>\n`,
+                        priority: 2,
+                      },
+                      {
+                        label: `<a href="http://localhost:3000/lessons/subtopic/html-brief-examples?topic=introduction-to-html">Visit Example</a>\n`,
+                        priority: 3,
+                      },
+                      {
+                        label: `<img src="image.jpg" alt="A beautiful scene" />\n`,
+                        priority: 4,
+                      },
+                      {
+                        label: `<ul>\n  <li>Home</li>\n  <li>About</li>\n  <li>Contact</li>\n</ul>`,
+                        priority: 5,
+                      },
+                    ],
+                    answer: `<h1>Welcome to My Website</h1>
+<p>This is my first webpage.</p>
+<a href="http://localhost:3000/lessons/subtopic/html-brief-examples?topic=introduction-to-html">Visit Example</a>
+<img src="image.jpg" alt="A beautiful scene" />
+<ul>
+  <li>Home</li>
+  <li>About</li>
+  <li>Contact</li>
+</ul>`,
+                  };
+                  const shuffledData = shuffle(choices.options);
+                  return (
+                    <div>
+                      <p>
+                        Arrange the code blocks to form the correct body
+                        section:
+                      </p>
+                      <br />
+                      <Practice
+                        setIsFinishedAction={setIsFinished}
+                        choices={choices}
+                        shuffledData={shuffledData}
+                      />
+                    </div>
+                  );
+                },
+              },
+            ],
+          },
+          // Page 11: Recap the Lesson
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 24,
+                type: "text",
+                label:
+                  "Great job! You've built a simple website using basic HTML elements.",
+              },
+              {
+                id: 25,
+                type: "text",
+                label:
+                  "This is just the beginning – with HTML, you can build almost anything on the web.",
+              },
+            ],
+          },
+          // Page 12: Quiz Question on DOCTYPE
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 26,
+                type: "text",
+                label:
+                  "Quick Quiz: What is the purpose of the <!DOCTYPE html> declaration?",
+              },
+              {
+                id: 27,
+                type: "element",
+                label: ({ setIsFinished }) => (
+                  <MultipleChoice
+                    setIsFinishedAction={setIsFinished}
+                    title={["Select the correct answer:"]}
+                    choices={{
+                      options: [
+                        "To specify the HTML version",
+                        "To link the CSS file",
+                        "To create a comment",
+                        "To display an image",
+                      ],
+                      answer: "To specify the HTML version",
+                    }}
+                    response={{
+                      positive: "Correct!",
+                      negative: "Oops, try again.",
+                    }}
+                  />
+                ),
+              },
+            ],
+          },
+          // Page 13: Quiz on Heading Tag
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 28,
+                type: "text",
+                label: "Which tag is used for the main heading of a webpage?",
+              },
+              {
+                id: 29,
+                type: "element",
+                label: ({ setIsFinished }) => (
+                  <MultipleChoice
+                    setIsFinishedAction={setIsFinished}
+                    title={["Choose the correct tag:"]}
+                    choices={{
+                      options: ["h1", "p", "div", "span"],
+                      answer: "h1",
+                    }}
+                    response={{
+                      positive: "That's right!",
+                      negative: "Nope, that's not it.",
+                    }}
+                  />
+                ),
+              },
+            ],
+          },
+          // Page 14: Quiz on Link Attribute
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 30,
+                type: "text",
+                label:
+                  "Which attribute is used to specify the URL in an anchor tag?",
+              },
+              {
+                id: 31,
+                type: "element",
+                label: ({ setIsFinished }) => (
+                  <MultipleChoice
+                    setIsFinishedAction={setIsFinished}
+                    title={["Select the correct attribute:"]}
+                    choices={{
+                      options: ["href", "src", "alt", "title"],
+                      answer: "href",
+                    }}
+                    response={{
+                      positive: "Correct!",
+                      negative: "That's not the right one.",
+                    }}
+                  />
+                ),
+              },
+            ],
+          },
+          // Page 15: Final Recap
+          {
+            submit: { label: "Finish" },
+            content: [
+              {
+                id: 32,
+                type: "text",
+                label:
+                  "Congratulations! You've learned how to build a simple website using HTML. Keep practicing and exploring more advanced topics!",
               },
             ],
           },
