@@ -9,6 +9,7 @@
     "turbopack",
     "unlighthouse",
     "vercel",
+    "Vint",
     "Zuckerberg"
   ],
   "typescript.tsdk": "node_modules\\typescript\\lib"

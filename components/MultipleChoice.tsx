@@ -1,7 +1,7 @@
 "use client";
 
 import { setSessionStorageItem } from "@/lib/utils";
-import { RotateCcw } from "lucide-react";
+import { CircleAlert, RotateCcw } from "lucide-react";
 import React, { useState } from "react";
 import { MultipleChoiceButton } from "./MultipleChoiceButton";
 import { Button } from "./ui/button";
@@ -9,21 +9,33 @@ import { Button } from "./ui/button";
 export const MultipleChoice = ({
   choices,
   setIsFinishedAction,
+  title,
+  response = { negative: "Incorrect, Please try again!" },
 }: {
   setIsFinishedAction: (value: boolean) => void;
   choices: {
     options: string[];
     answer: string;
   };
+  title: string[];
+  response?: {
+    negative?: string;
+    positive?: string;
+  };
 }) => {
   const [choice, setChoice] = useState("");
   const [disabledButtons, setDisabledButtons] = useState<string[]>([]);
+  const [isCorrect, setIsCorrect] = useState<boolean>(false);
+
+  const correctChoice = choices?.answer;
 
   React.useEffect(() => {
     if (choice === choices.answer) {
       setIsFinishedAction(true);
+      setIsCorrect(true);
     } else {
       setIsFinishedAction(false);
+      setIsCorrect(true);
     }
   }, [choice, choices.answer, setIsFinishedAction]);
 
@@ -44,23 +56,32 @@ export const MultipleChoice = ({
     setChoice("");
     setDisabledButtons([]);
     setIsFinishedAction(false);
+    setIsCorrect(false);
   };
 
   const renderMessage = () => {
     if (!choice) return null;
 
-    if (choice === choices.answer) {
+    if (choice === correctChoice) {
+      if (!response?.positive) return null;
+      console.log(isCorrect);
       return (
-        <div className="rounded bg-green-600 p-2">
-          <p className="text-green-200">
-            Correct! h1 creates the largest heading.
+        <div className="rounded bg-green-600 p-2 shadow">
+          <p className="flex gap-2 text-green-200">
+            <CircleAlert />
+            {response?.positive}
           </p>
         </div>
       );
     } else {
+      if (!response?.negative) return null;
+
       return (
-        <div className="rounded bg-red-600 p-2">
-          <p className="text-red-200">Incorrect! Try again.</p>
+        <div className="rounded bg-red-600 p-2 shadow">
+          <p className="flex gap-2 text-red-200">
+            <CircleAlert />
+            {response?.negative}
+          </p>
         </div>
       );
     }
@@ -68,7 +89,16 @@ export const MultipleChoice = ({
 
   return (
     <div>
-      <div>Which of the following elements create the larges heading?</div>
+      <div>
+        {title?.map((item) => {
+          return (
+            <div key={item}>
+              <p>{item}</p>
+              <br />
+            </div>
+          );
+        })}
+      </div>
       <br />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {choices.options.map((option) => {

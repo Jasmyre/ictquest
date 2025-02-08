@@ -13,7 +13,7 @@ export const Practice = ({
   setIsFinishedAction,
   shuffledData,
   title,
-  response = { negative: "Incorrect, Please try again!"}
+  response = { negative: "Incorrect, Please try again!" },
 }: {
   setIsFinishedAction: (value: boolean) => void;
   shuffledData?: {
@@ -27,26 +27,27 @@ export const Practice = ({
     }[];
     answer: string | JSX.Element;
   };
-  title?: string[]
+  title?: string[];
   response?: {
-    negative: string;
+    negative?: string;
     positive?: string;
-  }
+  };
 }) => {
   const [code, setCode] = useState<string>("");
   const [disabledButtons, setDisabledButtons] = useState<string[]>([]);
-  const correctCode = choices?.answer;
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
+
+  const correctCode = choices?.answer;
 
   React.useEffect(() => {
     setIsFinishedAction(false);
 
     if (code === correctCode) {
       setIsFinishedAction(true);
-      setIsCorrect(true)
+      setIsCorrect(true);
     } else {
       setIsFinishedAction(false);
-      setIsCorrect(false)
+      setIsCorrect(false);
     }
   }, [code, correctCode, setIsFinishedAction]);
 
@@ -65,7 +66,7 @@ export const Practice = ({
     setCode("");
     setDisabledButtons([]);
     setIsFinishedAction(false);
-    setIsCorrect(false)
+    setIsCorrect(false);
   };
 
   const renderMessage = () => {
@@ -87,7 +88,10 @@ export const Practice = ({
 
       return (
         <div className="rounded bg-red-600 p-2 shadow">
-          <p className="text-red-200 flex gap-2"><CircleAlert />{response?.negative}</p>
+          <p className="flex gap-2 text-red-200">
+            <CircleAlert />
+            {response?.negative}
+          </p>
         </div>
       );
     }
@@ -96,13 +100,13 @@ export const Practice = ({
   return (
     <div>
       <div>
-        {title?.map(item => {
+        {title?.map((item) => {
           return (
             <div key={item}>
-              <p >{item}</p>
+              <p>{item}</p>
               <br />
             </div>
-          )
+          );
         })}
       </div>
       <CodeBlock language="HTML">{code}</CodeBlock>
@@ -129,13 +133,11 @@ export const Practice = ({
         ))}
       </div>
       <br />
-      {renderMessage()}
       {code === correctCode && (
-        <Browser
-          title="Document"
-          content={correctCode}
-        />
+        <Browser title="Document" content={correctCode} />
       )}
+      <br />
+      {renderMessage()}
       <br />
       <br />
     </div>
