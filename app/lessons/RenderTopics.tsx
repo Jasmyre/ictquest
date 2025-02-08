@@ -21,23 +21,23 @@ export default function RenderTopics() {
         <main>
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="px-4 py-8 sm:px-0">
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 {lessons.map((lesson, index) => (
                   <Card
                     key={index++}
-                    className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+                    className="border flex flex-col border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
                   >
-                    <CardHeader>
+                    <CardHeader className="">
                       <CardTitle className="flex items-center text-lg font-semibold text-gray-900 dark:text-gray-100">
                         <Book className="mr-2 h-5 w-5 text-indigo-600 dark:text-indigo-400" />
                         {lesson.title}
                       </CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="flex flex-col justify-between h-full">
                       <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
                         {lesson.description}
                       </p>
-                      <ul className="mt-4 space-y-2">
+                      <ul className="mt-4 space-y-2 flex-1">
                         {lesson.topics.map((topic, topicIndex) => (
                           <li key={topicIndex++}>
                             <Link
