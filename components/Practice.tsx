@@ -10,12 +10,12 @@ import { Button } from "./ui/button";
 
 export const Practice = ({
   choices,
-  setIsFinished,
+  setIsFinishedAction,
   shuffledData,
   title,
   response = { negative: "Incorrect, Please try again!"}
 }: {
-  setIsFinished: (value: boolean) => void;
+  setIsFinishedAction: (value: boolean) => void;
   shuffledData?: {
     label: string;
     priority: number;
@@ -39,16 +39,16 @@ export const Practice = ({
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
 
   React.useEffect(() => {
-    setIsFinished(false);
+    setIsFinishedAction(false);
 
     if (code === correctCode) {
-      setIsFinished(true);
+      setIsFinishedAction(true);
       setIsCorrect(true)
     } else {
-      setIsFinished(false);
+      setIsFinishedAction(false);
       setIsCorrect(false)
     }
-  }, [code, correctCode, setIsFinished]);
+  }, [code, correctCode, setIsFinishedAction]);
 
   const handleClick = (label: string) => {
     setCode((prevCode) => {
@@ -64,7 +64,7 @@ export const Practice = ({
   const handleReset = () => {
     setCode("");
     setDisabledButtons([]);
-    setIsFinished(false);
+    setIsFinishedAction(false);
     setIsCorrect(false)
   };
 

@@ -230,7 +230,7 @@ export const lessons: Lesson[] = [
                     <div>
                       <p>Arrange the HTML versions in chronological order.</p>
                       <Practice
-                        setIsFinished={setIsFinished}
+                        setIsFinishedAction={setIsFinished}
                         choices={choices}
                         shuffledData={shuffledData}
                       />
@@ -399,7 +399,7 @@ export const lessons: Lesson[] = [
 
                   return (
                     <Practice
-                      setIsFinished={setIsFinished}
+                      setIsFinishedAction={setIsFinished}
                       choices={choices}
                       shuffledData={shuffledData}
                       title={[
@@ -793,7 +793,7 @@ export const lessons: Lesson[] = [
                       </div>
                       <br />
                       <Practice
-                        setIsFinished={setIsFinished}
+                        setIsFinishedAction={setIsFinished}
                         choices={choices}
                         shuffledData={shuffledData}
                       />
