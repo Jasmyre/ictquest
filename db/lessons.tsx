@@ -40,6 +40,222 @@ interface Lesson {
 
 export const lessons: Lesson[] = [
   {
+    title: "Introduction to HTML",
+    description:
+      "Introduction to HTML, its History, and HTML Document structure",
+    slug: "introduction-to-html",
+    topics: [{ name: "What is HTML?", slug: "what-is-html" }],
+    content: {
+      "what-is-html": {
+        title: "What is HTML and Its History",
+        contents: [
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 0,
+                type: "text",
+                label:
+                  "Welcome to the world of HTML! Let's start with understanding what HTML is and where it came from.",
+              },
+              {
+                id: 1,
+                type: "element",
+                label: (
+                  <div>
+                    <p>
+                      HTML stands for <strong>HyperText Markup Language</strong>
+                      . It is the standard language used to create web pages.
+                    </p>
+                  </div>
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 2,
+                type: "text",
+                label:
+                  "HTML is not a programming language, but a markup language used to structure content on the web.",
+              },
+              {
+                id: 3,
+                type: "element",
+                label: (
+                  <CodeBlock language="HTML">{`<p>This is a paragraph in HTML.</p>`}</CodeBlock>
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 4,
+                type: "text",
+                label:
+                  "HTML consists of elements wrapped inside tags, defining the structure of a webpage.",
+              },
+              {
+                id: 5,
+                type: "element",
+                label: (
+                  <CodeBlock language="HTML">{`<h1>Welcome to My Website</h1>`}</CodeBlock>
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 6,
+                type: "text",
+                label:
+                  "The history of HTML starts in the early 1990s when Tim Berners-Lee created it to share documents via the internet.",
+              },
+              {
+                id: 7,
+                type: "element",
+                label: (
+                  <div>
+                    <p>
+                      Tim Berners-Lee developed the first version of HTML while
+                      working at CERN in 1991.
+                    </p>
+                  </div>
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 8,
+                type: "text",
+                label:
+                  "The first official version, HTML 2.0, was released in 1995 with more structured elements.",
+              },
+              {
+                id: 9,
+                type: "element",
+                label: (
+                  <div>
+                    <p>
+                      Since then, HTML has evolved with new versions like HTML4,
+                      XHTML, and now HTML5.
+                    </p>
+                  </div>
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 10,
+                type: "text",
+                label:
+                  "HTML5, introduced in 2014, brought new features like semantic elements, multimedia support, and more.",
+              },
+              {
+                id: 11,
+                type: "element",
+                label: ({ setIsFinished }) => (
+                  <MultipleChoice
+                    setIsFinishedAction={setIsFinished}
+                    
+                    choices={{
+                      options: ["1991", "1995", "1999", "2014"],
+                      answer: "2014",
+                    }}
+                  />
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 12,
+                type: "text",
+                label:
+                  "The latest version, HTML5, makes it easier to build modern, interactive websites with better performance.",
+              },
+              {
+                id: 13,
+                type: "element",
+                label: (
+                  <div>
+                    <p>Example of an HTML5 feature:</p>
+                    <CodeBlock language="HTML">{`<video src="video.mp4" controls></video>`}</CodeBlock>
+                  </div>
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 14,
+                type: "text",
+                label:
+                  "Let's test your knowledge! Arrange the evolution of HTML versions in order.",
+              },
+              {
+                id: 15,
+                type: "element",
+                label: ({ setIsFinished }) => {
+                  const choices = {
+                    options: [
+                      { label: "HTML 1.0", priority: 1 },
+                      { label: "HTML 2.0", priority: 2 },
+                      { label: "HTML 4.01", priority: 3 },
+                      { label: "XHTML", priority: 4 },
+                      { label: "HTML5", priority: 5 },
+                    ],
+                    answer: "HTML 1.0 → HTML 2.0 → HTML 4.01 → XHTML → HTML5",
+                  };
+
+                  const shuffledData = shuffle(choices.options);
+
+                  return (
+                    <div>
+                      <p>Arrange the HTML versions in chronological order.</p>
+                      <Practice
+                        setIsFinished={setIsFinished}
+                        choices={choices}
+                        shuffledData={shuffledData}
+                      />
+                    </div>
+                  );
+                },
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 16,
+                type: "text",
+                label:
+                  "Now that you know what HTML is and its history, you are ready to explore its core structure!",
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+  {
     title: "ABCD",
     description: "XY and Z",
     slug: "abcd",
@@ -213,7 +429,7 @@ export const lessons: Lesson[] = [
 
                   return (
                     <MultipleChoice
-                      setIsFinished={setIsFinished}
+                      setIsFinishedAction={setIsFinished}
                       choices={choices}
                     />
                   );
@@ -445,7 +661,7 @@ export const lessons: Lesson[] = [
                 type: "element",
                 label: ({ setIsFinished }) => (
                   <MultipleChoice
-                    setIsFinished={setIsFinished}
+                    setIsFinishedAction={setIsFinished}
                     choices={{
                       options: ["<h1>", "<h2>", "<h3>", "<h4>"],
                       answer: "<h1>",
@@ -496,7 +712,7 @@ export const lessons: Lesson[] = [
                       link goes?
                     </p>
                     <MultipleChoice
-                      setIsFinished={setIsFinished}
+                      setIsFinishedAction={setIsFinished}
                       choices={{
                         options: ["href", "src", "alt", "title"],
                         answer: "href",
@@ -601,7 +817,7 @@ export const lessons: Lesson[] = [
                 type: "element",
                 label: ({ setIsFinished }) => (
                   <MultipleChoice
-                    setIsFinished={setIsFinished}
+                    setIsFinishedAction={setIsFinished}
                     choices={{
                       options: ["div", "span", "p", "header"],
                       answer: "div",
@@ -627,7 +843,7 @@ export const lessons: Lesson[] = [
                   <div>
                     <p>Where do meta tags belong? Choose the correct answer.</p>
                     <MultipleChoice
-                      setIsFinished={setIsFinished}
+                      setIsFinishedAction={setIsFinished}
                       choices={{
                         options: ["body", "head", "footer", "section"],
                         answer: "head",
@@ -679,7 +895,7 @@ export const lessons: Lesson[] = [
                       True or False: HTML comments are displayed on the webpage.
                     </p>
                     <MultipleChoice
-                      setIsFinished={setIsFinished}
+                      setIsFinishedAction={setIsFinished}
                       choices={{
                         options: ["True", "False"],
                         answer: "False",
@@ -716,7 +932,7 @@ export const lessons: Lesson[] = [
       { name: "Text Formatting", slug: "intro-to-html" },
     ],
     content: {
-      "what-is-html": {
+      "what-is-html2": {
         title: "What is HTML?",
         contents: [
           {

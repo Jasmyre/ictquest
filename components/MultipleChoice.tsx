@@ -8,9 +8,9 @@ import { Button } from "./ui/button";
 
 export const MultipleChoice = ({
   choices,
-  setIsFinished,
+  setIsFinishedAction,
 }: {
-  setIsFinished: (value: boolean) => void;
+  setIsFinishedAction: (value: boolean) => void;
   choices: {
     options: string[];
     answer: string;
@@ -21,11 +21,11 @@ export const MultipleChoice = ({
 
   React.useEffect(() => {
     if (choice === choices.answer) {
-      setIsFinished(true);
+      setIsFinishedAction(true);
     } else {
-      setIsFinished(false);
+      setIsFinishedAction(false);
     }
-  }, [choice, choices.answer, setIsFinished]);
+  }, [choice, choices.answer, setIsFinishedAction]);
 
   const handleMultipleChoiceClick = (label: string) => {
     setChoice((prevChoice) => {
@@ -43,7 +43,7 @@ export const MultipleChoice = ({
   const handleReset = () => {
     setChoice("");
     setDisabledButtons([]);
-    setIsFinished(false);
+    setIsFinishedAction(false);
   };
 
   const renderMessage = () => {
