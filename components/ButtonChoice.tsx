@@ -36,6 +36,7 @@ const ButtonChoice = ({
       {...props}
     >
       <pre
+        tabIndex={-1}
         style={{
           margin: 0,
           padding: ".5rem 1rem",
