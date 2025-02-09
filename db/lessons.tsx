@@ -836,7 +836,6 @@ export const lessons: Lesson[] = [
       "html-brief-examples": {
         title: "HTML Brief Examples",
         contents: [
-          // Page 1: Introduction
           {
             submit: { label: "Continue" },
             content: [
@@ -848,7 +847,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 2: Final Webpage Preview Overview
           {
             submit: { label: "Continue" },
             content: [
@@ -882,7 +880,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 3: Add a Heading (h1) – Introduction
           {
             submit: { label: "Continue" },
             content: [
@@ -900,7 +897,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 4: Practice Arranging the Heading
           {
             submit: { label: "Continue" },
             content: [
@@ -942,7 +938,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 5: Add a Paragraph (p) – Introduction
           {
             submit: { label: "Continue" },
             content: [
@@ -959,7 +954,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 6: Practice Arranging the Paragraph
           {
             submit: { label: "Continue" },
             content: [
@@ -1003,7 +997,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 7: Add an Image (img) – Introduction
           {
             submit: { label: "Continue" },
             content: [
@@ -1022,7 +1015,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 8: Practice Arranging the Image Tag
           {
             submit: { label: "Continue" },
             content: [
@@ -1066,7 +1058,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 9: Add a Link (a) – Introduction
           {
             submit: { label: "Continue" },
             content: [
@@ -1085,7 +1076,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 10: Practice Arranging the Link Tag
           {
             submit: { label: "Continue" },
             content: [
@@ -1129,7 +1119,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 11: Add an Unordered List (ul) – Introduction
           {
             submit: { label: "Continue" },
             content: [
@@ -1147,7 +1136,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 12: Practice Arranging the Unordered List
           {
             submit: { label: "Continue" },
             content: [
@@ -1203,7 +1191,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 13: Preview Current Webpage
           {
             submit: { label: "Continue" },
             content: [
@@ -1236,7 +1223,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 14: Introduce Horizontal Rule (<hr>)
           {
             submit: { label: "Continue" },
             content: [
@@ -1253,7 +1239,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 15: Practice Arranging <hr>
           {
             submit: { label: "Continue" },
             content: [
@@ -1288,7 +1273,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 16: Introduce Line Break (<br>)
           {
             submit: { label: "Continue" },
             content: [
@@ -1304,7 +1288,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 17: Practice Arranging <br>
           {
             submit: { label: "Continue" },
             content: [
@@ -1342,7 +1325,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 18: Add a Second Paragraph
           {
             submit: { label: "Continue" },
             content: [
@@ -1358,7 +1340,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 19: Practice Arranging the Second Paragraph
           {
             submit: { label: "Continue" },
             content: [
@@ -1399,7 +1380,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 20: Add a Subheading (h2)
           {
             submit: { label: "Continue" },
             content: [
@@ -1415,7 +1395,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 21: Practice Arranging the Subheading
           {
             submit: { label: "Continue" },
             content: [
@@ -1454,7 +1433,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 22: Introduce Bold Text (<strong>)
           {
             submit: { label: "Continue" },
             content: [
@@ -1470,7 +1448,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 23: Practice Arranging Bold Text
           {
             submit: { label: "Continue" },
             content: [
@@ -1511,7 +1488,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 24: Introduce Italic Text (<em>)
           {
             submit: { label: "Continue" },
             content: [
@@ -1527,7 +1503,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 25: Practice Arranging Italic Text
           {
             submit: { label: "Continue" },
             content: [
@@ -1566,7 +1541,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 26: Introduce a Blockquote (<blockquote>)
           {
             submit: { label: "Continue" },
             content: [
@@ -1582,7 +1556,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 27: Practice Arranging Blockquote
           {
             submit: { label: "Continue" },
             content: [
@@ -1623,7 +1596,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 28: Introduce Inline Code (<code>)
           {
             submit: { label: "Continue" },
             content: [
@@ -1639,7 +1611,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 29: Practice Arranging Inline Code
           {
             submit: { label: "Continue" },
             content: [
@@ -1680,7 +1651,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 30: Introduce Preformatted Text (<pre>)
           {
             submit: { label: "Continue" },
             content: [
@@ -1696,7 +1666,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 31: Practice Arranging Preformatted Text
           {
             submit: { label: "Continue" },
             content: [
@@ -1737,7 +1706,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 32: Introduce a Container (<div>)
           {
             submit: { label: "Continue" },
             content: [
@@ -1749,7 +1717,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 33: Practice Arranging a <div>
           {
             submit: { label: "Continue" },
             content: [
@@ -1788,7 +1755,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 34: Introduce Inline Container (<span>)
           {
             submit: { label: "Continue" },
             content: [
@@ -1804,7 +1770,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 35: Practice Arranging a <span>
           {
             submit: { label: "Continue" },
             content: [
@@ -1843,7 +1808,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 36: Introduce a Footer (<footer>)
           {
             submit: { label: "Continue" },
             content: [
@@ -1859,7 +1823,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 37: Practice Arranging a <footer>
           {
             submit: { label: "Continue" },
             content: [
@@ -1900,7 +1863,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 38: Recap - Show Assembled Webpage So Far
           {
             submit: { label: "Continue" },
             content: [
@@ -1947,7 +1909,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 39: Quiz - Horizontal Rule
           {
             submit: { label: "Continue" },
             content: [
@@ -1977,7 +1938,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 40: Quiz - Line Break
           {
             submit: { label: "Continue" },
             content: [
@@ -2006,7 +1966,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 41: Quiz - Bold Text
           {
             submit: { label: "Continue" },
             content: [
@@ -2035,7 +1994,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Page 42: Final Recap and Encouragement
           {
             submit: { label: "Finish" },
             content: [
@@ -2769,7 +2727,7 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Additional pages for "What is HTML?"...
+          
         ],
       },
       "html-document-structure": {
@@ -2785,10 +2743,10 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Additional pages for "HTML Document Structure"...
+         
         ],
       },
-      // Additional content for other topics...
+      
     },
   },
   {
@@ -2814,13 +2772,13 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          // Additional pages for "Links and Anchors"...
+         
         ],
       },
-      // Additional content for other topics...
+      
     },
   },
-  // Additional lessons...
+  
 ];
 
 export default lessons;
