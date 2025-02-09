@@ -1,19 +1,18 @@
 import { Code } from "lucide-react";
 import Prism from "prismjs";
-import "prismjs/themes/prism-tomorrow.css"; // import prism css
+import "prismjs/themes/prism-tomorrow.css";
 
 interface CodeBlockProps {
   language?: string;
   initialCode: string[];
-  code?: string; // dynamic middle part
+  code?: string;
 }
 
 const CodeBlock = ({
   language = "html",
-  initialCode,
+  initialCode = ["", ""],
   code = "",
 }: CodeBlockProps) => {
-  // get the header and footer from initialCode
   const header = initialCode && initialCode.length > 0 ? initialCode[0] : "";
   const footer =
     initialCode && initialCode.length > 1
@@ -21,7 +20,6 @@ const CodeBlock = ({
       : "";
   const combinedCode = header + code + footer;
 
-  // use prism.highlight to get the highlighted html
   const highlightedCode = Prism.highlight(
     combinedCode,
     Prism.languages[language] || Prism.languages.markup,
