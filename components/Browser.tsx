@@ -79,8 +79,12 @@ const Browser = ({ title = "Browser", content = "" }: BrowserProps) => {
   const onLoad = () => {
     if (!iframeRef.current) return null;
 
-    iframeRef.current.style.height =
-      iframeRef.current?.contentWindow?.document.body.scrollHeight + "px";
+    try {
+      iframeRef.current.style.height =
+        iframeRef.current?.contentWindow?.document.body.scrollHeight + "px";
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (

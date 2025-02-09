@@ -866,7 +866,8 @@ export const lessons: Lesson[] = [
                     content={`<body>
   <h1>Welcome to My Website</h1>
   <p>This is my first webpage.</p>
-  <img src="image.jpg" alt="A beautiful scene" />
+  <img src="/img.png" alt="A beautiful scene" />
+  <hr />
   <a href="https://example.com">Visit Example</a>
   <ul>
     <li>Home</li>
@@ -875,6 +876,7 @@ export const lessons: Lesson[] = [
   </ul>
 </body>`}
                     title={"Final Webpage Preview"}
+
                   />
                 ),
               },
@@ -1031,7 +1033,7 @@ export const lessons: Lesson[] = [
                   <div>
                     Arrange the following code:{" "}
                     <CodeHighlight>
-                      {'<img src="image.jpg" alt="A beautiful scene" />'}
+                      {'<img src="/img.png" alt="A beautiful scene" />'}
                     </CodeHighlight>
                   </div>
                 ),
@@ -1042,11 +1044,11 @@ export const lessons: Lesson[] = [
                 label: ({ setIsFinished }) => {
                   const choices = {
                     options: [
-                      { label: `<img src="image.jpg"`, priority: 1 },
+                      { label: `<img src="/img.png"`, priority: 1 },
                       { label: ` alt="A beautiful scene"`, priority: 2 },
                       { label: ` />`, priority: 3 },
                     ],
-                    answer: `<img src="image.jpg" alt="A beautiful scene" />`,
+                    answer: `<img src="/img.png" alt="A beautiful scene" />`,
                     initialCode: [
                       "<body>\n  <h1>Welcome to My Website</h1>\n  <p>This is my first webpage.</p>\n  ",
                       "\n</body>",
@@ -1111,7 +1113,7 @@ export const lessons: Lesson[] = [
                     ],
                     answer: `<a href="https://example.com">Visit Example</a>`,
                     initialCode: [
-                      '<body>\n  <h1>Welcome to My Website</h1>\n  <p>This is my first webpage.</p>\n  <img src="image.jpg" alt="A beautiful scene" />\n  ',
+                      '<body>\n  <h1>Welcome to My Website</h1>\n  <p>This is my first webpage.</p>\n  <img src="/img.png" alt="A beautiful scene" />\n  ',
                       "\n</body>",
                     ],
                   };
@@ -1177,7 +1179,7 @@ export const lessons: Lesson[] = [
                     ],
                     answer: `<ul>\n  <li>Home</li>\n  <li>About</li>\n  <li>Contact</li>\n</ul>`,
                     initialCode: [
-                      '<body>\n  <h1>Welcome to My Website</h1>\n  <p>This is my first webpage.</p>\n  <img src="image.jpg" alt="A beautiful scene" />\n  <a href="https://example.com">Visit Example</a>\n  ',
+                      '<body>\n  <h1>Welcome to My Website</h1>\n  <p>This is my first webpage.</p>\n  <img src="/img.png" alt="A beautiful scene" />\n  <a href="https://example.com">Visit Example</a>\n  ',
                       "\n</body>",
                     ],
                   };
@@ -1219,7 +1221,8 @@ export const lessons: Lesson[] = [
                     content={`<body>
   <h1>Welcome to My Website</h1>
   <p>This is my first webpage.</p>
-  <img src="image.jpg" alt="A beautiful scene" />
+  <img src="/img.png" alt="A beautiful scene" />
+  <hr />
   <a href="https://example.com">Visit Example</a>
   <ul>
     <li>Home</li>
@@ -1915,7 +1918,8 @@ export const lessons: Lesson[] = [
                     content={`<body>
   <h1>Welcome to My Website</h1>
   <p>This is my first webpage.</p>
-  <img src="image.jpg" alt="A beautiful scene" />
+  <img src="/img.png" alt="A beautiful scene" />
+  <hr />
   <a href="https://example.com">Visit Example</a>
   <ul>
     <li>Home</li>
@@ -2562,7 +2566,7 @@ export const lessons: Lesson[] = [
                       <CodeBlock
                         initialCode={["", ""]}
                         language="HTML"
-                        code="<img src='path/to/image.jpg' alt='A description' />"
+                        code="<img src='/img.png' alt='A description' />"
                       />
                     </div>
                   </div>
