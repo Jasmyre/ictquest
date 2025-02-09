@@ -34,9 +34,6 @@ const Browser = ({ title = "Browser", content = "" }: BrowserProps) => {
   <title>${title}</title>
   <style>
     body { 
-      margin: 0; 
-      padding: 1rem; 
-      font-family: Arial, sans-serif;
       overflow-y: auto; 
     }
     
@@ -89,7 +86,7 @@ const Browser = ({ title = "Browser", content = "" }: BrowserProps) => {
   return (
     <div className="mt-2 flex flex-col gap-2 rounded-lg">
       <div className="w-full rounded-xl border-gray-200 dark:border-gray-700">
-        <header className="flex gap-4 rounded-t-xl bg-indigo-600 p-2 px-4 text-white">
+        <header className="flex gap-4 rounded-t-xl bg-indigo-500 p-2 px-4 text-white">
           <Globe />
           <p>{title}</p>
         </header>
@@ -100,14 +97,14 @@ const Browser = ({ title = "Browser", content = "" }: BrowserProps) => {
 
           <RotateCw onClick={handleRefresh} className="h-4 w-4" />
 
-          <div className="flex flex-1 items-center justify-center place-self-end rounded border bg-gray-200 px-4">
+          <div className="ml-2 flex flex-1 items-center place-self-end rounded border bg-gray-200 px-4">
             http://localhost:3000/
           </div>
         </div>
         <div>
           <iframe
             key={refreshCounter}
-            className="px-2 py-4"
+            className="min-h-[20vh] px-2 py-4"
             title={title}
             ref={iframeRef}
             onLoad={onLoad}

@@ -8,13 +8,7 @@ import ButtonChoice from "./ButtonChoice";
 import CodeBlock from "./Code";
 import { Button } from "./ui/button";
 
-export const Practice = ({
-  choices,
-  setIsFinishedAction,
-  shuffledData,
-  title,
-  response = { negative: "Incorrect, Please try again!" },
-}: {
+interface PracticeProps {
   setIsFinishedAction: (value: boolean) => void;
   shuffledData?: {
     label: string;
@@ -28,11 +22,21 @@ export const Practice = ({
     answer: string | JSX.Element;
   };
   title?: string[];
+  initialCode?: string[];
   response?: {
     negative?: string;
     positive?: string;
   };
-}) => {
+}
+
+export const Practice = ({
+  choices,
+  setIsFinishedAction,
+  shuffledData,
+  title,
+  initialCode = ["", ""],
+  response = { negative: "Incorrect, Please try again!" },
+}: PracticeProps) => {
   const [code, setCode] = useState<string>("");
   const [disabledButtons, setDisabledButtons] = useState<string[]>([]);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
@@ -49,18 +53,22 @@ export const Practice = ({
       setIsFinishedAction(false);
       setIsCorrect(false);
     }
+
+    console.log(code);
   }, [code, correctCode, setIsFinishedAction]);
 
   const handleClick = (label: string) => {
     setCode((prevCode) => {
       const newCode = prevCode + label;
-      if (newCode === correctCode) {
+      if (newCode === choices?.answer) {
         setSessionStorageItem("finish", true);
       }
       return newCode;
     });
+
     setDisabledButtons((prevDisabled) => [...prevDisabled, label]);
   };
+
 
   const handleReset = () => {
     setCode("");
@@ -109,7 +117,7 @@ export const Practice = ({
           );
         })}
       </div>
-      <CodeBlock language="HTML">{code}</CodeBlock>
+      <CodeBlock language="HTML" initialCode={initialCode} code={code} />
       <div className="mt-2 flex justify-start">
         <Button
           className="hover:text-900 border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
