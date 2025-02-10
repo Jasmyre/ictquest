@@ -1,8 +1,19 @@
 "use client";
 
-import { Book, Circle, FileText, Home, Search, Settings, Shield, User } from "lucide-react";
-import { useRouter } from "next/navigation";
 import * as React from "react";
+import {
+  Book,
+  Circle,
+  FileText,
+  Home,
+  Search,
+  Settings,
+  Shield,
+  User,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+
+import lessons from "@/db/lessons";
 
 import {
   Command,
@@ -28,78 +39,10 @@ type ItemType = {
   action: () => string;
 };
 
-type ItemsProps = {
+type ItemsGroup = {
   category: string;
   items: ItemType[];
-}[];
-
-const items: ItemsProps = [
-  {
-    category: "Suggestions",
-    items: [
-      {
-        icon: Home,
-        name: "Home",
-        action: () => "/",
-      },
-      {
-        icon: User,
-        name: "Profile",
-        action: () => "/profile",
-      },
-      {
-        icon: Book,
-        name: "Lessons",
-        action: () => "/lessons",
-      },
-    ],
-  },
-  {
-    category: "Topics",
-    items: [
-      {
-        icon: Circle,
-        name: "HTML Basics",
-        action: () => "/lessons/html-basics",
-      },
-      {
-        icon: Circle,
-        name: "HTML Elements",
-        action: () => "/lessons/html-elements",
-      },
-      {
-        icon: Circle,
-        name: "HTML Forms",
-        action: () => "/lessons/html-forms",
-      },
-      {
-        icon: Circle,
-        name: "HTML5 features",
-        action: () => "/lessons/html5-features",
-      },
-    ],
-  },
-  {
-    category: "Others",
-    items: [
-      {
-        icon: Settings,
-        name: "Settings",
-        action: () => "/settings",
-      },
-      {
-        icon: FileText,
-        name: "Terms of use",
-        action: () => "/terms"
-      },
-      {
-        icon: Shield,
-        name: "Privacy policy",
-        action: () => "/privacy"
-      }
-    ],
-  },
-];
+};
 
 export function CommandSearch() {
   const [open, setOpen] = React.useState(false);
@@ -126,17 +69,49 @@ export function CommandSearch() {
     [router],
   );
 
+  const lessonGroups = React.useMemo<ItemsGroup[]>(() => {
+    return lessons
+      .filter((lesson) => lesson.topics && lesson.topics.length > 0)
+      .map((lesson) => ({
+        category: lesson.title,
+        items: lesson.topics.map((topic) => ({
+          icon: Circle,
+          name: topic.name,
+          action: () => `/lessons/subtopic/${topic.slug}?topic=${lesson.slug}`,
+        })),
+      }));
+  }, []);
+
+  const commandGroups: ItemsGroup[] = [
+    {
+      category: "Suggestions",
+      items: [
+        { icon: Home, name: "Home", action: () => "/" },
+        { icon: User, name: "Profile", action: () => "/profile" },
+        { icon: Book, name: "Lessons", action: () => "/lessons" },
+      ],
+    },
+    ...lessonGroups,
+    {
+      category: "Others",
+      items: [
+        { icon: Settings, name: "Settings", action: () => "/settings" },
+        { icon: FileText, name: "Terms of use", action: () => "/terms" },
+        { icon: Shield, name: "Privacy policy", action: () => "/privacy" },
+      ],
+    },
+  ];
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-between text-sm bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-300"
+          className="w-full justify-between border-gray-300 bg-gray-50 text-sm text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-900"
         >
-          <div className="flex w-[225px] justify-between items-center text-gary-600 dark:text-gray-400">
+          <div className="flex w-[225px] items-center justify-between dark:text-gray-400">
             <div className="flex gap-4">
-            Search
-            {/* <kbd className="bg-white dark:bg-gray-800 text-gray-400 px-1 border border-gray-500">CRT + K</kbd> */}
+              Search
             </div>
             <Search className="h-4 w-4" />
           </div>
@@ -145,23 +120,29 @@ export function CommandSearch() {
       <DialogTitle>
         <span className="sr-only">Search Command</span>
       </DialogTitle>
-      <DialogContent className="p-0 border-none">
-        <Command className="rounded-lg border shadow-md bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
+      <DialogContent
+        className="border-none p-0"
+        aria-describedby="Search box dialog content"
+      >
+        <Command className="rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-900">
           <CommandInput placeholder="Type a command or search" />
-          <CommandList className="">
+          <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
-            {items.map((group) => (
+            {commandGroups.map((group) => (
               <CommandGroup key={group.category} heading={group.category}>
-                {group.items.map((item) => (
-                  <CommandItem
-                    key={item.name}
-                    onSelect={() => runCommand(item.action)}
-                    className="hover:bg-gray-200 dark:hover:bg-gray-700"
-                  >
-                    <item.icon className="mr-2 h-4 w-4" />
-                    <span>{item.name}</span>
-                  </CommandItem>
-                ))}
+                {group.items.map((item) => {
+                  const route = item.action();
+                  return (
+                    <CommandItem
+                      key={`${item.name}-${route}`}
+                      onSelect={() => runCommand(item.action)}
+                      className="hover:bg-gray-200 dark:hover:bg-gray-700"
+                    >
+                      <item.icon className="mr-2 h-4 w-4" />
+                      <span>{item.name}</span>
+                    </CommandItem>
+                  );
+                })}
               </CommandGroup>
             ))}
           </CommandList>

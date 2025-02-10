@@ -10,12 +10,12 @@ import CodeBlock from "@/components/Code";
 import CodeHighlight from "@/components/CodeHighlight";
 import Browser from "@/components/Browser";
 
-interface Topic {
+export interface Topic {
   name: string;
   slug: string;
 }
 
-interface LessonContent {
+export interface LessonContent {
   title: string;
   contents: Array<{
     submit: { label: string };
@@ -30,7 +30,7 @@ interface LessonContent {
   }>;
 }
 
-interface Lesson {
+export interface Lesson {
   title: string;
   description: string;
   slug: string;
@@ -2703,13 +2703,13 @@ export const lessons: Lesson[] = [
     },
   },
   {
-    title: "HTML Introduction",
+    title: "HTML Introduction2",
     description:
       "Introduction to HTML, its History, and HTML Document Structure.",
     slug: "html-introduction",
     topics: [
       { name: "What is HTML?", slug: "what-is-html" },
-      { name: "HTML Document Structure", slug: "html-document-structure" },
+      { name: "HTML Document Structure1", slug: "html-document-structure" },
       { name: "Text Formatting", slug: "intro-to-html" },
     ],
     content: {
