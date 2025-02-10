@@ -1,8 +1,7 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "./ui/button";
 
 // TODO: Fix Later
