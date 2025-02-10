@@ -23,13 +23,12 @@ export default function LessonPage({
   useEffect(() => {
     Prism.highlightAll();
 
-    const finish = () => {
-      setIndex(numberOfContent - 1);
-    };
-
-    finish();
-
-    console.log(typeof finish);
+    // Auto finish
+    // const finish = () => {
+    //   setIndex(numberOfContent - 1);
+    // };
+    // finish();
+    // console.log(typeof finish);
   });
 
   if (!lesson) {
