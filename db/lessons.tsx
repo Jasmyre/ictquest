@@ -45,11 +45,11 @@ export const lessons: Lesson[] = [
       "Introduction to HTML, its History, and HTML Document structure",
     slug: "introduction-to-html",
     topics: [
-      { name: "HTML Introduction", slug: "what-is-html" },
+      { name: "HTML Introduction", slug: "html-introduction" },
       { name: "HTML Brief Examples", slug: "html-brief-examples" },
     ],
     content: {
-      "what-is-html": {
+      "html-introduction": {
         title: "What is HTML and Its History",
         contents: [
           {
@@ -874,7 +874,6 @@ export const lessons: Lesson[] = [
   </ul>
 </body>`}
                     title={"Final Webpage Preview"}
-
                   />
                 ),
               },
@@ -1279,12 +1278,13 @@ export const lessons: Lesson[] = [
               {
                 id: 23,
                 type: "text",
-                label:
-                <div>
-                  Next, we can add a line break using the {" "}
-                  <CodeHighlight>{"<br>"}</CodeHighlight> {" "}
-                  tag to start a new line within the same block.
-                </div>
+                label: (
+                  <div>
+                    Next, we can add a line break using the{" "}
+                    <CodeHighlight>{"<br>"}</CodeHighlight> tag to start a new
+                    line within the same block.
+                  </div>
+                ),
               },
             ],
           },
@@ -1331,12 +1331,12 @@ export const lessons: Lesson[] = [
               {
                 id: 26,
                 type: "text",
-                label:
-                <div>
-                  Now, let&apos;s add another paragraph to give more info. Use the {" "}
-                  <CodeHighlight>{"<p>"}</CodeHighlight> {" "}
-                  tag again.
-                </div>
+                label: (
+                  <div>
+                    Now, let&apos;s add another paragraph to give more info. Use
+                    the <CodeHighlight>{"<p>"}</CodeHighlight> tag again.
+                  </div>
+                ),
               },
             ],
           },
@@ -1386,12 +1386,12 @@ export const lessons: Lesson[] = [
               {
                 id: 29,
                 type: "text",
-                label:
-                <div>
-                  Let&apos;s now add a subheading to introduce a new section using the {" "}
-                  <CodeHighlight>{"<h2>"}</CodeHighlight> {" "} 
-                  tag.
-                </div>
+                label: (
+                  <div>
+                    Let&apos;s now add a subheading to introduce a new section
+                    using the <CodeHighlight>{"<h2>"}</CodeHighlight> tag.
+                  </div>
+                ),
               },
             ],
           },
@@ -1439,12 +1439,13 @@ export const lessons: Lesson[] = [
               {
                 id: 32,
                 type: "text",
-                label:
-                <div>
-                  Sometimes you want to emphasize text. Use the {" "}
-                  <CodeHighlight>{"<strong>"}</CodeHighlight> {" "}
-                  tag to make text bold.
-                </div>
+                label: (
+                  <div>
+                    Sometimes you want to emphasize text. Use the{" "}
+                    <CodeHighlight>{"<strong>"}</CodeHighlight> tag to make text
+                    bold.
+                  </div>
+                ),
               },
             ],
           },
@@ -1494,12 +1495,12 @@ export const lessons: Lesson[] = [
               {
                 id: 35,
                 type: "text",
-                label:
-                <div>
-                  To italicize text, use the {" "}
-                  <CodeHighlight>{"<em>"}</CodeHighlight> {" "}
-                  tag.
-                </div>
+                label: (
+                  <div>
+                    To italicize text, use the{" "}
+                    <CodeHighlight>{"<em>"}</CodeHighlight> tag.
+                  </div>
+                ),
               },
             ],
           },
@@ -1547,12 +1548,13 @@ export const lessons: Lesson[] = [
               {
                 id: 38,
                 type: "text",
-                label:
-                <div>
-                  For quotes or excerpts, use the {" "}
-                  <CodeHighlight>{"<blockquote>"}</CodeHighlight> {" "}
-                  tag to indent the text.
-                </div>
+                label: (
+                  <div>
+                    For quotes or excerpts, use the{" "}
+                    <CodeHighlight>{"<blockquote>"}</CodeHighlight> tag to
+                    indent the text.
+                  </div>
+                ),
               },
             ],
           },
@@ -1602,12 +1604,12 @@ export const lessons: Lesson[] = [
               {
                 id: 41,
                 type: "text",
-                label:
-                <div>
-                  When you want to show a snippet of code inline, use the {" "}
-                  <CodeHighlight>{"<code>"}</CodeHighlight> {" "}
-                  tag.
-                </div>
+                label: (
+                  <div>
+                    When you want to show a snippet of code inline, use the{" "}
+                    <CodeHighlight>{"<code>"}</CodeHighlight> tag.
+                  </div>
+                ),
               },
             ],
           },
@@ -1657,12 +1659,12 @@ export const lessons: Lesson[] = [
               {
                 id: 44,
                 type: "text",
-                label:
-                <div>
-                  For blocks of code or preformatted text, use the {" "}
-                  <CodeHighlight>{"<pre>"}</CodeHighlight> {" "}
-                  tag.
-                </div>
+                label: (
+                  <div>
+                    For blocks of code or preformatted text, use the{" "}
+                    <CodeHighlight>{"<pre>"}</CodeHighlight> tag.
+                  </div>
+                ),
               },
             ],
           },
@@ -1761,12 +1763,12 @@ export const lessons: Lesson[] = [
               {
                 id: 50,
                 type: "text",
-                label:
-                <div>
-                  For styling or grouping inline elements, use the {" "}
-                  <CodeHighlight>{"<span>"}</CodeHighlight> {" "}
-                  tag.
-                </div>
+                label: (
+                  <div>
+                    For styling or grouping inline elements, use the{" "}
+                    <CodeHighlight>{"<span>"}</CodeHighlight> tag.
+                  </div>
+                ),
               },
             ],
           },
@@ -1814,12 +1816,12 @@ export const lessons: Lesson[] = [
               {
                 id: 53,
                 type: "text",
-                label:
-                <div>
-                  Finally, add a footer at the bottom of your page using the {" "}
-                  <CodeHighlight>{"<footer>"}</CodeHighlight> {" "}
-                  tag.
-                </div>
+                label: (
+                  <div>
+                    Finally, add a footer at the bottom of your page using the{" "}
+                    <CodeHighlight>{"<footer>"}</CodeHighlight> tag.
+                  </div>
+                ),
               },
             ],
           },
@@ -2708,7 +2710,7 @@ export const lessons: Lesson[] = [
       "Introduction to HTML, its History, and HTML Document Structure.",
     slug: "html-introduction",
     topics: [
-      { name: "What is HTML?", slug: "what-is-html" },
+      { name: "What is HTML?", slug: "what-is-html2" },
       { name: "HTML Document Structure1", slug: "html-document-structure" },
       { name: "Text Formatting", slug: "intro-to-html" },
     ],
@@ -2727,7 +2729,6 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-          
         ],
       },
       "html-document-structure": {
@@ -2743,10 +2744,8 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-         
         ],
       },
-      
     },
   },
   {
@@ -2772,13 +2771,11 @@ export const lessons: Lesson[] = [
               },
             ],
           },
-         
         ],
       },
       
     },
   },
-  
 ];
 
 export default lessons;
