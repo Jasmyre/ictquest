@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   Book,
   Circle,
+  Eye,
   FileText,
   Home,
   Search,
@@ -98,6 +99,7 @@ export function CommandSearch() {
         { icon: Settings, name: "Settings", action: () => "/settings" },
         { icon: FileText, name: "Terms of use", action: () => "/terms" },
         { icon: Shield, name: "Privacy policy", action: () => "/privacy" },
+        { icon: Eye, name: "Access roles", action: () => "/access"}
       ],
     },
   ];
