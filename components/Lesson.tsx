@@ -17,12 +17,20 @@ export default function LessonPage({
   const lessonTopic = lesson?.content[subtopic]?.contents;
   const [index, setIndex] = useState<number>(0);
   const [isFinished, setIsFinished] = useState<boolean>(true);
-  
+
   const router = useRouter();
 
   useEffect(() => {
     Prism.highlightAll();
-  }, []);
+
+    const finish = () => {
+      setIndex(numberOfContent - 1);
+    };
+
+    finish();
+
+    console.log(typeof finish);
+  });
 
   if (!lesson) {
     return <div>Lesson not found</div>;
@@ -46,7 +54,7 @@ export default function LessonPage({
     if (index < numberOfContent - 1) {
       setIndex((prev) => prev + 1);
     } else if (index === numberOfContent - 1 && isFinished) {
-      router.push(`/compliments?topic=${topic}`);
+      router.push(`/compliments?topic=${topic}&subtopic=${subtopic}`);
     }
     setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 10);
   };

@@ -1,55 +1,77 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Button } from "./ui/button";
+import { useState } from "react";
+import { getLocalStorageItem, setLocalStorageItem } from "@/lib/utils";
+import lessons from "@/db/lessons";
 
-// TODO: Fix Later
-// interface UserData {
-//   name: string;
-//   email: string;
-//   [key: string]: number | string;
-// }
+interface ProgressEntry {
+  topic: string;
+  subtopics: string[];
+}
+
+export interface UserData {
+  name: string;
+  email: string;
+  progressData: ProgressEntry[];
+}
 
 const ContinueLearningButton = () => {
   const searchParams = useSearchParams();
   const topic = searchParams.get("topic")!;
-  const router = useRouter()
+  const router = useRouter();
+  const pathname = usePathname();
 
-  // TODO: Fix Later
-  // const [data, setData] = useState<UserData | null>(
-  //   getLocalStorageItem<UserData>("userData") || null,
-  // );
+  const subtopicSlug =
+    searchParams.get("subtopic") ??
+    pathname.split("/").filter(Boolean).pop() ??
+    "";
+
+  const [data, setData] = useState<UserData | null>(
+    getLocalStorageItem<UserData>("userData") || null,
+  );
 
   const handleClick = async () => {
-    // TODO: Fix Later
-    // console.log(data);
-    //
-    // if (data) {
-    //   console.log(typeof data[topic]);
-    //
-    //   const updatedData: UserData = { ...data };
-    //
-    //   if (typeof updatedData[topic] === "number") {
-    //     updatedData[topic] = updatedData[topic] + 1;
-    //   } else {
-    //     updatedData[topic] = 1;
-    //   }
-    //
-    //   setData(updatedData);
-    //   setLocalStorageItem("userData", updatedData);
-    // } else {
-    //   const newData: UserData = {
-    //     name: "",
-    //     email: "",
-    //     [topic]: 1,
-    //   };
-    //
-    //   setData(newData);
-    //   setLocalStorageItem("userData", newData);
-    // }
+    let updatedData: UserData;
 
-    router.push(`/lessons/${topic}#`)
+    if (data) {
+      updatedData = { ...data };
+
+      const progressData: ProgressEntry[] = updatedData.progressData || [];
+
+      let topicEntry = progressData.find((entry) => entry.topic === topic);
+
+      if (!topicEntry) {
+        topicEntry = { topic, subtopics: [] };
+        progressData.push(topicEntry);
+      }
+
+      if (!topicEntry.subtopics.includes(subtopicSlug)) {
+        topicEntry.subtopics.push(subtopicSlug);
+      } else {
+        console.log("Subtopic already recorded");
+      }
+
+      const lesson = lessons.find((item) => item.slug === topic);
+      if (lesson && topicEntry.subtopics.length === lesson.topics.length) {
+        console.log("Lesson already finished");
+      }
+
+      updatedData.progressData = progressData;
+    } else {
+      updatedData = {
+        name: "",
+        email: "",
+        progressData: [{ topic, subtopics: [subtopicSlug] }],
+      };
+    }
+
+    setData(updatedData);
+    setLocalStorageItem("userData", updatedData);
+
+    router.push(`/lessons/${topic}#`);
   };
 
   return (

@@ -4,13 +4,24 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { getLocalStorageItem } from "@/lib/utils";
 import { Award, Book, User } from "lucide-react";
 import { useState } from "react";
-import { CustomProgress } from '../../components/CustomProgress';
+import { CustomProgress } from "../../components/CustomProgress";
+import { UserData } from "@/components/ContinueLearningButton";
+import lessons from "@/db/lessons";
 
 export default function ProfilePage() {
   const [name, setName] = useState("John Doe");
   const [email, setEmail] = useState("john.doe@example.com");
+
+  const data = getLocalStorageItem<UserData>("userData");
+
+  if (!data) {
+    console.log("Data not found!");
+  } else {
+    console.log(data);
+  }
 
   return (
     <main>
@@ -83,50 +94,39 @@ export default function ProfilePage() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      <div>
-                        <div className="mb-1 flex justify-between">
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            HTML Basics
-                          </span>
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            80%
-                          </span>
-                        </div>
-                        <CustomProgress initialValue={0} finalValue={80} />
-                      </div>
-                      <div>
-                        <div className="mb-1 flex justify-between">
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            HTML Elements
-                          </span>
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            60%
-                          </span>
-                        </div>
-                        <CustomProgress initialValue={0} finalValue={60} />
-                      </div>
-                      <div>
-                        <div className="mb-1 flex justify-between">
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            HTML Forms
-                          </span>
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            40%
-                          </span>
-                        </div>
-                        <CustomProgress initialValue={0} finalValue={40} />
-                      </div>
-                      <div>
-                        <div className="mb-1 flex justify-between">
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            HTML5 Features
-                          </span>
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            20%
-                          </span>
-                        </div>
-                        <CustomProgress initialValue={0} finalValue={20} />
-                      </div>
+                      {lessons.map((lesson) => {
+                        const progress = data?.progressData.find(
+                          (item) => item.topic === lesson.slug,
+                        );
+
+                        const completedSubtopics =
+                          progress?.subtopics?.length ?? 0;
+                        const totalSubtopics = lesson.topics.length;
+
+                        const percentage =
+                          totalSubtopics === 0
+                            ? 0
+                            : Math.round(
+                                (completedSubtopics / totalSubtopics) * 100,
+                              );
+
+                        return (
+                          <div key={lesson.slug}>
+                            <div className="mb-1 flex justify-between">
+                              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                {lesson.title}
+                              </span>
+                              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                {percentage}%
+                              </span>
+                            </div>
+                            <CustomProgress
+                              initialValue={0}
+                              finalValue={percentage}
+                            />
+                          </div>
+                        );
+                      })}
                     </div>
                   </CardContent>
                 </Card>
