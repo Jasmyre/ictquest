@@ -2773,7 +2773,36 @@ export const lessons: Lesson[] = [
           },
         ],
       },
-      
+      "images-and-multimedia": {
+        title: "Images and Multimedia",
+        contents: [
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 0,
+                type: "text",
+                label: "Hello world!",
+              },
+            ],
+          },
+        ],
+      },
+      "lists-and tables": {
+        title: "Lists and Tables",
+        contents: [
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 0,
+                type: "text",
+                label: "Hello world!",
+              },
+            ],
+          },
+        ],
+      },
     },
   },
 ];
