@@ -106,8 +106,9 @@ export const MultipleChoice = ({
             <MultipleChoiceButton
               key={option}
               disabledButtons={disabledButtons}
-              handleMultipleChoiceClick={handleMultipleChoiceClick}
+              handleMultipleChoiceClickAction={handleMultipleChoiceClick}
               label={option}
+              
             />
           );
         })}
