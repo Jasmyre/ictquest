@@ -29,6 +29,20 @@ export default function LessonPage({
     // };
     // finish();
     // console.log(typeof finish);
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowRight" && isFinished) {
+        handleNextButton();
+      } else if (event.key === "ArrowLeft") {
+        handleBackButton();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   });
 
   if (!lesson) {

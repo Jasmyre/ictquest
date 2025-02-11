@@ -110,6 +110,7 @@ export function CommandSearch() {
         <Button
           variant="outline"
           className="w-full justify-between border-gray-300 bg-gray-50 text-sm text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-900"
+          tabIndex={-1}
         >
           <div className="flex w-[225px] items-center justify-between dark:text-gray-400">
             <div className="flex gap-4">
