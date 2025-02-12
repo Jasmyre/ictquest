@@ -5,10 +5,10 @@ import { Practice } from "@/components/Practice";
 import { shuffle } from "@/lib/utils";
 import { JSX } from "react";
 
-import Image from "next/image";
+import Browser from "@/components/Browser";
 import CodeBlock from "@/components/Code";
 import CodeHighlight from "@/components/CodeHighlight";
-import Browser from "@/components/Browser";
+import Image from "next/image";
 
 export interface Topic {
   name: string;
@@ -47,6 +47,7 @@ export const lessons: Lesson[] = [
     topics: [
       { name: "HTML Introduction", slug: "html-introduction" },
       { name: "HTML Brief Examples", slug: "html-brief-examples" },
+      { name: "HTML Document Structure", slug: "html-document-structure" },
     ],
     content: {
       "html-introduction": {
@@ -2751,7 +2752,7 @@ export const lessons: Lesson[] = [
   {
     title: "HTML Elements",
     description: "Explore common HTML elements",
-    slug: "html-elements",
+    slug: "html-elements2",
     topics: [
       { name: "Links and Anchors", slug: "links-and-anchors" },
       { name: "Images and Multimedia", slug: "images-and-multimedia" },
