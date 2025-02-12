@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     "google-site-verification": GOOGLE_SITE_VERIFICATION,
   },
 };
-/*
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -95,4 +95,4 @@ export default function RootLayout({
     </html>
   );
 }
-*/
+
