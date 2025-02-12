@@ -5,7 +5,7 @@ import { ThemeProvider } from "../components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
-import Layout from './components/layout';
+import Layout from "./components/layout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     "google-site-verification": GOOGLE_SITE_VERIFICATION,
   },
 };
-
+/*
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -95,3 +95,4 @@ export default function RootLayout({
     </html>
   );
 }
+*/
