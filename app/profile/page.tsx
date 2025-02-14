@@ -1,23 +1,34 @@
 "use client";
 
-import { UserData } from "@/components/ContinueLearningButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import lessons from "@/db/lessons";
-import { toast } from "@/hooks/use-toast";
 import { getLocalStorageItem, removeLocalStorageItem } from "@/lib/utils";
 import { Award, Book, User } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CustomProgress } from "../../components/CustomProgress";
+import { UserData } from "@/components/ContinueLearningButton";
+import lessons from "@/db/lessons";
+import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
+import {
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
 export default function ProfilePage() {
   const [name, setName] = useState("John Doe");
   const [email, setEmail] = useState("john.doe@example.com");
 
-  const router = useRouter();
+  const router = useRouter(); 
 
   const data = getLocalStorageItem<UserData>("userData");
 
@@ -32,8 +43,8 @@ export default function ProfilePage() {
     router.refresh();
     toast({
       description: "Data has been removed successfully",
-    });
-  };
+    })
+  }
 
   return (
     <main>
@@ -180,6 +191,33 @@ export default function ProfilePage() {
                 >
                   Reset Data
                 </Button> */}
+                  <AlertDialog>
+                    <AlertDialogTrigger className="h-9 rounded bg-red-500 px-4 py-2 text-red-200 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-500">
+                      Delete Data
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="border-gray-200 bg-white text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete your data.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="border border-gray-300 bg-white text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
+                          Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          className="bg-indigo-600 text-white transition-colors duration-200 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+                          onClick={handleReset}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
               </div>
             </div>
           </div>
