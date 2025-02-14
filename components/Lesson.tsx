@@ -8,6 +8,18 @@ import { useEffect, useState } from "react";
 import { lessons } from "@/db/lessons";
 import LessonCard from "@/components/LessonCard";
 import Prism from "prismjs";
+import { getLocalStorageItem, setLocalStorageItem } from "@/lib/utils";
+
+interface ProgressEntry {
+  topic: string;
+  subtopics: string[];
+}
+
+export interface UserData {
+  name: string;
+  email: string;
+  progressData: ProgressEntry[];
+}
 
 export default function LessonPage({
   topic,
@@ -17,6 +29,9 @@ export default function LessonPage({
   const lessonTopic = lesson?.content[subtopic]?.contents;
   const [index, setIndex] = useState<number>(0);
   const [isFinished, setIsFinished] = useState<boolean>(true);
+  const [data, setData] = useState<UserData | null>(
+    getLocalStorageItem<UserData>("userData") || null,
+  );
 
   const router = useRouter();
 
@@ -67,6 +82,43 @@ export default function LessonPage({
     if (index < numberOfContent - 1) {
       setIndex((prev) => prev + 1);
     } else if (index === numberOfContent - 1 && isFinished) {
+      let updatedData: UserData;
+
+      if (data) {
+        updatedData = { ...data };
+
+        const progressData: ProgressEntry[] = updatedData.progressData || [];
+
+        let topicEntry = progressData.find((entry) => entry.topic === topic);
+
+        if (!topicEntry) {
+          topicEntry = { topic, subtopics: [] };
+          progressData.push(topicEntry);
+        }
+
+        if (!topicEntry.subtopics.includes(subtopic)) {
+          topicEntry.subtopics.push(subtopic);
+        } else {
+          console.log("Subtopic already recorded");
+        }
+
+        const lesson = lessons.find((item) => item.slug === topic);
+        if (lesson && topicEntry.subtopics.length === lesson.topics.length) {
+          console.log("Lesson already finished");
+        }
+
+        updatedData.progressData = progressData;
+      } else {
+        updatedData = {
+          name: "",
+          email: "",
+          progressData: [{ topic, subtopics: [subtopic] }],
+        };
+      }
+
+      setData(updatedData);
+      setLocalStorageItem("userData", updatedData);
+
       router.push(`/compliments?topic=${topic}&subtopic=${subtopic}`);
     }
     setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 10);
