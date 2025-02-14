@@ -73,6 +73,7 @@ export default function ProfilePage() {
 
   const handleReset = () => {
     removeLocalStorageItem("userData");
+    setOverallProgress(0)
     toast({
       description: "Data has been removed successfully",
     });
