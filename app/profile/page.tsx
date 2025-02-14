@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import { CustomProgress } from "../../components/CustomProgress";
 import { UserData } from "@/components/ContinueLearningButton";
 import lessons from "@/db/lessons";
-import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import {
   AlertDialogHeader,
@@ -23,6 +22,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   const [name, setName] = useState("John Doe");
@@ -53,7 +53,7 @@ export default function ProfilePage() {
       });
 
       const averageProgress = count > 0 ? totalPercentage / count : 0;
-      setOverallProgress(Number (averageProgress.toFixed(2)));
+      setOverallProgress(Number(averageProgress.toFixed(2)));
 
       if (averageProgress < 33.33) {
         console.log("Beginner: " + overallProgress);
@@ -73,11 +73,13 @@ export default function ProfilePage() {
 
   const handleReset = () => {
     removeLocalStorageItem("userData");
-    router.refresh();
     toast({
       description: "Data has been removed successfully",
     });
+    router.refresh();
   };
+
+  const lessonsToShow = lessons.slice(0, 2);
 
   return (
     <main>
@@ -133,7 +135,7 @@ export default function ProfilePage() {
                       </div>
                       <Button
                         type="submit"
-                        className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
+                        className="border border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200 dark:border-gray-800 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
                       >
                         Update Profile
                       </Button>
@@ -165,7 +167,7 @@ export default function ProfilePage() {
                         />
                       </div>
 
-                      {lessons.map((lesson) => {
+                      {lessonsToShow.map((lesson) => {
                         const progress = data?.progressData.find(
                           (item) => item.topic === lesson.slug,
                         );
@@ -198,6 +200,19 @@ export default function ProfilePage() {
                           </div>
                         );
                       })}
+
+                      {lessons.length > 2 && (
+                        <div className="mt-4">
+                          <Button
+                            className={
+                              "border border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200 dark:border-gray-800 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                            }
+                            onClick={() => router.push("/progress")}
+                          >
+                            View All
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
