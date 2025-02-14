@@ -39,11 +39,11 @@ export default function LessonPage({
     Prism.highlightAll();
 
     // Auto finish
-    // const finish = () => {
-    //   setIndex(numberOfContent - 1);
-    // };
-    // finish();
-    // console.log(typeof finish);
+    const finish = () => {
+      setIndex(numberOfContent - 1);
+    };
+    finish();
+    console.log(typeof finish);
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight" && isFinished) {
