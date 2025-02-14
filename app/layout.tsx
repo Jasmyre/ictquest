@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/react";
 
 import "./globals.css";
 import Layout from "./components/layout";
+import { Toaster } from '../components/ui/toaster';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -89,6 +90,7 @@ export default function RootLayout({
           <Layout>
           {children}
           </Layout>
+          <Toaster />
         </ThemeProvider>
         <Analytics />
       </body>

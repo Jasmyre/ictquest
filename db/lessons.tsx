@@ -5682,7 +5682,7 @@ export const lessons: Lesson[] = [
     },
   },
   {
-    title: "HTML Elements",
+    title: "HTML Elements--",
     description: "Explore common HTML elements",
     slug: "html-elements2",
     topics: [

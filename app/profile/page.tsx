@@ -1,19 +1,23 @@
 "use client";
 
+import { UserData } from "@/components/ContinueLearningButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getLocalStorageItem } from "@/lib/utils";
+import lessons from "@/db/lessons";
+import { toast } from "@/hooks/use-toast";
+import { getLocalStorageItem, removeLocalStorageItem } from "@/lib/utils";
 import { Award, Book, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CustomProgress } from "../../components/CustomProgress";
-import { UserData } from "@/components/ContinueLearningButton";
-import lessons from "@/db/lessons";
 
 export default function ProfilePage() {
   const [name, setName] = useState("John Doe");
   const [email, setEmail] = useState("john.doe@example.com");
+
+  const router = useRouter();
 
   const data = getLocalStorageItem<UserData>("userData");
 
@@ -22,6 +26,14 @@ export default function ProfilePage() {
   } else {
     console.log(data);
   }
+
+  const handleReset = () => {
+    removeLocalStorageItem("userData");
+    router.refresh();
+    toast({
+      description: "Data has been removed successfully",
+    });
+  };
 
   return (
     <main>
@@ -57,7 +69,7 @@ export default function ProfilePage() {
                           id="name"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          className="bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
+                          className="border-indigo-500 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
                         />
                       </div>
                       <div>
@@ -72,7 +84,7 @@ export default function ProfilePage() {
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
+                          className="border-indigo-500 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
                         />
                       </div>
                       <Button
@@ -161,6 +173,13 @@ export default function ProfilePage() {
                     </ul>
                   </CardContent>
                 </Card>
+
+                {/* <Button
+                  className="bg-red-500 text-red-200 hover:bg-red-600"
+                  onClick={handleReset}
+                >
+                  Reset Data
+                </Button> */}
               </div>
             </div>
           </div>
