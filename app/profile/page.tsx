@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getLocalStorageItem, removeLocalStorageItem } from "@/lib/utils";
 import { Award, Book, User } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomProgress } from "../../components/CustomProgress";
 import { UserData } from "@/components/ContinueLearningButton";
 import lessons from "@/db/lessons";
@@ -27,10 +27,43 @@ import {
 export default function ProfilePage() {
   const [name, setName] = useState("John Doe");
   const [email, setEmail] = useState("john.doe@example.com");
+  const [overallProgress, setOverallProgress] = useState(0);
 
-  const router = useRouter(); 
+  const router = useRouter();
 
   const data = getLocalStorageItem<UserData>("userData");
+
+  useEffect(() => {
+    if (data) {
+      let totalPercentage = 0;
+      let count = 0;
+
+      lessons.forEach((lesson) => {
+        const progress = data?.progressData.find(
+          (item) => item.topic === lesson.slug,
+        );
+
+        const completedSubtopics = progress?.subtopics?.length ?? 0;
+        const totalSubtopics = lesson.topics.length;
+
+        if (totalSubtopics > 0) {
+          totalPercentage += (completedSubtopics / totalSubtopics) * 100;
+          count++;
+        }
+      });
+
+      const averageProgress = count > 0 ? totalPercentage / count : 0;
+      setOverallProgress(Number (averageProgress.toFixed(2)));
+
+      if (averageProgress < 33.33) {
+        console.log("Beginner: " + overallProgress);
+      } else if (averageProgress < 66.67) {
+        console.log("Intermediate: " + overallProgress);
+      } else if (averageProgress < 100) {
+        console.log("Expert: " + overallProgress);
+      }
+    }
+  }, [data, overallProgress]);
 
   if (!data) {
     console.log("Data not found!");
@@ -43,8 +76,8 @@ export default function ProfilePage() {
     router.refresh();
     toast({
       description: "Data has been removed successfully",
-    })
-  }
+    });
+  };
 
   return (
     <main>
@@ -117,6 +150,21 @@ export default function ProfilePage() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
+                      <div>
+                        <div className="mb-1 flex justify-between">
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Overall HTML Mastery
+                          </span>
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {overallProgress}%
+                          </span>
+                        </div>
+                        <CustomProgress
+                          initialValue={0}
+                          finalValue={overallProgress}
+                        />
+                      </div>
+
                       {lessons.map((lesson) => {
                         const progress = data?.progressData.find(
                           (item) => item.topic === lesson.slug,
@@ -185,39 +233,33 @@ export default function ProfilePage() {
                   </CardContent>
                 </Card>
 
-                {/* <Button
-                  className="bg-red-500 text-red-200 hover:bg-red-600"
-                  onClick={handleReset}
-                >
-                  Reset Data
-                </Button> */}
-                  <AlertDialog>
-                    <AlertDialogTrigger className="h-9 rounded bg-red-500 px-4 py-2 text-red-200 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-500">
-                      Delete Data
-                    </AlertDialogTrigger>
-                    <AlertDialogContent className="border-gray-200 bg-white text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200">
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Are you absolutely sure?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete your data.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel className="border border-gray-300 bg-white text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
-                          Cancel
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                          className="bg-indigo-600 text-white transition-colors duration-200 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
-                          onClick={handleReset}
-                        >
-                          Continue
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                <AlertDialog>
+                  <AlertDialogTrigger className="h-9 rounded bg-red-500 px-4 py-2 text-red-200 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-500">
+                    Delete Data
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="border-gray-200 bg-white text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete your data.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="border border-gray-300 bg-white text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        className="bg-indigo-600 text-white transition-colors duration-200 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+                        onClick={handleReset}
+                      >
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
           </div>
