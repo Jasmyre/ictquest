@@ -1,28 +1,30 @@
 "use client";
 
+import { UserData } from "@/components/ContinueLearningButton";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getLocalStorageItem, removeLocalStorageItem } from "@/lib/utils";
-import { Award, Book, User } from "lucide-react";
-import { useEffect, useState } from "react";
-import { CustomProgress } from "../../components/CustomProgress";
-import { UserData } from "@/components/ContinueLearningButton";
 import lessons from "@/db/lessons";
 import { toast } from "@/hooks/use-toast";
-import {
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from "@/components/ui/alert-dialog";
+import { getLocalStorageItem, removeLocalStorageItem } from "@/lib/utils";
+import { Award, Book, User } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { CustomProgress } from "../../components/CustomProgress";
+import { CustomTooltip } from "../../components/CustomTooltip";
+import { CustomBadge } from "@/components/CustomBadge";
 
 export default function ProfilePage() {
   const [name, setName] = useState("John Doe");
@@ -73,9 +75,11 @@ export default function ProfilePage() {
 
   const handleReset = () => {
     removeLocalStorageItem("userData");
-    setOverallProgress(0)
+    setOverallProgress(0);
     toast({
       description: "Data has been removed successfully",
+      className:
+        " bg-gray-100 dark:bg-gray-900 border border-gray-400 dark:border-gray-700 text-gray-500 dark:text-gray-200",
     });
     router.refresh();
   };
@@ -98,9 +102,11 @@ export default function ProfilePage() {
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                   <CardHeader>
-                    <CardTitle className="flex items-center text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                      <User className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-                      Personal Information
+                    <CardTitle className="flex items-center justify-between text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                      <div className="flex">
+                        <User className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                        <p>Personal Information</p>
+                      </div>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -146,9 +152,36 @@ export default function ProfilePage() {
 
                 <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                   <CardHeader>
-                    <CardTitle className="flex items-center text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                      <Book className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-                      Learning Progress
+                    <CardTitle className="flex items-center justify-between text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                      <div className="flex">
+                        <Book className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                        Learning Progress
+                      </div>
+                      <CustomTooltip
+                        content={() =>
+                          overallProgress < 33.33
+                            ? "You are a beginner in HTML."
+                            : overallProgress < 66.66
+                              ? "You are now in intermediate HTML."
+                              : "You are an Expert in HTML."
+                        }
+                      >
+                        <CustomBadge
+                          color={
+                            overallProgress < 33.33
+                              ? "green"
+                              : overallProgress < 66.66
+                                ? "orange"
+                                : "red"
+                          }
+                        >
+                          {overallProgress < 33.33
+                            ? "Beginner"
+                            : overallProgress < 66.66
+                              ? "Intermediate"
+                              : "Expert"}
+                        </CustomBadge>
+                      </CustomTooltip>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -250,7 +283,7 @@ export default function ProfilePage() {
                 </Card>
 
                 <AlertDialog>
-                  <AlertDialogTrigger className="h-9 rounded bg-red-500 px-4 py-2 text-red-200 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-500">
+                  <AlertDialogTrigger className=":hover:text-red-200 h-9 rounded bg-gray-200 px-4 py-2 text-gray-400 hover:text-red-200 hover:bg-red-500 dark:bg-gray-800 dark:text-gray-500 dark:hover:bg-red-500 dark:hover:text-red-200">
                     Delete Data
                   </AlertDialogTrigger>
                   <AlertDialogContent className="border-gray-200 bg-white text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200">
