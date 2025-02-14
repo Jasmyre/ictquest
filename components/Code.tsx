@@ -38,10 +38,10 @@ const CodeBlock = ({
           border: "none",
           minHeight: "20vh",
         }}
-        className="m-0 bg-[#2D2D2D] p-2"
+        className="m-0 bg-[#2D2D2D] p-2 max-sm:text-xs"
       >
         <code
-          className={`language-${language} m-0 h-full min-h-[20vh] rounded-b-xl border-none bg-[2D2D2D]`}
+          className={`language-${language} max-sm:text-xs m-0 h-full min-h-[20vh] rounded-b-xl border-none bg-[2D2D2D]`}
           dangerouslySetInnerHTML={{ __html: highlightedCode }}
         />
       </pre>

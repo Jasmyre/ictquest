@@ -845,7 +845,7 @@ export const lessons: Lesson[] = [
                 id: 0,
                 type: "text",
                 label:
-                  "Hey there! Welcome to HTML Brief Examples. Today, we're gonna build a simple static webpage step by step using basic HTML elements. We'll add each element one by one so you can see how everything connects.",
+                  "Hey there! Welcome to HTML Brief Examples. In this lesson we're gonna build a simple static webpage step by step using basic HTML elements. We'll add each element one by one so you can see how everything connects.",
               },
             ],
           },
@@ -2283,19 +2283,14 @@ export const lessons: Lesson[] = [
       },
     },
   },
+
   {
     title: "HTML Elements",
     description: "Learn different HTML elements",
     slug: "html-elements",
     topics: [
-      {
-        name: "HTML Typography",
-        slug: "html-typography",
-      },
-      {
-        name: "Inputs and Attributes",
-        slug: "inputs-and-attributes",
-      },
+      { name: "HTML Typography", slug: "html-typography" },
+      { name: "Inputs and Attributes", slug: "inputs-and-attributes" },
     ],
     content: {
       "html-typography": {
@@ -2311,8 +2306,7 @@ export const lessons: Lesson[] = [
                   <div>
                     Welcome to the HTML Typography lesson! <br /> <br /> In this
                     lesson, we&apos;ll cover various text formatting tags
-                    including
-                    <CodeHighlight>&lt;h1&gt;</CodeHighlight> to{" "}
+                    including <CodeHighlight>&lt;h1&gt;</CodeHighlight> to{" "}
                     <CodeHighlight>&lt;h6&gt;</CodeHighlight>,{" "}
                     <CodeHighlight>&lt;p&gt;</CodeHighlight>,{" "}
                     <CodeHighlight>&lt;strong&gt;</CodeHighlight>,{" "}
@@ -2321,7 +2315,7 @@ export const lessons: Lesson[] = [
                     <CodeHighlight>&lt;code&gt;</CodeHighlight>,{" "}
                     <CodeHighlight>&lt;small&gt;</CodeHighlight>,{" "}
                     <CodeHighlight>&lt;abbr&gt;</CodeHighlight>,{" "}
-                    <CodeHighlight>&lt;cite&gt;</CodeHighlight>,
+                    <CodeHighlight>&lt;cite&gt;</CodeHighlight>,{" "}
                     <CodeHighlight>&lt;address&gt;</CodeHighlight>, and more.
                     Let&apos;s get started!,
                   </div>
@@ -3711,7 +3705,7 @@ export const lessons: Lesson[] = [
           },
         ],
       },
-      
+
       "inputs-and-attributes": {
         title: "Inputs and Attributes",
         contents: [
@@ -3723,11 +3717,11 @@ export const lessons: Lesson[] = [
                 type: "element",
                 label: (
                   <div>
-                    Welcome to the Inputs and Attributes lesson! Today we’ll
-                    explore the <CodeHighlight>{"<input>"}</CodeHighlight>{" "}
+                    Welcome to the Inputs and Attributes lesson! In this lesson
+                    we’ll explore the <CodeHighlight>{"<input>"}</CodeHighlight>{" "}
                     element and the many attributes that help control its
-                    behavior. We&apos;ll take it slow, see live previews, and even
-                    answer some questions along the way.
+                    behavior. We&apos;ll take it slow, see live previews, and
+                    even answer some questions along the way.
                   </div>
                 ),
               },
@@ -3753,7 +3747,7 @@ export const lessons: Lesson[] = [
                 label: (
                   <CodeBlock
                     language="HTML"
-                    code={`<input type="text" />`}
+                    code={`<input />`}
                     initialCode={["", ""]}
                   />
                 ),
@@ -3763,6 +3757,28 @@ export const lessons: Lesson[] = [
           {
             submit: { label: "Continue" },
             content: [
+              {
+                id: 1,
+                type: "element",
+                label: (
+                  <div>
+                    The <CodeHighlight>{"<input>"}</CodeHighlight> element
+                    creates interactive controls in forms. For example, a simple
+                    text input looks like this:
+                  </div>
+                ),
+              },
+              {
+                id: 2,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input />`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
               {
                 id: 3,
                 type: "element",
@@ -3779,11 +3795,111 @@ export const lessons: Lesson[] = [
             submit: { label: "Continue" },
             content: [
               {
+                id: 1,
+                type: "element",
+                label: (
+                  <div>
+                    Lets proceed in attributes. Attributes are like a settings
+                    where you control how an elements works or displayed.
+                    <br />
+                    <br />
+                    Although not all, attributes are usually followed by{" "}
+                    <CodeHighlight>{`=""`}</CodeHighlight>. Inside the quotes
+                    are the values you put in an attribute.
+                  </div>
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 1,
+                type: "element",
+                label: (
+                  <div>
+                    <p>
+                      The <CodeHighlight>{"placeholder"}</CodeHighlight>{" "}
+                      attribute gives a hint on what the input is.
+                    </p>
+                  </div>
+                ),
+              },
+              {
+                id: 2,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input placeholder="This is a placeholder" />`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 1,
+                type: "element",
+                label: (
+                  <div>
+                    <p>
+                      The <CodeHighlight>{"placeholder"}</CodeHighlight>{" "}
+                      attribute give a hint on what the input is.
+                    </p>
+                  </div>
+                ),
+              },
+              {
+                id: 2,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input placeholder="This is a placeholder" />`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
+              {
+                id: 3,
+                type: "element",
+                label: (
+                  <Browser
+                    content={`<input placeholder="This is a placeholder" />`}
+                    title="Preview: Simple Text Input"
+                  />
+                ),
+              },
+              {
                 id: 4,
                 type: "element",
                 label: (
+                  <div>
+                    <p>
+                      In this example the{" "}
+                      <CodeHighlight>{"placeholder"}</CodeHighlight> attribute
+                      has the value of{" "}
+                      <CodeHighlight>{"This is a placeholder"}</CodeHighlight>.
+                    </p>
+                  </div>
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 4,
+                type: "element",
+                label: ({ setIsFinished }) => (
                   <MultipleChoice
-                    setIsFinishedAction={() => {}}
+                    setIsFinishedAction={setIsFinished}
                     title={[
                       "Which HTML element is used to create interactive controls in forms?",
                     ]}
@@ -3809,8 +3925,14 @@ export const lessons: Lesson[] = [
                 label: (
                   <div>
                     The <CodeHighlight>{"type"}</CodeHighlight> attribute
-                    defines the kind of input control. Options include &quot;text&quot;,
-                    &quot;email&quot;, &quot;password&quot;, &quot;number&quot;, etc.
+                    defines the kind of input control. Options include{" "}
+                    <CodeHighlight>{`"text"`}</CodeHighlight>,{" "}
+                    <CodeHighlight>{`"email"`}</CodeHighlight>,{" "}
+                    <CodeHighlight>{`"password"`}</CodeHighlight>, etc.
+                    <br /> <br />
+                    The type <CodeHighlight>{"text"}</CodeHighlight> is the
+                    default type of an{" "}
+                    <CodeHighlight>{"<input>"}</CodeHighlight>.
                   </div>
                 ),
               },
@@ -3824,7 +3946,9 @@ export const lessons: Lesson[] = [
                 type: "element",
                 label: (
                   <div>
-                    Here’s an example of a text input using the type attribute:
+                    Here&apos;s an example of a{" "}
+                    <CodeHighlight>text</CodeHighlight> input using the{" "}
+                    <CodeHighlight>type</CodeHighlight> attribute:
                   </div>
                 ),
               },
@@ -3834,7 +3958,7 @@ export const lessons: Lesson[] = [
                 label: (
                   <CodeBlock
                     language="HTML"
-                    code={`<input type="text" />`}
+                    code={`<input placeholder="Type something here" type="text" />`}
                     initialCode={["", ""]}
                   />
                 ),
@@ -3845,12 +3969,102 @@ export const lessons: Lesson[] = [
             submit: { label: "Continue" },
             content: [
               {
+                id: 6,
+                type: "element",
+                label: (
+                  <div>
+                    Here&apos;s an example of a{" "}
+                    <CodeHighlight>text</CodeHighlight> input using the{" "}
+                    <CodeHighlight>type</CodeHighlight> attribute:
+                  </div>
+                ),
+              },
+              {
+                id: 7,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input placeholder="Type something here" type="text" />`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
+              {
                 id: 8,
                 type: "element",
                 label: (
                   <Browser
-                    content={`<input type="text" />`}
+                    content={`<input placeholder="Type Something here." type="text" />`}
                     title="Preview: Text Input with type='text'"
+                  />
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 6,
+                type: "element",
+                label: (
+                  <div>
+                    Next, The type <CodeHighlight>{"password"}</CodeHighlight>{" "}
+                    works similar to text input, but it hides what you type.
+                    <br />
+                    <br />
+                    This is useful when entering sensitive info like passwords.
+                  </div>
+                ),
+              },
+              {
+                id: 7,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input placeholder="Type something here" type="password" />`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 6,
+                type: "element",
+                label: (
+                  <div>
+                    Next, The type <CodeHighlight>{"password"}</CodeHighlight>{" "}
+                    works similar to text input, but it hides what you type.
+                    <br />
+                    <br />
+                    This is useful when entering sensitive info like passwords.
+                  </div>
+                ),
+              },
+              {
+                id: 7,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input placeholder="Type something here" type="password" />`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
+              {
+                id: 8,
+                type: "element",
+                label: (
+                  <Browser
+                    content={`<input placeholder="Type Something here." type="password" />`}
+                    title="Preview: Text Input with type='password'"
                   />
                 ),
               },
@@ -3862,9 +4076,9 @@ export const lessons: Lesson[] = [
               {
                 id: 9,
                 type: "element",
-                label: (
+                label: ({ setIsFinished }) => (
                   <MultipleChoice
-                    setIsFinishedAction={() => {}}
+                    setIsFinishedAction={setIsFinished}
                     title={[
                       "What will be the effect of setting type='password'?",
                     ]}
@@ -3890,22 +4104,25 @@ export const lessons: Lesson[] = [
             submit: { label: "Continue" },
             content: [
               {
-                id: 10,
+                id: 6,
                 type: "element",
                 label: (
                   <div>
-                    The <CodeHighlight>{"placeholder"}</CodeHighlight> attribute
-                    displays a hint to the user about what to enter.
+                    <CodeHighlight>radio</CodeHighlight> type inputs let a user
+                    choose only one option from a set.
+                    <br /> <br />
+                    For example, picking your gender in a form. All radio
+                    buttons in the same group should have the same name.
                   </div>
                 ),
               },
               {
-                id: 11,
+                id: 7,
                 type: "element",
                 label: (
                   <CodeBlock
                     language="HTML"
-                    code={`<input type="text" placeholder="Enter your name" />`}
+                    code={`<input type="radio" name="gender"/> <label>Male</label>\n<input type="radio" name="gender"/> <label>Female</label>`}
                     initialCode={["", ""]}
                   />
                 ),
@@ -3916,12 +4133,36 @@ export const lessons: Lesson[] = [
             submit: { label: "Continue" },
             content: [
               {
-                id: 12,
+                id: 6,
+                type: "element",
+                label: (
+                  <div>
+                    <CodeHighlight>radio</CodeHighlight> type inputs let a user
+                    choose only one option from a set.
+                    <br /> <br />
+                    For example, picking your gender in a form. All radio
+                    buttons in the same group should have the same name.
+                  </div>
+                ),
+              },
+              {
+                id: 7,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input type="radio" name="gender"/> <label>Male</label>\n<input type="radio" name="gender"/> <label>Female</label>`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
+              {
+                id: 8,
                 type: "element",
                 label: (
                   <Browser
-                    content={`<input type="text" placeholder="Enter your name" />`}
-                    title="Preview: Input with Placeholder"
+                    content={`<input type="radio" name="gender"/> <label>Male</label>\n<input type="radio" name="gender"/> <label>Female</label>`}
+                    title="Preview: Input with type='radio'"
                   />
                 ),
               },
@@ -3931,25 +4172,133 @@ export const lessons: Lesson[] = [
             submit: { label: "Continue" },
             content: [
               {
-                id: 13,
+                id: 6,
                 type: "element",
                 label: (
-                  <MultipleChoice
-                    setIsFinishedAction={() => {}}
-                    title={["What does the 'placeholder' attribute do?"]}
-                    choices={{
-                      options: [
-                        "Sets the default value",
-                        "Displays a hint",
-                        "Specifies the input type",
-                        "Disables the input",
-                      ],
-                      answer: "Displays a hint",
-                    }}
-                    response={{
-                      positive: "Correct!",
-                      negative: "Not quite, try again!",
-                    }}
+                  <div>
+                    <CodeHighlight>checkbox</CodeHighlight> type let users
+                    select one or more options. They are handy for questions
+                    where more than one answer may apply, like picking your
+                    hobbies.
+                  </div>
+                ),
+              },
+              {
+                id: 7,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input type="checkbox"/> <label>Drawing</label>\n<input type="checkbox"/> <label>Dancing</label>\n<input type="checkbox"/> <label>Singing</label>`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 6,
+                type: "element",
+                label: (
+                  <div>
+                    <CodeHighlight>checkbox</CodeHighlight> type let users
+                    select one or more options. They are handy for questions
+                    where more than one answer may apply, like picking your
+                    hobbies.
+                  </div>
+                ),
+              },
+              {
+                id: 7,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input type="checkbox"/> <label>Drawing</label>\n<input type="checkbox"/> <label>Dancing</label>\n<input type="checkbox"/> <label>Singing</label>`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
+              {
+                id: 8,
+                type: "element",
+                label: (
+                  <Browser
+                    content={`<input type="checkbox"/> <label>Drawing</label>\n<input type="checkbox"/> <label>Dancing</label>\n<input type="checkbox"/> <label>Singing</label>`}
+                    title="Preview: Input with type='checkbox'"
+                  />
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 6,
+                type: "element",
+                label: (
+                  <div>
+                    <CodeHighlight>disabled</CodeHighlight> attribute. The{" "}
+                    <CodeHighlight>disabled</CodeHighlight> attribute is a
+                    boolean attribute that stops users from clicking, typing, or
+                    changing the input. Plus, when an input is disabled, it
+                    usually shows up as greyed out on the page, and its value
+                    won&apos;t be sent when you submit the form.
+                  </div>
+                ),
+              },
+              {
+                id: 7,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input placeholder="Email:" type="text" disabled="true"/>\n<br/>\n<input placeholder="Password:" type="password"/>`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 6,
+                type: "element",
+                label: (
+                  <div>
+                    <CodeHighlight>disabled</CodeHighlight> attribute. The{" "}
+                    <CodeHighlight>disabled</CodeHighlight> attribute is a
+                    boolean attribute that stops users from clicking, typing, or
+                    changing the input. Plus, when an input is disabled, it
+                    usually shows up as greyed out on the page, and its value
+                    won&apos;t be sent when you submit the form.
+                  </div>
+                ),
+              },
+              {
+                id: 7,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input placeholder="Email:" type="text" disabled="true"/>\n<br/>\n<input placeholder="Password:" type="password"/>`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
+              {
+                id: 8,
+                type: "element",
+                label: (
+                  <Browser
+                    content={`<input placeholder="Email:" type="text" disabled="true"/>\n<br/>\n<input placeholder="Password:" type="password"/>`}
+                    title="Preview: input with disabled attribute."
                   />
                 ),
               },
@@ -3985,6 +4334,27 @@ export const lessons: Lesson[] = [
             submit: { label: "Continue" },
             content: [
               {
+                id: 14,
+                type: "element",
+                label: (
+                  <div>
+                    The <CodeHighlight>{"value"}</CodeHighlight> attribute sets
+                    a default value for the input.
+                  </div>
+                ),
+              },
+              {
+                id: 15,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input type="text" value="John Doe" />`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
+              {
                 id: 16,
                 type: "element",
                 label: (
@@ -4002,9 +4372,9 @@ export const lessons: Lesson[] = [
               {
                 id: 17,
                 type: "element",
-                label: (
+                label: ({ setIsFinished }) => (
                   <MultipleChoice
-                    setIsFinishedAction={() => {}}
+                    setIsFinishedAction={setIsFinished}
                     title={["What is the purpose of the 'value' attribute?"]}
                     choices={{
                       options: [
@@ -4033,7 +4403,7 @@ export const lessons: Lesson[] = [
                 label: (
                   <div>
                     The <CodeHighlight>{"name"}</CodeHighlight> attribute
-                    identifies the form data when submitted.
+                    identifies the input and the form data when submitted.
                   </div>
                 ),
               },
@@ -4043,7 +4413,7 @@ export const lessons: Lesson[] = [
                 label: (
                   <CodeBlock
                     language="HTML"
-                    code={`<input type="text" name="username" />`}
+                    code={`<input placeholder="Username:" type="text" name="username" />`}
                     initialCode={["", ""]}
                   />
                 ),
@@ -4054,13 +4424,44 @@ export const lessons: Lesson[] = [
             submit: { label: "Continue" },
             content: [
               {
+                id: 18,
+                type: "element",
+                label: (
+                  <div>
+                    The <CodeHighlight>{"name"}</CodeHighlight> attribute
+                    identifies the input and the form data when submitted.
+                  </div>
+                ),
+              },
+              {
+                id: 19,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input placeholder="Username:" type="text" name="username" />`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
+              {
                 id: 20,
                 type: "element",
                 label: (
                   <Browser
-                    content={`<input type="text" name="username" />`}
+                    content={`<input placeholder="Username:" type="text" name="username" />`}
                     title="Preview: Input with Name"
                   />
+                ),
+              },
+              {
+                id: 21,
+                type: "element",
+                label: (
+                  <div>
+                    This attribute does not do anything visually but it does
+                    help in naming inputs.
+                  </div>
                 ),
               },
             ],
@@ -4071,9 +4472,9 @@ export const lessons: Lesson[] = [
               {
                 id: 21,
                 type: "element",
-                label: (
+                label: ({ setIsFinished }) => (
                   <MultipleChoice
-                    setIsFinishedAction={() => {}}
+                    setIsFinishedAction={setIsFinished}
                     title={[
                       "Which attribute is used to identify form data on submission?",
                     ]}
@@ -4109,7 +4510,7 @@ export const lessons: Lesson[] = [
                 label: (
                   <CodeBlock
                     language="HTML"
-                    code={`<input type="text" id="userInput" />`}
+                    code={`<input placeholder="Password:" type="password" id="userPassword" />`}
                     initialCode={["", ""]}
                   />
                 ),
@@ -4120,13 +4521,45 @@ export const lessons: Lesson[] = [
             submit: { label: "Continue" },
             content: [
               {
+                id: 22,
+                type: "element",
+                label: (
+                  <div>
+                    The <CodeHighlight>{"id"}</CodeHighlight> attribute uniquely
+                    identifies an element.
+                  </div>
+                ),
+              },
+              {
+                id: 23,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input placeholder="Password:" type="password" id="userPassword" />`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
+              {
                 id: 24,
                 type: "element",
                 label: (
                   <Browser
-                    content={`<input type="text" id="userInput" />`}
-                    title="Preview: Input with ID"
+                    content={`<input placeholder="Password:" type="password" id="userPassword" />`}
+                    title="Preview: ID attribute"
                   />
+                ),
+              },
+              {
+                id: 25,
+                type: "element",
+                label: (
+                  <div>
+                    This attribute also does not appear visually but it is
+                    helpful in identifying{" "}
+                    <CodeHighlight>elements</CodeHighlight> uniquely.
+                  </div>
                 ),
               },
             ],
@@ -4137,9 +4570,9 @@ export const lessons: Lesson[] = [
               {
                 id: 25,
                 type: "element",
-                label: (
+                label: ({ setIsFinished }) => (
                   <MultipleChoice
-                    setIsFinishedAction={() => {}}
+                    setIsFinishedAction={setIsFinished}
                     title={["What is the purpose of the 'id' attribute?"]}
                     choices={{
                       options: [
@@ -4178,7 +4611,7 @@ export const lessons: Lesson[] = [
                 label: (
                   <CodeBlock
                     language="HTML"
-                    code={`<input type="email" required />`}
+                    code={`<input placeholder="Email:" type="email" required />`}
                     initialCode={["", ""]}
                   />
                 ),
@@ -4189,11 +4622,32 @@ export const lessons: Lesson[] = [
             submit: { label: "Continue" },
             content: [
               {
+                id: 26,
+                type: "element",
+                label: (
+                  <div>
+                    The <CodeHighlight>{"required"}</CodeHighlight> attribute
+                    forces the user to fill in the input.
+                  </div>
+                ),
+              },
+              {
+                id: 27,
+                type: "element",
+                label: (
+                  <CodeBlock
+                    language="HTML"
+                    code={`<input placeholder="Email:" type="email" required />`}
+                    initialCode={["", ""]}
+                  />
+                ),
+              },
+              {
                 id: 28,
                 type: "element",
                 label: (
                   <Browser
-                    content={`<input type="email" required />`}
+                    content={`<input placeholder="Email:" type="email" required />`}
                     title="Preview: Required Attribute"
                   />
                 ),
@@ -4234,218 +4688,23 @@ export const lessons: Lesson[] = [
             submit: { label: "Continue" },
             content: [
               {
-                id: 30,
+                id: 44,
                 type: "element",
                 label: (
                   <div>
-                    The <CodeHighlight>{"disabled"}</CodeHighlight> attribute
-                    disables an input, preventing user interaction.
+                    The <CodeHighlight>{"maxlength"}</CodeHighlight> attribute
+                    limits the number of characters.
                   </div>
                 ),
               },
               {
-                id: 31,
+                id: 45,
                 type: "element",
                 label: (
                   <CodeBlock
                     language="HTML"
-                    code={`<input type="text" disabled />`}
+                    code={`<input placeholder="Limited input:" type="text" maxlength="10" />`}
                     initialCode={["", ""]}
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 32,
-                type: "element",
-                label: (
-                  <Browser
-                    content={`<input type="text" disabled />`}
-                    title="Preview: Disabled Attribute"
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 33,
-                type: "element",
-                label: (
-                  <div>
-                    The <CodeHighlight>{"readonly"}</CodeHighlight> attribute
-                    makes an input non-editable while still submitting its
-                    value.
-                  </div>
-                ),
-              },
-              {
-                id: 34,
-                type: "element",
-                label: (
-                  <CodeBlock
-                    language="HTML"
-                    code={`<input type="text" readonly />`}
-                    initialCode={["", ""]}
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 35,
-                type: "element",
-                label: (
-                  <Browser
-                    content={`<input type="text" readonly />`}
-                    title="Preview: Readonly Attribute"
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 36,
-                type: "element",
-                label: (
-                  <MultipleChoice
-                    setIsFinishedAction={() => {}}
-                    title={["What does the 'readonly' attribute do?"]}
-                    choices={{
-                      options: [
-                        "Makes the input non-editable",
-                        "Clears the input on focus",
-                        "Enables auto-completion",
-                        "Sets a default value",
-                      ],
-                      answer: "Makes the input non-editable",
-                    }}
-                    response={{
-                      positive: "Correct!",
-                      negative: "No, that's not it.",
-                    }}
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 37,
-                type: "element",
-                label: (
-                  <div>
-                    The <CodeHighlight>{"autofocus"}</CodeHighlight> attribute
-                    automatically focuses the input when the page loads.
-                  </div>
-                ),
-              },
-              {
-                id: 38,
-                type: "element",
-                label: (
-                  <CodeBlock
-                    language="HTML"
-                    code={`<input type="text" autofocus />`}
-                    initialCode={["", ""]}
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 39,
-                type: "element",
-                label: (
-                  <Browser
-                    content={`<input type="text" autofocus />`}
-                    title="Preview: Autofocus Attribute"
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 40,
-                type: "element",
-                label: (
-                  <div>
-                    The <CodeHighlight>{"pattern"}</CodeHighlight> attribute
-                    sets a regular expression for input validation.
-                  </div>
-                ),
-              },
-              {
-                id: 41,
-                type: "element",
-                label: (
-                  <CodeBlock
-                    language="HTML"
-                    code={`<input type="text" pattern="[A-Za-z]{3,}" />`}
-                    initialCode={["", ""]}
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 42,
-                type: "element",
-                label: (
-                  <Browser
-                    content={`<input type="text" pattern="[A-Za-z]{3,}" />`}
-                    title="Preview: Pattern Attribute"
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 43,
-                type: "element",
-                label: (
-                  <MultipleChoice
-                    setIsFinishedAction={() => {}}
-                    title={["What does the 'pattern' attribute do?"]}
-                    choices={{
-                      options: [
-                        "Sets the input type",
-                        "Defines a regex for validation",
-                        "Sets a placeholder",
-                        "Specifies the form association",
-                      ],
-                      answer: "Defines a regex for validation",
-                    }}
-                    response={{
-                      positive: "Correct!",
-                      negative: "Not exactly, try again.",
-                    }}
                   />
                 ),
               },
@@ -4470,25 +4729,25 @@ export const lessons: Lesson[] = [
                 label: (
                   <CodeBlock
                     language="HTML"
-                    code={`<input type="text" maxlength="10" />`}
+                    code={`<input placeholder="Limited input:" type="text" maxlength="10" />`}
                     initialCode={["", ""]}
                   />
                 ),
               },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
               {
                 id: 46,
                 type: "element",
                 label: (
                   <Browser
-                    content={`<input type="text" maxlength="10" />`}
+                    content={`<input placeholder="Limited input:" type="text" maxlength="10" />`}
                     title="Preview: Maxlength Attribute"
                   />
                 ),
+              },
+              {
+                id: 47,
+                type: "element",
+                label: <div>Try typing 11 characters in the input. :)</div>,
               },
             ],
           },
@@ -4498,9 +4757,9 @@ export const lessons: Lesson[] = [
               {
                 id: 47,
                 type: "element",
-                label: (
+                label: ({ setIsFinished }) => (
                   <MultipleChoice
-                    setIsFinishedAction={() => {}}
+                    setIsFinishedAction={setIsFinished}
                     title={["Which attribute limits the number of characters?"]}
                     choices={{
                       options: [
@@ -4524,207 +4783,14 @@ export const lessons: Lesson[] = [
             submit: { label: "Continue" },
             content: [
               {
-                id: 48,
+                id: 64,
                 type: "element",
                 label: (
                   <div>
-                    For number inputs, use{" "}
-                    <CodeHighlight>{"min"}</CodeHighlight>,{" "}
-                    <CodeHighlight>{"max"}</CodeHighlight>, and{" "}
-                    <CodeHighlight>{"step"}</CodeHighlight> to define a range
-                    and increment.
+                    Great work! <br /> <br /> Now let&apos;s see if you can
+                    still remember input types and attributes we&apos;ve
+                    learned.
                   </div>
-                ),
-              },
-              {
-                id: 49,
-                type: "element",
-                label: (
-                  <CodeBlock
-                    language="HTML"
-                    code={`<input type="number" min="0" max="100" step="1" />`}
-                    initialCode={["", ""]}
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 50,
-                type: "element",
-                label: (
-                  <Browser
-                    content={`<input type="number" min="0" max="100" step="1" />`}
-                    title="Preview: Number Input with Range"
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 51,
-                type: "element",
-                label: (
-                  <div>
-                    The <CodeHighlight>{"multiple"}</CodeHighlight> attribute
-                    allows users to select multiple files.
-                  </div>
-                ),
-              },
-              {
-                id: 52,
-                type: "element",
-                label: (
-                  <CodeBlock
-                    language="HTML"
-                    code={`<input type="file" multiple />`}
-                    initialCode={["", ""]}
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 53,
-                type: "element",
-                label: (
-                  <Browser
-                    content={`<input type="file" multiple />`}
-                    title="Preview: Multiple File Input"
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 54,
-                type: "element",
-                label: (
-                  <div>
-                    The <CodeHighlight>{"autocomplete"}</CodeHighlight>{" "}
-                    attribute allows the browser to suggest values based on
-                    previous input.
-                  </div>
-                ),
-              },
-              {
-                id: 55,
-                type: "element",
-                label: (
-                  <CodeBlock
-                    language="HTML"
-                    code={`<input type="text" autocomplete="on" />`}
-                    initialCode={["", ""]}
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 56,
-                type: "element",
-                label: (
-                  <Browser
-                    content={`<input type="text" autocomplete="on" />`}
-                    title="Preview: Autocomplete"
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 57,
-                type: "element",
-                label: (
-                  <div>
-                    The <CodeHighlight>{"size"}</CodeHighlight> attribute sets
-                    the visible width (in characters) of the input.
-                  </div>
-                ),
-              },
-              {
-                id: 58,
-                type: "element",
-                label: (
-                  <CodeBlock
-                    language="HTML"
-                    code={`<input type="text" size="30" />`}
-                    initialCode={["", ""]}
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 59,
-                type: "element",
-                label: (
-                  <Browser
-                    content={`<input type="text" size="30" />`}
-                    title="Preview: Size Attribute"
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 60,
-                type: "element",
-                label: (
-                  <div>
-                    The <CodeHighlight>{"form"}</CodeHighlight> attribute
-                    associates an input with a form element via its id.
-                  </div>
-                ),
-              },
-              {
-                id: 61,
-                type: "element",
-                label: (
-                  <CodeBlock
-                    language="HTML"
-                    code={`<input type="text" form="myForm" />`}
-                    initialCode={["", ""]}
-                  />
-                ),
-              },
-            ],
-          },
-          {
-            submit: { label: "Continue" },
-            content: [
-              {
-                id: 62,
-                type: "element",
-                label: (
-                  <Browser
-                    content={`<input type="text" form="myForm" />`}
-                    title="Preview: Form Attribute"
-                  />
                 ),
               },
             ],
@@ -4735,9 +4801,9 @@ export const lessons: Lesson[] = [
               {
                 id: 63,
                 type: "element",
-                label: (
+                label: ({ setIsFinished }) => (
                   <MultipleChoice
-                    setIsFinishedAction={() => {}}
+                    setIsFinishedAction={setIsFinished}
                     title={[
                       "Which attribute would you use to ensure an input is filled before submitting?",
                     ]}
@@ -4760,53 +4826,122 @@ export const lessons: Lesson[] = [
             ],
           },
           {
-            submit: { label: "Finish" },
+            submit: { label: "Continue" },
             content: [
-              {
-                id: 64,
-                type: "element",
-                label: (
-                  <div>
-                    Great work! Here&apos;s a complete form example that uses many of
-                    the input types and attributes we&apos;ve learned:
-                  </div>
-                ),
-              },
               {
                 id: 65,
                 type: "element",
-                label: (
-                  <CodeBlock
-                    language="HTML"
-                    code={`<form id="myForm">
-  <input type="text" name="username" placeholder="Username" required />
-  <input type="email" name="email" placeholder="Email" />
-  <input type="password" name="password" placeholder="Password" />
-  <input type="number" name="age" min="0" max="100" step="1" />
-  <input type="date" name="dob" />
-  <input type="file" name="avatar" multiple />
-  <input type="submit" value="Register" />
-</form>`}
-                    initialCode={["", ""]}
+                label: ({ setIsFinished }) => (
+                  <MultipleChoice
+                    setIsFinishedAction={setIsFinished}
+                    title={[
+                      "Which HTML element is used to create interactive controls in forms?",
+                    ]}
+                    choices={{
+                      options: ["<form>", "<input>", "<button>", "<select>"],
+                      answer: "<input>",
+                    }}
+                    response={{
+                      positive: "Correct! It's the <input> element.",
+                      negative: "Not quite, try again!",
+                    }}
                   />
                 ),
               },
+            ],
+          },
+
+          {
+            submit: { label: "Continue" },
+            content: [
               {
                 id: 66,
                 type: "element",
-                label: (
-                  <Browser
-                    content={`<form id="myForm">
-  <input type="text" name="username" placeholder="Username" required />
-  <input type="email" name="email" placeholder="Email" />
-  <input type="password" name="password" placeholder="Password" />
-  <input type="number" name="age" min="0" max="100" step="1" />
-  <input type="date" name="dob" />
-  <input type="file" name="avatar" multiple />
-  <input type="submit" value="Register" />
-</form>`}
-                    title="Preview: Complete Form"
+                label: ({ setIsFinished }) => (
+                  <MultipleChoice
+                    setIsFinishedAction={setIsFinished}
+                    title={[
+                      "Which input type is used for entering a single line of text?",
+                    ]}
+                    choices={{
+                      options: ["text", "textarea", "password", "radio"],
+                      answer: "text",
+                    }}
+                    response={{
+                      positive: "Correct! It's the text type.",
+                      negative: "Not quite, try again!",
+                    }}
                   />
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 67,
+                type: "element",
+                label: ({ setIsFinished }) => (
+                  <MultipleChoice
+                    setIsFinishedAction={setIsFinished}
+                    title={[
+                      "Which input type hides the characters as you type?",
+                    ]}
+                    choices={{
+                      options: ["text", "password", "email", "number"],
+                      answer: "password",
+                    }}
+                    response={{
+                      positive: "Yup! It's the password type.",
+                      negative: "Not quite, try again!",
+                    }}
+                  />
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Continue" },
+            content: [
+              {
+                id: 68,
+                type: "element",
+                label: ({ setIsFinished }) => (
+                  <MultipleChoice
+                    setIsFinishedAction={setIsFinished}
+                    title={[
+                      "Which input type allows users to select only one option from a group?",
+                    ]}
+                    choices={{
+                      options: ["checkbox", "radio", "file", "submit"],
+                      answer: "radio",
+                    }}
+                    response={{
+                      positive: "Yes! It's the radio type.",
+                      negative: "Not quite, try again!",
+                    }}
+                  />
+                ),
+              },
+            ],
+          },
+          {
+            submit: { label: "Finish" },
+            content: [
+              {
+                id: 69,
+                type: "element",
+                label: (
+                  <div>
+                    Excellent! We’ve covered important concepts that will help
+                    you build a strong foundation. As you continue learning,
+                    keep experimenting and applying what you’ve learned. The
+                    more you practice, the more confident you’ll become.
+                    <br />
+                    <br />
+                    Keep going, stay curious, and see you next lesson!
+                  </div>
                 ),
               },
             ],
