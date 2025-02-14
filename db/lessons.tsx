@@ -4950,6 +4950,7 @@ export const lessons: Lesson[] = [
       },
     },
   },
+  /*
   {
     title: "ABCD",
     description: "XY and Z",
@@ -5637,6 +5638,7 @@ export const lessons: Lesson[] = [
       },
     },
   },
+  */
   {
     title: "HTML Introduction2",
     description:
