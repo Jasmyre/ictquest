@@ -8,6 +8,8 @@ import { getLocalStorageItem } from "@/lib/utils";
 import { Book } from "lucide-react";
 import { useEffect, useState } from "react";
 import BackButton from "@/components/BackButton";
+import { CustomTooltip } from "@/components/CustomTooltip";
+import { CustomBadge } from "@/components/CustomBadge";
 
 export default function Progress() {
   const [overallProgress, setOverallProgress] = useState(0);
@@ -47,7 +49,7 @@ export default function Progress() {
   }, [data, overallProgress]);
 
   return (
-    <main className="min-h-[75vh]">
+    <main className="min-h-[80vh]">
       <div className="py-10">
         <header>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -61,9 +63,36 @@ export default function Progress() {
             <div className="px-4 py-8 sm:px-0">
               <Card className="w-full border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                 <CardHeader>
-                  <CardTitle className="flex items-center text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                    <Book className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-                    Learning Progress
+                  <CardTitle className="flex flex-wrap items-center justify-between gap-4 text-2xl font-semibold text-gray-900 dark:text-gray-100 max-sm:flex-col max-sm:items-start max-sm:gap-4">
+                    <div className="flex min-w-min flex-wrap items-center justify-start">
+                      <Book className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                      Learning Progress
+                    </div>
+                    <CustomTooltip
+                      content={() =>
+                        overallProgress < 33.33
+                          ? "You are a beginner in HTML."
+                          : overallProgress < 66.66
+                            ? "You are now in intermediate HTML."
+                            : "You are an Expert in HTML."
+                      }
+                    >
+                      <CustomBadge
+                        color={
+                          overallProgress < 33.33
+                            ? "green"
+                            : overallProgress < 66.66
+                              ? "orange"
+                              : "red"
+                        }
+                      >
+                        {overallProgress < 33.33
+                          ? "Beginner"
+                          : overallProgress < 66.66
+                            ? "Intermediate"
+                            : "Expert"}
+                      </CustomBadge>
+                    </CustomTooltip>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>

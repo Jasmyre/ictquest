@@ -8,8 +8,8 @@ import { JSX } from "react";
 import Browser from "@/components/Browser";
 import CodeBlock from "@/components/Code";
 import CodeHighlight from "@/components/CodeHighlight";
-import { CustomBadge } from "@/components/CustomBadge";
 import Image from "next/image";
+import { DifficultyParagraph } from "../components/DifficultyParagraph";
 
 export interface Topic {
   name: string;
@@ -2218,14 +2218,11 @@ export const lessons: Lesson[] = [
                 id: 10,
                 type: "element",
                 label: (
-                  <div className="flex justify-between">
-                    <span>
-                      Now, let&apos;s practice by assembling the basic HTML
-                      document structure. Arrange the elements in the correct
-                      order!
-                    </span>
-                    <CustomBadge color="red">Hard</CustomBadge>
-                  </div>
+                  <DifficultyParagraph difficulty="Hard" color="red">
+                    Now, let&apos;s practice by assembling the basic HTML
+                    document structure. Arrange the elements in the correct
+                    order!
+                  </DifficultyParagraph>
                 ),
               },
               {
@@ -2417,10 +2414,9 @@ export const lessons: Lesson[] = [
                 id: 5,
                 type: "element",
                 label: (
-                  <div className="flex justify-between">
-                    <span>Quick test.</span>
-                    <CustomBadge color="green">Easy</CustomBadge>
-                  </div>
+                  <DifficultyParagraph difficulty="easy" color="green">
+                    Quick test.
+                  </DifficultyParagraph>
                 ),
               },
               {
@@ -2527,10 +2523,9 @@ export const lessons: Lesson[] = [
                 id: 10,
                 type: "element",
                 label: (
-                  <div className="flex justify-between">
-                    <span>Another quick test.</span>
-                    <CustomBadge color="green">Easy</CustomBadge>
-                  </div>
+                  <DifficultyParagraph difficulty="easy" color="green">
+                    Another quick test.
+                  </DifficultyParagraph>
                 ),
               },
               {
@@ -2642,10 +2637,9 @@ export const lessons: Lesson[] = [
                 id: 15,
                 type: "element",
                 label: (
-                  <div className="flex justify-between">
-                    <span>Can you arrange the code bellow?</span>
-                    <CustomBadge color="green">Easy</CustomBadge>
-                  </div>
+                  <DifficultyParagraph difficulty="easy" color="green">
+                    Can you arrange the code bellow?
+                  </DifficultyParagraph>
                 ),
               },
               {
@@ -2755,13 +2749,10 @@ export const lessons: Lesson[] = [
                 id: 20,
                 type: "element",
                 label: (
-                  <div className="flex justify-between">
-                    <span>
-                      Quick test: Arrange the &lt;strong&gt; element in the
-                      correct order.
-                    </span>
-                    <CustomBadge color="green">Easy</CustomBadge>
-                  </div>
+                  <DifficultyParagraph difficulty="easy" color="green">
+                    Quick test: Arrange the &lt;strong&gt; element in the
+                    correct order.
+                  </DifficultyParagraph>
                 ),
               },
               {
@@ -2866,13 +2857,10 @@ export const lessons: Lesson[] = [
                 id: 25,
                 type: "element",
                 label: (
-                  <div className="flex justify-between">
-                    <span>
-                      Quick test: Arrange the &lt;em&gt; element in the correct
-                      order.
-                    </span>
-                    <CustomBadge color="green">Easy</CustomBadge>
-                  </div>
+                  <DifficultyParagraph difficulty="easy" color="green">
+                    Quick test: Arrange the &lt;em&gt; element in the correct
+                    order.
+                  </DifficultyParagraph>
                 ),
               },
               {
@@ -2975,13 +2963,10 @@ export const lessons: Lesson[] = [
                 id: 30,
                 type: "element",
                 label: (
-                  <div className="flex justify-between">
-                    <span>
-                      Quick test: Arrange the &lt;mark&gt; element in the
-                      correct order.
-                    </span>
-                    <CustomBadge color="green">Easy</CustomBadge>
-                  </div>
+                  <DifficultyParagraph difficulty="easy" color="green">
+                    Quick test: Arrange the &lt;mark&gt; element in the correct
+                    order.
+                  </DifficultyParagraph>
                 ),
               },
               {
@@ -3086,13 +3071,10 @@ export const lessons: Lesson[] = [
                 id: 35,
                 type: "element",
                 label: (
-                  <div className="flex justify-between">
-                    <span>
-                      Quick test: Arrange the &lt;code&gt; element in the
-                      correct order.
-                    </span>
-                    <CustomBadge color="green">Easy</CustomBadge>
-                  </div>
+                  <DifficultyParagraph difficulty="easy" color="green">
+                    Quick test: Arrange the &lt;code&gt; element in the correct
+                    order.
+                  </DifficultyParagraph>
                 ),
               },
               {
@@ -3197,13 +3179,10 @@ export const lessons: Lesson[] = [
                 id: 40,
                 type: "element",
                 label: (
-                  <div className="flex justify-between">
-                    <span>
-                      Quick test: Arrange the &lt;small&gt; element in the
-                      correct order.
-                    </span>
-                    <CustomBadge color="green">Easy</CustomBadge>
-                  </div>
+                  <DifficultyParagraph difficulty="easy" color="green">
+                    Quick test: Arrange the &lt;small&gt; element in the correct
+                    order.
+                  </DifficultyParagraph>
                 ),
               },
               {
@@ -3308,13 +3287,10 @@ export const lessons: Lesson[] = [
                 id: 45,
                 type: "element",
                 label: (
-                  <div className="flex justify-between">
-                    <span>
-                      Quick test: Arrange the &lt;abbr&gt; element in the
-                      correct order.
-                    </span>
-                    <CustomBadge color="green">Easy</CustomBadge>
-                  </div>
+                  <DifficultyParagraph difficulty="easy" color="green">
+                    Quick test: Arrange the &lt;abbr&gt; element in the correct
+                    order.
+                  </DifficultyParagraph>
                 ),
               },
               {
@@ -3421,13 +3397,10 @@ export const lessons: Lesson[] = [
                 id: 50,
                 type: "element",
                 label: (
-                  <div className="flex justify-between">
-                    <span>
-                      Quick test: Arrange the &lt;cite&gt; element in the
-                      correct order.
-                    </span>
-                    <CustomBadge color="green">Easy</CustomBadge>
-                  </div>
+                  <DifficultyParagraph difficulty="easy" color="green">
+                    Quick test: Arrange the &lt;cite&gt; element in the correct
+                    order.
+                  </DifficultyParagraph>
                 ),
               },
               {
@@ -3541,10 +3514,9 @@ export const lessons: Lesson[] = [
                 id: 30,
                 type: "element",
                 label: (
-                  <div className="flex justify-between">
-                    <span>Did you read the last page?</span>
-                    <CustomBadge color="orange">Medium</CustomBadge>
-                  </div>
+                  <DifficultyParagraph difficulty="intermediate" color="orange">
+                    Did you read the last page?
+                  </DifficultyParagraph>
                 ),
               },
               {

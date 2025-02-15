@@ -103,8 +103,8 @@ export default function ProfilePage() {
                 <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                      <div className="flex">
-                        <User className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                      <div className="flex min-w-min gap-2 flex-wrap">
+                        <User className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                         <p>Personal Information</p>
                       </div>
                     </CardTitle>
@@ -152,8 +152,8 @@ export default function ProfilePage() {
 
                 <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                   <CardHeader>
-                    <CardTitle className="flex items-center justify-between text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                      <div className="flex">
+                    <CardTitle className="flex max-sm:flex-col max-sm:items-start flex-wrap gap-4 max-sm:gap-4 items-center justify-between text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                      <div className="flex justify-start items-center min-w-min flex-wrap">
                         <Book className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                         Learning Progress
                       </div>

@@ -56,7 +56,7 @@ export default function Layout({
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:items-center">
               <div className="relative">
-                <CommandSearch />
+                <CommandSearch className="w-min" />
               </div>
               <Button
                 variant="ghost"

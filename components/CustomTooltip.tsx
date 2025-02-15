@@ -4,6 +4,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 import React, { ReactNode } from "react";
 
 export const CustomTooltip = ({
@@ -18,7 +19,7 @@ export const CustomTooltip = ({
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger className={className}>{children}</TooltipTrigger>
+        <TooltipTrigger className={cn("flex justify-start items-center", className)}>{children}</TooltipTrigger>
         <TooltipContent className="bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
           {content()}
         </TooltipContent>

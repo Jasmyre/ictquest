@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type ItemType = {
   icon: React.ElementType;
@@ -45,7 +46,7 @@ type ItemsGroup = {
   items: ItemType[];
 };
 
-export function CommandSearch() {
+export function CommandSearch({className}: Readonly<{className?: string}>) {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
 
@@ -109,13 +110,13 @@ export function CommandSearch() {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-between border-gray-300 bg-gray-50 text-sm text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-900"
+          className={cn(
+            "w-full justify-between border-gray-300 bg-gray-50 text-sm text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-900", className
+          )}
           tabIndex={-1}
         >
-          <div className="flex w-[225px] items-center justify-between dark:text-gray-400">
-            <div className="flex gap-4">
-              Search
-            </div>
+          <div className="flex min-w-min max-md:w-[100px] md:w-[225px] gap-4 items-center justify-between dark:text-gray-400">
+            <div className="flex gap-4">Search</div>
             <Search className="h-4 w-4" />
           </div>
         </Button>
