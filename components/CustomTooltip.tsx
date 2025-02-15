@@ -1,15 +1,28 @@
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
-import React, { ReactNode } from 'react'
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
+import React, { ReactNode } from "react";
 
-export const CustomTooltip = ({children, content}: {children: ReactNode; content: () => ReactNode}) => {
+export const CustomTooltip = ({
+  children,
+  content,
+  className,
+}: {
+  children: ReactNode;
+  content: () => ReactNode;
+  className?: string;
+}) => {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger>{children}</TooltipTrigger>
-        <TooltipContent className="bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
+        <TooltipTrigger className={className}>{children}</TooltipTrigger>
+        <TooltipContent className="bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
           {content()}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
-}
+};

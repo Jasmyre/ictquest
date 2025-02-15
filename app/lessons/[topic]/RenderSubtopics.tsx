@@ -2,17 +2,20 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Book } from "lucide-react";
 import { lessons } from "@/db/lessons";
+import { ArrowRight, Book, Check } from "lucide-react";
 
+import { UserData } from "@/components/Lesson";
+import { cn, getLocalStorageItem } from "@/lib/utils";
 import Link from "next/link";
 import BackButton from "../../../components/BackButton";
+import { CustomTooltip } from "@/components/CustomTooltip";
 
 export default function RenderSubtopics({
   paramsTopic,
-  
 }: Readonly<{ paramsTopic: string }>) {
   const lesson = lessons.find((item) => item.slug === paramsTopic);
+  const userData = getLocalStorageItem<UserData>("userData");
 
   if (!lesson) {
     return <div>Lesson not found</div>;
@@ -23,6 +26,14 @@ export default function RenderSubtopics({
   if (!topic) {
     return <div>Topic not found</div>;
   }
+
+  const completedLesson = userData?.progressData.find(
+    (item) => item.topic === paramsTopic,
+  )?.subtopics;
+
+  console.log(completedLesson);
+  console.log(paramsTopic);
+  console.log(lesson);
 
   return (
     <main>
@@ -48,36 +59,102 @@ export default function RenderSubtopics({
                 </CardHeader>
                 <CardContent>
                   <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-                    {topic.map((subtopic, index) => (
-                      <li
-                        key={index++}
-                        className="border-b border-gray-200 py-4 last:border-b-0 dark:border-gray-700"
-                      >
-                        <div className="flex items-center space-x-4">
-                          <div className="flex-shrink-0">
-                            <Book className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-medium text-gray-900 dark:text-gray-100">
-                              {subtopic.name}
-                            </p>
-                          </div>
-                          <div>
-                            <Link
-                              href={`/lessons/subtopic/${subtopic.slug}?topic=${lesson.slug}`}
-                            >
-                              <Button
-                                size="sm"
-                                className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
+                    {topic.map((subtopic, index) =>
+                      completedLesson?.includes(subtopic.slug) ? (
+                        <li
+                          key={index++}
+                          className="border-b border-gray-200 py-4 last:border-b-0 dark:border-gray-700"
+                        >
+                          <div className="flex items-center space-x-4">
+                            <div className="flex-1">
+                              <CustomTooltip
+                                content={() =>
+                                  "You have already finished ths lesson!"
+                                }
+                                className=""
                               >
-                                Start Lesson
-                                <ArrowRight className="ml-2 h-4 w-4" />
-                              </Button>
-                            </Link>
+                                <div className="flex space-x-4">
+                                  <div className="flex-shrink-0">
+                                    {completedLesson?.includes(
+                                      subtopic.slug,
+                                    ) ? (
+                                      <Check className="h-6 w-6 text-green-600 dark:text-green-400" />
+                                    ) : (
+                                      <Book className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                                    )}
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <p
+                                      className={cn(
+                                        "truncate text-sm font-medium text-gray-900 dark:text-gray-100",
+                                        completedLesson?.includes(subtopic.slug)
+                                          ? "text-gray-400 line-through dark:text-gray-500"
+                                          : "",
+                                      )}
+                                    >
+                                      {subtopic.name}
+                                    </p>
+                                  </div>
+                                </div>
+                              </CustomTooltip>
+                            </div>
+                            <div>
+                              <Link
+                                href={`/lessons/subtopic/${subtopic.slug}?topic=${lesson.slug}`}
+                              >
+                                <Button
+                                  size="sm"
+                                  className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
+                                >
+                                  Start Lesson
+                                  <ArrowRight className="ml-2 h-4 w-4" />
+                                </Button>
+                              </Link>
+                            </div>
                           </div>
-                        </div>
-                      </li>
-                    ))}
+                        </li>
+                      ) : (
+                        <li
+                          key={index++}
+                          className="border-b border-gray-200 py-4 last:border-b-0 dark:border-gray-700"
+                        >
+                          <div className="flex items-center space-x-4">
+                            <div className="flex-shrink-0">
+                              {completedLesson?.includes(subtopic.slug) ? (
+                                <Check className="h-6 w-6 text-green-600 dark:text-green-400" />
+                              ) : (
+                                <Book className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                              )}
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p
+                                className={cn(
+                                  "truncate text-sm font-medium text-gray-900 dark:text-gray-100",
+                                  completedLesson?.includes(subtopic.slug)
+                                    ? "text-gray-400 line-through dark:text-gray-500"
+                                    : "",
+                                )}
+                              >
+                                {subtopic.name}
+                              </p>
+                            </div>
+                            <div>
+                              <Link
+                                href={`/lessons/subtopic/${subtopic.slug}?topic=${lesson.slug}`}
+                              >
+                                <Button
+                                  size="sm"
+                                  className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
+                                >
+                                  Start Lesson
+                                  <ArrowRight className="ml-2 h-4 w-4" />
+                                </Button>
+                              </Link>
+                            </div>
+                          </div>
+                        </li>
+                      ),
+                    )}
                   </ul>
                 </CardContent>
               </Card>
