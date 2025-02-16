@@ -30,11 +30,11 @@ const loading = () => {
   return (
     <main>
       <div className="py-10">
-        <header>
+        {/* <header>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Loading className="sm:w-[325px] h-[44px]" />
           </div>
-        </header>
+        </header> */}
         <main>
           <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div className="px-4 py-8 sm:px-0">

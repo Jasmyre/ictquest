@@ -3,19 +3,20 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { lessons } from "@/db/lessons";
-import { ArrowRight, Book, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Book, Check } from "lucide-react";
 
 import { UserData } from "@/components/Lesson";
 import { cn, getLocalStorageItem } from "@/lib/utils";
 import Link from "next/link";
-import BackButton from "../../../components/BackButton";
 import { CustomTooltip } from "@/components/CustomTooltip";
+import { useRouter } from "next/navigation";
 
 export default function RenderSubtopics({
   paramsTopic,
 }: Readonly<{ paramsTopic: string }>) {
   const lesson = lessons.find((item) => item.slug === paramsTopic);
   const userData = getLocalStorageItem<UserData>("userData");
+  const router = useRouter();
 
   if (!lesson) {
     return <div>Lesson not found</div>;
@@ -159,7 +160,13 @@ export default function RenderSubtopics({
                 </CardContent>
               </Card>
               <div className="mt-6">
-                <BackButton>Go Back</BackButton>
+                <Button
+                  onClick={() => router.push("/lessons/")}
+                  className="border border-gray-200 bg-white text-gray-900 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-700"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Go Back
+                </Button>
               </div>
             </div>
           </div>
