@@ -42,13 +42,22 @@ export default async function LandingPage() {
                 real-world projects, and expert guidance.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
-                <Link href="/lessons">
+                <Link href="/auth">
                   <Button
                     size="lg"
                     className="w-full bg-white text-indigo-600 hover:bg-gray-100 dark:bg-gray-200 dark:text-indigo-800 dark:hover:bg-gray-300 sm:w-auto"
                   >
-                    Start Learning
+                    Start Journey
                     <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+                <Link href="/lessons">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 dark:hover:bg-gray-200 dark:hover:text-indigo-800 sm:w-auto"
+                  >
+                    Explore Lessons
                   </Button>
                 </Link>
                 {session && (

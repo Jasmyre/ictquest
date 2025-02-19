@@ -1,16 +1,16 @@
-"use client"
-
-import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { User } from "lucide-react";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { CustomTooltip } from "@/components/CustomTooltip";
 
-export const InfoCard = () => {
-  const [name, setName] = useState("John Doe");
-  const [email, setEmail] = useState("john.doe@example.com");
+interface InfoCardProps {
+  name: string | null;
+  email: string | null;
+}
 
+export const InfoCard = ({ name, email }: InfoCardProps) => {
   return (
     <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
       <CardHeader>
@@ -22,29 +22,33 @@ export const InfoCard = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <form className="space-y-4">
+        <div className="space-y-4">
           <div>
             <Label htmlFor="name" className="text-gray-700 dark:text-gray-300">
               Name
             </Label>
             <Input
               id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="border-gray-300 dark:border-gray-600 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
+              defaultValue={name!}
+              className="border-gray-300 bg-white text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             />
           </div>
           <div>
             <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">
               Email
             </Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border-gray-300 dark:border-gray-600 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
-            />
+            <CustomTooltip content={() => "Email can not be changed"} className="w-full">
+              <Input
+                id="email"
+                type="email"
+                defaultValue={email!}
+                disabled
+                style={{
+                  cursor: "pointer"
+                }}
+                className="cursor-pointer border-gray-300 bg-white text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+              />
+            </CustomTooltip>
           </div>
           <Button
             type="submit"
@@ -52,7 +56,7 @@ export const InfoCard = () => {
           >
             Update Profile
           </Button>
-        </form>
+        </div>
       </CardContent>
     </Card>
   );

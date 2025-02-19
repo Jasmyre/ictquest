@@ -1,7 +1,15 @@
 
+import { auth } from "@/auth";
 import { ProfileCardGrid } from "@/components/ProfileCardGrid";
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
+  const session = await auth();
+  if (!session) return <div>You are not welcome!</div>
+  
+  const user = session.user;
+
+  console.log(user)
+
   return (
     <main>
       <div className="py-10">
@@ -10,7 +18,7 @@ export default function ProfilePage() {
             Your Profile
           </h1>
         </header>
-        <ProfileCardGrid />
+        <ProfileCardGrid name={user.name!} email={user.email!}/>
       </div>
     </main>
   );
