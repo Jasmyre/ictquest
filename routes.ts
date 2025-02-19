@@ -3,7 +3,7 @@
  * @type {string[]}
  */
 export const publicRoutes = [
-    "/"
+    "/", "/privacy", "/terms", "/settings"
 ]
 
 export const authRoutes = [

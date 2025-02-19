@@ -28,10 +28,11 @@ export const LogInForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof LogInSchema>) => {
+    setSuccess("");
+    setError("");
+    
     startTransition(() => {
       login(values).then((data) => {
-        setSuccess("");
-        setError("");
 
         setSuccess(data?.success);
         setError(data?.error);
