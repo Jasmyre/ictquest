@@ -31,7 +31,7 @@ export const InfoCard = () => {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="border-indigo-500 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
+              className="border-gray-300 dark:border-gray-600 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
             />
           </div>
           <div>
@@ -43,7 +43,7 @@ export const InfoCard = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="border-indigo-500 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
+              className="border-gray-300 dark:border-gray-600 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
             />
           </div>
           <Button
