@@ -1,3 +1,4 @@
+import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,45 +24,47 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function LandingPage() {
+  const session = await auth();
   return (
     <main>
-      
-      <section className="relative overflow-hidden bg-gradient-to-br rounded-lg from-indigo-600 to-purple-700 dark:from-indigo-900 dark:to-purple-950 text-white py-20">
+      <section className="relative overflow-hidden rounded-lg bg-gradient-to-br from-indigo-600 to-purple-700 py-20 text-white dark:from-indigo-900 dark:to-purple-950">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row-reverse gap-4 items-center">
-            <div className="lg:w-1/2 lg:pr-10 z-10">
-              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl mb-6">
+          <div className="flex flex-col items-center gap-4 lg:flex-row-reverse">
+            <div className="z-10 lg:w-1/2 lg:pr-10">
+              <h1 className="mb-6 text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
                 Master HTML with{" "}
                 <span className="text-yellow-300 dark:text-yellow-200">
                   ICTQuest
                 </span>
               </h1>
-              <p className="text-xl sm:text-2xl mb-8 text-gray-100">
+              <p className="mb-8 text-xl text-gray-100 sm:text-2xl">
                 Unlock the power of web development through interactive lessons,
                 real-world projects, and expert guidance.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col gap-4 sm:flex-row">
                 <Link href="/lessons">
                   <Button
                     size="lg"
-                    className="w-full sm:w-auto bg-white text-indigo-600 hover:bg-gray-100 dark:bg-gray-200 dark:text-indigo-800 dark:hover:bg-gray-300"
+                    className="w-full bg-white text-indigo-600 hover:bg-gray-100 dark:bg-gray-200 dark:text-indigo-800 dark:hover:bg-gray-300 sm:w-auto"
                   >
                     Start Learning
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <Link href="/lessons">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full sm:w-auto bg-transparent border-white text-white hover:bg-white hover:text-indigo-600 dark:hover:bg-gray-200 dark:hover:text-indigo-800"
+                {session && (
+                  <form
+                    action={async () => {
+                      "use server";
+
+                      await signOut();
+                    }}
                   >
-                    Explore Courses
-                  </Button>
-                </Link>
+                    <Button>Sign Out</Button>
+                  </form>
+                )}
               </div>
             </div>
-            <div className="lg:w-1/2 mt-10 lg:mt-0 relative">
+            <div className="relative mt-10 lg:mt-0 lg:w-1/2">
               <Image
                 priority
                 src="/mockup/Frame 11.svg"
@@ -70,18 +73,18 @@ export default async function LandingPage() {
                 height={400}
                 className="drop-shadow-2xl"
               />
-              <Zap className="absolute top-0 right-0 text-yellow-200 dark:text-yellow-300 h-6 w-6 scale-[3.25]" />
+              <Zap className="absolute right-0 top-0 h-6 w-6 scale-[3.25] text-yellow-200 dark:text-yellow-300" />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-20 bg-gray-50 dark:bg-gray-900">
+      <section className="bg-gray-50 py-20 dark:bg-gray-900">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">
+          <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
             Why Choose ICTQuest
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {[
               {
                 title: "Interactive Lessons",
@@ -104,10 +107,10 @@ export default async function LandingPage() {
             ].map((feature, index) => (
               <Card
                 key={index++}
-                className="border-t-4 border-indigo-500 hover:shadow-lg transition-shadow duration-300 bg-white dark:bg-gray-800 dark:border-indigo-400"
+                className="border-t-4 border-indigo-500 bg-white transition-shadow duration-300 hover:shadow-lg dark:border-indigo-400 dark:bg-gray-800"
               >
                 <CardHeader>
-                  <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-800 rounded-full flex items-center justify-center mb-4">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-800">
                     <feature.icon className="h-6 w-6 text-indigo-600 dark:text-indigo-300" />
                   </div>
                   <CardTitle className="text-xl text-gray-900 dark:text-gray-100">
@@ -125,13 +128,13 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      <section className="py-20 bg-white dark:bg-gray-800">
+      <section className="bg-white py-20 dark:bg-gray-800">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">
+          <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
             Your HTML Learning Journey
           </h2>
           <div className="relative">
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-indigo-200 dark:bg-indigo-700"></div>
+            <div className="absolute left-1/2 h-full w-1 -translate-x-1/2 transform bg-indigo-200 dark:bg-indigo-700"></div>
             {[
               {
                 title: "HTML Basics",
@@ -166,19 +169,19 @@ export default async function LandingPage() {
             ].map((step, index) => (
               <div
                 key={index++}
-                className={`flex items-center mb-8 ${index % 2 === 0 ? "flex-row-reverse" : ""}`}
+                className={`mb-8 flex items-center ${index % 2 === 0 ? "flex-row-reverse" : ""}`}
               >
                 <div
-                  className={`w-1/2 ${index % 2 === 0 ? "text-right pr-8" : "pl-8"}`}
+                  className={`w-1/2 ${index % 2 === 0 ? "pr-8 text-right" : "pl-8"}`}
                 >
-                  <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
+                  <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-gray-100">
                     {step.title}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300">
                     {step.description}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-indigo-500 dark:bg-indigo-600 rounded-full flex items-center justify-center z-10">
+                <div className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-500 dark:bg-indigo-600">
                   <step.icon className="h-6 w-6 text-white" />
                 </div>
                 <div className="w-1/2"></div>
@@ -187,13 +190,13 @@ export default async function LandingPage() {
           </div>
         </div>
       </section>
-      
-      <section className="py-20 bg-gray-50 dark:bg-gray-900">
+
+      <section className="bg-gray-50 py-20 dark:bg-gray-900">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">
+          <h2 className="mb-12 text-center text-3xl font-bold text-gray-900 dark:text-gray-100">
             What Our Students Say
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {[
               {
                 name: "John A.",
@@ -219,11 +222,11 @@ export default async function LandingPage() {
                 className="bg-white dark:bg-gray-800"
               >
                 <CardHeader>
-                  <div className="flex items-center mb-4">
+                  <div className="mb-4 flex items-center">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i++}
-                        className="h-5 w-5 text-yellow-400 dark:text-yellow-300 mr-1"
+                        className="mr-1 h-5 w-5 text-yellow-400 dark:text-yellow-300"
                       />
                     ))}
                   </div>
@@ -245,12 +248,12 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      <section className="rounded-lg bg-gradient-to-br from-indigo-600 to-purple-700 dark:from-indigo-900 dark:to-purple-950 text-white py-20 relative overflow-hidden">
+      <section className="relative overflow-hidden rounded-lg bg-gradient-to-br from-indigo-600 to-purple-700 py-20 text-white dark:from-indigo-900 dark:to-purple-950">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">
+          <h2 className="mb-6 text-3xl font-bold">
             Ready to become an HTML master?
           </h2>
-          <p className="text-xl mb-10 text-gray-100">
+          <p className="mb-10 text-xl text-gray-100">
             Join our learners who have transformed their careers with ICTQuest.
           </p>
           <Link href="/lessons">
@@ -263,9 +266,9 @@ export default async function LandingPage() {
             </Button>
           </Link>
         </div>
-        
-        <Coffee className="absolute bottom-5 left-10 text-indigo-200 dark:text-indigo-300 h-8 w-8 animate-float" />
-        <Code className="absolute top-5 right-10 text-indigo-200 dark:text-indigo-300 h-10 w-10 animate-float-delayed" />
+
+        <Coffee className="animate-float absolute bottom-5 left-10 h-8 w-8 text-indigo-200 dark:text-indigo-300" />
+        <Code className="animate-float-delayed absolute right-10 top-5 h-10 w-10 text-indigo-200 dark:text-indigo-300" />
       </section>
     </main>
   );

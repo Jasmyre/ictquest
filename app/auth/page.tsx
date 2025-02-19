@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -6,13 +7,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
+import { LogInForm } from "./LogInForm";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { signIn} from "@/auth";
 
-export default function AuthPage() {
+export default async function AuthPage() {
   return (
     <div className="flex min-h-[80vh] items-center justify-center max-sm:px-4">
       <Card className="w-full max-w-md border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -41,41 +44,7 @@ export default function AuthPage() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="signin">
-              <form className="space-y-4">
-                <div>
-                  <Label
-                    htmlFor="email"
-                    className="text-gray-800 dark:text-gray-300"
-                  >
-                    Email
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    // placeholder="you@example.com"
-                    className="mt-1 border-gray-400 dark:border-gray-600"
-                  />
-                </div>
-                <div>
-                  <Label
-                    htmlFor="password"
-                    className="text-gray-800 dark:text-gray-300"
-                  >
-                    Password
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    className="mt-1 border-gray-400 dark:border-gray-600"
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  className="w-full bg-indigo-500 hover:bg-indigo-400"
-                >
-                  Sign In
-                </Button>
-              </form>
+              <LogInForm />
               <Button
                 variant="link"
                 className="mt-2 p-0 text-indigo-400 hover:text-indigo-400 dark:text-gray-300"
@@ -95,7 +64,6 @@ export default function AuthPage() {
                   <Input
                     id="name"
                     type="text"
-                    // placeholder="John Doe"
                     className="mt-1 border-gray-400 dark:border-gray-600"
                   />
                 </div>
@@ -109,7 +77,6 @@ export default function AuthPage() {
                   <Input
                     id="email"
                     type="email"
-                    // placeholder="you@example.com"
                     className="mt-1 border-gray-400 dark:border-gray-600"
                   />
                 </div>
@@ -144,20 +111,41 @@ export default function AuthPage() {
               </span>
             </div>
             <div className="space-y-2">
-              <Button
-                variant="outline"
-                className="relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
+              <form
+                action={async () => {
+                  "use server";
+
+                  await signIn("google", {
+                    redirectTo: "/"
+                  });
+                }}
               >
-                <FaGoogle className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
-                <span>Continue with Google</span>
-              </Button>
-              <Button
-                variant="outline"
-                className="relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
+                <Button
+                  variant="outline"
+                  className="relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
+                >
+                  <FaGoogle className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
+                  <span>Continue with Google</span>
+                </Button>
+              </form>
+
+              <form
+                action={async () => {
+                  "use server";
+
+                  await signIn("github", {
+                    callbackUrl: DEFAULT_LOGIN_REDIRECT,
+                  });
+                }}
               >
-                <FaFacebook className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
-                <span>Continue with Facebook</span>
-              </Button>
+                <Button
+                  variant="outline"
+                  className="relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
+                >
+                  <FaFacebook className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
+                  <span>Continue with Facebook</span>
+                </Button>
+              </form>
             </div>
           </div>
         </CardContent>
