@@ -1,6 +1,17 @@
 "use client";
 
+import { getLocalStorageItem, removeLocalStorageItem } from "@/lib/utils";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { CustomProgress } from "@/components/CustomProgress";
+import { CustomTooltip } from "@/components/CustomTooltip";
+import { CustomBadge } from "@/components/CustomBadge";
+import { Award, Book } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { UserData } from "@/components/ContinueLearningButton";
+import { InfoCard } from '@/components/InfoCard';
+import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,23 +23,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import lessons from "@/db/lessons";
-import { toast } from "@/hooks/use-toast";
-import { getLocalStorageItem, removeLocalStorageItem } from "@/lib/utils";
-import { Award, Book, User } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { CustomProgress } from "../../components/CustomProgress";
-import { CustomTooltip } from "../../components/CustomTooltip";
-import { CustomBadge } from "@/components/CustomBadge";
 
 export default function ProfilePage() {
-  const [name, setName] = useState("John Doe");
-  const [email, setEmail] = useState("john.doe@example.com");
   const [overallProgress, setOverallProgress] = useState(0);
 
   const router = useRouter();
@@ -100,55 +98,7 @@ export default function ProfilePage() {
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="px-4 py-8 sm:px-0">
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                      <div className="flex min-w-min gap-2 flex-wrap">
-                        <User className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-                        <p>Personal Information</p>
-                      </div>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <form className="space-y-4">
-                      <div>
-                        <Label
-                          htmlFor="name"
-                          className="text-gray-700 dark:text-gray-300"
-                        >
-                          Name
-                        </Label>
-                        <Input
-                          id="name"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          className="border-indigo-500 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
-                        />
-                      </div>
-                      <div>
-                        <Label
-                          htmlFor="email"
-                          className="text-gray-700 dark:text-gray-300"
-                        >
-                          Email
-                        </Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="border-indigo-500 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
-                        />
-                      </div>
-                      <Button
-                        type="submit"
-                        className="border border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200 dark:border-gray-800 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                      >
-                        Update Profile
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
+                <InfoCard />
 
                 <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                   <CardHeader>
