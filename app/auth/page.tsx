@@ -1,3 +1,4 @@
+import { signIn } from "@/auth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,12 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { LogInForm } from "./LogInForm";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import { signIn} from "@/auth";
 
-export default async function AuthPage() {
+export default async function AuthPage() {  
   return (
     <div className="flex min-h-[80vh] items-center justify-center max-sm:px-4">
       <Card className="w-full max-w-md border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800">
