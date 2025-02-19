@@ -15,7 +15,7 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { LogInForm } from "./LogInForm";
 
-export default async function AuthPage() {  
+export default async function AuthPage() {
   return (
     <div className="flex min-h-[80vh] items-center justify-center max-sm:px-4">
       <Card className="w-full max-w-md border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800">

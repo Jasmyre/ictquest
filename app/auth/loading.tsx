@@ -29,7 +29,7 @@ const loading = () => {
             <TabsList className="mb-4 grid w-full grid-cols-2 gap-2 bg-gray-200 dark:bg-gray-600">
               <TabsTrigger
                 value="signin"
-                className="text-gray-500 hover:bg-gray-100 data-[state=active]:bg-white data-[state=active]:text-gray-800 dark:text-gray-400 dark:hover:bg-gray-500 dark:data-[state=active]:bg-gray-600 dark:data-[state=active]:text-gray-300"
+                className="text-gray-500 hover:bg-gray-100 data-[state=active]:bg-gray-200 data-[state=active]:text-gray-800 dark:text-gray-400 dark:hover:bg-gray-500 dark:data-[state=active]:bg-gray-600 dark:data-[state=active]:text-gray-300"
                 disabled
               ></TabsTrigger>
               <TabsTrigger
