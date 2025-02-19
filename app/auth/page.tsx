@@ -7,15 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
-import { LogInForm } from "./LogInForm";
+import { LogInForm } from "../../components/LogInForm";
+import { SignupForm } from '../../components/SignupForm';
 
 export default async function AuthPage() {
+  // await wait(5000)
   return (
     <div className="flex min-h-[80vh] items-center justify-center max-sm:px-4">
       <Card className="w-full max-w-md border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -47,59 +47,14 @@ export default async function AuthPage() {
               <LogInForm />
               <Button
                 variant="link"
-                className="mt-2 p-0 text-indigo-400 hover:text-indigo-400 dark:text-gray-300"
+                className="mt-2 p-0 text-indigo-400 hover:text-indigo-300"
               >
                 Forgot password?
               </Button>
             </TabsContent>
             <TabsContent value="signup">
-              <form className="space-y-4">
-                <div>
-                  <Label
-                    htmlFor="name"
-                    className="text-gray-800 dark:text-gray-300"
-                  >
-                    Name
-                  </Label>
-                  <Input
-                    id="name"
-                    type="text"
-                    className="mt-1 border-gray-400 dark:border-gray-600"
-                  />
-                </div>
-                <div>
-                  <Label
-                    htmlFor="email"
-                    className="text-gray-800 dark:text-gray-300"
-                  >
-                    Email
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    className="mt-1 border-gray-400 dark:border-gray-600"
-                  />
-                </div>
-                <div>
-                  <Label
-                    htmlFor="password border-gray-600"
-                    className="text-gray-800 dark:text-gray-300"
-                  >
-                    Password
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    className="mt-1 border-gray-400 dark:border-gray-600"
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  className="w-full bg-indigo-500 hover:bg-indigo-400"
-                >
-                  Sign Up
-                </Button>
-              </form>
+              <SignupForm />
+              <br />
             </TabsContent>
           </Tabs>
 
