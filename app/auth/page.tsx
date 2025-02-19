@@ -1,4 +1,5 @@
-import { signIn } from "@/auth";
+"use client"
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,13 +10,21 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { LogInForm } from "../../components/LogInForm";
 import { SignupForm } from '../../components/SignupForm';
+import { signIn } from "next-auth/react";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
-export default async function AuthPage() {
+export default function AuthPage() {
   // await wait(5000)
+
+  const onClick = (provider: string) => {
+    signIn(provider, {
+      callbackUrl: DEFAULT_LOGIN_REDIRECT
+    })
+  }
+
   return (
     <div className="flex min-h-[80vh] items-center justify-center max-sm:px-4">
       <Card className="w-full max-w-md border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -66,42 +75,29 @@ export default async function AuthPage() {
               </span>
             </div>
             <div className="space-y-2">
-              <form
-                action={async () => {
-                  "use server";
-
-                  await signIn("google", {
-                    redirectTo: "/"
-                  });
-                }}
-              >
+              {/* <form
+              > */}
                 <Button
                   variant="outline"
                   className="relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
-                  type="submit"
+                  onClick={() => onClick("google")}
                 >
                   <FaGoogle className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
                   <span>Continue with Google</span>
                 </Button>
-              </form>
+              {/* </form> */}
 
-              <form
-                action={async () => {
-                  "use server";
-
-                  await signIn("github", {
-                    callbackUrl: DEFAULT_LOGIN_REDIRECT,
-                  });
-                }}
-              >
+              {/* <form
+              > */}
                 <Button
                   variant="outline"
                   className="relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
+                  onClick={() => onClick("github")}
                 >
                   <FaFacebook className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
                   <span>Continue with Facebook</span>
                 </Button>
-              </form>
+              {/* </form> */}
             </div>
           </div>
         </CardContent>

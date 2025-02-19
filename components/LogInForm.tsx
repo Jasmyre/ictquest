@@ -13,11 +13,15 @@ import { useState, useTransition } from "react";
 import * as z from "zod";
 import { FormError } from "./FormError";
 import { FormSuccess } from "./FormSuccess";
+import { useSearchParams } from "next/navigation";
 
 export const LogInForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
+
+  const searchParams = useSearchParams()
+  const urlError = searchParams.get("error") === "OAuthAccountNotLinked" ? "Email already in use with different provider!" : "";
 
   const form = useForm<z.infer<typeof LogInSchema>>({
     resolver: zodResolver(LogInSchema),
@@ -76,7 +80,7 @@ export const LogInForm = () => {
             </FormItem>
           )}
         />
-        <FormError message={error} />
+        <FormError message={error ?? urlError} />
         <FormSuccess message={success} />
         <Button
           type="submit"
