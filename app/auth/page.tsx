@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FaFacebook, FaGoogle } from "react-icons/fa";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { signIn } from "next-auth/react";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import { LogInForm } from "../../components/LogInForm";
 import { SignupForm } from '../../components/SignupForm';
-import { signIn } from "next-auth/react";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 export default function AuthPage() {
   // await wait(5000)
@@ -94,8 +94,8 @@ export default function AuthPage() {
                   className="relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
                   onClick={() => onClick("github")}
                 >
-                  <FaFacebook className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
-                  <span>Continue with Facebook</span>
+                  <FaGithub className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
+                  <span>Continue with Github</span>
                 </Button>
               {/* </form> */}
             </div>

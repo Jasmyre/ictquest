@@ -19,7 +19,7 @@ declare module "next-auth" {
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/auth",
-    error: "/auth",
+    error: "/auth/error",
   },
   events: {
     async linkAccount({ user }) {
@@ -42,9 +42,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.role = token.role as UserRole;
       }
 
-      if (token.emailVerified && session.user) {
-        session.user.emailVerified = token.emailVerified as Date;
-      }
+      session.user.emailVerified = token.emailVerified as Date;
 
       return session;
     },
