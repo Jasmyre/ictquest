@@ -10,6 +10,8 @@ import bcrypt from "bcryptjs";
 
 import * as z from "zod";
 
+export const runtime = "nodejs";
+
 export default {
   providers: [
     Google({
