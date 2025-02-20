@@ -22,6 +22,16 @@ model User {
   password      String?
   role          UserRole  @default(USER)
   accounts      Account[]
+  progressData  ProgressData[]
+}
+
+model ProgressData {
+  id       String   @id @default(cuid())
+  userId   String
+  topic    String
+  subtopics String[]
+
+  user     User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {

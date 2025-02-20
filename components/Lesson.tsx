@@ -1,25 +1,14 @@
 "use client";
 
 import { CustomProgress } from "@/components/CustomProgress";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { lessons } from "@/db/lessons";
 import LessonCard from "@/components/LessonCard";
+import { Button } from "@/components/ui/button";
+import { lessons } from "@/db/lessons";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Prism from "prismjs";
-import { getLocalStorageItem, setLocalStorageItem } from "@/lib/utils";
-
-interface ProgressEntry {
-  topic: string;
-  subtopics: string[];
-}
-
-export interface UserData {
-  name: string;
-  email: string;
-  progressData: ProgressEntry[];
-}
+import { useEffect, useState } from "react";
 
 export default function LessonPage({
   topic,
@@ -29,21 +18,12 @@ export default function LessonPage({
   const lessonTopic = lesson?.content[subtopic]?.contents;
   const [index, setIndex] = useState<number>(0);
   const [isFinished, setIsFinished] = useState<boolean>(true);
-  const [data, setData] = useState<UserData | null>(
-    getLocalStorageItem<UserData>("userData") || null,
-  );
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
     Prism.highlightAll();
-
-    // Auto finish
-    // const finish = () => {
-    //   setIndex(numberOfContent - 1);
-    // };
-    // finish();
-    // console.log(typeof finish);
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight" && isFinished) {
@@ -54,11 +34,13 @@ export default function LessonPage({
     };
 
     window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, isFinished]);
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  });
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
 
   if (!lesson) {
     return <div>Lesson not found</div>;
@@ -78,47 +60,23 @@ export default function LessonPage({
     }
   };
 
-  const handleNextButton = () => {
+  const handleNextButton = async () => {
     if (index < numberOfContent - 1) {
       setIndex((prev) => prev + 1);
     } else if (index === numberOfContent - 1 && isFinished) {
-      let updatedData: UserData;
-
-      if (data) {
-        updatedData = { ...data };
-
-        const progressData: ProgressEntry[] = updatedData.progressData || [];
-
-        let topicEntry = progressData.find((entry) => entry.topic === topic);
-
-        if (!topicEntry) {
-          topicEntry = { topic, subtopics: [] };
-          progressData.push(topicEntry);
+      try {
+        const res = await fetch("/api/progress", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic, subtopic }),
+        });
+        
+        if (!res.ok) {
+          console.error("Failed to update progress in the DB");
         }
-
-        if (!topicEntry.subtopics.includes(subtopic)) {
-          topicEntry.subtopics.push(subtopic);
-        } else {
-          console.log("Subtopic already recorded");
-        }
-
-        const lesson = lessons.find((item) => item.slug === topic);
-        if (lesson && topicEntry.subtopics.length === lesson.topics.length) {
-          console.log("Lesson already finished");
-        }
-
-        updatedData.progressData = progressData;
-      } else {
-        updatedData = {
-          name: "",
-          email: "",
-          progressData: [{ topic, subtopics: [subtopic] }],
-        };
+      } catch (error) {
+        console.error("Error updating progress:", error);
       }
-
-      setData(updatedData);
-      setLocalStorageItem("userData", updatedData);
-
       router.push(`/compliments?topic=${topic}&subtopic=${subtopic}`);
     }
     setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 10);

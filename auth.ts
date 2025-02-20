@@ -3,7 +3,7 @@ import NextAuth, { DefaultSession } from "next-auth";
 
 import { db } from "./lib/db";
 
-import { UserRole } from "@prisma/client";
+import { Prisma, UserRole } from "@prisma/client";
 import authConfig from "./auth.config";
 import { getUserById } from "./data/user";
 
@@ -13,6 +13,12 @@ declare module "next-auth" {
       role: UserRole;
       emailVerified: Date;
       userName: string;
+      progressData?: {
+        id?: string;
+        topic: string;
+        subtopics?: Prisma.ProgressDataCreatesubtopicsInput | string[];
+        user: Prisma.UserCreateNestedOneWithoutProgressDataInput;
+      };
     } & DefaultSession["user"];
   }
 }
@@ -22,6 +28,12 @@ declare module "@auth/core" {
     role?: UserRole;
     emailVerified?: Date;
     userName?: string;
+    progressData?: {
+      id?: string;
+      topic: string;
+      subtopics?: Prisma.ProgressDataCreatesubtopicsInput | string[];
+      user: Prisma.UserCreateNestedOneWithoutProgressDataInput;
+    };
   }
 }
 

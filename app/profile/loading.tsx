@@ -1,4 +1,3 @@
-import { CustomBadge } from "@/components/CustomBadge";
 import { CustomProgress } from "@/components/CustomProgress";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Award, Book, User } from "lucide-react";
 
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import Loading from "@/components/Loading";
 
 export default function LoadingProfile() {
   return (
@@ -72,16 +70,12 @@ export default function LoadingProfile() {
                     <Book className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                     Learning Progress
                   </div>
-                  <CustomBadge color="green">Beginner</CustomBadge>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <div className="mb-1 flex justify-between">
-                      <span className="flex items-center justify-center">
-                        <Loading className="h-[8px] w-[150px]" />
-                      </span>
+                    <div className="mb-1 flex justify-end">
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                         0%
                       </span>
@@ -90,10 +84,7 @@ export default function LoadingProfile() {
                   </div>
 
                   <div>
-                    <div className="mb-1 flex justify-between">
-                      <span className="flex items-center justify-center">
-                        <Loading className="h-[8px] w-[150px]" />
-                      </span>
+                    <div className="mb-1 flex justify-end">
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                         0%
                       </span>
@@ -102,10 +93,7 @@ export default function LoadingProfile() {
                   </div>
 
                   <div>
-                    <div className="mb-1 flex justify-between">
-                      <span className="flex items-center justify-center">
-                        <Loading className="h-[8px] w-[150px]" />
-                      </span>
+                    <div className="mb-1 flex justify-end">
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                         0%
                       </span>

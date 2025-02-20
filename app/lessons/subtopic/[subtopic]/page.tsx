@@ -1,4 +1,5 @@
 import LessonPage from "@/components/Lesson";
+import { SessionProvider } from "next-auth/react";
 
 export default async function page({
   params, searchParams
@@ -11,7 +12,9 @@ export default async function page({
 
   return (
     <main>
-      <LessonPage topic={topic} subtopic={subtopic} />
+      <SessionProvider>
+        <LessonPage topic={topic} subtopic={subtopic} />
+      </SessionProvider>
     </main>
   );
 }

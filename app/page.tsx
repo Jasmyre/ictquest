@@ -7,6 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getUserById } from "@/data/user";
+import { db } from "@/lib/db";
 import {
   ArrowRight,
   Award,
@@ -24,7 +26,22 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function LandingPage() {
-  const session = await auth();
+  const session = await auth()!;
+
+  if (session) {
+    const user = await getUserById(session?.user.id as string);
+    const id = user?.id;
+
+    if (!user?.userName) {
+      await db.user.update({
+        where: { id },
+        data: {
+          userName: user?.name,
+        },
+      });
+    }
+  }
+
   return (
     <main>
       <section className="relative overflow-hidden rounded-lg bg-gradient-to-br from-indigo-600 to-purple-700 py-20 text-white dark:from-indigo-900 dark:to-purple-950">
@@ -42,7 +59,7 @@ export default async function LandingPage() {
                 real-world projects, and expert guidance.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
-                <Link href="/auth">
+                <Link href="/lessons">
                   <Button
                     size="lg"
                     className="w-full bg-white text-indigo-600 hover:bg-gray-100 dark:bg-gray-200 dark:text-indigo-800 dark:hover:bg-gray-300 sm:w-auto"
@@ -51,16 +68,8 @@ export default async function LandingPage() {
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <Link href="/lessons">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 dark:hover:bg-gray-200 dark:hover:text-indigo-800 sm:w-auto"
-                  >
-                    Explore Lessons
-                  </Button>
-                </Link>
-                {session && (
+
+                {session ? (
                   <form
                     action={async () => {
                       "use server";
@@ -68,8 +77,24 @@ export default async function LandingPage() {
                       await signOut();
                     }}
                   >
-                    <Button>Sign Out</Button>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 dark:hover:bg-gray-200 dark:hover:text-indigo-800 sm:w-auto"
+                    >
+                      Sign Out
+                    </Button>
                   </form>
+                ) : (
+                  <Link href="/auth">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 dark:hover:bg-gray-200 dark:hover:text-indigo-800 sm:w-auto"
+                    >
+                      Sign In
+                    </Button>
+                  </Link>
                 )}
               </div>
             </div>

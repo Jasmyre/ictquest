@@ -1,31 +1,46 @@
 "use client";
 
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
-import { removeLocalStorageItem, toastStyle } from "@/lib/utils";
+import { toastStyle } from "@/lib/utils";
 
 interface DeleteDataCardProps {
   onResetAction: () => void;
 }
 
 export function DeleteDataCard({ onResetAction }: DeleteDataCardProps) {
-  const handleReset = () => {
-    removeLocalStorageItem("userData");
-    toast({
-      description: "Data has been removed successfully",
-      className: toastStyle
-    });
-    onResetAction();
+  const handleReset = async () => {
+    try {
+      const res = await fetch("/api/progress/", {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        const errorBody = await res.json();
+        console.error("Failed to delete progress", res.status, errorBody);
+        return;
+      }
+
+      console.log(await res.json())
+
+      toast({
+        description: "Data has been removed successfully",
+        className: toastStyle,
+      });
+      onResetAction();
+    } catch (error) {
+      console.error("Error deleting progress: ", error);
+    }
   };
 
   return (
