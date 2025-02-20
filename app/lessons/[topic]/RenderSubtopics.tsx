@@ -5,11 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { lessons } from "@/db/lessons";
 import { ArrowLeft, ArrowRight, Book, Check } from "lucide-react";
 
-import { UserData } from "@/components/Lesson";
 import { cn, getLocalStorageItem } from "@/lib/utils";
 import Link from "next/link";
 import { CustomTooltip } from "@/components/CustomTooltip";
 import { useRouter } from "next/navigation";
+import { UserData } from "@/components/ContinueLearningButton";
 
 export default function RenderSubtopics({
   paramsTopic,
@@ -29,7 +29,7 @@ export default function RenderSubtopics({
   }
 
   const completedLesson = userData?.progressData.find(
-    (item) => item.topic === paramsTopic,
+    (item: { topic: string; }) => item.topic === paramsTopic,
   )?.subtopics;
 
   console.log(completedLesson);

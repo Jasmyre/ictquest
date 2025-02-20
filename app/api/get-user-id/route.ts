@@ -1,15 +1,13 @@
-"use server"
+"use server";
 
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
-export const getUserId = async (): Promise<string | null> => {
+const getUserId = async (): Promise<string | null> => {
   const session = await auth();
-  const id = session?.user.id ?? null;
-
-  return id;
+  return session?.user.id ?? null;
 };
 
 export async function GET() {
-    return NextResponse.json({id: await getUserId()});
+  return NextResponse.json({ id: await getUserId() });
 }
