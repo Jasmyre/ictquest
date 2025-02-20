@@ -12,7 +12,16 @@ declare module "next-auth" {
     user: {
       role: UserRole;
       emailVerified: Date;
+      userName: string;
     } & DefaultSession["user"];
+  }
+}
+
+declare module "@auth/core" {
+  interface JWT {
+    role?: UserRole;
+    emailVerified?: Date;
+    userName?: string;
   }
 }
 
@@ -44,6 +53,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       session.user.emailVerified = token.emailVerified as Date;
 
+      if (token.userName && session.user) {
+        session.user.userName = token.userName as string
+      }
+
       return session;
     },
     async jwt({ token }) {
@@ -55,6 +68,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       token.role = existingUser?.role;
       token.emailVerified = existingUser?.emailVerified;
+      token.userName = existingUser?.userName;
 
       return token;
     },

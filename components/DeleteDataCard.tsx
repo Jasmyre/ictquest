@@ -12,7 +12,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
-import { removeLocalStorageItem } from "@/lib/utils";
+import { removeLocalStorageItem, toastStyle } from "@/lib/utils";
 
 interface DeleteDataCardProps {
   onResetAction: () => void;
@@ -23,8 +23,7 @@ export function DeleteDataCard({ onResetAction }: DeleteDataCardProps) {
     removeLocalStorageItem("userData");
     toast({
       description: "Data has been removed successfully",
-      className:
-        "bg-gray-100 dark:bg-gray-900 border border-gray-400 dark:border-gray-700 text-gray-500 dark:text-gray-200",
+      className: toastStyle
     });
     onResetAction();
   };

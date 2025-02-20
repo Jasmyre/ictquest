@@ -1,16 +1,28 @@
+import { updateUserName } from "@/actions/updateUserName";
+import { CustomTooltip } from "@/components/CustomTooltip";
 import { User } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { CustomTooltip } from "@/components/CustomTooltip";
+import { Prisma } from "@prisma/client";
+import { toast } from "@/hooks/use-toast";
+import { toastStyle } from "@/lib/utils";
 
 interface InfoCardProps {
-  name: string | null;
-  email: string | null;
+  name?: string | null;
+  email?: string | null;
+  user: Prisma.UserCreateInput;
 }
 
-export const InfoCard = ({ name, email }: InfoCardProps) => {
+export const InfoCard = ({ user }: InfoCardProps) => {
+  const handleUpdate = () => {
+    toast({
+      description: "User name updated.",
+      className: toastStyle
+    })
+  };
+
   return (
     <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
       <CardHeader>
@@ -22,14 +34,15 @@ export const InfoCard = ({ name, email }: InfoCardProps) => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <form className="space-y-4" action={updateUserName}>
           <div>
             <Label htmlFor="name" className="text-gray-700 dark:text-gray-300">
               Name
             </Label>
             <Input
               id="name"
-              defaultValue={name!}
+              name="inputName"
+              defaultValue={user.userName!}
               className="border-gray-300 bg-white text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             />
           </div>
@@ -37,15 +50,17 @@ export const InfoCard = ({ name, email }: InfoCardProps) => {
             <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">
               Email
             </Label>
-            <CustomTooltip content={() => "Email can not be changed"} className="w-full">
+            <CustomTooltip
+              content={() => "Email can not be changed"}
+              className="w-full"
+            >
               <Input
                 id="email"
+                name="email"
                 type="email"
-                defaultValue={email!}
+                defaultValue={user.email!}
                 disabled
-                style={{
-                  cursor: "pointer"
-                }}
+                style={{ cursor: "pointer" }}
                 className="cursor-pointer border-gray-300 bg-white text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
               />
             </CustomTooltip>
@@ -53,10 +68,11 @@ export const InfoCard = ({ name, email }: InfoCardProps) => {
           <Button
             type="submit"
             className="border border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200 dark:border-gray-800 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+            onClick={handleUpdate}
           >
             Update Profile
           </Button>
-        </div>
+        </form>
       </CardContent>
     </Card>
   );
