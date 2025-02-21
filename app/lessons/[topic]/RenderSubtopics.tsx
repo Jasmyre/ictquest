@@ -5,18 +5,46 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { lessons } from "@/db/lessons";
 import { ArrowLeft, ArrowRight, Book, Check } from "lucide-react";
 
-import { cn, getLocalStorageItem } from "@/lib/utils";
-import Link from "next/link";
 import { CustomTooltip } from "@/components/CustomTooltip";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { UserData } from "@/components/ContinueLearningButton";
+import { useEffect, useState } from "react";
+import { ProgressData } from "@prisma/client";
 
 export default function RenderSubtopics({
   paramsTopic,
-}: Readonly<{ paramsTopic: string }>) {
+}: Readonly<{ paramsTopic: string; }>) {
   const lesson = lessons.find((item) => item.slug === paramsTopic);
-  const userData = getLocalStorageItem<UserData>("userData");
   const router = useRouter();
+
+  const [userData, setData] = useState<ProgressData[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const res = await fetch("/api/progress");
+        if (!res.ok) {
+          console.error("Failed to fetch progress from DB");
+          return;
+        }
+        const fetchedData: ProgressData[] = await res.json();
+        setData(fetchedData);
+      } catch (error) {
+        console.error("Error fetching progress:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const foundItem = userData?.find((item) => item.topic === paramsTopic);
+
+  const completedLesson: string[] = (foundItem?.subtopics as string[]) ?? [];
 
   if (!lesson) {
     return <div>Lesson not found</div>;
@@ -28,13 +56,13 @@ export default function RenderSubtopics({
     return <div>Topic not found</div>;
   }
 
-  const completedLesson = userData?.progressData.find(
-    (item: { topic: string; }) => item.topic === paramsTopic,
-  )?.subtopics;
-
   console.log(completedLesson);
   console.log(paramsTopic);
   console.log(lesson);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <main>
