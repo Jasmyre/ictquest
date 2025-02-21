@@ -38,12 +38,16 @@ export default function LessonPage({
   useEffect(() => {
     Prism.highlightAll();
 
+    const autoSkip = getLocalStorageItem("skip");
+
     // Auto finish
-    // const finish = () => {
-    //   setIndex(numberOfContent - 1);
-    // };
-    // finish();
-    // console.log(typeof finish);
+    if (autoSkip) {
+      const finish = () => {
+        setIndex(numberOfContent - 1);
+      };
+
+      finish();
+    }
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight" && isFinished) {
