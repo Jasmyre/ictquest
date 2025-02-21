@@ -115,8 +115,8 @@ export function CommandSearch({className}: Readonly<{className?: string}>) {
           )}
           tabIndex={-1}
         >
-          <div className="flex min-w-min max-md:w-[100px] md:w-[225px] gap-4 items-center justify-between dark:text-gray-400">
-            <div className="flex gap-4">Search</div>
+          <div className="flex min-w-min w-max max-sm:w-full max-md:w-[100px] md:w-[225px] gap-4 items-center justify-between dark:text-gray-400">
+            <div className="flex">Search</div>
             <Search className="h-4 w-4" />
           </div>
         </Button>
@@ -125,7 +125,7 @@ export function CommandSearch({className}: Readonly<{className?: string}>) {
         <span className="sr-only">Search Command</span>
       </DialogTitle>
       <DialogContent
-        className="border-none p-0"
+        className="border-none p-0 max-sm:top-[200px]"
         aria-describedby="Search box dialog content"
       >
         <Command className="rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-900">

@@ -89,6 +89,9 @@ export default function Layout({
         {isMobileMenuOpen && (
           <div className="sm:hidden">
             <div className="space-y-1 pb-3 pt-2">
+              <div className="relative w-full px-2 mb-4">
+                <CommandSearch className="w-full" />
+              </div>
               <Link
                 href="/"
                 onClick={() =>
@@ -145,7 +148,13 @@ export default function Layout({
           </div>
           <div className="mt-8 md:order-1 md:mt-0">
             <p className="text-center text-base text-gray-400 dark:text-gray-300">
-              &copy; 2025 ICTQuest. All rights reserved. <Link className="text-indigo-500" href={"https://github.com/Jasmyre/ictquest"}>View Source Code</Link>
+              &copy; 2025 ICTQuest. All rights reserved.{" "}
+              <Link
+                className="text-indigo-500"
+                href={"https://github.com/Jasmyre/ictquest"}
+              >
+                View Source Code
+              </Link>
             </p>
           </div>
         </div>

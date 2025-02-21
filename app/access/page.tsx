@@ -6,7 +6,7 @@ export default function page() {
     <main className="min-h-[75vh]">
         {/* <Input className="bg-gray-900 border-gray-700 shadow-none" placeholder="Search" /> */}
         <br />
-        <LessonCard>
+        <LessonCard className="mx-4">
           <h1 className="text-3xl">ROLE ACCESS</h1>
             <p className="mt-2">
               Ths page is primarily used for development and debugging purposes only! please use with caution.
