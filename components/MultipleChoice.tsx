@@ -2,9 +2,10 @@
 
 import { setSessionStorageItem } from "@/lib/utils";
 import { CircleAlert, RotateCcw } from "lucide-react";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { MultipleChoiceButton } from "./MultipleChoiceButton";
 import { Button } from "./ui/button";
+import Prism from "prismjs";
 
 export const MultipleChoice = ({
   choices,
@@ -29,7 +30,23 @@ export const MultipleChoice = ({
 
   const correctChoice = choices?.answer;
 
+  const handleReset = useCallback(() => {
+    setChoice("");
+    setDisabledButtons([]);
+    setIsFinishedAction(false);
+    setIsCorrect(false);
+  }, [setIsFinishedAction]);
+
   React.useEffect(() => {
+    Prism.highlightAll();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      console.log(event.key);
+      if (event.key === "Backspace") {
+        handleReset();
+      }
+    };
+
     if (choice === choices.answer) {
       setIsFinishedAction(true);
       setIsCorrect(true);
@@ -37,7 +54,10 @@ export const MultipleChoice = ({
       setIsFinishedAction(false);
       setIsCorrect(true);
     }
-  }, [choice, choices.answer, setIsFinishedAction]);
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [choice, choices.answer, handleReset, setIsFinishedAction]);
 
   const handleMultipleChoiceClick = (label: string) => {
     setChoice((prevChoice) => {
@@ -50,13 +70,6 @@ export const MultipleChoice = ({
     });
 
     setDisabledButtons(choices.options.filter((option) => option !== label));
-  };
-
-  const handleReset = () => {
-    setChoice("");
-    setDisabledButtons([]);
-    setIsFinishedAction(false);
-    setIsCorrect(false);
   };
 
   const renderMessage = () => {
@@ -108,7 +121,6 @@ export const MultipleChoice = ({
               disabledButtons={disabledButtons}
               handleMultipleChoiceClickAction={handleMultipleChoiceClick}
               label={option}
-              
             />
           );
         })}

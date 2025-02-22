@@ -32,6 +32,7 @@ const CodeBlock = ({
         <Code /> <p>{language}</p>
       </header>
       <pre
+      tabIndex={-1}
         style={{
           margin: 0,
           padding: ".5rem 1rem",
@@ -41,6 +42,7 @@ const CodeBlock = ({
         className="m-0 bg-[#2D2D2D] p-2 max-sm:text-xs"
       >
         <code
+        tabIndex={-1}
           className={`language-${language} max-sm:text-xs m-0 h-full min-h-[20vh] rounded-b-xl border-none bg-[2D2D2D]`}
           dangerouslySetInnerHTML={{ __html: highlightedCode }}
         />

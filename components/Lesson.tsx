@@ -1,27 +1,17 @@
 "use client";
 
 import { CustomProgress } from "@/components/CustomProgress";
+import LessonCard from "@/components/LessonCard";
 import { Button } from "@/components/ui/button";
+import { lessons } from "@/db/lessons";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { lessons } from "@/db/lessons";
-import LessonCard from "@/components/LessonCard";
+import Loading from "./Loading";
 import Prism from "prismjs";
-import { getLocalStorageItem, setLocalStorageItem } from "@/lib/utils";
+import { getLocalStorageItem } from "@/lib/utils";
 
-interface ProgressEntry {
-  topic: string;
-  subtopics: string[];
-}
-
-export interface UserData {
-  name: string;
-  email: string;
-  progressData: ProgressEntry[];
-}
-
-export default function LessonPage({
+export default function Lesson({
   topic,
   subtopic,
 }: Readonly<{ topic: string; subtopic: string }>) {
@@ -29,10 +19,6 @@ export default function LessonPage({
   const lessonTopic = lesson?.content[subtopic]?.contents;
   const [index, setIndex] = useState<number>(0);
   const [isFinished, setIsFinished] = useState<boolean>(true);
-  const [data, setData] = useState<UserData | null>(
-    getLocalStorageItem<UserData>("userData") || null,
-  );
-
   const router = useRouter();
 
   useEffect(() => {
@@ -57,11 +43,48 @@ export default function LessonPage({
     };
 
     window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, isFinished]);
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  });
+  if (status === "loading") {
+    return (
+      <main>
+        <div className="py-10">
+          <header>
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <Loading className="h-[16px] rounded-md sm:w-[325px]" />
+              <br />
+              <CustomProgress initialValue={0} finalValue={0} delay={0} />
+            </div>
+          </header>
+          <main className="mt-10">
+            <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+              <LessonCard>
+                <div className="flex min-h-[65vh] flex-col justify-between">
+                  <div className="prose dark:prose-invert max-w-none">
+                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[100%]" />
+                    <br />
+                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[100%]" />
+                    <br />
+                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[98%]" />
+                    <br />
+                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[95%]" />
+                    <br />
+                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[66%]" />
+                    <br />
+                    <Loading className="h-[25vh] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[100%]" />
+                    <br />
+                  </div>
+                  <br />
+                </div>
+              </LessonCard>
+            </div>
+          </main>
+        </div>
+      </main>
+    );
+  }
 
   if (!lesson) {
     return <div>Lesson not found</div>;
@@ -81,47 +104,23 @@ export default function LessonPage({
     }
   };
 
-  const handleNextButton = () => {
+  const handleNextButton = async () => {
     if (index < numberOfContent - 1) {
       setIndex((prev) => prev + 1);
     } else if (index === numberOfContent - 1 && isFinished) {
-      let updatedData: UserData;
+      try {
+        const res = await fetch("/api/progress", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic, subtopic }),
+        });
 
-      if (data) {
-        updatedData = { ...data };
-
-        const progressData: ProgressEntry[] = updatedData.progressData || [];
-
-        let topicEntry = progressData.find((entry) => entry.topic === topic);
-
-        if (!topicEntry) {
-          topicEntry = { topic, subtopics: [] };
-          progressData.push(topicEntry);
+        if (!res.ok) {
+          console.error("Failed to update progress in the DB");
         }
-
-        if (!topicEntry.subtopics.includes(subtopic)) {
-          topicEntry.subtopics.push(subtopic);
-        } else {
-          console.log("Subtopic already recorded");
-        }
-
-        const lesson = lessons.find((item) => item.slug === topic);
-        if (lesson && topicEntry.subtopics.length === lesson.topics.length) {
-          console.log("Lesson already finished");
-        }
-
-        updatedData.progressData = progressData;
-      } else {
-        updatedData = {
-          name: "",
-          email: "",
-          progressData: [{ topic, subtopics: [subtopic] }],
-        };
+      } catch (error) {
+        console.error("Error updating progress:", error);
       }
-
-      setData(updatedData);
-      setLocalStorageItem("userData", updatedData);
-
       router.push(`/compliments?topic=${topic}&subtopic=${subtopic}`);
     }
     setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 10);
@@ -138,7 +137,7 @@ export default function LessonPage({
             {lesson?.content[subtopic].title}
           </h1>
           <CustomProgress
-          classname="mt-4"
+            classname="mt-4"
             initialValue={singleProgress * index - singleProgress}
             finalValue={singleProgress * index}
             delay={0}
