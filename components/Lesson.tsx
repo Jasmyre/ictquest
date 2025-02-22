@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import Prism from "prismjs";
+import { getLocalStorageItem } from "@/lib/utils";
 
 export default function Lesson({
   topic,
@@ -24,6 +25,16 @@ export default function Lesson({
   useEffect(() => {
     Prism.highlightAll();
 
+    const autoSkip = getLocalStorageItem("skip");
+
+    if (autoSkip) {
+      const finish = () => {
+        setIndex(numberOfContent - 1);
+      };
+
+      finish();
+    }
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight" && isFinished) {
         handleNextButton();
@@ -34,7 +45,7 @@ export default function Lesson({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, isFinished]);
 
   if (status === "loading") {
@@ -104,7 +115,7 @@ export default function Lesson({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ topic, subtopic }),
         });
-        
+
         if (!res.ok) {
           console.error("Failed to update progress in the DB");
         }
@@ -124,9 +135,10 @@ export default function Lesson({
       <header>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-white">
-            {lesson.title}
+            {lesson?.content[subtopic].title}
           </h1>
           <CustomProgress
+            classname="mt-4"
             initialValue={singleProgress * index - singleProgress}
             finalValue={singleProgress * index}
             delay={0}
