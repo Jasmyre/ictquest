@@ -2,11 +2,12 @@
 
 import { setSessionStorageItem } from "@/lib/utils";
 import { CircleAlert, RotateCcw } from "lucide-react";
-import React, { JSX, useState } from "react";
+import React, { JSX, useCallback, useEffect, useState } from "react";
 import Browser from "./Browser";
 import ButtonChoice from "./ButtonChoice";
 import CodeBlock from "./Code";
 import { Button } from "./ui/button";
+import Prism from "prismjs";
 
 interface PracticeProps {
   setIsFinishedAction: (value: boolean) => void;
@@ -45,8 +46,23 @@ export const Practice = ({
   const correctCodeFormatted = choices?.answer.toString().replaceAll(" ", "").replaceAll(`\n`, "")
   console.log(correctCode)
 
-  React.useEffect(() => {
+   const handleReset = useCallback(() => {
+     setCode("");
+     setDisabledButtons([]);
+     setIsFinishedAction(false);
+     setIsCorrect(false);
+   }, [setIsFinishedAction]);
+
+  useEffect(() => {
+    Prism.highlightAll();
     setIsFinishedAction(false);
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      console.log(event.key)
+      if (event.key === "Backspace") {
+        handleReset();
+      }
+    };
 
     if (code.replaceAll(" ", "").replaceAll("\n", "") === correctCodeFormatted) {
       setIsFinishedAction(true);
@@ -57,7 +73,10 @@ export const Practice = ({
     }
 
     console.log(code);
-  }, [code, correctCodeFormatted, setIsFinishedAction]);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [code, correctCodeFormatted, handleReset, setIsFinishedAction]);
+
 
   const handleClick = (label: string, priority: number) => {
     setCode((prevCode) => {
@@ -69,14 +88,6 @@ export const Practice = ({
     });
 
     setDisabledButtons((prevDisabled) => [...prevDisabled, label + priority]);
-  };
-
-
-  const handleReset = () => {
-    setCode("");
-    setDisabledButtons([]);
-    setIsFinishedAction(false);
-    setIsCorrect(false);
   };
 
   const renderMessage = () => {
