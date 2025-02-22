@@ -19,7 +19,6 @@ export default function Lesson({
   const lessonTopic = lesson?.content[subtopic]?.contents;
   const [index, setIndex] = useState<number>(0);
   const [isFinished, setIsFinished] = useState<boolean>(true);
-  // const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
