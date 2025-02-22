@@ -2,6 +2,7 @@
 
 import { CommandSearch } from "@/components/command-search";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Book, FileText, Menu, Moon, Shield, Sun, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
@@ -20,10 +21,17 @@ export default function Layout({
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return null;
+  console.log(process.env.NEXT_PUBLIC_IS_IN_MAINTENANCE);
+  console.log(typeof process.env.NEXT_PUBLIC_IS_IN_MAINTENANCE)
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <nav className="sticky left-0 top-0 z-[50] border-b-2 border-indigo-500/20 bg-white shadow-lg dark:bg-gray-800">
+    <div className={`min-h-screen bg-gray-50 dark:bg-gray-900`}>
+      <nav
+        className={cn(
+          "sticky left-0 top-0 z-[50] border-b-2 border-indigo-500/20 bg-white shadow-lg dark:bg-gray-800",
+          process.env.NEXT_IS_IN_MAINTENANCE ? "hidden" : "",
+        )}
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
             <div className="flex">
@@ -125,7 +133,12 @@ export default function Layout({
         <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">{children}</div>
       </main>
 
-      <footer className="bg-white dark:bg-gray-800">
+      <footer
+        className={cn(
+          `bg-white dark:bg-gray-800`,
+          process.env.NEXT_IS_IN_MAINTENANCE ? "hidden" : "",
+        )}
+      >
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
           <div className="flex justify-center space-x-6 md:order-2">
             <Link
@@ -145,7 +158,13 @@ export default function Layout({
           </div>
           <div className="mt-8 md:order-1 md:mt-0">
             <p className="text-center text-base text-gray-400 dark:text-gray-300">
-              &copy; 2025 ICTQuest. All rights reserved. <Link className="text-indigo-500" href={"https://github.com/Jasmyre/ictquest"}>View Source Code</Link>
+              &copy; 2025 ICTQuest. All rights reserved.{" "}
+              <Link
+                className="text-indigo-500"
+                href={"https://github.com/Jasmyre/ictquest"}
+              >
+                View Source Code
+              </Link>
             </p>
           </div>
         </div>

@@ -1,9 +1,6 @@
-/* 
- * An array of public routes
- * @type {string[]}
- */
+
 export const publicRoutes = [
-    "/", "/privacy", "/terms", "/settings", "/lessons"
+    "/", "/privacy", "/terms", "/settings", "/lessons", "/maintenance",
 ]
 
 export const authRoutes = [
@@ -12,10 +9,6 @@ export const authRoutes = [
     "/api/auth/callback/google"
 ]
 
-/* 
- * An array of public routes
- * @type {string[]}
- */
 export const apiAuthPrefix = "/api/auth"
 
 export const DEFAULT_LOGIN_REDIRECT = "/"

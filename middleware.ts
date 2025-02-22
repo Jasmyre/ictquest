@@ -1,5 +1,5 @@
-import authConfig from "./auth.config";
 import NextAuth from "next-auth";
+import authConfig from "./auth.config";
 
 import {
   DEFAULT_LOGIN_REDIRECT,
@@ -12,6 +12,15 @@ const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   const { nextUrl } = req;
+
+  const isInMaintenance = process.env.NEXT_PUBLIC_IS_IN_MAINTENANCE === "true";
+
+  if (isInMaintenance) {
+    if (!nextUrl.pathname.startsWith("/maintenance")) {
+      return Response.redirect(new URL("/maintenance", nextUrl));
+    }
+  }
+
   const isLoggedIn = !!req.auth;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
@@ -33,7 +42,7 @@ export default auth((req) => {
     return Response.redirect(new URL("/auth", nextUrl));
   }
 
-  return undefined
+  return undefined;
 });
 
 export const config = {
