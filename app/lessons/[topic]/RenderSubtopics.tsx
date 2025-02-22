@@ -174,9 +174,9 @@ export default function RenderSubtopics({
                                   <div className="min-w-0 flex-1">
                                     <p
                                       className={cn(
-                                        "truncate text-sm font-medium text-gray-900 dark:text-gray-100",
+                                        "text-sm font-medium text-gray-900 dark:text-gray-100",
                                         completedLesson?.includes(subtopic.slug)
-                                          ? "text-gray-400 line-through dark:text-gray-500"
+                                          ? "text-gray-400 text-start line-through dark:text-gray-500"
                                           : "",
                                       )}
                                     >
