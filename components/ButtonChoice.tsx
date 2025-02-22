@@ -46,7 +46,6 @@ const ButtonChoice = ({
         className="m-0 p-2"
       >
         <code
-        tabIndex={-1}
           className={`language-${language} m-0 h-full min-h-[20vh] rounded-[0_0_.75rem_.75rem] border-none bg-[#282C34]`}
           dangerouslySetInnerHTML={{
             __html: escapeHtml(children as string).trim(),

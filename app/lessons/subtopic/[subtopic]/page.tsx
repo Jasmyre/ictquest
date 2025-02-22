@@ -1,21 +1,17 @@
-import Lesson from "@/components/Lesson";
-import { SessionProvider } from "next-auth/react";
+import LessonPage from "@/components/Lesson";
 
 export default async function page({
-  params,
-  searchParams,
+  params, searchParams
 }: Readonly<{
-  params: Promise<{ subtopic: string }>;
+  params: Promise<{ subtopic: string;}>;
   searchParams: Promise<{ topic: string }>;
 }>) {
   const { subtopic } = await params;
-  const { topic } = await searchParams;
+  const { topic } = await searchParams
 
   return (
     <main>
-      <SessionProvider>
-        <Lesson topic={topic} subtopic={subtopic} />
-      </SessionProvider>
+      <LessonPage topic={topic} subtopic={subtopic} />
     </main>
   );
 }

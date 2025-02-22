@@ -9,7 +9,7 @@ export const DifficultyParagraph = ({children, difficulty, color, className, ...
         {children}
       </span>
       <br />
-      <CustomBadge color={color} className="h-min w-max flex justify-center self-center max-sm:w-full">{difficulty}</CustomBadge>
+      <CustomBadge color={color} className="h-min w-min flex justify-center self-center max-sm:w-full">{difficulty}</CustomBadge>
     </div>
   );
 };

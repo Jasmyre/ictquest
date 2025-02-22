@@ -37,25 +37,27 @@ const Browser = ({ title = "Browser", content = "" }: BrowserProps) => {
       overflow-y: auto; 
     }
     
+    /* Barely visible scrollbar */
     ::-webkit-scrollbar {
-      width: 4px;
+      width: 4px; /* Thin scrollbar */
     }
     ::-webkit-scrollbar-track {
-      background: transparent;
+      background: transparent; /* No track */
     }
     ::-webkit-scrollbar-thumb {
-      background: rgba(0, 0, 0, 0.1);
+      background: rgba(0, 0, 0, 0.1); /* Faint thumb */
       border-radius: 4px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.2); /* Slightly darker on hover */
     }
   </style>
 </head>
 <body onload="parent.postMessage({ height: document.body.scrollHeight }, '*')">
-${content.toString().replace(",", "")}
+  ${content}
 </body>
-</html>`);
+</html>
+        `);
         doc.close();
       }
     }

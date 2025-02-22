@@ -2,12 +2,11 @@
 
 import { setSessionStorageItem } from "@/lib/utils";
 import { CircleAlert, RotateCcw } from "lucide-react";
-import React, { JSX, useCallback, useEffect, useState } from "react";
+import React, { JSX, useState } from "react";
 import Browser from "./Browser";
 import ButtonChoice from "./ButtonChoice";
 import CodeBlock from "./Code";
 import { Button } from "./ui/button";
-import Prism from "prismjs";
 
 interface PracticeProps {
   setIsFinishedAction: (value: boolean) => void;
@@ -43,28 +42,11 @@ export const Practice = ({
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
 
   const correctCode = choices?.answer;
-  const correctCodeFormatted = choices?.answer.toString().replaceAll(" ", "").replaceAll(`\n`, "")
-  console.log(correctCode)
 
-   const handleReset = useCallback(() => {
-     setCode("");
-     setDisabledButtons([]);
-     setIsFinishedAction(false);
-     setIsCorrect(false);
-   }, [setIsFinishedAction]);
-
-  useEffect(() => {
-    Prism.highlightAll();
+  React.useEffect(() => {
     setIsFinishedAction(false);
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      console.log(event.key)
-      if (event.key === "Backspace") {
-        handleReset();
-      }
-    };
-
-    if (code.replaceAll(" ", "").replaceAll("\n", "") === correctCodeFormatted) {
+    if (code === correctCode) {
       setIsFinishedAction(true);
       setIsCorrect(true);
     } else {
@@ -73,27 +55,32 @@ export const Practice = ({
     }
 
     console.log(code);
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [code, correctCodeFormatted, handleReset, setIsFinishedAction]);
+  }, [code, correctCode, setIsFinishedAction]);
 
-
-  const handleClick = (label: string, priority: number) => {
+  const handleClick = (label: string) => {
     setCode((prevCode) => {
-      const newCode = prevCode + label
+      const newCode = prevCode + label;
       if (newCode === choices?.answer) {
         setSessionStorageItem("finish", true);
       }
       return newCode;
     });
 
-    setDisabledButtons((prevDisabled) => [...prevDisabled, label + priority]);
+    setDisabledButtons((prevDisabled) => [...prevDisabled, label]);
+  };
+
+
+  const handleReset = () => {
+    setCode("");
+    setDisabledButtons([]);
+    setIsFinishedAction(false);
+    setIsCorrect(false);
   };
 
   const renderMessage = () => {
     if (disabledButtons.length !== shuffledData?.length || !code) return null;
 
-    if (code.replaceAll(" ", "").replaceAll("\n", "") === correctCodeFormatted) {
+    if (code === correctCode) {
       if (!response?.positive) return null;
       console.log(isCorrect);
       return (
@@ -145,20 +132,17 @@ export const Practice = ({
       <div className="mt-4 flex flex-wrap justify-center gap-4">
         {shuffledData?.map((option) => (
           <ButtonChoice
-            key={option.label.trim() + option.priority}
-            onClick={() => handleClick(option.label, option.priority)}
-            disabled={disabledButtons.includes(option.label + option.priority)}
+            key={option.label.trim()}
+            onClick={() => handleClick(option.label)}
+            disabled={disabledButtons.includes(option.label)}
           >
             {option.label.trim()}
           </ButtonChoice>
         ))}
       </div>
       <br />
-      {code.replaceAll(" ", "").replaceAll("\n", "") === correctCodeFormatted && (
-        <Browser
-          title="Document"
-          content={initialCode ? initialCode.toLocaleString() + correctCode : correctCode?.toString()}
-        />
+      {code === correctCode && (
+        <Browser title="Document" content={correctCode} />
       )}
       <br />
       {renderMessage()}

@@ -9,21 +9,7 @@ const nextConfig: NextConfig = {
         hostname: "fonts.gstatic.com",
         port: "",
         pathname: "/**",
-        search: "",
-      },
-      {
-        protocol: "https",
-        hostname: "loremflickr.com",
-        port: "",
-        pathname: "/**",
-        search: "",
-      },
-      {
-        protocol: "https",
-        hostname: "loremflickr.com",
-        port: "",
-        pathname: "/cache/resized/**",
-        search: "",
+        search: ""
       },
     ],
   },
