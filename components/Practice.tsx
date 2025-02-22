@@ -42,11 +42,13 @@ export const Practice = ({
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
 
   const correctCode = choices?.answer;
+  const correctCodeFormatted = choices?.answer.toString().replaceAll(" ", "").replaceAll(`\n`, "")
+  console.log(correctCode)
 
   React.useEffect(() => {
     setIsFinishedAction(false);
 
-    if (code === correctCode) {
+    if (code.replaceAll(" ", "").replaceAll("\n", "") === correctCodeFormatted) {
       setIsFinishedAction(true);
       setIsCorrect(true);
     } else {
@@ -55,18 +57,18 @@ export const Practice = ({
     }
 
     console.log(code);
-  }, [code, correctCode, setIsFinishedAction]);
+  }, [code, correctCodeFormatted, setIsFinishedAction]);
 
-  const handleClick = (label: string) => {
+  const handleClick = (label: string, priority: number) => {
     setCode((prevCode) => {
-      const newCode = prevCode + label;
+      const newCode = prevCode + label
       if (newCode === choices?.answer) {
         setSessionStorageItem("finish", true);
       }
       return newCode;
     });
 
-    setDisabledButtons((prevDisabled) => [...prevDisabled, label]);
+    setDisabledButtons((prevDisabled) => [...prevDisabled, label + priority]);
   };
 
 
@@ -80,7 +82,7 @@ export const Practice = ({
   const renderMessage = () => {
     if (disabledButtons.length !== shuffledData?.length || !code) return null;
 
-    if (code === correctCode) {
+    if (code.replaceAll(" ", "").replaceAll("\n", "") === correctCodeFormatted) {
       if (!response?.positive) return null;
       console.log(isCorrect);
       return (
@@ -132,17 +134,20 @@ export const Practice = ({
       <div className="mt-4 flex flex-wrap justify-center gap-4">
         {shuffledData?.map((option) => (
           <ButtonChoice
-            key={option.label.trim()}
-            onClick={() => handleClick(option.label)}
-            disabled={disabledButtons.includes(option.label)}
+            key={option.label.trim() + option.priority}
+            onClick={() => handleClick(option.label, option.priority)}
+            disabled={disabledButtons.includes(option.label + option.priority)}
           >
             {option.label.trim()}
           </ButtonChoice>
         ))}
       </div>
       <br />
-      {code === correctCode && (
-        <Browser title="Document" content={correctCode} />
+      {code.replaceAll(" ", "").replaceAll("\n", "") === correctCodeFormatted && (
+        <Browser
+          title="Document"
+          content={initialCode ? initialCode.toLocaleString() + correctCode : correctCode?.toString()}
+        />
       )}
       <br />
       {renderMessage()}

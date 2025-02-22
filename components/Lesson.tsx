@@ -5,12 +5,12 @@ import LessonCard from "@/components/LessonCard";
 import { Button } from "@/components/ui/button";
 import { lessons } from "@/db/lessons";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Prism from "prismjs";
 import { useEffect, useState } from "react";
+import Loading from "./Loading";
+import Prism from "prismjs";
 
-export default function LessonPage({
+export default function Lesson({
   topic,
   subtopic,
 }: Readonly<{ topic: string; subtopic: string }>) {
@@ -18,8 +18,7 @@ export default function LessonPage({
   const lessonTopic = lesson?.content[subtopic]?.contents;
   const [index, setIndex] = useState<number>(0);
   const [isFinished, setIsFinished] = useState<boolean>(true);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -39,7 +38,42 @@ export default function LessonPage({
   }, [index, isFinished]);
 
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return (
+      <main>
+        <div className="py-10">
+          <header>
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <Loading className="h-[16px] rounded-md sm:w-[325px]" />
+              <br />
+              <CustomProgress initialValue={0} finalValue={0} delay={0} />
+            </div>
+          </header>
+          <main className="mt-10">
+            <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+              <LessonCard>
+                <div className="flex min-h-[65vh] flex-col justify-between">
+                  <div className="prose dark:prose-invert max-w-none">
+                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[100%]" />
+                    <br />
+                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[100%]" />
+                    <br />
+                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[98%]" />
+                    <br />
+                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[95%]" />
+                    <br />
+                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[66%]" />
+                    <br />
+                    <Loading className="h-[25vh] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[100%]" />
+                    <br />
+                  </div>
+                  <br />
+                </div>
+              </LessonCard>
+            </div>
+          </main>
+        </div>
+      </main>
+    );
   }
 
   if (!lesson) {
