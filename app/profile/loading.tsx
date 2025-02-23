@@ -10,7 +10,7 @@ import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 export default function LoadingProfile() {
   return (
     <main>
-      <div className="py-10">
+      <div className="py-10 min-h-[80vh]">
         <header className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-gray-100">
             Your Profile
@@ -121,7 +121,7 @@ export default function LoadingProfile() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                {/* <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                   <li className="flex py-4">
                     <Award className="mr-2 h-6 w-6 text-yellow-400" />
                     <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
@@ -140,7 +140,7 @@ export default function LoadingProfile() {
                       HTML5 Pioneer
                     </span>
                   </li>
-                </ul>
+                </ul> */}
               </CardContent>
             </Card>
 

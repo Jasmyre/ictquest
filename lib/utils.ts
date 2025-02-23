@@ -75,3 +75,7 @@ export const clearLocalStorage = (): void => {
 
 export const toastStyle =
   "border border-gray-400 dark:border-gray-700 text-gray-500 dark:text-gray-bg-gray-100 dark:bg-gray-900 border border-gray-400 dark:border-gray-700 text-gray-500 dark:text-gray-200";
+
+export const toastDescription = (name: string, description: string) => {
+  return `${name} - ${description}`;
+};

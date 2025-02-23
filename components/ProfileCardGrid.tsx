@@ -14,7 +14,7 @@ interface ProfileCardGridProps {
 }
 
 export function ProfileCardGrid({user}: ProfileCardGridProps) {
-  const [refreshKey, setRefreshKey] = useState<number>(0);
+  const [refreshKey, setRefreshKey] = useState<number>(1);
 
   const handleRefresh = () => {
     setRefreshKey((prev) => prev + 1);
@@ -25,7 +25,7 @@ export function ProfileCardGrid({user}: ProfileCardGridProps) {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <InfoCard user={user} />
         <LearningProgressCard key={refreshKey} />
-        <AchievementsCard />
+        <AchievementsCard key={refreshKey + refreshKey}/>
         <DeleteDataCard onResetAction={handleRefresh} />
       </div>
     </div>

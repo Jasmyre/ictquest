@@ -4,25 +4,40 @@ import { CustomProgress } from "@/components/CustomProgress";
 import LessonCard from "@/components/LessonCard";
 import { Button } from "@/components/ui/button";
 import { lessons } from "@/db/lessons";
+import { toast } from "@/hooks/use-toast";
+import { getLocalStorageItem, toastDescription, toastStyle } from "@/lib/utils";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Prism from "prismjs";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
-import Prism from "prismjs";
-import { getLocalStorageItem } from "@/lib/utils";
 
 export default function Lesson({
   topic,
   subtopic,
 }: Readonly<{ topic: string; subtopic: string }>) {
-  const lesson = lessons.find((item) => item.slug === topic);
-  const lessonTopic = lesson?.content[subtopic]?.contents;
-  const [index, setIndex] = useState<number>(0);
+  const { data: session, status } = useSession();
+
+  const [achievementUnlocked, setAchievementUnlocked] = useState(false);
   const [isFinished, setIsFinished] = useState<boolean>(true);
-  // const { data: session, status } = useSession();
+  const [index, setIndex] = useState<number>(0);
+
+  const lesson = lessons.find((item) => item.slug === topic)!;
+  const lessonTopic = lesson.content[subtopic].contents;
   const router = useRouter();
 
+  const numberOfContent = lessonTopic.length;
+
   useEffect(() => {
+    if (
+      status === "authenticated" &&
+      session?.user?.id &&
+      !achievementUnlocked
+    ) {
+      unlockAchievement();
+    }
+
     Prism.highlightAll();
 
     const autoSkip = getLocalStorageItem("skip");
@@ -47,6 +62,32 @@ export default function Lesson({
     return () => window.removeEventListener("keydown", handleKeyDown);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, isFinished]);
+
+  async function unlockAchievement() {
+    try {
+      const response = await fetch("/api/achievements", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ achievementName: "Newbie" }),
+      });
+      const result = await response.json();
+      if (response.ok && result.status === "new") {
+        toast({
+          title: "NEW ACHIEVEMENT UNLOCKED!",
+          description: toastDescription(
+            result.achievement.achievementName,
+            result.achievement.achievementDescription,
+          ),
+          className: toastStyle,
+        });
+        setAchievementUnlocked(true);
+      } else {
+        console.log(result.message || result.error);
+      }
+    } catch (error) {
+      console.error("Error unlocking achievement:", error);
+    }
+  }
 
   if (status === "loading") {
     return (
@@ -94,8 +135,6 @@ export default function Lesson({
   if (!lessonTopic) {
     return <div>Topic not found</div>;
   }
-
-  const numberOfContent = lessonTopic.length;
 
   const handleBackButton = () => {
     setIsFinished(true);

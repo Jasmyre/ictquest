@@ -13,25 +13,26 @@ enum UserRole {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String
-  userName      String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?
-  role          UserRole  @default(USER)
-  accounts      Account[]
-  progressData  ProgressData[]
+  id               String            @id @default(cuid())
+  name             String
+  userName         String?
+  email            String?           @unique
+  emailVerified    DateTime?
+  image            String?
+  password         String?
+  role             UserRole          @default(USER)
+  accounts         Account[]
+  progressData     ProgressData[]
+  userAchievements UserAchievement[]
 }
 
 model ProgressData {
-  id       String   @id @default(cuid())
-  userId   String
-  topic    String
+  id        String   @id @default(cuid())
+  userId    String
+  topic     String
   subtopics String[]
 
-  user     User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -51,4 +52,26 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+model Achievement {
+  id               Int               @id @default(autoincrement())
+  name             String            @unique
+  description      String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @default(now()) @updatedAt
+  userAchievements UserAchievement[]
+}
+
+model UserAchievement {
+  id                     Int         @id @default(autoincrement())
+  user                   User        @relation(fields: [userId], references: [id])
+  userId                 String
+  achievement            Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  achievementId          Int
+  achievementName        String      @default("Unknown Achievement")
+  achievementDescription String      @default("Unknown Achievement")
+  unlockedAt             DateTime    @default(now())
+
+  @@unique([userId, achievementId])
 }

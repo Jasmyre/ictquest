@@ -21,17 +21,25 @@ interface DeleteDataCardProps {
 export function DeleteDataCard({ onResetAction }: DeleteDataCardProps) {
   const handleReset = async () => {
     try {
-      const res = await fetch("/api/progress/", {
-        method: "DELETE",
-      });
+      const endpoints = ["/api/progress/", "/api/user-achievements/"];
 
-      if (!res.ok) {
-        const errorBody = await res.json();
-        console.error("Failed to delete progress", res.status, errorBody);
-        return;
-      }
+      const responses = await Promise.all(
+        endpoints.map((endpoint) => fetch(endpoint, { method: "DELETE" })),
+      );
 
-      console.log(await res.json())
+      const results = await Promise.all(
+        responses.map(async (res) => {
+          if (!res.ok) {
+            const errorBody = await res.json();
+            throw new Error(
+              `Failed to delete from ${res.url}: ${res.status} - ${JSON.stringify(errorBody)}`,
+            );
+          }
+          return res.json();
+        }),
+      );
+
+      console.log("Results:", results);
 
       toast({
         description: "Data has been removed successfully",
@@ -39,9 +47,10 @@ export function DeleteDataCard({ onResetAction }: DeleteDataCardProps) {
       });
       onResetAction();
     } catch (error) {
-      console.error("Error deleting progress: ", error);
+      console.error("Error deleting progress and achievements:", error);
     }
   };
+
 
   return (
     <AlertDialog>
