@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { toastDescription } from "@/lib/utils";
 import { UserAchievement } from "@prisma/client";
 import { Award } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -34,7 +35,7 @@ export function AchievementsCard() {
               <li className="flex py-4" key={achievement.achievementName}>
                 <Award className="mr-2 h-6 w-6 text-yellow-400" />
                 <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                  {String(achievement.achievementName)}
+                  {String(toastDescription(achievement.achievementName, achievement.achievementDescription))}
                 </span>
               </li>
             );

@@ -15,7 +15,7 @@ export interface UserData {
   progressData: ProgressEntry[];
 }
 
-const ContinueLearningButton = () => {
+const ContinueLearningButton = ({...props}) => {
   const searchParams = useSearchParams();
   const topic = searchParams.get("topic")!;
   const router = useRouter();
@@ -27,6 +27,7 @@ const ContinueLearningButton = () => {
   return (
     <Button
       onClick={handleClick}
+      {...props}
       className="w-full place-self-end bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
     >
       Continue Learning

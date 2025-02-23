@@ -1,81 +1,139 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import lessons from "@/db/lessons";
+import { toast } from "@/hooks/use-toast";
+import { toastDescription, toastStyle } from "@/lib/utils";
+import { ProgressData } from "@prisma/client";
 import { motion } from "framer-motion";
-import {
-  Award,
-  BookOpen,
-  Code,
-  Heart,
-  Smile,
-  Star,
-  ThumbsUp,
-  Trophy,
-  Zap,
-} from "lucide-react";
+import { Star } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import Confetti from "../../components/Confetti";
 import ContinueLearningButton from "../../components/ContinueLearningButton";
 
-const compliments = [
-  { text: "Great job! You've mastered the basics of HTML!", icon: Trophy },
-  {
-    text: "Fantastic work! Your coding skills are improving rapidly!",
-    icon: Star,
-  },
-  { text: "You're on fire! Keep up the excellent progress!", icon: ThumbsUp },
-  {
-    text: "Incredible effort! You're becoming a true HTML expert!",
-    icon: Heart,
-  },
-  {
-    text: "Outstanding performance! You should be proud of yourself!",
-    icon: Smile,
-  },
-];
+// const achievements = [
+//   {
+//     name: "HTML Novice",
+//     description: "Completed your first HTML lesson",
+//     icon: BookOpen,
+//   },
+//   {
+//     name: "Tag Master",
+//     description: "Successfully used multiple HTML tags",
+//     icon: Code,
+//   },
+//   {
+//     name: "Quick Learner",
+//     description: "Finished a lesson in record time",
+//     icon: Zap,
+//   },
+//   {
+//     name: "Perfect Score",
+//     description: "Answered all questions correctly",
+//     icon: Award,
+//   },
+// ];
+export default function Compliment({
+  img,
+}: {
+  img: string;
+  // complimentText: string;
+  // ComplimentIcon: JSX.IntrinsicElements;
+}) {
+  const [achievementUnlocked, setAchievementUnlocked] = useState(false);
+  const [overallProgress, setOverallProgress] = useState(0);
+  const [data, setData] = useState<ProgressData[] | null>(null);
 
-const image = [
-  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f929/512.gif",
-  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f603/512.gif",
-  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f600/512.gif",
-  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f604/512.gif",
-  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f601/512.gif",
-  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f642/512.gif",
-  "https://fonts.gstatic.com/s/e/notoemoji/latest/1fae1/512.gif",
-  "https://fonts.gstatic.com/s/e/notoemoji/latest/1fae3/512.gif",
-  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62f/512.gif",
-  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f607/512.gif",
-  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f913/512.gif",
-  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60e/512.gif",
-  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f978/512.gif",
-  "https://fonts.gstatic.com/s/e/notoemoji/latest/1f996/512.gif",
-];
+  const { data: session, status } = useSession();
 
-const achievements = [
-  {
-    name: "HTML Novice",
-    description: "Completed your first HTML lesson",
-    icon: BookOpen,
-  },
-  {
-    name: "Tag Master",
-    description: "Successfully used multiple HTML tags",
-    icon: Code,
-  },
-  {
-    name: "Quick Learner",
-    description: "Finished a lesson in record time",
-    icon: Zap,
-  },
-  {
-    name: "Perfect Score",
-    description: "Answered all questions correctly",
-    icon: Award,
-  },
-];
-export default function Compliment() {
-  const compliment =
-    compliments[Math.floor(Math.random() * compliments.length)];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/progress");
+        if (!res.ok) {
+          console.error("Failed to fetch progress from DB");
+          return;
+        }
+        const fetchedData: ProgressData[] = await res.json();
+        setData(fetchedData);
+      } catch (error) {
+        console.error("Error fetching progress:", error);
+      } finally {
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      let totalPercentage = 0;
+      let count = 0;
+
+      lessons.forEach((lesson) => {
+        const progress = data.find((item) => item.topic === lesson.slug);
+
+        const completedSubtopics = progress?.subtopics?.length ?? 0;
+        const totalSubtopics = lesson.topics.length;
+
+        if (totalSubtopics > 0) {
+          totalPercentage += (completedSubtopics / totalSubtopics) * 100;
+          count++;
+        }
+      });
+
+      const averageProgress = count > 0 ? totalPercentage / count : 0;
+      setOverallProgress(Number(averageProgress.toFixed(2)));
+
+      if (
+        status === "authenticated" &&
+        session?.user?.id &&
+        !achievementUnlocked
+      ) {
+        if (averageProgress < 33.33) {
+          console.log("Beginner: " + overallProgress);
+          unlockAchievement("Beginner");
+        } else if (averageProgress < 66.67) {
+          console.log("Intermediate: " + overallProgress);
+          unlockAchievement("Intermediate");
+        } else if (averageProgress < 100) {
+          console.log("Expert: " + overallProgress);
+          unlockAchievement("Expert");
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  async function unlockAchievement(name: string) {
+    try {
+      const response = await fetch("/api/achievements", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ achievementName: name }),
+      });
+      const result = await response.json();
+      if (response.ok && result.status === "new") {
+        toast({
+          title: "NEW ACHIEVEMENT UNLOCKED!",
+          description: toastDescription(
+            result.achievement.achievementName,
+            result.achievement.achievementDescription,
+          ),
+          className: toastStyle,
+        });
+        setAchievementUnlocked(true);
+      } else {
+        console.log(result.message || result.error);
+      }
+    } catch (error) {
+      console.error("Error unlocking achievement:", error);
+    }
+  }
+
+  console.log(data);
 
   return (
     <main>
@@ -91,11 +149,13 @@ export default function Compliment() {
                       initial={{ rotate: -10, scale: 0.5 }}
                       animate={{ rotate: 0, scale: 1 }}
                       transition={{ duration: 0.5 }}
-                      aria-label={compliment.text}
+                      aria-label={
+                        "Incredible effort! You're becoming a true HTML expert!"
+                      }
                     >
-                      <compliment.icon className="mr-2 h-8 w-8 text-yellow-400" />
+                      <Star className="mr-2 h-8 w-8 text-yellow-400" />
                     </motion.div>
-                    {compliment.text}
+                    Incredible effort! You&apos;re becoming a true HTML expert!
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -103,10 +163,7 @@ export default function Compliment() {
                     <Image
                       unoptimized
                       priority
-                      src={
-                        image[Math.floor(Math.random() * image.length)] ||
-                        "/placeholder.svg"
-                      }
+                      src={img || "/placeholder.svg"}
                       alt="Celebration"
                       width={400}
                       height={300}
@@ -128,7 +185,7 @@ export default function Compliment() {
                         paying off!
                       </p>
                     </motion.div>
-                    <motion.div
+                    {/* <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.4 }}
@@ -160,7 +217,7 @@ export default function Compliment() {
                           </motion.div>
                         ))}
                       </div>
-                    </motion.div>
+                    </motion.div> */}
 
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
@@ -183,7 +240,7 @@ export default function Compliment() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 1 }}
                   >
-                    <ContinueLearningButton />
+                    <ContinueLearningButton disabled={status === "loading" ? true : false} />
                   </motion.div>
                 </CardContent>
               </Card>
