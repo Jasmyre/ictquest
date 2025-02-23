@@ -29,7 +29,7 @@ export default function Layout({
       <nav
         className={cn(
           "sticky left-0 top-0 z-[50] border-b-2 border-indigo-500/20 bg-white shadow-lg dark:bg-gray-800",
-          process.env.NEXT_IS_IN_MAINTENANCE ? "hidden" : "",
+          process.env.NEXT_IS_IN_MAINTENANCE === "true" ? "hidden" : "",
         )}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -97,6 +97,9 @@ export default function Layout({
         {isMobileMenuOpen && (
           <div className="sm:hidden">
             <div className="space-y-1 pb-3 pt-2">
+              <div className="relative px-2">
+                <CommandSearch className="w-min max-sm:w-full" />
+              </div>
               <Link
                 href="/"
                 onClick={() =>
@@ -136,7 +139,7 @@ export default function Layout({
       <footer
         className={cn(
           `bg-white dark:bg-gray-800`,
-          process.env.NEXT_IS_IN_MAINTENANCE ? "hidden" : "",
+          process.env.NEXT_IS_IN_MAINTENANCE === "true" ? "hidden" : "",
         )}
       >
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
