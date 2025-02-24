@@ -7,7 +7,6 @@ import Browser from "@/components/Browser";
 export const htmlForm: LessonContent = {
   title: "HTML Forms",
   contents: [
-    // Page 1: Introduction
     {
       submit: { label: "Continue" },
       content: [
@@ -30,7 +29,6 @@ export const htmlForm: LessonContent = {
         },
       ],
     },
-    // Page 2: Form Container (<form>)
     {
       submit: { label: "Continue" },
       content: [
@@ -67,35 +65,6 @@ export const htmlForm: LessonContent = {
         },
       ],
     },
-    // Page 3: MultipleChoice for Form Container
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 2,
-          type: "element",
-          label: ({ setIsFinished }) => (
-            <MultipleChoice
-              setIsFinishedAction={setIsFinished}
-              title={[
-                "Which attribute of the <form> element specifies where to send form data?",
-              ]}
-              choices={{
-                options: ["action", "method", "enctype", "target"],
-                answer: "action",
-              }}
-              response={{
-                positive:
-                  "Correct! The 'action' attribute sets the destination.",
-                negative:
-                  "That's not correct. Remember, 'action' is used to specify the destination URL.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    // Page 4: Text Input with Label
     {
       submit: { label: "Continue" },
       content: [
@@ -132,32 +101,6 @@ export const htmlForm: LessonContent = {
         },
       ],
     },
-    // Page 5: MultipleChoice for Text Input
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 5,
-          type: "element",
-          label: ({ setIsFinished }) => (
-            <MultipleChoice
-              setIsFinishedAction={setIsFinished}
-              title={["Which input type is used for a standard text field?"]}
-              choices={{
-                options: ["text", "email", "password", "number"],
-                answer: "text",
-              }}
-              response={{
-                positive: "Correct!",
-                negative:
-                  "Incorrect. The standard text field uses type 'text'.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    // Page 6: Email Input with Label
     {
       submit: { label: "Continue" },
       content: [
@@ -239,31 +182,6 @@ export const htmlForm: LessonContent = {
         },
       ],
     },
-    // Page 7: MultipleChoice for Email Input
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 8,
-          type: "element",
-          label: ({ setIsFinished }) => (
-            <MultipleChoice
-              setIsFinishedAction={setIsFinished}
-              title={["Which input type is ideal for email addresses?"]}
-              choices={{
-                options: ["text", "email", "password", "number"],
-                answer: "email",
-              }}
-              response={{
-                positive: "Correct!",
-                negative: "Incorrect. The correct type is 'email'.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    // Page 8: Password Input with Label
     {
       submit: { label: "Continue" },
       content: [
@@ -347,32 +265,6 @@ export const htmlForm: LessonContent = {
         },
       ],
     },
-    // Page 9: MultipleChoice for Password Input
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 11,
-          type: "element",
-          label: ({ setIsFinished }) => (
-            <MultipleChoice
-              setIsFinishedAction={setIsFinished}
-              title={["Which input type should you use for a password field?"]}
-              choices={{
-                options: ["text", "password", "email", "number"],
-                answer: "password",
-              }}
-              response={{
-                positive: "Correct!",
-                negative:
-                  "That's not right. The password field uses type 'password'.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    // Page 10: Number Input with Label
     {
       submit: { label: "Continue" },
       content: [
@@ -455,32 +347,6 @@ export const htmlForm: LessonContent = {
         },
       ],
     },
-    // Page 11: MultipleChoice for Number Input
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 14,
-          type: "element",
-          label: ({ setIsFinished }) => (
-            <MultipleChoice
-              setIsFinishedAction={setIsFinished}
-              title={["Which input type is used for numeric data?"]}
-              choices={{
-                options: ["text", "number", "password", "email"],
-                answer: "number",
-              }}
-              response={{
-                positive: "Correct!",
-                negative:
-                  "Incorrect. The type 'number' is used for numeric input.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    // Page 12: Checkboxes
     {
       submit: { label: "Continue" },
       content: [
@@ -568,7 +434,416 @@ export const htmlForm: LessonContent = {
         },
       ],
     },
-    // Page 13: MultipleChoice for Checkboxes
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 18,
+          type: "element",
+          label: (
+            <div>
+              <p>
+                Radio buttons allow users to select only one option from a
+                group.
+              </p>
+              <p>
+                They are implemented with{" "}
+                <CodeHighlight>
+                  &lt;input type=&quot;radio&quot;&gt;
+                </CodeHighlight>{" "}
+                and paired with labels.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: 19,
+          type: "element",
+          label: (
+            <CodeBlock
+              language="HTML"
+              code={`<form action="/submit" method="post">
+  <input type="radio" id="male" name="gender" value="male">
+  <label for="male">Male</label>
+  <input type="radio" id="female" name="gender" value="female">
+  <label for="female">Female</label>
+</form>`}
+              initialCode={["", ""]}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 18,
+          type: "element",
+          label: (
+            <div>
+              <p>
+                Radio buttons allow users to select only one option from a
+                group.
+              </p>
+              <p>
+                They are implemented with{" "}
+                <CodeHighlight>
+                  &lt;input type=&quot;radio&quot;&gt;
+                </CodeHighlight>{" "}
+                and paired with labels.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: 19,
+          type: "element",
+          label: (
+            <CodeBlock
+              language="HTML"
+              code={`<form action="/submit" method="post">
+  <input type="radio" id="male" name="gender" value="male">
+  <label for="male">Male</label>
+  <input type="radio" id="female" name="gender" value="female">
+  <label for="female">Female</label>
+</form>`}
+              initialCode={["", ""]}
+            />
+          ),
+        },
+        {
+          id: 20,
+          type: "element",
+          label: (
+            <Browser
+              content={`<form action="/submit" method="post">
+  <input type="radio" id="male" name="gender" value="male">
+  <label for="male">Male</label>
+  <input type="radio" id="female" name="gender" value="female">
+  <label for="female">Female</label>
+</form>`}
+              title="Browser"
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 21,
+          type: "element",
+          label: (
+            <div>
+              <p>
+                For longer, multi-line text input, use the{" "}
+                <CodeHighlight>&lt;textarea&gt;</CodeHighlight> element.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: 22,
+          type: "element",
+          label: (
+            <CodeBlock
+              language="HTML"
+              code={`<form action="/submit" method="post">
+  <label for="message">Message:</label>
+  <textarea id="message" name="message" rows="4" cols="50"></textarea>
+</form>`}
+              initialCode={["", ""]}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 21,
+          type: "element",
+          label: (
+            <div>
+              <p>
+                For longer, multi-line text input, use the{" "}
+                <CodeHighlight>&lt;textarea&gt;</CodeHighlight> element.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: 22,
+          type: "element",
+          label: (
+            <CodeBlock
+              language="HTML"
+              code={`<form action="/submit" method="post">
+  <label for="message">Message:</label>
+  <textarea id="message" name="message" rows="4" cols="50"></textarea>
+</form>`}
+              initialCode={["", ""]}
+            />
+          ),
+        },
+        {
+          id: 20,
+          type: "element",
+          label: (
+            <Browser
+              content={`<form action="/submit" method="post">
+  <label for="message">Message:</label>
+  <textarea id="message" name="message" rows="4" cols="50"></textarea>
+</form>`}
+              title="Browser"
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 24,
+          type: "element",
+          label: (
+            <div>
+              <p>Finally, add a submit button to send the form data.</p>
+              <p>
+                Use the <CodeHighlight>&lt;button&gt;</CodeHighlight> element
+                with <CodeHighlight>type=&quot;submit&quot;</CodeHighlight>.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: 25,
+          type: "element",
+          label: (
+            <CodeBlock
+              language="HTML"
+              code={`<form action="/submit" method="post">
+  <!-- Other form elements -->
+  <button type="submit">Submit</button>
+</form>`}
+              initialCode={["", ""]}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 24,
+          type: "element",
+          label: (
+            <div>
+              <p>Finally, add a submit button to send the form data.</p>
+              <p>
+                Use the <CodeHighlight>&lt;button&gt;</CodeHighlight> element
+                with <CodeHighlight>type=&quot;submit&quot;</CodeHighlight>.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: 25,
+          type: "element",
+          label: (
+            <CodeBlock
+              language="HTML"
+              code={`<form action="/submit" method="post">
+  <!-- Other form elements -->
+  <button type="submit">Submit</button>
+</form>`}
+              initialCode={["", ""]}
+            />
+          ),
+        },
+        {
+          id: 20,
+          type: "element",
+          label: (
+            <Browser
+              content={`<form action="/submit" method="post">
+  <!-- Other form elements -->
+  <button type="submit">Submit</button>
+</form>`}
+              title="Browser"
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 27,
+          type: "element",
+          label: (
+            <div>
+              <p>
+                Great work! Now let&apos;s try if you can answer these next
+                questions! ;)
+              </p>
+            </div>
+          ),
+        },
+      ],
+    },
+
+    {
+      submit: { label: "Practice" },
+      content: [
+        {
+          id: 2,
+          type: "element",
+          label: ({ setIsFinished }) => (
+            <MultipleChoice
+              setIsFinishedAction={setIsFinished}
+              title={[
+                "Which attribute of the <form> element specifies where to send form data?",
+              ]}
+              choices={{
+                options: ["action", "method", "enctype", "target"],
+                answer: "action",
+              }}
+              response={{
+                positive:
+                  "Correct! The 'action' attribute sets the destination.",
+                negative:
+                  "That's not correct. Remember, 'action' is used to specify the destination URL.",
+              }}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Practice" },
+      content: [
+        {
+          id: 26,
+          type: "element",
+          label: ({ setIsFinished }) => (
+            <MultipleChoice
+              setIsFinishedAction={setIsFinished}
+              title={["What should the type attribute be for a submit button?"]}
+              choices={{
+                options: ["button", "submit", "reset", "text"],
+                answer: "submit",
+              }}
+              response={{
+                positive: "Correct!",
+                negative: "Incorrect. The correct type is 'submit'.",
+              }}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Practice" },
+      content: [
+        {
+          id: 5,
+          type: "element",
+          label: ({ setIsFinished }) => (
+            <MultipleChoice
+              setIsFinishedAction={setIsFinished}
+              title={["Which input type is used for a standard text field?"]}
+              choices={{
+                options: ["text", "email", "password", "number"],
+                answer: "text",
+              }}
+              response={{
+                positive: "Correct!",
+                negative:
+                  "Incorrect. The standard text field uses type 'text'.",
+              }}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Practice" },
+      content: [
+        {
+          id: 8,
+          type: "element",
+          label: ({ setIsFinished }) => (
+            <MultipleChoice
+              setIsFinishedAction={setIsFinished}
+              title={["Which input type is ideal for email addresses?"]}
+              choices={{
+                options: ["text", "email", "password", "number"],
+                answer: "email",
+              }}
+              response={{
+                positive: "Correct!",
+                negative: "Incorrect. The correct type is 'email'.",
+              }}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Practice" },
+      content: [
+        {
+          id: 11,
+          type: "element",
+          label: ({ setIsFinished }) => (
+            <MultipleChoice
+              setIsFinishedAction={setIsFinished}
+              title={["Which input type should you use for a password field?"]}
+              choices={{
+                options: ["text", "password", "email", "number"],
+                answer: "password",
+              }}
+              response={{
+                positive: "Correct!",
+                negative:
+                  "That's not right. The password field uses type 'password'.",
+              }}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Practice" },
+      content: [
+        {
+          id: 14,
+          type: "element",
+          label: ({ setIsFinished }) => (
+            <MultipleChoice
+              setIsFinishedAction={setIsFinished}
+              title={["Which input type is used for numeric data?"]}
+              choices={{
+                options: ["text", "number", "password", "email"],
+                answer: "number",
+              }}
+              response={{
+                positive: "Correct!",
+                negative:
+                  "Incorrect. The type 'number' is used for numeric input.",
+              }}
+            />
+          ),
+        },
+      ],
+    },
     {
       submit: { label: "Practice" },
       content: [
@@ -598,103 +873,6 @@ export const htmlForm: LessonContent = {
         },
       ],
     },
-    // Page 14: Radio Buttons
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 18,
-          type: "element",
-          label: (
-            <div>
-              <p>
-                Radio buttons allow users to select only one option from a
-                group.
-              </p>
-              <p>
-                They are implemented with{" "}
-                <CodeHighlight>
-                  &lt;input type=&quot;radio&quot;&gt;
-                </CodeHighlight>{" "}
-                and paired with labels.
-              </p>
-            </div>
-          ),
-        },
-        {
-          id: 19,
-          type: "element",
-          label: (
-            <CodeBlock
-              language="HTML"
-              code={`<form action="/submit" method="post">
-  <input type="radio" id="male" name="gender" value="male">
-  <label for="male">Male</label>
-  <input type="radio" id="female" name="gender" value="female">
-  <label for="female">Female</label>
-</form>`}
-              initialCode={["", ""]}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 18,
-          type: "element",
-          label: (
-            <div>
-              <p>
-                Radio buttons allow users to select only one option from a
-                group.
-              </p>
-              <p>
-                They are implemented with{" "}
-                <CodeHighlight>
-                  &lt;input type=&quot;radio&quot;&gt;
-                </CodeHighlight>{" "}
-                and paired with labels.
-              </p>
-            </div>
-          ),
-        },
-        {
-          id: 19,
-          type: "element",
-          label: (
-            <CodeBlock
-              language="HTML"
-              code={`<form action="/submit" method="post">
-  <input type="radio" id="male" name="gender" value="male">
-  <label for="male">Male</label>
-  <input type="radio" id="female" name="gender" value="female">
-  <label for="female">Female</label>
-</form>`}
-              initialCode={["", ""]}
-            />
-          ),
-        },
-        {
-          id: 20,
-          type: "element",
-          label: (
-            <Browser
-              content={`<form action="/submit" method="post">
-  <input type="radio" id="male" name="gender" value="male">
-  <label for="male">Male</label>
-  <input type="radio" id="female" name="gender" value="female">
-  <label for="female">Female</label>
-</form>`}
-              title="Browser"
-            />
-          ),
-        },
-      ],
-    },
-    // Page 15: MultipleChoice for Radio Buttons
     {
       submit: { label: "Practice" },
       content: [
@@ -724,83 +902,6 @@ export const htmlForm: LessonContent = {
         },
       ],
     },
-    // Page 16: Textarea
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 21,
-          type: "element",
-          label: (
-            <div>
-              <p>
-                For longer, multi-line text input, use the{" "}
-                <CodeHighlight>&lt;textarea&gt;</CodeHighlight> element.
-              </p>
-            </div>
-          ),
-        },
-        {
-          id: 22,
-          type: "element",
-          label: (
-            <CodeBlock
-              language="HTML"
-              code={`<form action="/submit" method="post">
-  <label for="message">Message:</label>
-  <textarea id="message" name="message" rows="4" cols="50"></textarea>
-</form>`}
-              initialCode={["", ""]}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 21,
-          type: "element",
-          label: (
-            <div>
-              <p>
-                For longer, multi-line text input, use the{" "}
-                <CodeHighlight>&lt;textarea&gt;</CodeHighlight> element.
-              </p>
-            </div>
-          ),
-        },
-        {
-          id: 22,
-          type: "element",
-          label: (
-            <CodeBlock
-              language="HTML"
-              code={`<form action="/submit" method="post">
-  <label for="message">Message:</label>
-  <textarea id="message" name="message" rows="4" cols="50"></textarea>
-</form>`}
-              initialCode={["", ""]}
-            />
-          ),
-        },
-        {
-          id: 20,
-          type: "element",
-          label: (
-            <Browser
-              content={`<form action="/submit" method="post">
-  <label for="message">Message:</label>
-  <textarea id="message" name="message" rows="4" cols="50"></textarea>
-</form>`}
-              title="Browser"
-            />
-          ),
-        },
-      ],
-    },
-    // Page 17: MultipleChoice for Textarea
     {
       submit: { label: "Practice" },
       content: [
@@ -825,109 +926,6 @@ export const htmlForm: LessonContent = {
         },
       ],
     },
-    // Page 18: Submit Button
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 24,
-          type: "element",
-          label: (
-            <div>
-              <p>Finally, add a submit button to send the form data.</p>
-              <p>
-                Use the <CodeHighlight>&lt;button&gt;</CodeHighlight> element
-                with <CodeHighlight>type=&quot;submit&quot;</CodeHighlight>.
-              </p>
-            </div>
-          ),
-        },
-        {
-          id: 25,
-          type: "element",
-          label: (
-            <CodeBlock
-              language="HTML"
-              code={`<form action="/submit" method="post">
-  <!-- Other form elements -->
-  <button type="submit">Submit</button>
-</form>`}
-              initialCode={["", ""]}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 24,
-          type: "element",
-          label: (
-            <div>
-              <p>Finally, add a submit button to send the form data.</p>
-              <p>
-                Use the <CodeHighlight>&lt;button&gt;</CodeHighlight> element
-                with <CodeHighlight>type=&quot;submit&quot;</CodeHighlight>.
-              </p>
-            </div>
-          ),
-        },
-        {
-          id: 25,
-          type: "element",
-          label: (
-            <CodeBlock
-              language="HTML"
-              code={`<form action="/submit" method="post">
-  <!-- Other form elements -->
-  <button type="submit">Submit</button>
-</form>`}
-              initialCode={["", ""]}
-            />
-          ),
-        },
-        {
-          id: 20,
-          type: "element",
-          label: (
-            <Browser
-              content={`<form action="/submit" method="post">
-  <!-- Other form elements -->
-  <button type="submit">Submit</button>
-</form>`}
-              title="Browser"
-            />
-          ),
-        },
-      ],
-    },
-    // Page 19: MultipleChoice for Submit Button
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 26,
-          type: "element",
-          label: ({ setIsFinished }) => (
-            <MultipleChoice
-              setIsFinishedAction={setIsFinished}
-              title={["What should the type attribute be for a submit button?"]}
-              choices={{
-                options: ["button", "submit", "reset", "text"],
-                answer: "submit",
-              }}
-              response={{
-                positive: "Correct!",
-                negative: "Incorrect. The correct type is 'submit'.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    // Page 20: Conclusion
     {
       submit: { label: "Continue" },
       content: [
