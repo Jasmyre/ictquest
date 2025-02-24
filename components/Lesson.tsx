@@ -144,7 +144,7 @@ export default function Lesson({
     }
   };
 
-  const handleNextButton = async () => {
+  async function handleNextButton() {
     if (index < numberOfContent - 1) {
       setIndex((prev) => prev + 1);
     } else if (index === numberOfContent - 1 && isFinished) {
