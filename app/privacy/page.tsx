@@ -6,19 +6,19 @@ export default function PrivacyPolicyPage() {
     <main>
       <div className="py-10">
         <header>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-gray-100">
               Privacy Policy
             </h1>
           </div>
         </header>
         <main>
-          <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="px-4 py-8 sm:px-0">
-              <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+              <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                 <CardHeader>
                   <CardTitle className="flex items-center text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                    <Shield className="h-6 w-6 text-indigo-600 dark:text-indigo-400 mr-2" />
+                    <Shield className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                     ICTQuest Privacy Policy
                   </CardTitle>
                 </CardHeader>
@@ -30,7 +30,7 @@ export default function PrivacyPolicyPage() {
                       safeguard your personal information.
                     </p>
 
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">
+                    <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
                       1. Information We Collect
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
@@ -40,8 +40,25 @@ export default function PrivacyPolicyPage() {
                       name, email address, and learning progress.
                     </p>
 
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">
-                      2. How We Use Your Information
+                    <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                      2. Account Registration and Login
+                    </h2>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      When you create an account or log in to ICTQuest, we
+                      collect and store information such as your email address
+                      and authentication details. This allows us to provide
+                      personalized learning experiences, track progress, and
+                      enhance account security.
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      We may use third-party authentication services (such as
+                      Google or GitHub) to facilitate account creation and
+                      login. By using these services, you agree to their
+                      respective privacy policies.
+                    </p>
+
+                    <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                      3. How We Use Your Information
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
                       We use the information we collect to provide, maintain,
@@ -49,8 +66,8 @@ export default function PrivacyPolicyPage() {
                       personalize your learning experience.
                     </p>
 
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">
-                      3. Information Sharing and Disclosure
+                    <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                      4. Information Sharing and Disclosure
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
                       We do not sell or share your personal information with
@@ -59,8 +76,8 @@ export default function PrivacyPolicyPage() {
                       services on our behalf.
                     </p>
 
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">
-                      4. Data Security
+                    <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                      5. Data Security
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
                       We take reasonable measures to help protect your personal
@@ -68,8 +85,8 @@ export default function PrivacyPolicyPage() {
                       access, disclosure, alteration, and destruction.
                     </p>
 
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3">
-                      5. Contact Us
+                    <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                      6. Contact Us
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
                       If you have any questions about this Privacy Policy,
