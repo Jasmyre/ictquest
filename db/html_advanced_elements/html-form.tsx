@@ -2,6 +2,7 @@ import CodeBlock from "@/components/Code";
 import CodeHighlight from "@/components/CodeHighlight";
 import { MultipleChoice } from "@/components/MultipleChoice";
 import { LessonContent } from "../lessons";
+import Browser from "@/components/Browser";
 
 export const htmlForm: LessonContent = {
   title: "HTML Forms",
@@ -45,7 +46,8 @@ export const htmlForm: LessonContent = {
               <p>
                 Key attributes include <CodeHighlight>action</CodeHighlight>{" "}
                 (the URL to send data to) and{" "}
-                <CodeHighlight>method</CodeHighlight> (usually &quot;get&quot; or &quot;post&quot;).
+                <CodeHighlight>method</CodeHighlight> (usually &quot;get&quot;
+                or &quot;post&quot;).
               </p>
             </div>
           ),
@@ -103,10 +105,13 @@ export const htmlForm: LessonContent = {
           label: (
             <div>
               <p>
-                Let&apos;s add a text input field for general user input. Use the{" "}
-                <CodeHighlight>&lt;input type=&quot;text&quot;&gt;</CodeHighlight> element
-                along with a <CodeHighlight>&lt;label&gt;</CodeHighlight> for
-                accessibility.
+                Let&apos;s add a text input field for general user input. Use
+                the{" "}
+                <CodeHighlight>
+                  &lt;input type=&quot;text&quot;&gt;
+                </CodeHighlight>{" "}
+                element along with a{" "}
+                <CodeHighlight>&lt;label&gt;</CodeHighlight> for accessibility.
               </p>
             </div>
           ),
@@ -163,7 +168,9 @@ export const htmlForm: LessonContent = {
             <div>
               <p>
                 For capturing email addresses, use the{" "}
-                <CodeHighlight>&lt;input type=&quot;email&quot;&gt;</CodeHighlight>{" "}
+                <CodeHighlight>
+                  &lt;input type=&quot;email&quot;&gt;
+                </CodeHighlight>{" "}
                 element. This input type provides basic email format validation.
               </p>
             </div>
@@ -180,6 +187,53 @@ export const htmlForm: LessonContent = {
   <input type="email" id="email" name="email" />
 </form>`}
               initialCode={["", ""]}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 6,
+          type: "element",
+          label: (
+            <div>
+              <p>
+                For capturing email addresses, use the{" "}
+                <CodeHighlight>
+                  &lt;input type=&quot;email&quot;&gt;
+                </CodeHighlight>{" "}
+                element. This input type provides basic email format validation.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: 7,
+          type: "element",
+          label: (
+            <CodeBlock
+              language="HTML"
+              code={`<form action="/submit" method="post">
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" />
+</form>`}
+              initialCode={["", ""]}
+            />
+          ),
+        },
+        {
+          id: 20,
+          type: "element",
+          label: (
+            <Browser
+              content={`<form action="/submit" method="post">
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" />
+</form>`}
+              title="Browser"
             />
           ),
         },
@@ -220,7 +274,9 @@ export const htmlForm: LessonContent = {
             <div>
               <p>
                 Use the{" "}
-                <CodeHighlight>&lt;input type=&quot;password&quot;&gt;</CodeHighlight>{" "}
+                <CodeHighlight>
+                  &lt;input type=&quot;password&quot;&gt;
+                </CodeHighlight>{" "}
                 element to create a password field. This masks user input for
                 privacy.
               </p>
@@ -238,6 +294,54 @@ export const htmlForm: LessonContent = {
   <input type="password" id="pwd" name="pwd" />
 </form>`}
               initialCode={["", ""]}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 9,
+          type: "element",
+          label: (
+            <div>
+              <p>
+                Use the{" "}
+                <CodeHighlight>
+                  &lt;input type=&quot;password&quot;&gt;
+                </CodeHighlight>{" "}
+                element to create a password field. This masks user input for
+                privacy.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: 10,
+          type: "element",
+          label: (
+            <CodeBlock
+              language="HTML"
+              code={`<form action="/submit" method="post">
+  <label for="pwd">Password:</label>
+  <input type="password" id="pwd" name="pwd" />
+</form>`}
+              initialCode={["", ""]}
+            />
+          ),
+        },
+        {
+          id: 20,
+          type: "element",
+          label: (
+            <Browser
+              content={`<form action="/submit" method="post">
+  <label for="pwd">Password:</label>
+  <input type="password" id="pwd" name="pwd" />
+</form>`}
+              title="Browser"
             />
           ),
         },
@@ -279,7 +383,9 @@ export const htmlForm: LessonContent = {
             <div>
               <p>
                 For numeric input, use the{" "}
-                <CodeHighlight>&lt;input type=&quot;number&quot;&gt;</CodeHighlight>{" "}
+                <CodeHighlight>
+                  &lt;input type=&quot;number&quot;&gt;
+                </CodeHighlight>{" "}
                 element.
               </p>
             </div>
@@ -296,6 +402,54 @@ export const htmlForm: LessonContent = {
   <input type="number" id="age" name="age" />
 </form>`}
               initialCode={["", ""]}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 12,
+          type: "element",
+          label: (
+            <div>
+              <p>
+                For numeric input, use the{" "}
+                <CodeHighlight>
+                  &lt;input type=&quot;number&quot;&gt;
+                </CodeHighlight>{" "}
+                element.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: 13,
+          type: "element",
+          label: (
+            <CodeBlock
+              language="HTML"
+              code={`<form action="/submit" method="post">
+  <label for="age">Age:</label>
+  <input type="number" id="age" name="age" />
+</form>`}
+              initialCode={["", ""]}
+            />
+          ),
+        },
+        {
+          id: 20,
+          type: "element",
+          label: (
+            <Browser
+              content={`<form action="/submit" method="post">
+  <label for="pwd">Pa<form action="/submit" method="post">
+  <label for="age">Age:</label>
+  <input type="number" id="age" name="age" />
+</form>`}
+              title="Browser"
             />
           ),
         },
@@ -340,7 +494,9 @@ export const htmlForm: LessonContent = {
               </p>
               <p>
                 They are created using{" "}
-                <CodeHighlight>&lt;input type=&quot;checkbox&quot;&gt;</CodeHighlight>{" "}
+                <CodeHighlight>
+                  &lt;input type=&quot;checkbox&quot;&gt;
+                </CodeHighlight>{" "}
                 alongside a <CodeHighlight>&lt;label&gt;</CodeHighlight>.
               </p>
             </div>
@@ -357,6 +513,56 @@ export const htmlForm: LessonContent = {
   <label for="subscribe">Subscribe to newsletter</label>
 </form>`}
               initialCode={["", ""]}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 15,
+          type: "element",
+          label: (
+            <div>
+              <p>
+                Checkboxes allow users to select multiple options from a list.
+              </p>
+              <p>
+                They are created using{" "}
+                <CodeHighlight>
+                  &lt;input type=&quot;checkbox&quot;&gt;
+                </CodeHighlight>{" "}
+                alongside a <CodeHighlight>&lt;label&gt;</CodeHighlight>.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: 16,
+          type: "element",
+          label: (
+            <CodeBlock
+              language="HTML"
+              code={`<form action="/submit" method="post">
+  <input type="checkbox" id="subscribe" name="subscribe" value="yes">
+  <label for="subscribe">Subscribe to newsletter</label>
+</form>`}
+              initialCode={["", ""]}
+            />
+          ),
+        },
+        {
+          id: 20,
+          type: "element",
+          label: (
+            <Browser
+              content={`<form action="/submit" method="post">
+  <input type="checkbox" id="subscribe" name="subscribe" value="yes">
+  <label for="subscribe">Subscribe to newsletter</label>
+</form>`}
+              title="Browser"
             />
           ),
         },
@@ -407,8 +613,10 @@ export const htmlForm: LessonContent = {
               </p>
               <p>
                 They are implemented with{" "}
-                <CodeHighlight>&lt;input type=&quot;radio&quot;&gt;</CodeHighlight> and
-                paired with labels.
+                <CodeHighlight>
+                  &lt;input type=&quot;radio&quot;&gt;
+                </CodeHighlight>{" "}
+                and paired with labels.
               </p>
             </div>
           ),
@@ -426,6 +634,61 @@ export const htmlForm: LessonContent = {
   <label for="female">Female</label>
 </form>`}
               initialCode={["", ""]}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 18,
+          type: "element",
+          label: (
+            <div>
+              <p>
+                Radio buttons allow users to select only one option from a
+                group.
+              </p>
+              <p>
+                They are implemented with{" "}
+                <CodeHighlight>
+                  &lt;input type=&quot;radio&quot;&gt;
+                </CodeHighlight>{" "}
+                and paired with labels.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: 19,
+          type: "element",
+          label: (
+            <CodeBlock
+              language="HTML"
+              code={`<form action="/submit" method="post">
+  <input type="radio" id="male" name="gender" value="male">
+  <label for="male">Male</label>
+  <input type="radio" id="female" name="gender" value="female">
+  <label for="female">Female</label>
+</form>`}
+              initialCode={["", ""]}
+            />
+          ),
+        },
+        {
+          id: 20,
+          type: "element",
+          label: (
+            <Browser
+              content={`<form action="/submit" method="post">
+  <input type="radio" id="male" name="gender" value="male">
+  <label for="male">Male</label>
+  <input type="radio" id="female" name="gender" value="female">
+  <label for="female">Female</label>
+</form>`}
+              title="Browser"
             />
           ),
         },
@@ -493,6 +756,50 @@ export const htmlForm: LessonContent = {
         },
       ],
     },
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 21,
+          type: "element",
+          label: (
+            <div>
+              <p>
+                For longer, multi-line text input, use the{" "}
+                <CodeHighlight>&lt;textarea&gt;</CodeHighlight> element.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: 22,
+          type: "element",
+          label: (
+            <CodeBlock
+              language="HTML"
+              code={`<form action="/submit" method="post">
+  <label for="message">Message:</label>
+  <textarea id="message" name="message" rows="4" cols="50"></textarea>
+</form>`}
+              initialCode={["", ""]}
+            />
+          ),
+        },
+        {
+          id: 20,
+          type: "element",
+          label: (
+            <Browser
+              content={`<form action="/submit" method="post">
+  <label for="message">Message:</label>
+  <textarea id="message" name="message" rows="4" cols="50"></textarea>
+</form>`}
+              title="Browser"
+            />
+          ),
+        },
+      ],
+    },
     // Page 17: MultipleChoice for Textarea
     {
       submit: { label: "Practice" },
@@ -546,6 +853,51 @@ export const htmlForm: LessonContent = {
   <button type="submit">Submit</button>
 </form>`}
               initialCode={["", ""]}
+            />
+          ),
+        },
+      ],
+    },
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 24,
+          type: "element",
+          label: (
+            <div>
+              <p>Finally, add a submit button to send the form data.</p>
+              <p>
+                Use the <CodeHighlight>&lt;button&gt;</CodeHighlight> element
+                with <CodeHighlight>type=&quot;submit&quot;</CodeHighlight>.
+              </p>
+            </div>
+          ),
+        },
+        {
+          id: 25,
+          type: "element",
+          label: (
+            <CodeBlock
+              language="HTML"
+              code={`<form action="/submit" method="post">
+  <!-- Other form elements -->
+  <button type="submit">Submit</button>
+</form>`}
+              initialCode={["", ""]}
+            />
+          ),
+        },
+        {
+          id: 20,
+          type: "element",
+          label: (
+            <Browser
+              content={`<form action="/submit" method="post">
+  <!-- Other form elements -->
+  <button type="submit">Submit</button>
+</form>`}
+              title="Browser"
             />
           ),
         },

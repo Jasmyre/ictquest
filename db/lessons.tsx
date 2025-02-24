@@ -2,17 +2,14 @@
 
 import { JSX } from "react";
 
-import { htmlDocumentStructure9 } from "./ABCD/html-document-structure9";
-import { introToHTML } from "./ABCD/intro-to-html";
-import { whatIsHTML } from "./html-introduction2/what-is-html";
+import { htmlAdvancedElements } from "./html_advanced_elements/html-advanced-elements";
+import { htmlForm } from "./html_advanced_elements/html-form";
 import { htmlContainers } from "./html_elements/html-containers";
 import { htmlMediaElements } from "./html_elements/html-media-elements";
 import { htmlTypography } from "./html_elements/html-typography";
 import { htmlBriefExample } from "./introduction_to_html/html-brief-example";
 import { htmlDocumentStructure } from "./introduction_to_html/html-document-structure";
 import { htmlIntroduction } from "./introduction_to_html/html-introduction";
-import { htmlAdvancedElements } from "./html_advanced_elements/html-advanced-elements";
-import { htmlForm } from "./html_advanced_elements/html-form";
 
 export interface Topic {
   name: string;
@@ -92,33 +89,33 @@ export const lessons: Lesson[] = [
     },
   },
 
-  {
-    title: "ABCD",
-    description: "XY and Z",
-    slug: "abcd",
-    topics: [
-      { name: "Introduction To Html", slug: "intro-to-html" },
-      { name: "HTML Document Structure9", slug: "html-document-structure9" },
-    ],
-    content: {
-      "intro-to-html": introToHTML,
-      "html-document-structure9": htmlDocumentStructure9,
-    },
-  },
+  // {
+  //   title: "ABCD",
+  //   description: "XY and Z",
+  //   slug: "abcd",
+  //   topics: [
+  //     { name: "Introduction To Html", slug: "intro-to-html" },
+  //     { name: "HTML Document Structure9", slug: "html-document-structure9" },
+  //   ],
+  //   content: {
+  //     "intro-to-html": introToHTML,
+  //     "html-document-structure9": htmlDocumentStructure9,
+  //   },
+  // },
 
-  {
-    title: "HTML Introduction2",
-    description:
-      "Introduction to HTML, its History, and HTML Document Structure.",
-    slug: "html-introduction",
-    topics: [
-      { name: "What is HTML?", slug: "what-is-html2" },
-      { name: "Text Formatting", slug: "intro-to-html" },
-    ],
-    content: {
-      "what-is-html2": whatIsHTML,
-    },
-  },
+  // {
+  //   title: "HTML Introduction2",
+  //   description:
+  //     "Introduction to HTML, its History, and HTML Document Structure.",
+  //   slug: "html-introduction",
+  //   topics: [
+  //     { name: "What is HTML?", slug: "what-is-html2" },
+  //     { name: "Text Formatting", slug: "intro-to-html" },
+  //   ],
+  //   content: {
+  //     "what-is-html2": whatIsHTML,
+  //   },
+  // },
 ];
 
 export default lessons;
