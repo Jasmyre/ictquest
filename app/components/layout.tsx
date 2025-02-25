@@ -97,7 +97,7 @@ export default function Layout({
         {isMobileMenuOpen && (
           <div className="sm:hidden">
             <div className="space-y-1 pb-3 pt-2">
-              <div className="relative px-2">
+              <div className="relative px-2 mb-4">
                 <CommandSearch className="w-min max-sm:w-full" />
               </div>
               <Link

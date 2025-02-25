@@ -55,8 +55,8 @@ export default async function LandingPage() {
                 </span>
               </h1>
               <p className="mb-8 text-xl text-gray-100 sm:text-2xl">
-                Unlock the power of web development through interactive lessons,
-                real-world projects, and expert guidance.
+                Unlock the power of web development with interactive lessons
+                that focus on building a strong foundation in HTML.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
                 <Link href="/lessons">
@@ -64,7 +64,7 @@ export default async function LandingPage() {
                     size="lg"
                     className="w-full bg-white text-indigo-600 hover:bg-gray-100 dark:bg-gray-200 dark:text-indigo-800 dark:hover:bg-gray-300 sm:w-auto"
                   >
-                    Start Journey
+                    Explore Lessons
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
