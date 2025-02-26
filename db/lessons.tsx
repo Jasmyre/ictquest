@@ -77,9 +77,9 @@ export const lessons: Lesson[] = [
   },
 
   {
-    title: "HTML Advanced Elements",
-    description: "Learn more about HTML Advanced Elements",
-    slug: "html-advanced-elements",
+    title: "Advanced HTML",
+    description: "Learn more about HTML advanced topics.",
+    slug: "advanced-html",
     topics: [
       { name: "HTML Advanced Elements", slug: "html-advanced-elements" },
       { name: "HTML Form", slug: "html-form" },
