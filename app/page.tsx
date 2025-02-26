@@ -55,8 +55,8 @@ export default async function LandingPage() {
                 </span>
               </h1>
               <p className="mb-8 text-xl text-gray-100 sm:text-2xl">
-                Unlock the power of web development with interactive lessons
-                that focus on building a strong foundation in HTML.
+                Unlock your potential in web development with interactive
+                lessons that focus on building a strong foundation in HTML.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
                 <Link href="/lessons">

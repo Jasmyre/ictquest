@@ -75,29 +75,39 @@ export default function AuthPage() {
               </span>
             </div>
             <div className="space-y-2">
-              {/* <form
-              > */}
-                <Button
-                  variant="outline"
-                  className="relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
-                  onClick={() => onClick("google")}
-                >
-                  <FaGoogle className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
-                  <span>Continue with Google</span>
-                </Button>
-              {/* </form> */}
-
-              {/* <form
-              > */}
-                <Button
-                  variant="outline"
-                  className="relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
-                  onClick={() => onClick("github")}
-                >
-                  <FaGithub className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
-                  <span>Continue with Github</span>
-                </Button>
-              {/* </form> */}
+              <Button
+                variant="outline"
+                className="relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
+                onClick={() => onClick("google")}
+              >
+                <FaGoogle className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
+                <span>Continue with Google</span>
+              </Button>
+              {/* <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger
+                    disabled
+                    className={cn(
+                      "relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500",
+                    )}
+                  >
+                    <FaGithub className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
+                    <span>Continue with Github</span>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
+                    <p>Github provider is currently not available.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider> */}
+              <Button
+                variant="outline"
+                className="relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
+                onClick={() => onClick("github")}
+                disabled
+              >
+                <FaGithub className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
+                <span>Continue with Github</span>
+              </Button>
             </div>
           </div>
         </CardContent>
