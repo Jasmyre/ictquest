@@ -10,6 +10,7 @@ import { htmlTypography } from "./html_elements/html-typography";
 import { htmlBriefExample } from "./introduction_to_html/html-brief-example";
 import { htmlDocumentStructure } from "./introduction_to_html/html-document-structure";
 import { htmlIntroduction } from "./introduction_to_html/html-introduction";
+import { beyondHTML } from "./html_advanced_elements/beyond-html";
 
 export interface Topic {
   name: string;
@@ -81,11 +82,13 @@ export const lessons: Lesson[] = [
     slug: "html-advanced-elements",
     topics: [
       { name: "HTML Advanced Elements", slug: "html-advanced-elements" },
-      { name: "HTML Form", slug: "html-form" }
+      { name: "HTML Form", slug: "html-form" },
+      { name: "Beyond HyperText Mark-up Language", slug: "beyond-html" },
     ],
     content: {
       "html-advanced-elements": htmlAdvancedElements,
       "html-form": htmlForm,
+      "beyond-html": beyondHTML,
     },
   },
 
