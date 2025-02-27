@@ -2,7 +2,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Award,
@@ -15,6 +14,8 @@ import {
   UserMinus,
   UserPlus,
 } from "lucide-react";
+import { CustomProgress } from "../../../components/CustomProgress";
+import { getAllUsers } from "@/data/user";
 
 // Sample user data - In a real app, this would come from an API
 const userData = {
@@ -62,19 +63,22 @@ const userData = {
   ],
 };
 
-export default function UserProfilePage() {
+export default async function UserProfilePage() {
   const isFollowing = userData.following;
+
+  const users = await getAllUsers();
+  console.log(users)
 
   return (
     <div className="py-10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Profile Header */}
-        <Card className="mb-8 overflow-hidden">
-          <div className="h-32 bg-gradient-to-r from-primary/20 to-primary/10" />
+        <Card className="mb-8 overflow-hidden border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+          <div className="h-32 bg-gradient-to-r from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-indigo-900/10" />
           <CardContent className="relative pt-0">
             <div className="-mt-12 flex flex-col gap-6 md:-mt-16 md:flex-row md:items-end md:justify-between">
               <div className="flex flex-col items-center gap-4 md:flex-row md:items-end">
-                <Avatar className="h-24 w-24 border-4 border-background md:h-32 md:w-32">
+                <Avatar className="h-24 w-24 border-4 border-white dark:border-gray-800 md:h-32 md:w-32">
                   <AvatarImage src={userData.avatar} alt={userData.name} />
                   <AvatarFallback className="text-2xl">
                     {userData.name
@@ -84,25 +88,30 @@ export default function UserProfilePage() {
                   </AvatarFallback>
                 </Avatar>
                 <div className="text-center md:text-left">
-                  <h1 className="text-2xl font-bold text-foreground">
+                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                     {userData.name}
                   </h1>
-                  <p className="text-muted-foreground">{userData.username}</p>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {userData.username}
+                  </p>
                   <div className="mt-2 flex items-center gap-2">
-                    <Badge variant="outline" className="bg-background">
+                    <Badge
+                      variant="outline"
+                      className="border-gray-200 bg-gray-100 text-gray-600 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300"
+                    >
                       {userData.role}
                     </Badge>
-                    <Badge
-                      variant="secondary"
-                      className="border-primary/20 bg-primary/10 text-primary"
-                    >
+                    <Badge className="border-indigo-100 bg-indigo-100 text-indigo-700 dark:border-indigo-900/30 dark:bg-indigo-900/20 dark:text-indigo-300">
                       Level {userData.level}
                     </Badge>
                   </div>
                 </div>
               </div>
               <div className="flex gap-3 md:self-center">
-                <Button variant={isFollowing ? "secondary" : "default"}>
+                <Button
+                  variant={isFollowing ? "secondary" : "default"}
+                  className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
+                >
                   {isFollowing ? (
                     <>
                       <UserMinus className="mr-2 h-4 w-4" />
@@ -115,100 +124,96 @@ export default function UserProfilePage() {
                     </>
                   )}
                 </Button>
-                <Button variant="outline" className="text-destructive">
+                <Button
+                  variant="outline"
+                  className="border-gray-200 text-red-600 hover:bg-red-50 dark:border-gray-700 dark:text-red-400 dark:hover:bg-red-900/20"
+                >
                   <Flag className="h-4 w-4" />
                   <span className="sr-only">Report user</span>
                 </Button>
               </div>
             </div>
-            <p className="mt-6 text-muted-foreground">{userData.bio}</p>
+            <p className="mt-6 text-gray-600 dark:text-gray-400">
+              {userData.bio}
+            </p>
           </CardContent>
         </Card>
 
         {/* Stats Cards */}
         <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="rounded-lg bg-primary/10 p-2">
-                  <Book className="h-6 w-6 text-primary" />
+          {[
+            {
+              icon: Book,
+              label: "Lessons Completed",
+              value: userData.stats.lessonsCompleted,
+            },
+            {
+              icon: Trophy,
+              label: "Achievements",
+              value: userData.stats.achievementsEarned,
+            },
+            {
+              icon: Sparkles,
+              label: "Day Streak",
+              value: userData.stats.daysStreak,
+            },
+            {
+              icon: Star,
+              label: "Total Points",
+              value: userData.stats.totalPoints,
+            },
+          ].map((stat, index) => (
+            <Card
+              key={index}
+              className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+            >
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4">
+                  <div className="rounded-lg bg-indigo-100 p-2 dark:bg-indigo-900/20">
+                    <stat.icon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {stat.label}
+                    </p>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {stat.value}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">
-                    Lessons Completed
-                  </p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {userData.stats.lessonsCompleted}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="rounded-lg bg-primary/10 p-2">
-                  <Trophy className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Achievements</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {userData.stats.achievementsEarned}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="rounded-lg bg-primary/10 p-2">
-                  <Sparkles className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Day Streak</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {userData.stats.daysStreak}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="rounded-lg bg-primary/10 p-2">
-                  <Star className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Points</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {userData.stats.totalPoints}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         {/* Main Content */}
         <Tabs defaultValue="progress" className="w-full">
-          <TabsList className="mx-auto w-full max-w-md">
-            <TabsTrigger value="progress" className="flex-1">
+          <TabsList className="mx-auto w-full max-w-md border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+            <TabsTrigger
+              value="progress"
+              className="flex-1 data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
+            >
               Progress
             </TabsTrigger>
-            <TabsTrigger value="achievements" className="flex-1">
+            <TabsTrigger
+              value="achievements"
+              className="flex-1 data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
+            >
               Achievements
             </TabsTrigger>
-            <TabsTrigger value="activity" className="flex-1">
+            <TabsTrigger
+              value="activity"
+              className="flex-1 data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
+            >
               Activity
             </TabsTrigger>
           </TabsList>
 
+          {/* Progress Tab */}
           <TabsContent value="progress" className="mt-6">
-            <Card>
+            <Card className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
                   <GraduationCap className="h-5 w-5" />
                   Learning Progress
                 </CardTitle>
@@ -217,24 +222,25 @@ export default function UserProfilePage() {
                 {Object.entries(userData.progress).map(([course, progress]) => (
                   <div key={course}>
                     <div className="mb-2 flex justify-between">
-                      <span className="text-sm font-medium text-foreground">
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">
                         {course}
                       </span>
-                      <span className="text-sm text-muted-foreground">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
                         {progress}%
                       </span>
                     </div>
-                    <Progress value={progress} className="h-2" />
+                    <CustomProgress initialValue={0} finalValue={progress} />
                   </div>
                 ))}
               </CardContent>
             </Card>
           </TabsContent>
 
+          {/* Achievements Tab */}
           <TabsContent value="achievements" className="mt-6">
-            <Card>
+            <Card className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
                   <Trophy className="h-5 w-5" />
                   Achievements
                 </CardTitle>
@@ -242,17 +248,20 @@ export default function UserProfilePage() {
               <CardContent>
                 <div className="grid gap-4">
                   {userData.achievements.map((achievement) => (
-                    <Card key={achievement.name}>
+                    <Card
+                      key={achievement.name}
+                      className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+                    >
                       <CardContent className="pt-6">
                         <div className="flex items-center gap-4">
-                          <div className="rounded-lg bg-primary/10 p-2">
-                            <achievement.icon className="h-6 w-6 text-primary" />
+                          <div className="rounded-lg bg-indigo-100 p-2 dark:bg-indigo-900/20">
+                            <achievement.icon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                           </div>
                           <div>
-                            <p className="font-semibold text-foreground">
+                            <p className="font-semibold text-gray-900 dark:text-white">
                               {achievement.name}
                             </p>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                               {achievement.description}
                             </p>
                           </div>
@@ -265,10 +274,11 @@ export default function UserProfilePage() {
             </Card>
           </TabsContent>
 
+          {/* Activity Tab */}
           <TabsContent value="activity" className="mt-6">
-            <Card>
+            <Card className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
                   <Award className="h-5 w-5" />
                   Recent Activity
                 </CardTitle>
@@ -277,19 +287,19 @@ export default function UserProfilePage() {
                 <div className="space-y-4">
                   {userData.recentActivity.map((activity, index) => (
                     <div key={index} className="flex items-center gap-4">
-                      <div className="rounded-lg bg-primary/10 p-2">
+                      <div className="rounded-lg bg-indigo-100 p-2 dark:bg-indigo-900/20">
                         {activity.type === "completed" && (
-                          <Book className="h-4 w-4 text-primary" />
+                          <Book className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                         )}
                         {activity.type === "achieved" && (
-                          <Trophy className="h-4 w-4 text-primary" />
+                          <Trophy className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                         )}
                         {activity.type === "started" && (
-                          <Sparkles className="h-4 w-4 text-primary" />
+                          <Sparkles className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                         )}
                       </div>
                       <div>
-                        <p className="text-sm text-foreground">
+                        <p className="text-sm text-gray-900 dark:text-white">
                           {activity.type === "completed" &&
                             `Completed ${activity.lesson}`}
                           {activity.type === "achieved" &&
@@ -297,7 +307,7 @@ export default function UserProfilePage() {
                           {activity.type === "started" &&
                             `Started ${activity.lesson}`}
                         </p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-gray-600 dark:text-gray-400">
                           {activity.date}
                         </p>
                       </div>
