@@ -93,7 +93,7 @@ const users = [
   },
 ];
 
-export default function SocialPage() {
+function page() {
   // State logic remains the same
 
   return (
@@ -276,3 +276,5 @@ export default function SocialPage() {
     </div>
   );
 }
+
+export default page;
