@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { lessons } from "@/db/lessons";
 import { ArrowLeft, ArrowRight, Book, Check } from "lucide-react";
-
 import { CustomTooltip } from "@/components/CustomTooltip";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
