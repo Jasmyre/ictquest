@@ -1,18 +1,17 @@
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { NextResponse } from "next/server";
 
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } },
-) {
-  const { id } = params;
-  const userId = id;
-  if (!userId) {
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+): Promise<NextResponse> {
+  const { id } = await params; // await the params promise
+  if (!id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
     const progress = await db.progressData.findMany({
-      where: { userId },
+      where: { userId: id },
     });
     return NextResponse.json(progress);
   } catch (error) {
@@ -25,10 +24,10 @@ export async function GET(
 }
 
 export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string } },
-) {
-  const { id } = params;
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+): Promise<NextResponse> {
+  const { id } = await params; // also await here
   try {
     const { topic, subtopics } = await request.json();
     const updated = await db.progressData.update({
