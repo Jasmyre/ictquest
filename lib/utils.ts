@@ -79,3 +79,13 @@ export const toastStyle =
 export const toastDescription = (name: string, description: string) => {
   return `${name} - ${description}`;
 };
+
+export function countOccurrences<T>(arr: T[]): Record<string, number> {
+  const counts: Record<string, number> = {};
+
+  for (const item of arr) {
+    counts[item as keyof typeof counts] = (counts[item as keyof typeof counts] || 0) + 1;
+  }
+
+  return counts;
+}

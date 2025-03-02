@@ -3,7 +3,7 @@
 import { CommandSearch } from "@/components/command-search";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Book, FileText, Menu, Moon, Shield, Sun, X } from "lucide-react";
+import { Book, FileText, Menu, Moon, Shield, Sun, X } from 'lucide-react';
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -41,7 +41,7 @@ export default function Layout({
                   ICTQuest
                 </span>
               </Link>
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+              <div className="hidden sm:ml-6 md:flex sm:space-x-8">
                 <Link
                   href="/"
                   className={`${pathname === "/" ? "border-indigo-500" : "border-transparent"} text-gray-90500 inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${pathname !== "/" && "hover:border-gray-300"} hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200`}
@@ -59,6 +59,12 @@ export default function Layout({
                   className={`${pathname === "/profile" ? "border-indigo-500" : "border-transparent"} inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium text-gray-500 ${pathname !== "/profile" && "hover:border-gray-300"} hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200`}
                 >
                   Profile
+                </Link>
+                <Link
+                  href="/social/new"
+                  className={`${pathname === "/social/new" ? "border-indigo-500" : "border-transparent"} inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium text-gray-500 ${pathname !== "/social/new" && "hover:border-gray-300"} hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200`}
+                >
+                  People
                 </Link>
               </div>
             </div>
@@ -95,7 +101,7 @@ export default function Layout({
         </div>
 
         {isMobileMenuOpen && (
-          <div className="sm:hidden">
+          <div className="hidden max-md:block">
             <div className="space-y-1 pb-3 pt-2">
               <div className="relative px-2 mb-4">
                 <CommandSearch className="w-min max-sm:w-full" />
@@ -126,6 +132,15 @@ export default function Layout({
                 className={`block border-l-4 ${pathname === "/profile" ? "border-indigo-500" : "border-transparent"} ${pathname === "/profile" ? "bg-indigo-50" : "bg-gray-50"} py-2 pl-3 pr-4 text-base font-medium ${pathname === "/profile" ? "text-indigo-700" : "text-gray-500"} ${pathname === "/profile" ? "dark:bg-indigo-900" : "dark:bg-gray-800"} ${pathname !== "/profile" && "hover:border-gray-300"} ${pathname !== "/profile" && "hover:bg-gray-50"} ${pathname !== "/profile" && "hover:text-gray-700"} dark:text-gray-300 ${pathname !== "/profile" && "dark:hover:bg-gray-700"} ${pathname !== "/profile" && "hover:text-gray-200"}`}
               >
                 Profile
+              </Link>
+              <Link
+                href="/social/new"
+                onClick={() =>
+                  setTimeout(() => setIsMobileMenuOpen(false), 250)
+                }
+                className={`block border-l-4 ${pathname === "/social/new" ? "border-indigo-500" : "border-transparent"} ${pathname === "/social/new" ? "bg-indigo-50" : "bg-gray-50"} py-2 pl-3 pr-4 text-base font-medium ${pathname === "/social/new" ? "text-indigo-700" : "text-gray-500"} ${pathname === "/social/new" ? "dark:bg-indigo-900" : "dark:bg-gray-800"} ${pathname !== "/social/new" && "hover:border-gray-300"} ${pathname !== "/social/new" && "hover:bg-gray-50"} ${pathname !== "/social/new" && "hover:text-gray-700"} dark:text-gray-300 ${pathname !== "/social/new" && "dark:hover:bg-gray-700"} ${pathname !== "/social/new" && "hover:text-gray-200"}`}
+              >
+                People
               </Link>
             </div>
           </div>

@@ -38,6 +38,10 @@ export default auth((req) => {
     return undefined;
   }
 
+  if (nextUrl.pathname.startsWith("/api/progress/")) {
+    return undefined;
+  }
+
   if (!isLoggedIn && !isPublicRoute) {
     return Response.redirect(new URL("/auth", nextUrl));
   }

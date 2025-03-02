@@ -3,6 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getUserStats } from "@/data/user";
+import lessons from "@/db/lessons";
+import { ProgressData } from "@prisma/client";
 import {
   Award,
   Book,
@@ -15,9 +18,7 @@ import {
   UserPlus,
 } from "lucide-react";
 import { CustomProgress } from "../../../components/CustomProgress";
-import { getAllUsers } from "@/data/user";
 
-// Sample user data - In a real app, this would come from an API
 const userData = {
   id: 1,
   name: "Sarah Wilson",
@@ -63,46 +64,70 @@ const userData = {
   ],
 };
 
-export default async function UserProfilePage() {
+export default async function UserProfilePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const isFollowing = userData.following;
+  const { id } = await params;
 
-  const users = await getAllUsers();
-  console.log(users)
+  const user = await getUserStats(id!)!;
+  console.log(user);
+
+  const baseUrl = process.env.NEXTAUTH_URL;
+  console.log(baseUrl);
+
+  const res = await fetch(baseUrl + "/api/progress/" + id);
+
+  console.log(baseUrl + "/api/progress/" + id);
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error("Failed to fetch progress, got:", errorText);
+    return;
+  }
+
+  const resData = await res.json();
+  const data: ProgressData[] = resData;
+  console.log(data)
 
   return (
     <div className="py-10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Profile Header */}
         <Card className="mb-8 overflow-hidden border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
           <div className="h-32 bg-gradient-to-r from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-indigo-900/10" />
           <CardContent className="relative pt-0">
             <div className="-mt-12 flex flex-col gap-6 md:-mt-16 md:flex-row md:items-end md:justify-between">
-              <div className="flex flex-col items-center gap-4 md:flex-row md:items-end">
+              <div className="flex flex-col items-start gap-4 md:flex-row md:items-end">
                 <Avatar className="h-24 w-24 border-4 border-white dark:border-gray-800 md:h-32 md:w-32">
-                  <AvatarImage src={userData.avatar} alt={userData.name} />
+                  <AvatarImage
+                    src={user?.avatar ?? undefined}
+                    alt={user?.username ?? "unknown"}
+                  />
                   <AvatarFallback className="text-2xl">
-                    {userData.name
-                      .split(" ")
+                    {user
+                      ?.username!.split(" ")
                       .map((n) => n[0])
                       .join("")}
                   </AvatarFallback>
                 </Avatar>
-                <div className="text-center md:text-left">
+                <div className="text-left md:text-left">
                   <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {userData.name}
+                    {user?.username}
                   </h1>
                   <p className="text-gray-600 dark:text-gray-400">
-                    {userData.username}
+                    @{user?.id}
                   </p>
+                  <br className="hidden max-sm:block" />
                   <div className="mt-2 flex items-center gap-2">
                     <Badge
                       variant="outline"
                       className="border-gray-200 bg-gray-100 text-gray-600 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300"
                     >
-                      {userData.role}
+                      Student
                     </Badge>
                     <Badge className="border-indigo-100 bg-indigo-100 text-indigo-700 dark:border-indigo-900/30 dark:bg-indigo-900/20 dark:text-indigo-300">
-                      Level {userData.level}
+                      Level {user?.level}
                     </Badge>
                   </div>
                 </div>
@@ -134,33 +159,22 @@ export default async function UserProfilePage() {
               </div>
             </div>
             <p className="mt-6 text-gray-600 dark:text-gray-400">
-              {userData.bio}
+              Bio not available
             </p>
           </CardContent>
         </Card>
 
-        {/* Stats Cards */}
-        <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
           {[
             {
               icon: Book,
               label: "Lessons Completed",
-              value: userData.stats.lessonsCompleted,
+              value: user?.numberOfSubtopics,
             },
             {
               icon: Trophy,
               label: "Achievements",
-              value: userData.stats.achievementsEarned,
-            },
-            {
-              icon: Sparkles,
-              label: "Day Streak",
-              value: userData.stats.daysStreak,
-            },
-            {
-              icon: Star,
-              label: "Total Points",
-              value: userData.stats.totalPoints,
+              value: user?.numberOfAchievements,
             },
           ].map((stat, index) => (
             <Card
@@ -186,9 +200,8 @@ export default async function UserProfilePage() {
           ))}
         </div>
 
-        {/* Main Content */}
         <Tabs defaultValue="progress" className="w-full">
-          <TabsList className="mx-auto w-full max-w-md border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+          <TabsList className="mx-auto w-full max-w-md border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
             <TabsTrigger
               value="progress"
               className="flex-1 data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
@@ -209,7 +222,6 @@ export default async function UserProfilePage() {
             </TabsTrigger>
           </TabsList>
 
-          {/* Progress Tab */}
           <TabsContent value="progress" className="mt-6">
             <Card className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
               <CardHeader>
@@ -219,7 +231,49 @@ export default async function UserProfilePage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                {Object.entries(userData.progress).map(([course, progress]) => (
+                <div>
+                  <div className="mb-2 flex justify-between">
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">
+                      Overall HTML Mastery
+                    </span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      {user?.averageProgress}%
+                    </span>
+                  </div>
+                  <CustomProgress initialValue={0} finalValue={user?.averageProgress ?? 0} />
+                </div>
+
+                {lessons.map((lesson) => {
+                  const progress = data?.find(
+                    (item) => item.topic === lesson.slug,
+                  );
+
+                  const completedSubtopics = progress?.subtopics?.length ?? 0;
+                  const totalSubtopics = lesson.topics.length;
+
+                  const percentage =
+                    totalSubtopics === 0
+                      ? 0
+                      : Math.round((completedSubtopics / totalSubtopics) * 100);
+
+                  return (
+                    <div key={lesson.slug}>
+                      <div className="mb-2 flex justify-between">
+                        <span className="text-sm font-medium text-gray-900 dark:text-white">
+                          {lesson.title}
+                        </span>
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                          {percentage}%
+                        </span>
+                      </div>
+                      <CustomProgress
+                        initialValue={0}
+                        finalValue={percentage}
+                      />
+                    </div>
+                  );
+                })}
+                {/* {Object.entries(userData.progress).map(([course, progress]) => (
                   <div key={course}>
                     <div className="mb-2 flex justify-between">
                       <span className="text-sm font-medium text-gray-900 dark:text-white">
@@ -231,12 +285,11 @@ export default async function UserProfilePage() {
                     </div>
                     <CustomProgress initialValue={0} finalValue={progress} />
                   </div>
-                ))}
+                ))} */}
               </CardContent>
             </Card>
           </TabsContent>
 
-          {/* Achievements Tab */}
           <TabsContent value="achievements" className="mt-6">
             <Card className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
               <CardHeader>
@@ -274,7 +327,6 @@ export default async function UserProfilePage() {
             </Card>
           </TabsContent>
 
-          {/* Activity Tab */}
           <TabsContent value="activity" className="mt-6">
             <Card className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
               <CardHeader>

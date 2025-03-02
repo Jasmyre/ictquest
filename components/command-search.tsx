@@ -6,6 +6,7 @@ import {
   Circle,
   Eye,
   FileText,
+  Globe,
   Home,
   Search,
   Settings,
@@ -91,6 +92,7 @@ export function CommandSearch({className}: Readonly<{className?: string}>) {
         { icon: Home, name: "Home", action: () => "/" },
         { icon: User, name: "Profile", action: () => "/profile" },
         { icon: Book, name: "Lessons", action: () => "/lessons" },
+        { icon: Globe, name: "People", action: () => "/social/new"}
       ],
     },
     ...lessonGroups,
@@ -115,7 +117,7 @@ export function CommandSearch({className}: Readonly<{className?: string}>) {
           )}
           tabIndex={-1}
         >
-          <div className="flex min-w-min max-sm:w-full max-md:w-[100px] md:w-[225px] gap-4 items-center justify-between dark:text-gray-400">
+          <div className="flex min-w-min max-sm:w-full max-md:w-[150px] md:w-[150px] gap-4 items-center justify-between dark:text-gray-400">
             <div className="flex gap-4">Search</div>
             <Search className="h-4 w-4" />
           </div>
@@ -140,7 +142,7 @@ export function CommandSearch({className}: Readonly<{className?: string}>) {
                     <CommandItem
                       key={`${item.name}-${route}`}
                       onSelect={() => runCommand(item.action)}
-                      className="hover:bg-gray-200 dark:hover:bg-gray-700"
+                      className="hover:bg-gray-200 cursor-pointer dark:hover:bg-gray-700"
                     >
                       <item.icon className="mr-2 h-4 w-4" />
                       <span>{item.name}</span>

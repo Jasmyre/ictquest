@@ -6,7 +6,7 @@ export const publicRoutes = [
 export const authRoutes = [
     "/auth",
     "/auth/error",
-    "/api/auth/callback/google"
+    "/api/auth/callback/google",
 ]
 
 export const apiAuthPrefix = "/api/auth"
