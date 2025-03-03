@@ -16,10 +16,14 @@ import Loading from "./Loading";
 export default function Lesson({
   topic,
   subtopic,
-}: Readonly<{ topic: string; subtopic: string }>) {
+  isBackEnabled = true,
+}: Readonly<{ topic: string; subtopic: string; isBackEnabled?: boolean }>) {
+  console.log("is back enabled: ", isBackEnabled)
   const { data: session, status } = useSession();
 
   const [achievementUnlocked, setAchievementUnlocked] = useState(false);
+  const [numberOfCorrect, setNumberOfCorrect] = useState<number>(0);
+  const [numberOfInCorrect, setNumberOfInCorrect] = useState<number>(0);
   const [isFinished, setIsFinished] = useState<boolean>(true);
   const [index, setIndex] = useState<number>(0);
 
@@ -145,6 +149,10 @@ export default function Lesson({
   };
 
   async function handleNextButton() {
+    if (topic === "test") {
+      setIsFinished(false);
+    }
+
     if (index < numberOfContent - 1) {
       setIndex((prev) => prev + 1);
     } else if (index === numberOfContent - 1 && isFinished) {
@@ -161,10 +169,13 @@ export default function Lesson({
       } catch (error) {
         console.error("Error updating progress:", error);
       }
-      router.push(`/compliments?topic=${topic}&subtopic=${subtopic}`);
+
+      router.push(`/compliments?topic=${topic}&subtopic=${subtopic}&correct=${numberOfContent}&incorrect=${numberOfInCorrect}`);
     }
-    setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 10);
-  };
+    console.log(numberOfCorrect);
+    console.log(numberOfInCorrect);
+    // setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 10);
+  }
 
   const contents = lessonTopic[index];
   const singleProgress = 100 / numberOfContent;
@@ -195,7 +206,7 @@ export default function Lesson({
                     {item.type === "element" && (
                       <div>
                         {typeof item.label === "function"
-                          ? item.label({ setIsFinished })
+                          ? item.label({ setIsFinished, setNumberOfCorrect, setNumberOfInCorrect })
                           : item.label}
                       </div>
                     )}
@@ -204,9 +215,11 @@ export default function Lesson({
                 ))}
               </div>
               <br />
-              <div className="mt-6 flex justify-between">
+              <div
+                className={`${isBackEnabled === true ? "justify-between" : "justify-end"} mt-6 flex`}
+              >
                 <Button
-                  className="hover:text-900 border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+                  className={`hover:text-900 border border-gray-200 bg-white text-gray-600 shadow-sm ${isBackEnabled === true ? "opacity-100" : "hidden opacity-0"} hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200`}
                   variant="outline"
                   onClick={handleBackButton}
                   disabled={index === 0}
@@ -216,7 +229,7 @@ export default function Lesson({
                 </Button>
                 <Button
                   onClick={handleNextButton}
-                  className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
+                  className={`bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600`}
                   disabled={!isFinished}
                 >
                   {contents.submit.label}

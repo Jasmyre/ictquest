@@ -136,7 +136,11 @@ export const htmlTypography: LessonContent = {
         {
           id: 6,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<h1>Main Title</h1>\n", priority: 0 },
@@ -149,6 +153,8 @@ export const htmlTypography: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -241,7 +247,11 @@ export const htmlTypography: LessonContent = {
         {
           id: 11,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<p>", priority: 0 },
@@ -257,6 +267,8 @@ export const htmlTypography: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -351,7 +363,11 @@ export const htmlTypography: LessonContent = {
         {
           id: 16,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<blockquote>", priority: 0 },
@@ -367,6 +383,8 @@ export const htmlTypography: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -460,7 +478,11 @@ export const htmlTypography: LessonContent = {
         {
           id: 21,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<strong>", priority: 0 },
@@ -473,6 +495,8 @@ export const htmlTypography: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -565,7 +589,11 @@ export const htmlTypography: LessonContent = {
         {
           id: 26,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<em>", priority: 0 },
@@ -578,6 +606,8 @@ export const htmlTypography: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -670,7 +700,11 @@ export const htmlTypography: LessonContent = {
         {
           id: 31,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<mark>", priority: 0 },
@@ -683,6 +717,8 @@ export const htmlTypography: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -775,7 +811,11 @@ export const htmlTypography: LessonContent = {
         {
           id: 36,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<code>", priority: 0 },
@@ -788,6 +828,8 @@ export const htmlTypography: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -881,7 +923,11 @@ export const htmlTypography: LessonContent = {
         {
           id: 41,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<small>", priority: 0 },
@@ -894,6 +940,8 @@ export const htmlTypography: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -986,7 +1034,11 @@ export const htmlTypography: LessonContent = {
         {
           id: 46,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<abbr>", priority: 0 },
@@ -999,6 +1051,8 @@ export const htmlTypography: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -1091,7 +1145,11 @@ export const htmlTypography: LessonContent = {
         {
           id: 51,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<cite>", priority: 0 },
@@ -1104,6 +1162,8 @@ export const htmlTypography: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -1205,7 +1265,11 @@ export const htmlTypography: LessonContent = {
         {
           id: 31,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<address>\n", priority: 0 },
@@ -1223,6 +1287,8 @@ export const htmlTypography: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -1249,9 +1315,15 @@ export const htmlTypography: LessonContent = {
         {
           id: 33,
           type: "element",
-          label: (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
-              setIsFinishedAction={() => {}}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              setIsFinishedAction={setIsFinished}
               title={["Which tag is used to highlight text?"]}
               choices={{
                 options: ["<mark>", "<strong>", "<em>", "<code>"],
@@ -1277,9 +1349,15 @@ export const htmlTypography: LessonContent = {
         {
           id: 53,
           type: "element",
-          label: (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
-              setIsFinishedAction={() => {}}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              setIsFinishedAction={setIsFinished}
               title={["Which tag is used to indicate strong importance?"]}
               choices={{
                 options: ["<strong>", "<em>", "<mark>", "<code>"],
@@ -1305,9 +1383,15 @@ export const htmlTypography: LessonContent = {
         {
           id: 54,
           type: "element",
-          label: (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
-              setIsFinishedAction={() => {}}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              setIsFinishedAction={setIsFinished}
               title={["Which tag is used for inline code snippets?"]}
               choices={{
                 options: ["<code>", "<small>", "<abbr>", "<cite>"],
@@ -1333,9 +1417,15 @@ export const htmlTypography: LessonContent = {
         {
           id: 55,
           type: "element",
-          label: (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
-              setIsFinishedAction={() => {}}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              setIsFinishedAction={setIsFinished}
               title={["Which tag is used for abbreviations with a tooltip?"]}
               choices={{
                 options: ["<abbr>", "<mark>", "<small>", "<cite>"],

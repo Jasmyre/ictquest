@@ -1,13 +1,12 @@
 import Browser from "@/components/Browser";
 import CodeBlock from "@/components/Code";
-import CodeHighlight from "@/components/CodeHighlight";
-import { MultipleChoice } from "@/components/MultipleChoice";
 import { Practice } from "@/components/Practice";
 import { shuffle } from "@/lib/utils";
 import { LessonContent } from "../lessons";
 
 import Image from "next/image";
-
+import { MultipleChoice } from "@/components/MultipleChoice";
+import CodeHighlight from "@/components/CodeHighlight";
 
 export const htmlIntroduction: LessonContent = {
   title: "What is HTML and Its History",
@@ -48,8 +47,14 @@ export const htmlIntroduction: LessonContent = {
         {
           id: 2,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["What does HTML stand for?"]}
               choices={{
@@ -169,7 +174,11 @@ export const htmlIntroduction: LessonContent = {
         {
           id: 6,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<button>", priority: 1 },
@@ -184,6 +193,8 @@ export const htmlIntroduction: LessonContent = {
 
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -213,8 +224,14 @@ export const htmlIntroduction: LessonContent = {
         {
           id: 5,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Who invented HTML?"]}
               choices={{
@@ -268,8 +285,14 @@ export const htmlIntroduction: LessonContent = {
         {
           id: 9,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Is this statement true or false?"]}
               choices={{ options: ["True", "False"], answer: "False" }}
@@ -305,8 +328,14 @@ export const htmlIntroduction: LessonContent = {
         {
           id: 12,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["When was HTML 2.0 standardized?"]}
               choices={{
@@ -356,8 +385,14 @@ export const htmlIntroduction: LessonContent = {
         {
           id: 16,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["True or False?"]}
               choices={{ options: ["True", "False"], answer: "True" }}
@@ -437,8 +472,14 @@ export const htmlIntroduction: LessonContent = {
         {
           id: 23,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Choose the correct version:"]}
               choices={{
@@ -498,8 +539,14 @@ export const htmlIntroduction: LessonContent = {
         {
           id: 28,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Is HTML a programming language?"]}
               choices={{ options: ["True", "False"], answer: "False" }}
@@ -590,8 +637,14 @@ export const htmlIntroduction: LessonContent = {
         {
           id: 36,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Who is known as the father of the Web?"]}
               choices={{
@@ -668,8 +721,14 @@ export const htmlIntroduction: LessonContent = {
         {
           id: 42,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Pick the right organization:"]}
               choices={{
@@ -707,8 +766,14 @@ export const htmlIntroduction: LessonContent = {
         {
           id: 45,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Is HTML still evolving?"]}
               choices={{ options: ["True", "False"], answer: "True" }}
@@ -744,8 +809,14 @@ export const htmlIntroduction: LessonContent = {
         {
           id: 48,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["What was HTML mainly for?"]}
               choices={{

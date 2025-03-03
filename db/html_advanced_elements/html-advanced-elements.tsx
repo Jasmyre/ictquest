@@ -119,7 +119,11 @@ export const htmlAdvancedElements: LessonContent = {
         {
           id: 5,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: `<select>\n`, priority: 0 },
@@ -143,6 +147,8 @@ export const htmlAdvancedElements: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -230,7 +236,11 @@ export const htmlAdvancedElements: LessonContent = {
         {
           id: 11,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: `<details>\n`, priority: 0 },
@@ -247,6 +257,8 @@ export const htmlAdvancedElements: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -337,7 +349,11 @@ export const htmlAdvancedElements: LessonContent = {
         {
           id: 17,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: `<dialog id="myDialog">\n`, priority: 0 },
@@ -358,6 +374,8 @@ export const htmlAdvancedElements: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -451,7 +469,11 @@ export const htmlAdvancedElements: LessonContent = {
         {
           id: 23,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: `<fieldset>\n`, priority: 0 },
@@ -472,6 +494,8 @@ export const htmlAdvancedElements: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -562,7 +586,11 @@ export const htmlAdvancedElements: LessonContent = {
         {
           id: 29,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: `<label for="email">`, priority: 0 },
@@ -579,6 +607,8 @@ export const htmlAdvancedElements: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}

@@ -6,15 +6,16 @@ export default async function page({
   searchParams,
 }: Readonly<{
   params: Promise<{ subtopic: string }>;
-  searchParams: Promise<{ topic: string }>;
+  searchParams: Promise<{ topic: string; isBackEnabled: string }>;
 }>) {
   const { subtopic } = await params;
-  const { topic } = await searchParams;
+  const { topic, isBackEnabled } = await searchParams;
+  const enabledBack = isBackEnabled ?? false;
 
   return (
     <main>
       <SessionProvider>
-        <Lesson topic={topic} subtopic={subtopic} />
+        <Lesson topic={topic} subtopic={subtopic} isBackEnabled={!!enabledBack} />
       </SessionProvider>
     </main>
   );

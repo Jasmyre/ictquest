@@ -84,7 +84,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 5,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<h1>", priority: 1 },
@@ -97,6 +101,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -140,7 +146,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 8,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<p>", priority: 1 },
@@ -156,6 +166,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -201,7 +213,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 11,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: `<img src="/img.png"`, priority: 1 },
@@ -217,6 +233,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -261,7 +279,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 14,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: `<a href="https://example.com">`, priority: 1 },
@@ -277,6 +299,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -322,7 +346,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 17,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: `<ul>\n  `, priority: 1 },
@@ -346,6 +374,8 @@ export const htmlBriefExample: LessonContent = {
                 </p>
                 <br />
                 <Practice
+                  setNumberOfCorrectAction={setNumberOfCorrect}
+                  setNumberOfInCorrectAction={setNumberOfInCorrect}
                   setIsFinishedAction={setIsFinished}
                   choices={choices}
                   shuffledData={shuffledData}
@@ -420,7 +450,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 22,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [{ label: "<hr>", priority: 1 }],
               answer: "<hr>",
@@ -429,6 +463,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -470,7 +506,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 25,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [{ label: "<br>", priority: 1 }],
               answer: "<br>",
@@ -479,6 +519,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -519,7 +561,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 28,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<p>", priority: 1 },
@@ -532,6 +578,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -572,7 +620,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 31,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<h2>", priority: 1 },
@@ -585,6 +637,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -625,7 +679,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 34,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<strong>", priority: 1 },
@@ -638,6 +696,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -678,7 +738,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 37,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<em>", priority: 1 },
@@ -691,6 +755,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -734,7 +800,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 40,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<blockquote>", priority: 1 },
@@ -747,6 +817,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -789,7 +861,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 43,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<code>", priority: 1 },
@@ -802,6 +878,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -842,7 +920,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 46,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<pre>\n  ", priority: 1 },
@@ -855,6 +937,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -891,7 +975,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 49,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<div>", priority: 1 },
@@ -904,6 +992,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -944,7 +1034,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 52,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<span>", priority: 1 },
@@ -957,6 +1051,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -999,7 +1095,11 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 55,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: "<footer>", priority: 1 },
@@ -1012,6 +1112,8 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -1078,8 +1180,14 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 59,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Choose the correct tag:"]}
               choices={{
@@ -1106,8 +1214,14 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 61,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Select the correct tag:"]}
               choices={{
@@ -1134,8 +1248,14 @@ export const htmlBriefExample: LessonContent = {
         {
           id: 63,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Choose the correct tag:"]}
               choices={{

@@ -10,6 +10,8 @@ import { Button } from "./ui/button";
 import Prism from "prismjs";
 
 interface PracticeProps {
+  setNumberOfCorrectAction: (value: (count: number) => number) => void;
+  setNumberOfInCorrectAction: (value: (count: number) => number) => void;
   setIsFinishedAction: (value: boolean) => void;
   shuffledData?: {
     label: string;
@@ -28,59 +30,89 @@ interface PracticeProps {
     negative?: string;
     positive?: string;
   };
+  isResetEnabled?: boolean;
 }
 
 export const Practice = ({
   choices,
+  setNumberOfCorrectAction,
+  setNumberOfInCorrectAction,
+  isResetEnabled = true,
   setIsFinishedAction,
   shuffledData,
   title,
   initialCode = ["", ""],
   response = { negative: "Incorrect, Please try again!" },
 }: PracticeProps) => {
+  const hint = true;
   const [code, setCode] = useState<string>("");
   const [disabledButtons, setDisabledButtons] = useState<string[]>([]);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const correctCode = choices?.answer;
-  const correctCodeFormatted = choices?.answer.toString().replaceAll(" ", "").replaceAll(`\n`, "")
-  console.log(correctCode)
+  const correctCodeFormatted = choices?.answer
+    .toString()
+    .replaceAll(" ", "")
+    .replaceAll("\n", "");
+  console.log(correctCode);
 
-   const handleReset = useCallback(() => {
-     setCode("");
-     setDisabledButtons([]);
-     setIsFinishedAction(false);
-     setIsCorrect(false);
-   }, [setIsFinishedAction]);
+  const handleReset = useCallback(() => {
+    setCode("");
+    setDisabledButtons([]);
+    setIsFinishedAction(false);
+    setIsCorrect(false);
+    setHasSubmitted(false);
+  }, [setIsFinishedAction]);
+
 
   useEffect(() => {
     Prism.highlightAll();
-    setIsFinishedAction(false);
+    if (!hasSubmitted) {
+      setIsFinishedAction(false);
+    }
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      console.log(event.key)
+      console.log(event.key);
       if (event.key === "Backspace") {
         handleReset();
       }
     };
 
-    if (code.replaceAll(" ", "").replaceAll("\n", "") === correctCodeFormatted) {
-      setIsFinishedAction(true);
-      setIsCorrect(true);
-    } else {
-      setIsFinishedAction(false);
-      setIsCorrect(false);
+    if (
+      shuffledData &&
+      disabledButtons.length === shuffledData.length &&
+      !hasSubmitted
+    ) {
+      if (code.replace(/\s/g, "") === correctCodeFormatted) {
+        setIsFinishedAction(true);
+        setIsCorrect(true);
+        setNumberOfCorrectAction((prev) => prev + 1);
+      } else {
+        setNumberOfInCorrectAction((prev) => prev + 1);
+        setIsFinishedAction(false);
+        setIsCorrect(false);
+      }
+      setHasSubmitted(true);
     }
 
     console.log(code);
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [code, correctCodeFormatted, handleReset, setIsFinishedAction]);
+  }, [
+    code,
+    correctCodeFormatted,
+    handleReset,
+    setIsFinishedAction,
+    disabledButtons,
+    shuffledData,
+    hasSubmitted,
+  ]);
 
 
   const handleClick = (label: string, priority: number) => {
     setCode((prevCode) => {
-      const newCode = prevCode + label
+      const newCode = prevCode + label;
       if (newCode === choices?.answer) {
         setSessionStorageItem("finish", true);
       }
@@ -93,7 +125,9 @@ export const Practice = ({
   const renderMessage = () => {
     if (disabledButtons.length !== shuffledData?.length || !code) return null;
 
-    if (code.replaceAll(" ", "").replaceAll("\n", "") === correctCodeFormatted) {
+    if (
+      code.replaceAll(" ", "").replaceAll("\n", "") === correctCodeFormatted
+    ) {
       if (!response?.positive) return null;
       console.log(isCorrect);
       return (
@@ -131,17 +165,26 @@ export const Practice = ({
         })}
       </div>
       <CodeBlock language="HTML" initialCode={initialCode} code={code} />
-      <div className="mt-2 flex justify-start">
-        <Button
-          className="hover:text-900 border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
-          onClick={handleReset}
-          variant="outline"
-          size="sm"
-        >
-          <RotateCcw className="mr-2 h-4 w-4" />
-          Reset
-        </Button>
+      <div className="mt-2 flex flex-wrap justify-start gap-4">
+        {isResetEnabled && (
+          <Button
+            className="hover:text-900 border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+            onClick={handleReset}
+            variant="outline"
+            size="sm"
+          >
+            <RotateCcw className="mr-2 h-4 w-4" />
+            Reset
+          </Button>
+        )}
+
+        {hint && (
+          <div className="flex items-center justify-center text-sm text-gray-500">
+            <p>Please think carefully before you choose your answer!</p>
+          </div>
+        )}
       </div>
+
       <div className="mt-4 flex flex-wrap justify-center gap-4">
         {shuffledData?.map((option) => (
           <ButtonChoice
@@ -154,10 +197,15 @@ export const Practice = ({
         ))}
       </div>
       <br />
-      {code.replaceAll(" ", "").replaceAll("\n", "") === correctCodeFormatted && (
+      {code.replaceAll(" ", "").replaceAll("\n", "") ===
+        correctCodeFormatted && (
         <Browser
           title="Document"
-          content={initialCode ? initialCode.toLocaleString() + correctCode : correctCode?.toString()}
+          content={
+            initialCode
+              ? initialCode.toLocaleString() + correctCode
+              : correctCode?.toString()
+          }
         />
       )}
       <br />

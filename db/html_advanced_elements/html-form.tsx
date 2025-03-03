@@ -705,8 +705,14 @@ export const htmlForm: LessonContent = {
         {
           id: 2,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={[
                 "Which attribute of the <form> element specifies where to send form data?",
@@ -732,8 +738,14 @@ export const htmlForm: LessonContent = {
         {
           id: 26,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["What should the type attribute be for a submit button?"]}
               choices={{
@@ -755,8 +767,14 @@ export const htmlForm: LessonContent = {
         {
           id: 5,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Which input type is used for a standard text field?"]}
               choices={{
@@ -779,8 +797,14 @@ export const htmlForm: LessonContent = {
         {
           id: 8,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Which input type is ideal for email addresses?"]}
               choices={{
@@ -802,8 +826,14 @@ export const htmlForm: LessonContent = {
         {
           id: 11,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Which input type should you use for a password field?"]}
               choices={{
@@ -826,8 +856,14 @@ export const htmlForm: LessonContent = {
         {
           id: 14,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Which input type is used for numeric data?"]}
               choices={{
@@ -850,8 +886,14 @@ export const htmlForm: LessonContent = {
         {
           id: 17,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Checkboxes allow users to select:"]}
               choices={{
@@ -879,8 +921,14 @@ export const htmlForm: LessonContent = {
         {
           id: 20,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Radio buttons allow users to select:"]}
               choices={{
@@ -908,8 +956,14 @@ export const htmlForm: LessonContent = {
         {
           id: 23,
           type: "element",
-          label: ({ setIsFinished }) => (
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => (
             <MultipleChoice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
               title={["Which element is used for multi-line text input?"]}
               choices={{

@@ -1,7 +1,8 @@
 import { SessionProvider } from "next-auth/react";
 import Compliment from "./compliment";
 
-export default async function ComplimentsPage() {
+export default async function ComplimentsPage({searchParams}: {searchParams: Promise<{correct: string; incorrect: string}>}) {
+  const {correct, incorrect} = await searchParams;
 
   const image = [
     "https://fonts.gstatic.com/s/e/notoemoji/latest/1f929/512.gif",
@@ -44,7 +45,7 @@ export default async function ComplimentsPage() {
 
   return (
     <SessionProvider>
-      <Compliment img={randomImage}/>
+      <Compliment img={randomImage} correct={Number(correct)} incorrect={Number(incorrect)}/>
     </SessionProvider>
   );
 }

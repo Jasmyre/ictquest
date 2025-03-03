@@ -19,10 +19,10 @@ export const beyondHTML: LessonContent = {
               <p>Welcome to our &quot;Beyond HTML&quot; lesson!</p>
               <br />
               <p>
-                In this lesson, we&apos;ll explore how HTML teams up with CSS and
-                JavaScript to create visually appealing and interactive web
-                pages. Remember, we won&apos;t deep dive into these topics—this is
-                just a quick exploration beyond HTML.
+                In this lesson, we&apos;ll explore how HTML teams up with CSS
+                and JavaScript to create visually appealing and interactive web
+                pages. Remember, we won&apos;t deep dive into these topics—this
+                is just a quick exploration beyond HTML.
               </p>
             </div>
           ),
@@ -39,8 +39,8 @@ export const beyondHTML: LessonContent = {
           label: (
             <div>
               <p>
-                Let&apos;s start with HTML and CSS integration. CSS adds style to
-                your HTML, controlling things like colors, fonts, and layout.
+                Let&apos;s start with HTML and CSS integration. CSS adds style
+                to your HTML, controlling things like colors, fonts, and layout.
               </p>
               <br />
               <p>
@@ -115,8 +115,8 @@ export const beyondHTML: LessonContent = {
           label: (
             <div>
               <p>
-                Next, let&apos;s explore HTML with JavaScript. JavaScript makes your
-                page interactive.
+                Next, let&apos;s explore HTML with JavaScript. JavaScript makes
+                your page interactive.
               </p>
               <br />
               <p>
@@ -204,7 +204,11 @@ export const beyondHTML: LessonContent = {
         {
           id: 8,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: `<html>\n`, priority: 0 },
@@ -231,6 +235,8 @@ export const beyondHTML: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -262,7 +268,11 @@ export const beyondHTML: LessonContent = {
         {
           id: 10,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: `<html>\n`, priority: 0 },
@@ -292,6 +302,8 @@ export const beyondHTML: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}

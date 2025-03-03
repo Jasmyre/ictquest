@@ -498,7 +498,11 @@ export const htmlMediaElements: LessonContent = {
         {
           id: 20,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 { label: `<audio controls>\n`, priority: 0 },
@@ -522,6 +526,8 @@ export const htmlMediaElements: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
@@ -553,7 +559,11 @@ export const htmlMediaElements: LessonContent = {
         {
           id: 22,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({
+            setIsFinished,
+            setNumberOfCorrect,
+            setNumberOfInCorrect,
+          }) => {
             const choices = {
               options: [
                 {
@@ -576,6 +586,8 @@ export const htmlMediaElements: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}

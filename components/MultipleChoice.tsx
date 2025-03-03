@@ -1,19 +1,24 @@
 "use client";
 
-import { setSessionStorageItem } from "@/lib/utils";
 import { CircleAlert, RotateCcw } from "lucide-react";
+import Prism from "prismjs";
 import React, { useCallback, useState } from "react";
 import { MultipleChoiceButton } from "./MultipleChoiceButton";
 import { Button } from "./ui/button";
-import Prism from "prismjs";
 
 export const MultipleChoice = ({
+  setNumberOfCorrectAction,
+  setNumberOfInCorrectAction,
+  isResetEnabled = true,
   choices,
   setIsFinishedAction,
   title,
   response = { negative: "Incorrect, Please try again!" },
 }: {
+  setNumberOfCorrectAction: (value: (count: number) => number) => void;
+  setNumberOfInCorrectAction: (value: (count: number) => number) => void;
   setIsFinishedAction: (value: boolean) => void;
+  isResetEnabled?: boolean;
   choices: {
     options: string[];
     answer: string;
@@ -47,29 +52,50 @@ export const MultipleChoice = ({
       }
     };
 
-    if (choice === choices.answer) {
-      setIsFinishedAction(true);
-      setIsCorrect(true);
-    } else {
-      setIsFinishedAction(false);
-      setIsCorrect(true);
-    }
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [choice, choices.answer, handleReset, setIsFinishedAction]);
 
-  const handleMultipleChoiceClick = (label: string) => {
-    setChoice((prevChoice) => {
-      const newChoice =
-        prevChoice !== choices.answer ? prevChoice + label : prevChoice;
-      if (newChoice === choices.answer) {
-        setSessionStorageItem("finish", true);
-      }
-      return newChoice;
-    });
+  React.useEffect(() => {
+    if (choice === "") return;
 
+    if (choice === choices.answer) {
+      console.log("Correct answer!");
+      setIsCorrect(true);
+      setNumberOfCorrectAction((prev) => prev + 1);
+      setIsFinishedAction(true);
+    } else {
+      setIsCorrect(false);
+      setNumberOfInCorrectAction((prev) => prev + 1);
+      if (!isResetEnabled) {
+        setIsFinishedAction(true);
+      } else {
+        setIsFinishedAction(false);
+      }
+    }
+  }, [
+    choice,
+    choices.answer,
+    isResetEnabled,
+    setIsFinishedAction,
+  ]);
+
+  const handleMultipleChoiceClick = (label: string) => {
+    setChoice(label);
     setDisabledButtons(choices.options.filter((option) => option !== label));
+
+    if (label === choices.answer) {
+      console.log("Correct answer!");
+      setNumberOfCorrectAction((prev) => prev + 1);
+      setIsFinishedAction(true);
+    } else {
+      setNumberOfInCorrectAction((prev) => prev + 1);
+      if (!isResetEnabled) {
+        setIsFinishedAction(true);
+      } else {
+        setIsFinishedAction(false);
+      }
+    }
   };
 
   const renderMessage = () => {
@@ -126,15 +152,17 @@ export const MultipleChoice = ({
         })}
       </div>
       <div className="mt-2 flex justify-start">
-        <Button
-          className="hover:text-900 border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
-          onClick={handleReset}
-          variant="outline"
-          size="sm"
-        >
-          <RotateCcw className="mr-2 h-4 w-4" />
-          Reset
-        </Button>
+        {isResetEnabled && (
+          <Button
+            className="hover:text-900 border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+            onClick={handleReset}
+            variant="outline"
+            size="sm"
+          >
+            <RotateCcw className="mr-2 h-4 w-4" />
+            Reset
+          </Button>
+        )}
       </div>
       <br />
       <div className="hidden rounded bg-green-600 p-2">

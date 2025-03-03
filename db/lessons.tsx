@@ -10,6 +10,7 @@ import { htmlBriefExample } from "./introduction_to_html/html-brief-example";
 import { htmlDocumentStructure } from "./introduction_to_html/html-document-structure";
 import { htmlIntroduction } from "./introduction_to_html/html-introduction";
 import { beyondHTML } from "./html_advanced_elements/beyond-html";
+import { quiz } from "./test/quiz";
 
 export interface Topic {
   name: string;
@@ -26,7 +27,11 @@ export interface LessonContent {
       label:
         | string
         | JSX.Element
-        | ((props: { setIsFinished: (value: boolean) => void }) => JSX.Element);
+        | ((props: {
+            setIsFinished: (value: boolean) => void;
+            setNumberOfCorrect: (value: (count: number) => number) => void;
+            setNumberOfInCorrect: (value: (count: number) => number) => void;
+          }) => JSX.Element);
     }>;
   }>;
 }
@@ -90,6 +95,18 @@ export const lessons: Lesson[] = [
       "beyond-html": beyondHTML,
     },
   },
+
+  {
+    title: "Test Your Expertise",
+    description: "",
+    slug: "test",
+    topics: [
+      {name: "Quiz", slug: "quiz"}
+    ],
+    content: {
+      "quiz": quiz
+    }
+  }
 
   // {
   //   title: "ABCD",

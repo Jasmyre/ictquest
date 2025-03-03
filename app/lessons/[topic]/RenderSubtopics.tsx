@@ -175,7 +175,7 @@ export default function RenderSubtopics({
                                       className={cn(
                                         "truncate text-sm font-medium text-gray-900 dark:text-gray-100",
                                         completedLesson?.includes(subtopic.slug)
-                                          ? "truncate text-wrap line-through text-gray-400 dark:text-gray-500"
+                                          ? "truncate text-wrap text-gray-400 line-through dark:text-gray-500"
                                           : "",
                                       )}
                                     >
@@ -187,7 +187,7 @@ export default function RenderSubtopics({
                             </div>
                             <div>
                               <Link
-                                href={`/lessons/subtopic/${subtopic.slug}?topic=${lesson.slug}`}
+                                href={`/lessons/subtopic/${subtopic.slug}?topic=${lesson.slug}&isBackEnabled=true`}
                               >
                                 <Button
                                   size="sm"

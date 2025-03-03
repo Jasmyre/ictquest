@@ -215,7 +215,7 @@ export const htmlDocumentStructure: LessonContent = {
         {
           id: 11,
           type: "element",
-          label: ({ setIsFinished }) => {
+          label: ({ setIsFinished, setNumberOfCorrect, setNumberOfInCorrect }) => {
             const choices = {
               options: [
                 { label: "<!DOCTYPE html>\n", priority: 0 },
@@ -237,6 +237,8 @@ export const htmlDocumentStructure: LessonContent = {
 
             return (
               <Practice
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
                 setIsFinishedAction={setIsFinished}
                 choices={choices}
                 shuffledData={shuffledData}
