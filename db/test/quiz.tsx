@@ -6,7 +6,7 @@ import { Practice } from "@/components/Practice";
 import { DifficultyParagraph } from "@/components/DifficultyParagraph";
 import CodeHighlight from "@/components/CodeHighlight";
 
-const reset = false
+const reset = true
 
 export const quiz: LessonContent = {
   title: "HTML and Its History Quiz",
