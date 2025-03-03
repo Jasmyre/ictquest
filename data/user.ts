@@ -70,6 +70,16 @@ export const getAllUserAchievements = async () => {
   }
 };
 
+export interface GetUsersStats {
+  username: string | null;
+  id: string;
+  avatar: string | null;
+  numberOfAchievements: number;
+  numberOfSubtopics: number;
+  level: string;
+  averageProgress: number;
+}
+
 export const getUsersStats = async () => {
   try {
     const users = await db.user.findMany({
@@ -80,7 +90,6 @@ export const getUsersStats = async () => {
         userAchievements: {
           select: { id: true },
         },
-        // note: we added "topic" so we can match lessons by slug
         progressData: {
           select: { subtopics: true, topic: true },
         },
@@ -154,13 +163,11 @@ export const getUserStats = async (userId: string) => {
       },
     });
 
-    // if no user found, log error and return null
     if (!user) {
       console.error("User not found for id:", userId);
       return null;
     }
 
-    // count total number of subtopics from all progressData items
     const totalSubtopicsCount = user.progressData.reduce(
       (total, progressItem) => {
         return total + progressItem.subtopics.length;

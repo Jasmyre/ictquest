@@ -149,7 +149,7 @@ export default function Lesson({
       setIndex((prev) => prev + 1);
     } else if (index === numberOfContent - 1 && isFinished) {
       try {
-        const res = await fetch("/api/progress", {
+        const res = await fetch("/api/public/progress", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ topic, subtopic }),

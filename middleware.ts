@@ -38,7 +38,7 @@ export default auth((req) => {
     return undefined;
   }
 
-  if (nextUrl.pathname.startsWith("/api/progress/")) {
+  if (nextUrl.pathname.startsWith("/api/public")) {
     return undefined;
   }
 

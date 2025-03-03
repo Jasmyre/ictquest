@@ -25,7 +25,7 @@ export function LearningProgressCard() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch("/api/progress");
+        const res = await fetch("/api/public/progress");
         if (!res.ok) {
           console.error("Failed to fetch progress from DB");
           return;

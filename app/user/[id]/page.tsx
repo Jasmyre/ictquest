@@ -78,9 +78,9 @@ export default async function UserProfilePage({
   const baseUrl = process.env.NEXTAUTH_URL;
   console.log(baseUrl);
 
-  const res = await fetch(baseUrl + "/api/progress/" + id);
+  const res = await fetch(baseUrl + "/api/public/progress/" + id);
 
-  console.log(baseUrl + "/api/progress/" + id);
+  console.log(baseUrl + "/api/public/progress/" + id);
   if (!res.ok) {
     const errorText = await res.text();
     console.error("Failed to fetch progress, got:", errorText);

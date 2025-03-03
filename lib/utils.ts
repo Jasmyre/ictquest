@@ -89,3 +89,5 @@ export function countOccurrences<T>(arr: T[]): Record<string, number> {
 
   return counts;
 }
+
+export const baseUrl = process.env.NEXTAUTH_URL;

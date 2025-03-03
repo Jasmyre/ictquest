@@ -24,7 +24,7 @@ export function ProgressCard() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch("/api/progress");
+        const res = await fetch("/api/public/progress");
         if (!res.ok) {
           console.error("Failed to fetch progress from DB");
           return;

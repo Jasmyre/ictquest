@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getUsersStats } from "@/data/user";
+import { GetUsersStats } from "@/data/user";
+import { baseUrl } from "@/lib/utils";
 import {
   Ban,
   Flag,
@@ -23,7 +24,8 @@ import {
 import Link from "next/link";
 
 async function page() {
-  const users = await getUsersStats();
+  const usersResponse = await fetch(`${baseUrl}/api/public/get-users-stats`);
+  const users: GetUsersStats[] = await usersResponse.json();
   console.log(users);
 
   return (
@@ -102,7 +104,7 @@ async function page() {
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <h2 className="duration-200 text-lg font-semibold text-gray-600 transition-colors group-hover:text-gray-800 dark:text-gray-400 dark:group-hover:text-gray-300">
+                            <h2 className="text-lg font-semibold text-gray-600 transition-colors duration-200 group-hover:text-gray-800 dark:text-gray-400 dark:group-hover:text-gray-300">
                               {user.username!}
                             </h2>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
