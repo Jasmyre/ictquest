@@ -1,6 +1,7 @@
 
 import { JSX } from "react";
 
+import { beyondHTML } from "./html_advanced_elements/beyond-html";
 import { htmlAdvancedElements } from "./html_advanced_elements/html-advanced-elements";
 import { htmlForm } from "./html_advanced_elements/html-form";
 import { htmlContainers } from "./html_elements/html-containers";
@@ -9,8 +10,6 @@ import { htmlTypography } from "./html_elements/html-typography";
 import { htmlBriefExample } from "./introduction_to_html/html-brief-example";
 import { htmlDocumentStructure } from "./introduction_to_html/html-document-structure";
 import { htmlIntroduction } from "./introduction_to_html/html-introduction";
-import { beyondHTML } from "./html_advanced_elements/beyond-html";
-import { quiz } from "./test/quiz";
 
 export interface Topic {
   name: string;
@@ -95,18 +94,6 @@ export const lessons: Lesson[] = [
       "beyond-html": beyondHTML,
     },
   },
-
-  {
-    title: "Test Your Expertise",
-    description: "",
-    slug: "test",
-    topics: [
-      {name: "Quiz", slug: "quiz"}
-    ],
-    content: {
-      "quiz": quiz
-    }
-  }
 
   // {
   //   title: "ABCD",
