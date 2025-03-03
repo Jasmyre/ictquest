@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GetUsersStats } from "@/data/user";
-import { baseUrl } from "@/lib/utils";
+import { getUsersStats } from "@/data/user";
+// import { baseUrl } from "@/lib/utils";
 import {
   Ban,
   Flag,
@@ -23,9 +23,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+export const revalidate = 60;
+
 async function page() {
-  const usersResponse = await fetch(`${baseUrl}/api/public/get-users-stats`);
-  const users: GetUsersStats[] = await usersResponse.json();
+  const users = await getUsersStats();
   console.log(users);
 
   return (
