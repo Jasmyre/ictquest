@@ -6,7 +6,7 @@ import { Practice } from "@/components/Practice";
 import { DifficultyParagraph } from "@/components/DifficultyParagraph";
 import CodeHighlight from "@/components/CodeHighlight";
 
-const reset = true
+const reset = false
 
 export const quiz: LessonContent = {
   title: "HTML and Its History Quiz",
@@ -1242,7 +1242,7 @@ export const quiz: LessonContent = {
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
-              title={["What does the image element do?"]}
+              title={["What does the video element do?"]}
               choices={{
                 options: [
                   "To specify multiple media source",

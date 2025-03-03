@@ -34,10 +34,10 @@ export default function RenderTopics() {
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="px-4 py-8 sm:px-0">
               <div className="mb-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                {lessons.map((lesson, index) => (
+                {lessons.filter((lesson) => lesson.slug !== "test").map((lesson, index) => (
                   <Card
                     key={index++}
-                    className="flex flex-col border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+                    className={`flex flex-col border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 `}
                   >
                     <CardHeader className="">
                       <CardTitle className="flex items-center text-lg font-semibold text-gray-900 dark:text-gray-100">

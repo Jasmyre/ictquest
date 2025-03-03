@@ -10,6 +10,7 @@ import { htmlTypography } from "./html_elements/html-typography";
 import { htmlBriefExample } from "./introduction_to_html/html-brief-example";
 import { htmlDocumentStructure } from "./introduction_to_html/html-document-structure";
 import { htmlIntroduction } from "./introduction_to_html/html-introduction";
+import { quiz } from "./test/quiz";
 
 export interface Topic {
   name: string;
@@ -69,13 +70,11 @@ export const lessons: Lesson[] = [
       { name: "HTML Typography", slug: "html-typography" },
       { name: "HTML Containers", slug: "html-containers" },
       { name: "HTML Media Elements", slug: "html-media-elements" },
-      // { name: "Inputs and Attributes", slug: "inputs-and-attributes" },
     ],
     content: {
       "html-typography": htmlTypography,
       "html-containers": htmlContainers,
       "html-media-elements": htmlMediaElements,
-      // "inputs-and-attributes": inputsAndAttributes,
     },
   },
 
@@ -95,19 +94,15 @@ export const lessons: Lesson[] = [
     },
   },
 
-  // {
-  //   title: "ABCD",
-  //   description: "XY and Z",
-  //   slug: "abcd",
-  //   topics: [
-  //     { name: "Introduction To Html", slug: "intro-to-html" },
-  //     { name: "HTML Document Structure9", slug: "html-document-structure9" },
-  //   ],
-  //   content: {
-  //     "intro-to-html": introToHTML,
-  //     "html-document-structure9": htmlDocumentStructure9,
-  //   },
-  // },
+  {
+    title: "Test Your Expertise",
+    description: "",
+    slug: "test",
+    topics: [{ name: "Quiz", slug: "quiz" }],
+    content: {
+      quiz: quiz,
+    },
+  },
 
   // {
   //   title: "HTML Introduction2",
