@@ -1,9 +1,6 @@
 import Browser from "@/components/Browser";
 import CodeBlock from "@/components/Code";
 import CodeHighlight from "@/components/CodeHighlight";
-import { DifficultyParagraph } from "@/components/DifficultyParagraph";
-import { Practice } from "@/components/Practice";
-import { shuffle } from "@/lib/utils";
 import { LessonContent } from "../lessons";
 
 export const htmlDocumentStructure: LessonContent = {
@@ -199,61 +196,61 @@ export const htmlDocumentStructure: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 10,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="Hard" color="red">
-              Now, let&apos;s practice by assembling the basic HTML document
-              structure. Arrange the elements in the correct order!
-            </DifficultyParagraph>
-          ),
-        },
-        {
-          id: 11,
-          type: "element",
-          label: ({ setIsFinished, setNumberOfCorrect, setNumberOfInCorrect }) => {
-            const choices = {
-              options: [
-                { label: "<!DOCTYPE html>\n", priority: 0 },
-                { label: "<html>\n", priority: 1 },
-                { label: "  <head>\n", priority: 2 },
-                { label: "    <title>My Page</title>\n", priority: 3 },
-                { label: "  </head>\n", priority: 4 },
-                { label: "  <body>\n", priority: 5 },
-                { label: "    <h1>Hello World</h1>\n", priority: 6 },
-                { label: "    <p>This is my page.</p>\n", priority: 7 },
-                { label: "  </body>\n", priority: 8 },
-                { label: "</html>", priority: 9 },
-              ],
-              answer: `<!DOCTYPE html>\n<html>\n  <head>\n    <title>My Page</title>\n  </head>\n  <body>\n    <h1>Hello World</h1>\n    <p>This is my page.</p>\n  </body>\n</html>`,
-              initialCode: ["", ""],
-            };
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 10,
+    //       type: "element",
+    //       label: (
+    //         <DifficultyParagraph difficulty="Hard" color="red">
+    //           Now, let&apos;s practice by assembling the basic HTML document
+    //           structure. Arrange the elements in the correct order!
+    //         </DifficultyParagraph>
+    //       ),
+    //     },
+    //     {
+    //       id: 11,
+    //       type: "element",
+    //       label: ({ setIsFinished, setNumberOfCorrect, setNumberOfInCorrect }) => {
+    //         const choices = {
+    //           options: [
+    //             { label: "<!DOCTYPE html>\n", priority: 0 },
+    //             { label: "<html>\n", priority: 1 },
+    //             { label: "  <head>\n", priority: 2 },
+    //             { label: "    <title>My Page</title>\n", priority: 3 },
+    //             { label: "  </head>\n", priority: 4 },
+    //             { label: "  <body>\n", priority: 5 },
+    //             { label: "    <h1>Hello World</h1>\n", priority: 6 },
+    //             { label: "    <p>This is my page.</p>\n", priority: 7 },
+    //             { label: "  </body>\n", priority: 8 },
+    //             { label: "</html>", priority: 9 },
+    //           ],
+    //           answer: `<!DOCTYPE html>\n<html>\n  <head>\n    <title>My Page</title>\n  </head>\n  <body>\n    <h1>Hello World</h1>\n    <p>This is my page.</p>\n  </body>\n</html>`,
+    //           initialCode: ["", ""],
+    //         };
 
-            const shuffledData = shuffle(choices.options);
+    //         const shuffledData = shuffle(choices.options);
 
-            return (
-              <Practice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the HTML elements in the correct order"]}
-                initialCode={choices.initialCode}
-                response={{
-                  positive: "Awesome! You got it right!",
-                  negative: "Hmm, that's not quite right. Try again!",
-                }}
-              />
-            );
-          },
-        },
-      ],
-    },
+    //         return (
+    //           <Practice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //             setIsFinishedAction={setIsFinished}
+    //             choices={choices}
+    //             shuffledData={shuffledData}
+    //             title={["Arrange the HTML elements in the correct order"]}
+    //             initialCode={choices.initialCode}
+    //             response={{
+    //               positive: "Awesome! You got it right!",
+    //               negative: "Hmm, that's not quite right. Try again!",
+    //             }}
+    //           />
+    //         );
+    //       },
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
