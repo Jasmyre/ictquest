@@ -124,7 +124,7 @@ export default function RenderTopics({user}: {user:{
 
               <Separator />
 
-                  {user.averageProgress >= 75 ? (<div className="mt-16">
+                  {user.averageProgress >= 0 ? (<div className="mt-16">
                   <div className="mb-12">
                     <div className="mb-4 flex items-center gap-3">
                       <Globe className="h-12 w-12 text-indigo-600 dark:text-indigo-400" />
