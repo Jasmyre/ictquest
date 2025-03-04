@@ -227,7 +227,7 @@ export default function RenderSubtopics({
                             </div>
                             <div>
                               <Link
-                                href={`/lessons/subtopic/${subtopic.slug}?topic=${lesson.slug}`}
+                                href={`/lessons/subtopic/${subtopic.slug}?topic=${lesson.slug}&isBackEnabled=true`}
                               >
                                 <Button
                                   size="sm"

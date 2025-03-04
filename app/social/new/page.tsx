@@ -98,8 +98,8 @@ async function page() {
                               alt={user.username!}
                             />
                             <AvatarFallback className="bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
-                              {user
-                                .username!.split(" ")
+                              {String(user
+                                .username!).split(" ")
                                 .map((n) => n[0])
                                 .join("")}
                             </AvatarFallback>

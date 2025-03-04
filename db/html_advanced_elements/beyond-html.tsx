@@ -1,8 +1,5 @@
 import Browser from "@/components/Browser";
 import CodeBlock from "@/components/Code";
-import { DifficultyParagraph } from "@/components/DifficultyParagraph";
-import { Practice } from "@/components/Practice";
-import { shuffle } from "@/lib/utils";
 import { LessonContent } from "../lessons";
 
 export const beyondHTML: LessonContent = {
@@ -189,136 +186,136 @@ export const beyondHTML: LessonContent = {
       ],
     },
     // Practice: CSS
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 7,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="medium" color="orange">
-              Test: Arrange the HTML+CSS code correctly.
-            </DifficultyParagraph>
-          ),
-        },
-        {
-          id: 8,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => {
-            const choices = {
-              options: [
-                { label: `<html>\n`, priority: 0 },
-                { label: `  <head>\n`, priority: 1 },
-                { label: `    <style>\n`, priority: 2 },
-                {
-                  label: `      body { background-color: #f0f0f0; }\n`,
-                  priority: 3,
-                },
-                { label: `    </style>\n`, priority: 4 },
-                { label: `  </head>\n`, priority: 5 },
-                { label: `  <body>\n`, priority: 6 },
-                { label: `    <h1>Styled Heading</h1>\n`, priority: 7 },
-                {
-                  label: `    <p>This is a paragraph styled with CSS.</p>\n`,
-                  priority: 8,
-                },
-                { label: `  </body>\n`, priority: 9 },
-                { label: `</html>`, priority: 10 },
-              ],
-              answer: `<html>\n  <head>\n    <style>\n      body { background-color: #f0f0f0; }\n    </style>\n  </head>\n  <body>\n    <h1>Styled Heading</h1>\n    <p>This is a paragraph styled with CSS.</p>\n  </body>\n</html>`,
-              initialCode: ["", ""],
-            };
-            const shuffledData = shuffle(choices.options);
-            return (
-              <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the HTML+CSS code correctly"]}
-                initialCode={choices.initialCode}
-                response={{
-                  positive: "Great job!",
-                  negative: "That’s not quite right. Try again!",
-                }}
-              />
-            );
-          },
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 7,
+    //       type: "element",
+    //       label: (
+    //         <DifficultyParagraph difficulty="medium" color="orange">
+    //           Test: Arrange the HTML+CSS code correctly.
+    //         </DifficultyParagraph>
+    //       ),
+    //     },
+    //     {
+    //       id: 8,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => {
+    //         const choices = {
+    //           options: [
+    //             { label: `<html>\n`, priority: 0 },
+    //             { label: `  <head>\n`, priority: 1 },
+    //             { label: `    <style>\n`, priority: 2 },
+    //             {
+    //               label: `      body { background-color: #f0f0f0; }\n`,
+    //               priority: 3,
+    //             },
+    //             { label: `    </style>\n`, priority: 4 },
+    //             { label: `  </head>\n`, priority: 5 },
+    //             { label: `  <body>\n`, priority: 6 },
+    //             { label: `    <h1>Styled Heading</h1>\n`, priority: 7 },
+    //             {
+    //               label: `    <p>This is a paragraph styled with CSS.</p>\n`,
+    //               priority: 8,
+    //             },
+    //             { label: `  </body>\n`, priority: 9 },
+    //             { label: `</html>`, priority: 10 },
+    //           ],
+    //           answer: `<html>\n  <head>\n    <style>\n      body { background-color: #f0f0f0; }\n    </style>\n  </head>\n  <body>\n    <h1>Styled Heading</h1>\n    <p>This is a paragraph styled with CSS.</p>\n  </body>\n</html>`,
+    //           initialCode: ["", ""],
+    //         };
+    //         const shuffledData = shuffle(choices.options);
+    //         return (
+    //           <Practice
+    //             setNumberOfCorrectAction={setNumberOfCorrect}
+    //             setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //             setIsFinishedAction={setIsFinished}
+    //             choices={choices}
+    //             shuffledData={shuffledData}
+    //             title={["Arrange the HTML+CSS code correctly"]}
+    //             initialCode={choices.initialCode}
+    //             response={{
+    //               positive: "Great job!",
+    //               negative: "That’s not quite right. Try again!",
+    //             }}
+    //           />
+    //         );
+    //       },
+    //     },
+    //   ],
+    // },
     // Practice: JavaScript
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 9,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="medium" color="orange">
-              Test: Arrange the HTML+JavaScript code correctly.
-            </DifficultyParagraph>
-          ),
-        },
-        {
-          id: 10,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => {
-            const choices = {
-              options: [
-                { label: `<html>\n`, priority: 0 },
-                { label: `  <body>\n`, priority: 1 },
-                {
-                  label: `    <h1 id="title">Hello, world!</h1>\n`,
-                  priority: 2,
-                },
-                {
-                  label: `    <button onclick="changeText()">Click Me!</button>\n`,
-                  priority: 3,
-                },
-                { label: `    <script>\n`, priority: 4 },
-                { label: `      function changeText() {\n`, priority: 5 },
-                {
-                  label: `        document.getElementById("title").innerText = "You clicked the button!";\n`,
-                  priority: 6,
-                },
-                { label: `      }\n`, priority: 7 },
-                { label: `    </script>\n`, priority: 8 },
-                { label: `  </body>\n`, priority: 9 },
-                { label: `</html>`, priority: 10 },
-              ],
-              answer: `<html>\n  <body>\n    <h1 id="title">Hello, world!</h1>\n    <button onclick="changeText()">Click Me!</button>\n    <script>\n      function changeText() {\n        document.getElementById("title").innerText = "You clicked the button!";\n      }\n    </script>\n  </body>\n</html>`,
-              initialCode: ["", ""],
-            };
-            const shuffledData = shuffle(choices.options);
-            return (
-              <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the HTML+JavaScript code correctly"]}
-                initialCode={choices.initialCode}
-                response={{
-                  positive: "Great job!",
-                  negative: "That’s not quite right. Try again!",
-                }}
-              />
-            );
-          },
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 9,
+    //       type: "element",
+    //       label: (
+    //         <DifficultyParagraph difficulty="medium" color="orange">
+    //           Test: Arrange the HTML+JavaScript code correctly.
+    //         </DifficultyParagraph>
+    //       ),
+    //     },
+    //     {
+    //       id: 10,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => {
+    //         const choices = {
+    //           options: [
+    //             { label: `<html>\n`, priority: 0 },
+    //             { label: `  <body>\n`, priority: 1 },
+    //             {
+    //               label: `    <h1 id="title">Hello, world!</h1>\n`,
+    //               priority: 2,
+    //             },
+    //             {
+    //               label: `    <button onclick="changeText()">Click Me!</button>\n`,
+    //               priority: 3,
+    //             },
+    //             { label: `    <script>\n`, priority: 4 },
+    //             { label: `      function changeText() {\n`, priority: 5 },
+    //             {
+    //               label: `        document.getElementById("title").innerText = "You clicked the button!";\n`,
+    //               priority: 6,
+    //             },
+    //             { label: `      }\n`, priority: 7 },
+    //             { label: `    </script>\n`, priority: 8 },
+    //             { label: `  </body>\n`, priority: 9 },
+    //             { label: `</html>`, priority: 10 },
+    //           ],
+    //           answer: `<html>\n  <body>\n    <h1 id="title">Hello, world!</h1>\n    <button onclick="changeText()">Click Me!</button>\n    <script>\n      function changeText() {\n        document.getElementById("title").innerText = "You clicked the button!";\n      }\n    </script>\n  </body>\n</html>`,
+    //           initialCode: ["", ""],
+    //         };
+    //         const shuffledData = shuffle(choices.options);
+    //         return (
+    //           <Practice
+    //             setNumberOfCorrectAction={setNumberOfCorrect}
+    //             setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //             setIsFinishedAction={setIsFinished}
+    //             choices={choices}
+    //             shuffledData={shuffledData}
+    //             title={["Arrange the HTML+JavaScript code correctly"]}
+    //             initialCode={choices.initialCode}
+    //             response={{
+    //               positive: "Great job!",
+    //               negative: "That’s not quite right. Try again!",
+    //             }}
+    //           />
+    //         );
+    //       },
+    //     },
+    //   ],
+    // },
     // Conclusion
     {
       submit: { label: "Continue" },
