@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 import { getUserStats } from "@/data/user";
 import { NextResponse } from "next/server";
-import { getuid } from "process";
 
 const getUserId = async (): Promise<string | null> => {
   const session = await auth();

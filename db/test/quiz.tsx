@@ -1744,5 +1744,17 @@ export const quiz: LessonContent = {
         },
       ],
     },
+
+    {
+      submit: { label: "Continue" },
+      content: [
+        {
+          id: 0,
+          type: "text",
+          label: "Let's see your score!",
+        },
+      ],
+    },
   ],
+  
 };

@@ -19,15 +19,7 @@ import Link from "next/link";
 //   { name: "Forms Expert Quiz", description: "Prove your HTML forms expertise" },
 // ];
 
-export default function RenderTopics({ user }: {user: {
-  username: string | null;
-  id: string;
-  avatar: string | null;
-  numberOfAchievements: number;
-  numberOfSubtopics: number;
-  level: string;
-  averageProgress: number;
-}}) {
+export default function RenderTopics() {
   return (
     <main>
       <div className="min-h-[80vh] py-10">
