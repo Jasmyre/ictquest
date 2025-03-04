@@ -1,9 +1,6 @@
 import Browser from "@/components/Browser";
 import CodeBlock from "@/components/Code";
 import CodeHighlight from "@/components/CodeHighlight";
-import { DifficultyParagraph } from "@/components/DifficultyParagraph";
-import { Practice } from "@/components/Practice";
-import { shuffle } from "@/lib/utils";
 import { LessonContent } from "../lessons";
 
 export const htmlContainers: LessonContent = {
@@ -182,114 +179,114 @@ export const htmlContainers: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 5,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="hard" color="red">
-              Quick test: Arrange the code for the first group correctly.
-            </DifficultyParagraph>
-          ),
-        },
-        {
-          id: 6,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => {
-            const choices = {
-              options: [
-                { label: `<div>\n`, priority: 0 },
-                { label: `  <h1>My First Title</h1>\n`, priority: 1 },
-                { label: `  <h2>My first sub title</h2>\n`, priority: 1 },
-                { label: `  <p>My first paragraph.</p>\n`, priority: 1 },
-                { label: `</div>`, priority: 2 },
-              ],
-              answer: `<div>\n  <h1>My First Title</h1>\n  <h2>My first sub title</h2>\n  <p>My first paragraph.</p>\n</div>`,
-              initialCode: ["", ""],
-            };
-            const shuffledData = shuffle(choices.options);
-            return (
-              <Practice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
-                shuffledData={shuffledData}
-                title={["Can you arrange the code for the first group?"]}
-                initialCode={choices.initialCode}
-                response={{
-                  positive: "Great job!",
-                  negative: "That’s not quite right. Try again!",
-                }}
-              />
-            );
-          },
-        },
-      ],
-    },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 5,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="hard" color="red">
-              Another test: Arrange the code for the second group correctly.
-            </DifficultyParagraph>
-          ),
-        },
-        {
-          id: 7,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => {
-            const choices = {
-              options: [
-                { label: `<div>\n`, priority: 0 },
-                { label: `  <h1>My Second Title</h1>\n`, priority: 1 },
-                {
-                  label: `  <h2>My second sub title</h2>\n`,
-                  priority: 2,
-                },
-                { label: `  <p>My second paragraph.</p>\n`, priority: 3 },
-                { label: `</div>`, priority: 4 },
-              ],
-              answer: `<div>\n  <h1>My Second Title</h1>\n  <h2>My second sub title</h2>\n  <p>My second paragraph.</p>\n</div>`,
-              initialCode: [
-                `<div>\n  <h1>My First Title</h1>\n  <h2>My first sub title</h2>\n  <p>My first paragraph.</p>\n</div>\n\n<br/>\n\n`,
-                "",
-              ],
-            };
-            const shuffledData = shuffle(choices.options);
-            return (
-              <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
-                shuffledData={shuffledData}
-                title={["Can you arrange the code for the second group?"]}
-                initialCode={choices.initialCode}
-                response={{
-                  positive: "Great job!",
-                  negative: "That’s not quite right. Try again!",
-                }}
-              />
-            );
-          },
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 5,
+    //       type: "element",
+    //       label: (
+    //         <DifficultyParagraph difficulty="hard" color="red">
+    //           Quick test: Arrange the code for the first group correctly.
+    //         </DifficultyParagraph>
+    //       ),
+    //     },
+    //     {
+    //       id: 6,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => {
+    //         const choices = {
+    //           options: [
+    //             { label: `<div>\n`, priority: 0 },
+    //             { label: `  <h1>My First Title</h1>\n`, priority: 1 },
+    //             { label: `  <h2>My first sub title</h2>\n`, priority: 1 },
+    //             { label: `  <p>My first paragraph.</p>\n`, priority: 1 },
+    //             { label: `</div>`, priority: 2 },
+    //           ],
+    //           answer: `<div>\n  <h1>My First Title</h1>\n  <h2>My first sub title</h2>\n  <p>My first paragraph.</p>\n</div>`,
+    //           initialCode: ["", ""],
+    //         };
+    //         const shuffledData = shuffle(choices.options);
+    //         return (
+    //           <Practice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //             setIsFinishedAction={setIsFinished}
+    //             choices={choices}
+    //             shuffledData={shuffledData}
+    //             title={["Can you arrange the code for the first group?"]}
+    //             initialCode={choices.initialCode}
+    //             response={{
+    //               positive: "Great job!",
+    //               negative: "That’s not quite right. Try again!",
+    //             }}
+    //           />
+    //         );
+    //       },
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 5,
+    //       type: "element",
+    //       label: (
+    //         <DifficultyParagraph difficulty="hard" color="red">
+    //           Another test: Arrange the code for the second group correctly.
+    //         </DifficultyParagraph>
+    //       ),
+    //     },
+    //     {
+    //       id: 7,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => {
+    //         const choices = {
+    //           options: [
+    //             { label: `<div>\n`, priority: 0 },
+    //             { label: `  <h1>My Second Title</h1>\n`, priority: 1 },
+    //             {
+    //               label: `  <h2>My second sub title</h2>\n`,
+    //               priority: 2,
+    //             },
+    //             { label: `  <p>My second paragraph.</p>\n`, priority: 3 },
+    //             { label: `</div>`, priority: 4 },
+    //           ],
+    //           answer: `<div>\n  <h1>My Second Title</h1>\n  <h2>My second sub title</h2>\n  <p>My second paragraph.</p>\n</div>`,
+    //           initialCode: [
+    //             `<div>\n  <h1>My First Title</h1>\n  <h2>My first sub title</h2>\n  <p>My first paragraph.</p>\n</div>\n\n<br/>\n\n`,
+    //             "",
+    //           ],
+    //         };
+    //         const shuffledData = shuffle(choices.options);
+    //         return (
+    //           <Practice
+    //             setNumberOfCorrectAction={setNumberOfCorrect}
+    //             setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //             setIsFinishedAction={setIsFinished}
+    //             choices={choices}
+    //             shuffledData={shuffledData}
+    //             title={["Can you arrange the code for the second group?"]}
+    //             initialCode={choices.initialCode}
+    //             response={{
+    //               positive: "Great job!",
+    //               negative: "That’s not quite right. Try again!",
+    //             }}
+    //           />
+    //         );
+    //       },
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
@@ -342,66 +339,66 @@ export const htmlContainers: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 11,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="very hard" color="red">
-              Quick test: Arrange the grouped sections correctly.
-            </DifficultyParagraph>
-          ),
-        },
-        {
-          id: 12,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => {
-            const choices = {
-              options: [
-                { label: `<div>\n`, priority: 0 },
-                { label: `  <h1>Group One Title</h1>\n`, priority: 1 },
-                {
-                  label: `  <p>Content for group one.</p>\n`,
-                  priority: 2,
-                },
-                { label: `</div>\n`, priority: 3 },
-                { label: `<div>\n`, priority: 4 },
-                { label: `  <h1>Group Two Title</h1>\n`, priority: 5 },
-                {
-                  label: `  <p>Content for group two.</p>\n`,
-                  priority: 6,
-                },
-                { label: `</div>\n`, priority: 7 },
-              ],
-              answer: `<div>\n  <h1>Group One Title</h1>\n  <p>Content for group one.</p>\n</div>\n<div>\n  <h1>Group Two Title</h1>\n  <p>Content for group two.</p>\n</div>\n`,
-              initialCode: ["", ""],
-            };
-            const shuffledData = shuffle(choices.options);
-            return (
-              <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the grouped sections correctly"]}
-                initialCode={choices.initialCode}
-                response={{
-                  positive: "Great job!",
-                  negative: "That’s not quite right. Try again!",
-                }}
-              />
-            );
-          },
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 11,
+    //       type: "element",
+    //       label: (
+    //         <DifficultyParagraph difficulty="very hard" color="red">
+    //           Quick test: Arrange the grouped sections correctly.
+    //         </DifficultyParagraph>
+    //       ),
+    //     },
+    //     {
+    //       id: 12,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => {
+    //         const choices = {
+    //           options: [
+    //             { label: `<div>\n`, priority: 0 },
+    //             { label: `  <h1>Group One Title</h1>\n`, priority: 1 },
+    //             {
+    //               label: `  <p>Content for group one.</p>\n`,
+    //               priority: 2,
+    //             },
+    //             { label: `</div>\n`, priority: 3 },
+    //             { label: `<div>\n`, priority: 4 },
+    //             { label: `  <h1>Group Two Title</h1>\n`, priority: 5 },
+    //             {
+    //               label: `  <p>Content for group two.</p>\n`,
+    //               priority: 6,
+    //             },
+    //             { label: `</div>\n`, priority: 7 },
+    //           ],
+    //           answer: `<div>\n  <h1>Group One Title</h1>\n  <p>Content for group one.</p>\n</div>\n<div>\n  <h1>Group Two Title</h1>\n  <p>Content for group two.</p>\n</div>\n`,
+    //           initialCode: ["", ""],
+    //         };
+    //         const shuffledData = shuffle(choices.options);
+    //         return (
+    //           <Practice
+    //             setNumberOfCorrectAction={setNumberOfCorrect}
+    //             setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //             setIsFinishedAction={setIsFinished}
+    //             choices={choices}
+    //             shuffledData={shuffledData}
+    //             title={["Arrange the grouped sections correctly"]}
+    //             initialCode={choices.initialCode}
+    //             response={{
+    //               positive: "Great job!",
+    //               negative: "That’s not quite right. Try again!",
+    //             }}
+    //           />
+    //         );
+    //       },
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
@@ -473,59 +470,59 @@ export const htmlContainers: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 16,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="super easy" color="green">
-              Test: Arrange the image container code correctly.
-            </DifficultyParagraph>
-          ),
-        },
-        {
-          id: 17,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => {
-            const choices = {
-              options: [
-                { label: `<div>\n`, priority: 0 },
-                {
-                  label: `  <img src="/img.png" alt="A sample image" />\n`,
-                  priority: 1,
-                },
-                { label: `  <p>Image Caption</p>\n`, priority: 2 },
-                { label: `</div>`, priority: 3 },
-              ],
-              answer: `<div>\n  <img src="/img.png" alt="A sample image" />\n  <p>Image Caption</p>\n</div>`,
-              initialCode: ["", ""],
-            };
-            const shuffledData = shuffle(choices.options);
-            return (
-              <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the image container in the correct order"]}
-                initialCode={choices.initialCode}
-                response={{
-                  positive: "Great job!",
-                  negative: "That’s not quite right. Try again!",
-                }}
-              />
-            );
-          },
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 16,
+    //       type: "element",
+    //       label: (
+    //         <DifficultyParagraph difficulty="super easy" color="green">
+    //           Test: Arrange the image container code correctly.
+    //         </DifficultyParagraph>
+    //       ),
+    //     },
+    //     {
+    //       id: 17,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => {
+    //         const choices = {
+    //           options: [
+    //             { label: `<div>\n`, priority: 0 },
+    //             {
+    //               label: `  <img src="/img.png" alt="A sample image" />\n`,
+    //               priority: 1,
+    //             },
+    //             { label: `  <p>Image Caption</p>\n`, priority: 2 },
+    //             { label: `</div>`, priority: 3 },
+    //           ],
+    //           answer: `<div>\n  <img src="/img.png" alt="A sample image" />\n  <p>Image Caption</p>\n</div>`,
+    //           initialCode: ["", ""],
+    //         };
+    //         const shuffledData = shuffle(choices.options);
+    //         return (
+    //           <Practice
+    //             setNumberOfCorrectAction={setNumberOfCorrect}
+    //             setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //             setIsFinishedAction={setIsFinished}
+    //             choices={choices}
+    //             shuffledData={shuffledData}
+    //             title={["Arrange the image container in the correct order"]}
+    //             initialCode={choices.initialCode}
+    //             response={{
+    //               positive: "Great job!",
+    //               negative: "That’s not quite right. Try again!",
+    //             }}
+    //           />
+    //         );
+    //       },
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
@@ -634,69 +631,69 @@ export const htmlContainers: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 21,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="very hard" color="red">
-              Test: Arrange the nested page layout code correctly.
-            </DifficultyParagraph>
-          ),
-        },
-        {
-          id: 22,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => {
-            const choices = {
-              options: [
-                { label: `<div class="page">\n`, priority: 0 },
-                { label: `  <div class="header">\n`, priority: 1 },
-                { label: `    <h1>Site Title</h1>\n`, priority: 2 },
-                { label: `  </div>\n`, priority: 3 },
-                { label: `  <div class="main">\n`, priority: 4 },
-                {
-                  label: `    <p>Main content goes here.</p>\n`,
-                  priority: 5,
-                },
-                { label: `  </div>\n`, priority: 6 },
-                { label: `  <div class="footer">\n`, priority: 7 },
-                {
-                  label: `    <p>Footer information.</p>\n`,
-                  priority: 8,
-                },
-                { label: `  </div>\n`, priority: 9 },
-                { label: `</div>`, priority: 10 },
-              ],
-              answer: `<div class="page">\n  <div class="header">\n    <h1>Site Title</h1>\n  </div>\n  <div class="main">\n    <p>Main content goes here.</p>\n  </div>\n  <div class="footer">\n    <p>Footer information.</p>\n  </div>\n</div>`,
-              initialCode: ["", ""],
-            };
-            const shuffledData = shuffle(choices.options);
-            return (
-              <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the nested page layout code correctly"]}
-                initialCode={choices.initialCode}
-                response={{
-                  positive: "Great job!",
-                  negative: "That’s not quite right. Try again!",
-                }}
-              />
-            );
-          },
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 21,
+    //       type: "element",
+    //       label: (
+    //         <DifficultyParagraph difficulty="very hard" color="red">
+    //           Test: Arrange the nested page layout code correctly.
+    //         </DifficultyParagraph>
+    //       ),
+    //     },
+    //     {
+    //       id: 22,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => {
+    //         const choices = {
+    //           options: [
+    //             { label: `<div class="page">\n`, priority: 0 },
+    //             { label: `  <div class="header">\n`, priority: 1 },
+    //             { label: `    <h1>Site Title</h1>\n`, priority: 2 },
+    //             { label: `  </div>\n`, priority: 3 },
+    //             { label: `  <div class="main">\n`, priority: 4 },
+    //             {
+    //               label: `    <p>Main content goes here.</p>\n`,
+    //               priority: 5,
+    //             },
+    //             { label: `  </div>\n`, priority: 6 },
+    //             { label: `  <div class="footer">\n`, priority: 7 },
+    //             {
+    //               label: `    <p>Footer information.</p>\n`,
+    //               priority: 8,
+    //             },
+    //             { label: `  </div>\n`, priority: 9 },
+    //             { label: `</div>`, priority: 10 },
+    //           ],
+    //           answer: `<div class="page">\n  <div class="header">\n    <h1>Site Title</h1>\n  </div>\n  <div class="main">\n    <p>Main content goes here.</p>\n  </div>\n  <div class="footer">\n    <p>Footer information.</p>\n  </div>\n</div>`,
+    //           initialCode: ["", ""],
+    //         };
+    //         const shuffledData = shuffle(choices.options);
+    //         return (
+    //           <Practice
+    //             setNumberOfCorrectAction={setNumberOfCorrect}
+    //             setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //             setIsFinishedAction={setIsFinished}
+    //             choices={choices}
+    //             shuffledData={shuffledData}
+    //             title={["Arrange the nested page layout code correctly"]}
+    //             initialCode={choices.initialCode}
+    //             response={{
+    //               positive: "Great job!",
+    //               negative: "That’s not quite right. Try again!",
+    //             }}
+    //           />
+    //         );
+    //       },
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
@@ -764,73 +761,73 @@ export const htmlContainers: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 32,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="very hard" color="red">
-              Advanced test: Arrange the complete grouped layout code including
-              a header, sidebar, main content, and footer.
-            </DifficultyParagraph>
-          ),
-        },
-        {
-          id: 33,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => {
-            const choices = {
-              options: [
-                { label: `<div class="page">\n`, priority: 0 },
-                { label: `  <div class="header">\n`, priority: 1 },
-                { label: `    <h1>Site Title</h1>\n`, priority: 2 },
-                { label: `  </div>\n`, priority: 3 },
-                { label: `  <div class="sidebar">\n`, priority: 4 },
-                { label: `    <p>Sidebar content.</p>\n`, priority: 5 },
-                { label: `  </div>\n`, priority: 6 },
-                { label: `  <div class="main">\n`, priority: 7 },
-                {
-                  label: `    <p>Main content goes here.</p>\n`,
-                  priority: 8,
-                },
-                { label: `  </div>\n`, priority: 9 },
-                { label: `  <div class="footer">\n`, priority: 10 },
-                {
-                  label: `    <p>Footer information.</p>\n`,
-                  priority: 11,
-                },
-                { label: `  </div>\n`, priority: 12 },
-                { label: `</div>`, priority: 13 },
-              ],
-              answer: `<div class="page">\n  <div class="header">\n    <h1>Site Title</h1>\n  </div>\n  <div class="sidebar">\n    <p>Sidebar content.</p>\n  </div>\n  <div class="main">\n    <p>Main content goes here.</p>\n  </div>\n  <div class="footer">\n    <p>Footer information.</p>\n  </div>\n</div>`,
-              initialCode: ["", ""],
-            };
-            const shuffledData = shuffle(choices.options);
-            return (
-              <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the complete grouped layout code correctly"]}
-                initialCode={choices.initialCode}
-                response={{
-                  positive: "Excellent work!",
-                  negative: "That’s not quite right. Try again!",
-                }}
-              />
-            );
-          },
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 32,
+    //       type: "element",
+    //       label: (
+    //         <DifficultyParagraph difficulty="very hard" color="red">
+    //           Advanced test: Arrange the complete grouped layout code including
+    //           a header, sidebar, main content, and footer.
+    //         </DifficultyParagraph>
+    //       ),
+    //     },
+    //     {
+    //       id: 33,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => {
+    //         const choices = {
+    //           options: [
+    //             { label: `<div class="page">\n`, priority: 0 },
+    //             { label: `  <div class="header">\n`, priority: 1 },
+    //             { label: `    <h1>Site Title</h1>\n`, priority: 2 },
+    //             { label: `  </div>\n`, priority: 3 },
+    //             { label: `  <div class="sidebar">\n`, priority: 4 },
+    //             { label: `    <p>Sidebar content.</p>\n`, priority: 5 },
+    //             { label: `  </div>\n`, priority: 6 },
+    //             { label: `  <div class="main">\n`, priority: 7 },
+    //             {
+    //               label: `    <p>Main content goes here.</p>\n`,
+    //               priority: 8,
+    //             },
+    //             { label: `  </div>\n`, priority: 9 },
+    //             { label: `  <div class="footer">\n`, priority: 10 },
+    //             {
+    //               label: `    <p>Footer information.</p>\n`,
+    //               priority: 11,
+    //             },
+    //             { label: `  </div>\n`, priority: 12 },
+    //             { label: `</div>`, priority: 13 },
+    //           ],
+    //           answer: `<div class="page">\n  <div class="header">\n    <h1>Site Title</h1>\n  </div>\n  <div class="sidebar">\n    <p>Sidebar content.</p>\n  </div>\n  <div class="main">\n    <p>Main content goes here.</p>\n  </div>\n  <div class="footer">\n    <p>Footer information.</p>\n  </div>\n</div>`,
+    //           initialCode: ["", ""],
+    //         };
+    //         const shuffledData = shuffle(choices.options);
+    //         return (
+    //           <Practice
+    //             setNumberOfCorrectAction={setNumberOfCorrect}
+    //             setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //             setIsFinishedAction={setIsFinished}
+    //             choices={choices}
+    //             shuffledData={shuffledData}
+    //             title={["Arrange the complete grouped layout code correctly"]}
+    //             initialCode={choices.initialCode}
+    //             response={{
+    //               positive: "Excellent work!",
+    //               negative: "That’s not quite right. Try again!",
+    //             }}
+    //           />
+    //         );
+    //       },
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
