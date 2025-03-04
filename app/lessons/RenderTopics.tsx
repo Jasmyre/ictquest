@@ -19,7 +19,15 @@ import Link from "next/link";
 //   { name: "Forms Expert Quiz", description: "Prove your HTML forms expertise" },
 // ];
 
-export default function RenderTopics() {
+export default function RenderTopics({user}: {user:{
+  username: string | null;
+  id: string;
+  avatar: string | null;
+  numberOfAchievements: number;
+  numberOfSubtopics: number;
+  level: string;
+  averageProgress: number;
+}}) {
   return (
     <main>
       <div className="min-h-[80vh] py-10">
@@ -116,8 +124,7 @@ export default function RenderTopics() {
 
               <Separator />
 
-              
-                <div className="mt-16">
+                  {user.averageProgress >= 75 ? (<div className="mt-16">
                   <div className="mb-12">
                     <div className="mb-4 flex items-center gap-3">
                       <Globe className="h-12 w-12 text-indigo-600 dark:text-indigo-400" />
@@ -288,10 +295,7 @@ export default function RenderTopics() {
                       </div>
                     </CardContent>
                   </Card>
-                </div>
-              
-
-              
+                </div>) : null}
             </div>
           </div>
         </main>
