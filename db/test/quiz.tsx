@@ -3,7 +3,6 @@ import { MultipleChoice
 import { LessonContent } from "../lessons";
 import { shuffle } from "@/lib/utils";
 import { Practice } from "@/components/Practice";
-import CodeHighlight from "@/components/CodeHighlight";
 
 const reset = false
 
@@ -1741,17 +1740,6 @@ export const quiz: LessonContent = {
               }}
             />
           ),
-        },
-      ],
-    },
-
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 0,
-          type: "text",
-          label: "Let's see your score!",
         },
       ],
     },
