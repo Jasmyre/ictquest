@@ -84,18 +84,20 @@ export const MultipleChoice = ({
     setChoice(label);
     setDisabledButtons(choices.options.filter((option) => option !== label));
 
-    if (label === choices.answer) {
-      console.log("Correct answer!");
-      setNumberOfCorrectAction((prev) => prev + 1);
-      setIsFinishedAction(true);
-    } else {
-      setNumberOfInCorrectAction((prev) => prev + 1);
-      if (!isResetEnabled) {
-        setIsFinishedAction(true);
-      } else {
-        setIsFinishedAction(false);
-      }
-    }
+    // if (label === choices.answer) {
+    //   console.log("Correct answer!");
+    //   setNumberOfCorrectAction((prev) => prev + 1);
+    //   setIsFinishedAction(true);
+    // } else {
+    //   setNumberOfInCorrectAction((prev) => prev + 1);
+    //   if (!isResetEnabled) {
+    //     setIsFinishedAction(true);
+    //   } else {
+    //     setIsFinishedAction(false);
+    //   }
+    // }
+
+    
   };
 
   const renderMessage = () => {

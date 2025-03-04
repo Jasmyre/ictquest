@@ -90,8 +90,13 @@ export const Practice = ({
         setNumberOfCorrectAction((prev) => prev + 1);
       } else {
         setNumberOfInCorrectAction((prev) => prev + 1);
-        setIsFinishedAction(false);
-        setIsCorrect(false);
+        if (!isResetEnabled) {
+          setIsFinishedAction(true);
+          setIsCorrect(true)
+        } else {
+          setIsFinishedAction(false);
+          setIsCorrect(false)
+        }
       }
       setHasSubmitted(true);
     }

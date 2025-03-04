@@ -3,7 +3,6 @@ import { MultipleChoice
 import { LessonContent } from "../lessons";
 import { shuffle } from "@/lib/utils";
 import { Practice } from "@/components/Practice";
-import { DifficultyParagraph } from "@/components/DifficultyParagraph";
 import CodeHighlight from "@/components/CodeHighlight";
 
 const reset = false
@@ -644,15 +643,6 @@ export const quiz: LessonContent = {
       submit: { label: "Practice" },
       content: [
         {
-          id: 24,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="easy" color="green">
-              Arrange the &lt;strong&gt; element in the correct order.
-            </DifficultyParagraph>
-          ),
-        },
-        {
           id: 25,
           type: "element",
           label: ({
@@ -695,15 +685,6 @@ export const quiz: LessonContent = {
     {
       submit: { label: "Practice" },
       content: [
-        {
-          id: 26,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="easy" color="green">
-              Arrange the &lt;mark&gt; element in the correct order.
-            </DifficultyParagraph>
-          ),
-        },
         {
           id: 27,
           type: "element",
@@ -748,15 +729,6 @@ export const quiz: LessonContent = {
       submit: { label: "Practice" },
       content: [
         {
-          id: 28,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="easy" color="green">
-              Arrange the &lt;small&gt; element in the correct order.
-            </DifficultyParagraph>
-          ),
-        },
-        {
           id: 29,
           type: "element",
           label: ({
@@ -799,15 +771,6 @@ export const quiz: LessonContent = {
     {
       submit: { label: "Practice" },
       content: [
-        {
-          id: 30,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="easy" color="green">
-              Arrange the &lt;abbr&gt; element in the correct order.
-            </DifficultyParagraph>
-          ),
-        },
         {
           id: 32,
           type: "element",
@@ -1055,16 +1018,6 @@ export const quiz: LessonContent = {
     {
       submit: { label: "Practice" },
       content: [
-        {
-          id: 50,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="medium" color="orange">
-              Arrange the <CodeHighlight>&lt;video&gt;</CodeHighlight> element
-              code correctly.
-            </DifficultyParagraph>
-          ),
-        },
         {
           id: 51,
           type: "element",

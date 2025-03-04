@@ -1,6 +1,5 @@
 import Browser from "@/components/Browser";
 import CodeHighlight from "@/components/CodeHighlight";
-import { MultipleChoice } from "@/components/MultipleChoice";
 import { Practice } from "@/components/Practice";
 import { shuffle } from "@/lib/utils";
 import { LessonContent } from "../lessons";
@@ -1169,108 +1168,108 @@ export const htmlBriefExample: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 58,
-          type: "text",
-          label: "Quiz Time! Which tag creates a horizontal line on a webpage?",
-        },
-        {
-          id: 59,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Choose the correct tag:"]}
-              choices={{
-                options: ["<hr>", "<br>", "<div>", "<footer>"],
-                answer: "<hr>",
-              }}
-              response={{
-                positive: "Correct! <hr> draws a horizontal line.",
-                negative: "Oops, try again!",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 60,
-          type: "text",
-          label: "Quick Quiz: Which tag is used to insert a line break?",
-        },
-        {
-          id: 61,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Select the correct tag:"]}
-              choices={{
-                options: ["<br>", "<hr>", "<p>", "<span>"],
-                answer: "<br>",
-              }}
-              response={{
-                positive: "That's right! <br> adds a line break.",
-                negative: "Not quite, try again.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 62,
-          type: "text",
-          label: "One more quick quiz: Which tag makes text bold?",
-        },
-        {
-          id: 63,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Choose the correct tag:"]}
-              choices={{
-                options: ["<strong>", "<em>", "<h1>", "<p>"],
-                answer: "<strong>",
-              }}
-              response={{
-                positive: "Correct! <strong> bolds the text.",
-                negative: "Nope, that's not it.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 58,
+    //       type: "text",
+    //       label: "Quiz Time! Which tag creates a horizontal line on a webpage?",
+    //     },
+    //     {
+    //       id: 59,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Choose the correct tag:"]}
+    //           choices={{
+    //             options: ["<hr>", "<br>", "<div>", "<footer>"],
+    //             answer: "<hr>",
+    //           }}
+    //           response={{
+    //             positive: "Correct! <hr> draws a horizontal line.",
+    //             negative: "Oops, try again!",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 60,
+    //       type: "text",
+    //       label: "Quick Quiz: Which tag is used to insert a line break?",
+    //     },
+    //     {
+    //       id: 61,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Select the correct tag:"]}
+    //           choices={{
+    //             options: ["<br>", "<hr>", "<p>", "<span>"],
+    //             answer: "<br>",
+    //           }}
+    //           response={{
+    //             positive: "That's right! <br> adds a line break.",
+    //             negative: "Not quite, try again.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 62,
+    //       type: "text",
+    //       label: "One more quick quiz: Which tag makes text bold?",
+    //     },
+    //     {
+    //       id: 63,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Choose the correct tag:"]}
+    //           choices={{
+    //             options: ["<strong>", "<em>", "<h1>", "<p>"],
+    //             answer: "<strong>",
+    //           }}
+    //           response={{
+    //             positive: "Correct! <strong> bolds the text.",
+    //             negative: "Nope, that's not it.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Finish" },
       content: [

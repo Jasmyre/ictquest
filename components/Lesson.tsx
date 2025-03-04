@@ -26,6 +26,7 @@ export default function Lesson({
   const [numberOfInCorrect, setNumberOfInCorrect] = useState<number>(0);
   const [isFinished, setIsFinished] = useState<boolean>(true);
   const [index, setIndex] = useState<number>(0);
+  const [url, setUrl] = useState<string>("");
 
   const lesson = lessons.find((item) => item.slug === topic)!;
   const lessonTopic = lesson.content[subtopic].contents;
@@ -61,6 +62,11 @@ export default function Lesson({
         handleBackButton();
       }
     };
+
+    console.log("corrects: ",numberOfCorrect);
+    console.log("incorrects: ",numberOfInCorrect);
+    console.log("total: ", numberOfCorrect + numberOfInCorrect);
+    setUrl(`/compliments?topic=${topic}&subtopic=${subtopic}&correct=${numberOfCorrect}&incorrect=${numberOfInCorrect}`)
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -170,7 +176,7 @@ export default function Lesson({
         console.error("Error updating progress:", error);
       }
 
-      router.push(`/compliments?topic=${topic}&subtopic=${subtopic}&correct=${numberOfContent}&incorrect=${numberOfInCorrect}`);
+      router.push(url);
     }
     console.log(numberOfCorrect);
     console.log(numberOfInCorrect);

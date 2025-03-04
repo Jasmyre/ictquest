@@ -19,7 +19,15 @@ import Link from "next/link";
 //   { name: "Forms Expert Quiz", description: "Prove your HTML forms expertise" },
 // ];
 
-export default function RenderTopics() {
+export default function RenderTopics({ user }: {user: {
+  username: string | null;
+  id: string;
+  avatar: string | null;
+  numberOfAchievements: number;
+  numberOfSubtopics: number;
+  level: string;
+  averageProgress: number;
+}}) {
   return (
     <main>
       <div className="min-h-[80vh] py-10">
@@ -116,178 +124,182 @@ export default function RenderTopics() {
 
               <Separator />
 
-              <div className="mt-16">
-                <div className="mb-12">
-                  <div className="mb-4 flex items-center gap-3">
-                    <Globe className="h-12 w-12 text-indigo-600 dark:text-indigo-400" />
-                    <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                      Test Your Expertise
-                    </h2>
+              
+                <div className="mt-16">
+                  <div className="mb-12">
+                    <div className="mb-4 flex items-center gap-3">
+                      <Globe className="h-12 w-12 text-indigo-600 dark:text-indigo-400" />
+                      <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                        Test Your Expertise
+                      </h2>
+                    </div>
+                    <p className="max-w-2xl text-lg text-gray-600 dark:text-gray-300">
+                      Challenge yourself with our comprehensive assessment
+                    </p>
                   </div>
-                  <p className="max-w-2xl text-lg text-gray-600 dark:text-gray-300">
-                    Challenge yourself with our comprehensive assessment
-                  </p>
-                </div>
-
-                <Card className="border-2 border-indigo-200 bg-white dark:border-indigo-800 dark:bg-gray-800">
-                  <CardContent className="p-0">
-                    <div className="relative overflow-hidden rounded-t-lg bg-gradient-to-r from-indigo-500 to-blue-600 p-8 dark:from-indigo-900 dark:to-blue-950">
-                      <div className="relative z-10">
-                        <h3 className="mb-2 text-2xl font-bold text-white">
-                          Test
-                        </h3>
-                        <p className="max-w-2xl text-lg text-indigo-100">
-                          Prove your mastery with our comprehensive assessment
-                          covering everything from basics to advanced concepts
-                        </p>
-                      </div>
-                      <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-10">
-                        <Trophy className="h-48 w-48" />
-                      </div>
-                    </div>
-
-                    <div className="p-8">
-                      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-1">
-                        <div className="flex items-start gap-4 rounded-lg border border-indigo-100 bg-indigo-50 p-4 dark:border-indigo-800 dark:bg-indigo-900/20">
-                          <div className="rounded-full bg-indigo-100 p-2 dark:bg-indigo-900">
-                            <Trophy className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                              50 Questions
-                            </h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-300">
-                              Comprehensive assessment
-                            </p>
-                          </div>
+  
+                  <Card className="border-2 border-indigo-200 bg-white dark:border-indigo-800 dark:bg-gray-800">
+                    <CardContent className="p-0">
+                      <div className="relative overflow-hidden rounded-t-lg bg-gradient-to-r from-indigo-500 to-blue-600 p-8 dark:from-indigo-900 dark:to-blue-950">
+                        <div className="relative z-10">
+                          <h3 className="mb-2 text-2xl font-bold text-white">
+                            Test
+                          </h3>
+                          <p className="max-w-2xl text-lg text-indigo-100">
+                            Prove your mastery with our comprehensive assessment
+                            covering everything from basics to advanced concepts
+                          </p>
                         </div>
-                        {/* <div className="flex items-start gap-4 rounded-lg border border-indigo-100 bg-indigo-50 p-4 dark:border-indigo-800 dark:bg-indigo-900/20">
-                          <div className="rounded-full bg-indigo-100 p-2 dark:bg-indigo-900">
-                            <Clock className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                              90 Minutes
-                            </h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-300">
-                              Time to complete
-                            </p>
-                          </div>
-                        </div> */}
-                        {/* <div className="flex items-start gap-4 rounded-lg border border-indigo-100 bg-indigo-50 p-4 dark:border-indigo-800 dark:bg-indigo-900/20">
-                          <div className="rounded-full bg-indigo-100 p-2 dark:bg-indigo-900">
-                            <Medal className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                              Expert Badge
-                            </h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-300">
-                              Upon completion
-                            </p>
-                          </div>
-                        </div> */}
+                        <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-10">
+                          <Trophy className="h-48 w-48" />
+                        </div>
                       </div>
-
-                      {/* Topics Covered */}
-                      <div className="mb-8">
-                        <h4 className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">
-                          Topics Covered
-                        </h4>
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                          {[
-                            "What is HTML",
-                            "HTML Document Structure",
-                            "HTML Typography",
-                            "HTML Containers",
-                            "HTML Media Elements",
-                            "HTML Advanced Elements",
-                            "HTML Form",
-                            "Beyond HyperText Mark-up Language",
-                          ].map((topic, index) => (
-                            <div
-                              key={index}
-                              className="flex items-center gap-2 rounded-md bg-gray-50 p-2 dark:bg-gray-700/50"
-                            >
-                              <CheckCircle className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-                              <span className="text-sm text-gray-700 dark:text-gray-300">
-                                {topic}
-                              </span>
+  
+                      <div className="p-8">
+                        <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-1">
+                          <div className="flex items-start gap-4 rounded-lg border border-indigo-100 bg-indigo-50 p-4 dark:border-indigo-800 dark:bg-indigo-900/20">
+                            <div className="rounded-full bg-indigo-100 p-2 dark:bg-indigo-900">
+                              <Trophy className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                             </div>
-                          ))}
+                            <div>
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                                50 Questions
+                              </h4>
+                              <p className="text-sm text-gray-600 dark:text-gray-300">
+                                Comprehensive assessment
+                              </p>
+                            </div>
+                          </div>
+                          {/* <div className="flex items-start gap-4 rounded-lg border border-indigo-100 bg-indigo-50 p-4 dark:border-indigo-800 dark:bg-indigo-900/20">
+                            <div className="rounded-full bg-indigo-100 p-2 dark:bg-indigo-900">
+                              <Clock className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                                90 Minutes
+                              </h4>
+                              <p className="text-sm text-gray-600 dark:text-gray-300">
+                                Time to complete
+                              </p>
+                            </div>
+                          </div> */}
+                          {/* <div className="flex items-start gap-4 rounded-lg border border-indigo-100 bg-indigo-50 p-4 dark:border-indigo-800 dark:bg-indigo-900/20">
+                            <div className="rounded-full bg-indigo-100 p-2 dark:bg-indigo-900">
+                              <Medal className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                                Expert Badge
+                              </h4>
+                              <p className="text-sm text-gray-600 dark:text-gray-300">
+                                Upon completion
+                              </p>
+                            </div>
+                          </div> */}
                         </div>
-                      </div>
-
-                      {/* <div className="mb-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
-                        <div>
-                          <h4 className="mb-4 flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
-                            <Info className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                            Requirements
+  
+                        {/* Topics Covered */}
+                        <div className="mb-8">
+                          <h4 className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                            Topics Covered
                           </h4>
-                          <ul className="space-y-3">
+                          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                             {[
-                              "Complete all basic HTML lessons",
-                              "Score 80% or higher on basic assessments",
-                              "Stable internet connection",
-                              "Desktop or laptop computer",
-                            ].map((req, index) => (
-                              <li
+                              "What is HTML",
+                              "HTML Document Structure",
+                              "HTML Typography",
+                              "HTML Containers",
+                              "HTML Media Elements",
+                              "HTML Advanced Elements",
+                              "HTML Form",
+                              "Beyond HyperText Mark-up Language",
+                            ].map((topic, index) => (
+                              <div
                                 key={index}
-                                className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
+                                className="flex items-center gap-2 rounded-md bg-gray-50 p-2 dark:bg-gray-700/50"
                               >
-                                <ArrowRight className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-                                <span>{req}</span>
-                              </li>
+                                <CheckCircle className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">
+                                  {topic}
+                                </span>
+                              </div>
                             ))}
-                          </ul>
+                          </div>
                         </div>
-                        <div>
-                          <h4 className="mb-4 flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
-                            <Star className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                            Benefits
-                          </h4>
-                          <ul className="space-y-3">
-                            {[
-                              "Official HTML Expert certification",
-                              "Shareable badge for your portfolio",
-                              "Access to advanced learning resources",
-                              "Join our expert community",
-                            ].map((benefit, index) => (
-                              <li
-                                key={index}
-                                className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
-                              >
-                                <ArrowRight className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-                                <span>{benefit}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div> */}
-
-                      <div className="flex flex-col items-center border-t border-gray-200 pt-6 text-center dark:border-gray-700">
-                        <p className="mb-6 max-w-2xl text-gray-600 dark:text-gray-300">
-                          Ready to prove your expertise? Take the challenge.
-                        </p>
-                        <div className="flex gap-4">
-                          <Button
-                            asChild
-                            size="lg"
-                            className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
-                          >
-                            <Link
-                              href={`/lessons/subtopic/${"quiz"}?topic=${"test"}`}
+  
+                        {/* <div className="mb-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
+                          <div>
+                            <h4 className="mb-4 flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                              <Info className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                              Requirements
+                            </h4>
+                            <ul className="space-y-3">
+                              {[
+                                "Complete all basic HTML lessons",
+                                "Score 80% or higher on basic assessments",
+                                "Stable internet connection",
+                                "Desktop or laptop computer",
+                              ].map((req, index) => (
+                                <li
+                                  key={index}
+                                  className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
+                                >
+                                  <ArrowRight className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                                  <span>{req}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div>
+                            <h4 className="mb-4 flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                              <Star className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                              Benefits
+                            </h4>
+                            <ul className="space-y-3">
+                              {[
+                                "Official HTML Expert certification",
+                                "Shareable badge for your portfolio",
+                                "Access to advanced learning resources",
+                                "Join our expert community",
+                              ].map((benefit, index) => (
+                                <li
+                                  key={index}
+                                  className="flex items-center gap-2 text-gray-600 dark:text-gray-300"
+                                >
+                                  <ArrowRight className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                                  <span>{benefit}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div> */}
+  
+                        <div className="flex flex-col items-center border-t border-gray-200 pt-6 text-center dark:border-gray-700">
+                          <p className="mb-6 max-w-2xl text-gray-600 dark:text-gray-300">
+                            Ready to prove your expertise? Take the challenge.
+                          </p>
+                          <div className="flex gap-4">
+                            <Button
+                              asChild
+                              size="lg"
+                              className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
                             >
-                              Start Test
-                              <ArrowRight className="ml-2 h-5 w-5" />
-                            </Link>
-                          </Button>
+                              <Link
+                                href={`/lessons/subtopic/${"quiz"}?topic=${"test"}`}
+                              >
+                                Start Test
+                                <ArrowRight className="ml-2 h-5 w-5" />
+                              </Link>
+                            </Button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              
+
+              
             </div>
           </div>
         </main>

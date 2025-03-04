@@ -1,6 +1,5 @@
 import CodeBlock from "@/components/Code";
 import CodeHighlight from "@/components/CodeHighlight";
-import { MultipleChoice } from "@/components/MultipleChoice";
 import { LessonContent } from "../lessons";
 import Browser from "@/components/Browser";
 
@@ -699,312 +698,312 @@ export const htmlForm: LessonContent = {
       ],
     },
 
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 2,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={[
-                "Which attribute of the <form> element specifies where to send form data?",
-              ]}
-              choices={{
-                options: ["action", "method", "enctype", "target"],
-                answer: "action",
-              }}
-              response={{
-                positive:
-                  "Correct! The 'action' attribute sets the destination.",
-                negative:
-                  "That's not correct. Remember, 'action' is used to specify the destination URL.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 26,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What should the type attribute be for a submit button?"]}
-              choices={{
-                options: ["button", "submit", "reset", "text"],
-                answer: "submit",
-              }}
-              response={{
-                positive: "Correct!",
-                negative: "Incorrect. The correct type is 'submit'.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 5,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which input type is used for a standard text field?"]}
-              choices={{
-                options: ["text", "email", "password", "number"],
-                answer: "text",
-              }}
-              response={{
-                positive: "Correct!",
-                negative:
-                  "Incorrect. The standard text field uses type 'text'.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 8,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which input type is ideal for email addresses?"]}
-              choices={{
-                options: ["text", "email", "password", "number"],
-                answer: "email",
-              }}
-              response={{
-                positive: "Correct!",
-                negative: "Incorrect. The correct type is 'email'.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 11,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which input type should you use for a password field?"]}
-              choices={{
-                options: ["text", "password", "email", "number"],
-                answer: "password",
-              }}
-              response={{
-                positive: "Correct!",
-                negative:
-                  "That's not right. The password field uses type 'password'.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 14,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which input type is used for numeric data?"]}
-              choices={{
-                options: ["text", "number", "password", "email"],
-                answer: "number",
-              }}
-              response={{
-                positive: "Correct!",
-                negative:
-                  "Incorrect. The type 'number' is used for numeric input.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 17,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Checkboxes allow users to select:"]}
-              choices={{
-                options: [
-                  "Only one option",
-                  "Multiple options",
-                  "No options",
-                  "All options",
-                ],
-                answer: "Multiple options",
-              }}
-              response={{
-                positive: "Correct!",
-                negative:
-                  "Incorrect. Checkboxes are designed for multiple selections.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 20,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Radio buttons allow users to select:"]}
-              choices={{
-                options: [
-                  "Multiple options",
-                  "A single option",
-                  "All options",
-                  "No option",
-                ],
-                answer: "A single option",
-              }}
-              response={{
-                positive: "Correct!",
-                negative:
-                  "Incorrect. Radio buttons allow only one selection per group.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 23,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which element is used for multi-line text input?"]}
-              choices={{
-                options: ["input", "textarea", "select", "button"],
-                answer: "textarea",
-              }}
-              response={{
-                positive: "Correct!",
-                negative:
-                  "Incorrect. The 'textarea' element is used for multi-line input.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 27,
-          type: "element",
-          label: (
-            <div>
-              <p>
-                Congratulations! You have completed the lesson on HTML Forms.
-              </p>
-              <br />
-              <p>
-                You learned how to create a form container and add various input
-                fields, checkboxes, radio buttons, textareas, and a submit
-                button.
-              </p>
-              <p>
-                Practice these elements to build interactive and accessible web
-                forms.
-              </p>
-            </div>
-          ),
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 2,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={[
+    //             "Which attribute of the <form> element specifies where to send form data?",
+    //           ]}
+    //           choices={{
+    //             options: ["action", "method", "enctype", "target"],
+    //             answer: "action",
+    //           }}
+    //           response={{
+    //             positive:
+    //               "Correct! The 'action' attribute sets the destination.",
+    //             negative:
+    //               "That's not correct. Remember, 'action' is used to specify the destination URL.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 26,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["What should the type attribute be for a submit button?"]}
+    //           choices={{
+    //             options: ["button", "submit", "reset", "text"],
+    //             answer: "submit",
+    //           }}
+    //           response={{
+    //             positive: "Correct!",
+    //             negative: "Incorrect. The correct type is 'submit'.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 5,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Which input type is used for a standard text field?"]}
+    //           choices={{
+    //             options: ["text", "email", "password", "number"],
+    //             answer: "text",
+    //           }}
+    //           response={{
+    //             positive: "Correct!",
+    //             negative:
+    //               "Incorrect. The standard text field uses type 'text'.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 8,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Which input type is ideal for email addresses?"]}
+    //           choices={{
+    //             options: ["text", "email", "password", "number"],
+    //             answer: "email",
+    //           }}
+    //           response={{
+    //             positive: "Correct!",
+    //             negative: "Incorrect. The correct type is 'email'.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 11,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Which input type should you use for a password field?"]}
+    //           choices={{
+    //             options: ["text", "password", "email", "number"],
+    //             answer: "password",
+    //           }}
+    //           response={{
+    //             positive: "Correct!",
+    //             negative:
+    //               "That's not right. The password field uses type 'password'.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 14,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Which input type is used for numeric data?"]}
+    //           choices={{
+    //             options: ["text", "number", "password", "email"],
+    //             answer: "number",
+    //           }}
+    //           response={{
+    //             positive: "Correct!",
+    //             negative:
+    //               "Incorrect. The type 'number' is used for numeric input.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 17,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Checkboxes allow users to select:"]}
+    //           choices={{
+    //             options: [
+    //               "Only one option",
+    //               "Multiple options",
+    //               "No options",
+    //               "All options",
+    //             ],
+    //             answer: "Multiple options",
+    //           }}
+    //           response={{
+    //             positive: "Correct!",
+    //             negative:
+    //               "Incorrect. Checkboxes are designed for multiple selections.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 20,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Radio buttons allow users to select:"]}
+    //           choices={{
+    //             options: [
+    //               "Multiple options",
+    //               "A single option",
+    //               "All options",
+    //               "No option",
+    //             ],
+    //             answer: "A single option",
+    //           }}
+    //           response={{
+    //             positive: "Correct!",
+    //             negative:
+    //               "Incorrect. Radio buttons allow only one selection per group.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 23,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Which element is used for multi-line text input?"]}
+    //           choices={{
+    //             options: ["input", "textarea", "select", "button"],
+    //             answer: "textarea",
+    //           }}
+    //           response={{
+    //             positive: "Correct!",
+    //             negative:
+    //               "Incorrect. The 'textarea' element is used for multi-line input.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 27,
+    //       type: "element",
+    //       label: (
+    //         <div>
+    //           <p>
+    //             Congratulations! You have completed the lesson on HTML Forms.
+    //           </p>
+    //           <br />
+    //           <p>
+    //             You learned how to create a form container and add various input
+    //             fields, checkboxes, radio buttons, textareas, and a submit
+    //             button.
+    //           </p>
+    //           <p>
+    //             Practice these elements to build interactive and accessible web
+    //             forms.
+    //           </p>
+    //         </div>
+    //       ),
+    //     },
+    //   ],
+    // },
   ],
 };

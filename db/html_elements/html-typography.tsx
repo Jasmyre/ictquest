@@ -2,7 +2,6 @@ import Browser from "@/components/Browser";
 import CodeBlock from "@/components/Code";
 import CodeHighlight from "@/components/CodeHighlight";
 import { DifficultyParagraph } from "@/components/DifficultyParagraph";
-import { MultipleChoice } from "@/components/MultipleChoice";
 import { Practice } from "@/components/Practice";
 import { shuffle } from "@/lib/utils";
 import { LessonContent } from "../lessons";
@@ -1250,195 +1249,195 @@ export const htmlTypography: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Practice" },
-      content: [
-        {
-          id: 30,
-          type: "element",
-          label: (
-            <DifficultyParagraph difficulty="intermediate" color="orange">
-              Did you read the last page?
-            </DifficultyParagraph>
-          ),
-        },
-        {
-          id: 31,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => {
-            const choices = {
-              options: [
-                { label: "<address>\n", priority: 0 },
-                { label: "  Written by Jane Doe.<br>\n", priority: 1 },
-                {
-                  label:
-                    '  Email: <a href="mailto:jane@example.com">jane@example.com</a>\n',
-                  priority: 2,
-                },
-                { label: "</address>", priority: 3 },
-              ],
-              answer: `<address>\n  Written by Jane Doe.<br>\n  Email: <a href="mailto:jane@example.com">jane@example.com</a>\n</address>`,
-              initialCode: ["", ""],
-            };
-            const shuffledData = shuffle(choices.options);
-            return (
-              <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the address element in the correct order"]}
-                initialCode={choices.initialCode}
-                response={{
-                  positive: "Great job!",
-                  negative: "That's not correct, try again!",
-                }}
-              />
-            );
-          },
-        },
-      ],
-    },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 32,
-          type: "text",
-          label: "Final Quiz: Let's test your knowledge on HTML Typography!",
-        },
-        {
-          id: 33,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which tag is used to highlight text?"]}
-              choices={{
-                options: ["<mark>", "<strong>", "<em>", "<code>"],
-                answer: "<mark>",
-              }}
-              response={{
-                positive: "Correct!",
-                negative: "Try again!",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 32,
-          type: "text",
-          label: "Final Quiz: Let's test your knowledge on HTML Typography!",
-        },
-        {
-          id: 53,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which tag is used to indicate strong importance?"]}
-              choices={{
-                options: ["<strong>", "<em>", "<mark>", "<code>"],
-                answer: "<strong>",
-              }}
-              response={{
-                positive: "Correct!",
-                negative: "Try again!",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 32,
-          type: "text",
-          label: "Final Quiz: Let's test your knowledge on HTML Typography!",
-        },
-        {
-          id: 54,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which tag is used for inline code snippets?"]}
-              choices={{
-                options: ["<code>", "<small>", "<abbr>", "<cite>"],
-                answer: "<code>",
-              }}
-              response={{
-                positive: "Correct!",
-                negative: "Try again!",
-              }}
-            />
-          ),
-        },
-      ],
-    },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 32,
-          type: "text",
-          label: "Final Quiz: Let's test your knowledge on HTML Typography!",
-        },
-        {
-          id: 55,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which tag is used for abbreviations with a tooltip?"]}
-              choices={{
-                options: ["<abbr>", "<mark>", "<small>", "<cite>"],
-                answer: "<abbr>",
-              }}
-              response={{
-                positive: "Correct!",
-                negative: "Try again!",
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Practice" },
+    //   content: [
+    //     {
+    //       id: 30,
+    //       type: "element",
+    //       label: (
+    //         <DifficultyParagraph difficulty="intermediate" color="orange">
+    //           Did you read the last page?
+    //         </DifficultyParagraph>
+    //       ),
+    //     },
+    //     {
+    //       id: 31,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => {
+    //         const choices = {
+    //           options: [
+    //             { label: "<address>\n", priority: 0 },
+    //             { label: "  Written by Jane Doe.<br>\n", priority: 1 },
+    //             {
+    //               label:
+    //                 '  Email: <a href="mailto:jane@example.com">jane@example.com</a>\n',
+    //               priority: 2,
+    //             },
+    //             { label: "</address>", priority: 3 },
+    //           ],
+    //           answer: `<address>\n  Written by Jane Doe.<br>\n  Email: <a href="mailto:jane@example.com">jane@example.com</a>\n</address>`,
+    //           initialCode: ["", ""],
+    //         };
+    //         const shuffledData = shuffle(choices.options);
+    //         return (
+    //           <Practice
+    //             setNumberOfCorrectAction={setNumberOfCorrect}
+    //             setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //             setIsFinishedAction={setIsFinished}
+    //             choices={choices}
+    //             shuffledData={shuffledData}
+    //             title={["Arrange the address element in the correct order"]}
+    //             initialCode={choices.initialCode}
+    //             response={{
+    //               positive: "Great job!",
+    //               negative: "That's not correct, try again!",
+    //             }}
+    //           />
+    //         );
+    //       },
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 32,
+    //       type: "text",
+    //       label: "Final Quiz: Let's test your knowledge on HTML Typography!",
+    //     },
+    //     {
+    //       id: 33,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Which tag is used to highlight text?"]}
+    //           choices={{
+    //             options: ["<mark>", "<strong>", "<em>", "<code>"],
+    //             answer: "<mark>",
+    //           }}
+    //           response={{
+    //             positive: "Correct!",
+    //             negative: "Try again!",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 32,
+    //       type: "text",
+    //       label: "Final Quiz: Let's test your knowledge on HTML Typography!",
+    //     },
+    //     {
+    //       id: 53,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Which tag is used to indicate strong importance?"]}
+    //           choices={{
+    //             options: ["<strong>", "<em>", "<mark>", "<code>"],
+    //             answer: "<strong>",
+    //           }}
+    //           response={{
+    //             positive: "Correct!",
+    //             negative: "Try again!",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 32,
+    //       type: "text",
+    //       label: "Final Quiz: Let's test your knowledge on HTML Typography!",
+    //     },
+    //     {
+    //       id: 54,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Which tag is used for inline code snippets?"]}
+    //           choices={{
+    //             options: ["<code>", "<small>", "<abbr>", "<cite>"],
+    //             answer: "<code>",
+    //           }}
+    //           response={{
+    //             positive: "Correct!",
+    //             negative: "Try again!",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 32,
+    //       type: "text",
+    //       label: "Final Quiz: Let's test your knowledge on HTML Typography!",
+    //     },
+    //     {
+    //       id: 55,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Which tag is used for abbreviations with a tooltip?"]}
+    //           choices={{
+    //             options: ["<abbr>", "<mark>", "<small>", "<cite>"],
+    //             answer: "<abbr>",
+    //           }}
+    //           response={{
+    //             positive: "Correct!",
+    //             negative: "Try again!",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
   ],
 };

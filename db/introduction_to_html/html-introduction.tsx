@@ -5,7 +5,6 @@ import { shuffle } from "@/lib/utils";
 import { LessonContent } from "../lessons";
 
 import Image from "next/image";
-import { MultipleChoice } from "@/components/MultipleChoice";
 import CodeHighlight from "@/components/CodeHighlight";
 
 export const htmlIntroduction: LessonContent = {
@@ -35,46 +34,46 @@ export const htmlIntroduction: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 1,
-          type: "text",
-          label:
-            "HTML stands for HyperText Markup Language. Sounds fancy, but it’s really just the language that gives structure to web pages.",
-        },
-        {
-          id: 2,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What does HTML stand for?"]}
-              choices={{
-                options: [
-                  "HyperText Markup Language",
-                  "Home Tool Markup Language",
-                  "Hyperlink Text Markup Language",
-                  "How To Make Lasagna",
-                ],
-                answer: "HyperText Markup Language",
-              }}
-              response={{
-                positive: "Yup, you got it!",
-                negative: "Nope, give it another shot!",
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 1,
+    //       type: "text",
+    //       label:
+    //         "HTML stands for HyperText Markup Language. Sounds fancy, but it’s really just the language that gives structure to web pages.",
+    //     },
+    //     {
+    //       id: 2,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["What does HTML stand for?"]}
+    //           choices={{
+    //             options: [
+    //               "HyperText Markup Language",
+    //               "Home Tool Markup Language",
+    //               "Hyperlink Text Markup Language",
+    //               "How To Make Lasagna",
+    //             ],
+    //             answer: "HyperText Markup Language",
+    //           }}
+    //           response={{
+    //             positive: "Yup, you got it!",
+    //             negative: "Nope, give it another shot!",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
@@ -212,46 +211,46 @@ export const htmlIntroduction: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 4,
-          type: "text",
-          label:
-            "Now, let’s jump to the history part. HTML was invented in 1991 by a clever guy named Tim Berners-Lee while he was at CERN.",
-        },
-        {
-          id: 5,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Who invented HTML?"]}
-              choices={{
-                options: [
-                  "Bill Gates",
-                  "Tim Berners-Lee",
-                  "Steve Jobs",
-                  "Mark Zuckerberg",
-                ],
-                answer: "Tim Berners-Lee",
-              }}
-              response={{
-                positive: "Exactly right!",
-                negative: "Nah, try again!",
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 4,
+    //       type: "text",
+    //       label:
+    //         "Now, let’s jump to the history part. HTML was invented in 1991 by a clever guy named Tim Berners-Lee while he was at CERN.",
+    //     },
+    //     {
+    //       id: 5,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Who invented HTML?"]}
+    //           choices={{
+    //             options: [
+    //               "Bill Gates",
+    //               "Tim Berners-Lee",
+    //               "Steve Jobs",
+    //               "Mark Zuckerberg",
+    //             ],
+    //             answer: "Tim Berners-Lee",
+    //           }}
+    //           response={{
+    //             positive: "Exactly right!",
+    //             negative: "Nah, try again!",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
@@ -274,37 +273,37 @@ export const htmlIntroduction: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 8,
-          type: "text",
-          label: "True or False: HTML was invented in the 1980s.",
-        },
-        {
-          id: 9,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Is this statement true or false?"]}
-              choices={{ options: ["True", "False"], answer: "False" }}
-              response={{
-                positive: "Right! It was invented in 1991.",
-                negative: "Not quite. It came out in 1991.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 8,
+    //       type: "text",
+    //       label: "True or False: HTML was invented in the 1980s.",
+    //     },
+    //     {
+    //       id: 9,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Is this statement true or false?"]}
+    //           choices={{ options: ["True", "False"], answer: "False" }}
+    //           response={{
+    //             positive: "Right! It was invented in 1991.",
+    //             negative: "Not quite. It came out in 1991.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
@@ -316,41 +315,41 @@ export const htmlIntroduction: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 11,
-          type: "text",
-          label:
-            "In 1995, HTML 2.0 was standardized. This was a big step in making web pages more consistent across browsers.",
-        },
-        {
-          id: 12,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["When was HTML 2.0 standardized?"]}
-              choices={{
-                options: ["1991", "1995", "2000", "2010"],
-                answer: "1995",
-              }}
-              response={{
-                positive: "Correct!",
-                negative: "Oops, that ain't it. Try again!",
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 11,
+    //       type: "text",
+    //       label:
+    //         "In 1995, HTML 2.0 was standardized. This was a big step in making web pages more consistent across browsers.",
+    //     },
+    //     {
+    //       id: 12,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["When was HTML 2.0 standardized?"]}
+    //           choices={{
+    //             options: ["1991", "1995", "2000", "2010"],
+    //             answer: "1995",
+    //           }}
+    //           response={{
+    //             positive: "Correct!",
+    //             negative: "Oops, that ain't it. Try again!",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
@@ -373,38 +372,38 @@ export const htmlIntroduction: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 15,
-          type: "text",
-          label:
-            "True or False: In the 90s, there were only a few web pages because HTML was super basic.",
-        },
-        {
-          id: 16,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["True or False?"]}
-              choices={{ options: ["True", "False"], answer: "True" }}
-              response={{
-                positive: "Yep, it was a simpler time!",
-                negative: "Nope, think again!",
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 15,
+    //       type: "text",
+    //       label:
+    //         "True or False: In the 90s, there were only a few web pages because HTML was super basic.",
+    //     },
+    //     {
+    //       id: 16,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["True or False?"]}
+    //           choices={{ options: ["True", "False"], answer: "True" }}
+    //           response={{
+    //             positive: "Yep, it was a simpler time!",
+    //             negative: "Nope, think again!",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
@@ -460,41 +459,41 @@ export const htmlIntroduction: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 22,
-          type: "text",
-          label:
-            "Let’s check your memory: Which version of HTML brought in modern, semantic elements?",
-        },
-        {
-          id: 23,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Choose the correct version:"]}
-              choices={{
-                options: ["HTML 2.0", "HTML 4.01", "HTML5", "XHTML"],
-                answer: "HTML5",
-              }}
-              response={{
-                positive: "That's it!",
-                negative: "Nope, not that one.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 22,
+    //       type: "text",
+    //       label:
+    //         "Let’s check your memory: Which version of HTML brought in modern, semantic elements?",
+    //     },
+    //     {
+    //       id: 23,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Choose the correct version:"]}
+    //           choices={{
+    //             options: ["HTML 2.0", "HTML 4.01", "HTML5", "XHTML"],
+    //             answer: "HTML5",
+    //           }}
+    //           response={{
+    //             positive: "That's it!",
+    //             negative: "Nope, not that one.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
@@ -528,37 +527,37 @@ export const htmlIntroduction: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 27,
-          type: "text",
-          label: "True or False: HTML is a programming language.",
-        },
-        {
-          id: 28,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Is HTML a programming language?"]}
-              choices={{ options: ["True", "False"], answer: "False" }}
-              response={{
-                positive: "Exactly, it's just a markup language!",
-                negative: "Nope, it's not a programming language.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 27,
+    //       type: "text",
+    //       label: "True or False: HTML is a programming language.",
+    //     },
+    //     {
+    //       id: 28,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Is HTML a programming language?"]}
+    //           choices={{ options: ["True", "False"], answer: "False" }}
+    //           response={{
+    //             positive: "Exactly, it's just a markup language!",
+    //             negative: "Nope, it's not a programming language.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
@@ -625,46 +624,46 @@ export const htmlIntroduction: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 35,
-          type: "text",
-          label:
-            "Quick quiz time: Who is often called the 'father of the World Wide Web'?",
-        },
-        {
-          id: 36,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Who is known as the father of the Web?"]}
-              choices={{
-                options: [
-                  "Tim Berners-Lee",
-                  "Vint Cerf",
-                  "Bill Gates",
-                  "Linus Torvalds",
-                ],
-                answer: "Tim Berners-Lee",
-              }}
-              response={{
-                positive: "Right on!",
-                negative: "Nope, that's not it.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 35,
+    //       type: "text",
+    //       label:
+    //         "Quick quiz time: Who is often called the 'father of the World Wide Web'?",
+    //     },
+    //     {
+    //       id: 36,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Who is known as the father of the Web?"]}
+    //           choices={{
+    //             options: [
+    //               "Tim Berners-Lee",
+    //               "Vint Cerf",
+    //               "Bill Gates",
+    //               "Linus Torvalds",
+    //             ],
+    //             answer: "Tim Berners-Lee",
+    //           }}
+    //           response={{
+    //             positive: "Right on!",
+    //             negative: "Nope, that's not it.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
@@ -709,41 +708,41 @@ export const htmlIntroduction: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 41,
-          type: "text",
-          label:
-            "Interactive question: Which organization has been key in standardizing HTML?",
-        },
-        {
-          id: 42,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Pick the right organization:"]}
-              choices={{
-                options: ["W3C", "IEEE", "ISO", "ANSI"],
-                answer: "W3C",
-              }}
-              response={{
-                positive: "That's it!",
-                negative: "Nope, think about web standards.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 41,
+    //       type: "text",
+    //       label:
+    //         "Interactive question: Which organization has been key in standardizing HTML?",
+    //     },
+    //     {
+    //       id: 42,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Pick the right organization:"]}
+    //           choices={{
+    //             options: ["W3C", "IEEE", "ISO", "ANSI"],
+    //             answer: "W3C",
+    //           }}
+    //           response={{
+    //             positive: "That's it!",
+    //             negative: "Nope, think about web standards.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
@@ -755,37 +754,37 @@ export const htmlIntroduction: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 44,
-          type: "text",
-          label: "True or False: HTML is still evolving today.",
-        },
-        {
-          id: 45,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Is HTML still evolving?"]}
-              choices={{ options: ["True", "False"], answer: "True" }}
-              response={{
-                positive: "Absolutely! It's always getting better.",
-                negative: "Not really, HTML keeps improving.",
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 44,
+    //       type: "text",
+    //       label: "True or False: HTML is still evolving today.",
+    //     },
+    //     {
+    //       id: 45,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["Is HTML still evolving?"]}
+    //           choices={{ options: ["True", "False"], answer: "True" }}
+    //           response={{
+    //             positive: "Absolutely! It's always getting better.",
+    //             negative: "Not really, HTML keeps improving.",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
@@ -797,46 +796,46 @@ export const htmlIntroduction: LessonContent = {
         },
       ],
     },
-    {
-      submit: { label: "Continue" },
-      content: [
-        {
-          id: 47,
-          type: "text",
-          label:
-            "Interactive quiz: What was the main purpose of creating HTML back in the early 90s?",
-        },
-        {
-          id: 48,
-          type: "element",
-          label: ({
-            setIsFinished,
-            setNumberOfCorrect,
-            setNumberOfInCorrect,
-          }) => (
-            <MultipleChoice
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What was HTML mainly for?"]}
-              choices={{
-                options: [
-                  "To design fancy websites",
-                  "To share documents",
-                  "To create animations",
-                  "To build apps",
-                ],
-                answer: "To share documents",
-              }}
-              response={{
-                positive: "Correct! It was all about sharing info.",
-                negative: "Not quite, try again!",
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    // {
+    //   submit: { label: "Continue" },
+    //   content: [
+    //     {
+    //       id: 47,
+    //       type: "text",
+    //       label:
+    //         "Interactive quiz: What was the main purpose of creating HTML back in the early 90s?",
+    //     },
+    //     {
+    //       id: 48,
+    //       type: "element",
+    //       label: ({
+    //         setIsFinished,
+    //         setNumberOfCorrect,
+    //         setNumberOfInCorrect,
+    //       }) => (
+    //         <MultipleChoice
+    //           setNumberOfCorrectAction={setNumberOfCorrect}
+    //           setNumberOfInCorrectAction={setNumberOfInCorrect}
+    //           setIsFinishedAction={setIsFinished}
+    //           title={["What was HTML mainly for?"]}
+    //           choices={{
+    //             options: [
+    //               "To design fancy websites",
+    //               "To share documents",
+    //               "To create animations",
+    //               "To build apps",
+    //             ],
+    //             answer: "To share documents",
+    //           }}
+    //           response={{
+    //             positive: "Correct! It was all about sharing info.",
+    //             negative: "Not quite, try again!",
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
     {
       submit: { label: "Continue" },
       content: [
