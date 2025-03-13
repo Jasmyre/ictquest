@@ -1,5 +1,7 @@
 import Lesson from "@/components/Lesson";
 import { SessionProvider } from "next-auth/react";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export default async function page({
   params,
@@ -14,9 +16,15 @@ export default async function page({
 
   return (
     <main>
-      <SessionProvider>
-        <Lesson topic={topic} subtopic={subtopic} isBackEnabled={!!enabledBack} />
-      </SessionProvider>
+      <Suspense fallback={<Loading/>}>
+        <SessionProvider>
+          <Lesson
+            topic={topic}
+            subtopic={subtopic}
+            isBackEnabled={!!enabledBack}
+          />
+        </SessionProvider>
+      </Suspense>
     </main>
   );
 }
