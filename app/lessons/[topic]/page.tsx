@@ -6,6 +6,7 @@ export default async function TopicPage({
   const topic = (await params).topic;
 
   return (
+    
     <RenderSubtopics paramsTopic={topic}/>
   );
 }

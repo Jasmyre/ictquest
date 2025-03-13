@@ -1,7 +1,7 @@
 import Lesson from "@/components/Lesson";
 import { SessionProvider } from "next-auth/react";
 import { Suspense } from "react";
-import Loading from "./loading";
+import Loading from "./subtopicLoading";
 
 export default async function page({
   params,
