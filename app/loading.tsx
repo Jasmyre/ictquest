@@ -1,51 +1,28 @@
-import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
-import { getUserById } from "@/data/user";
-import { db } from "@/lib/db";
-import { wait } from "@/lib/utils";
 import {
-  ArrowRight,
-  Award,
-  Book,
-  CheckCircle,
-  Code,
-  Coffee,
-  Globe,
-  Laptop,
-  Star,
-  Users,
-  Zap,
+    ArrowRight,
+    Award,
+    Book,
+    CheckCircle,
+    Code,
+    Coffee,
+    Globe,
+    Laptop,
+    Star,
+    Users,
+    Zap,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function LandingPage() {
-
-  await wait(2000)
-
-  const session = await auth()!;
-
-  if (session) {
-    const user = await getUserById(session?.user.id as string);
-    const id = user?.id;
-
-    if (!user?.userName) {
-      await db.user.update({
-        where: { id },
-        data: {
-          userName: user?.name,
-        },
-      });
-    }
-  }
-
   return (
     <main>
       <section className="relative overflow-hidden rounded-lg bg-gradient-to-br from-indigo-600 to-purple-700 py-20 text-white dark:from-indigo-900 dark:to-purple-950">
@@ -73,33 +50,15 @@ export default async function LandingPage() {
                   </Button>
                 </Link>
 
-                {session ? (
-                  <form
-                    action={async () => {
-                      "use server";
-
-                      await signOut();
-                    }}
+                <Link href="/auth">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 dark:hover:bg-gray-200 dark:hover:text-indigo-800 sm:w-auto"
                   >
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 dark:hover:bg-gray-200 dark:hover:text-indigo-800 sm:w-auto"
-                    >
-                      Sign Out
-                    </Button>
-                  </form>
-                ) : (
-                  <Link href="/auth">
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 dark:hover:bg-gray-200 dark:hover:text-indigo-800 sm:w-auto"
-                    >
-                      Sign In
-                    </Button>
-                  </Link>
-                )}
+                    Sign In
+                  </Button>
+                </Link>
               </div>
             </div>
             <div className="relative mt-10 lg:mt-0 lg:w-1/2">
@@ -298,6 +257,7 @@ export default async function LandingPage() {
             <Button
               size="lg"
               className="bg-white text-indigo-600 hover:bg-gray-100 dark:bg-gray-200 dark:text-indigo-800 dark:hover:bg-gray-300"
+              disabled
             >
               Start Learning
               <ArrowRight className="ml-2 h-5 w-5" />
