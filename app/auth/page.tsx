@@ -17,7 +17,6 @@ import { LogInForm } from "../../components/LogInForm";
 import { SignupForm } from '../../components/SignupForm';
 
 export default function AuthPage() {
-  // await wait(5000)
 
   const onClick = (provider: string) => {
     signIn(provider, {

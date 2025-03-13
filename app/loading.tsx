@@ -22,7 +22,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function LandingPage() {
+export default async function Loading() {
   return (
     <main>
       <section className="relative overflow-hidden rounded-lg bg-gradient-to-br from-indigo-600 to-purple-700 py-20 text-white dark:from-indigo-900 dark:to-purple-950">

@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/card";
 import { getUserById } from "@/data/user";
 import { db } from "@/lib/db";
-import { wait } from "@/lib/utils";
 import {
   ArrowRight,
   Award,
@@ -27,8 +26,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function LandingPage() {
-
-  await wait(2000)
 
   const session = await auth()!;
 
