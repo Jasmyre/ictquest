@@ -24,9 +24,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default async function LandingPage() {
-
   const session = await auth()!;
 
   if (session) {
@@ -70,33 +70,35 @@ export default async function LandingPage() {
                   </Button>
                 </Link>
 
-                {session ? (
-                  <form
-                    action={async () => {
-                      "use server";
+                <Suspense>
+                  {session ? (
+                    <form
+                      action={async () => {
+                        "use server";
 
-                      await signOut();
-                    }}
-                  >
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 dark:hover:bg-gray-200 dark:hover:text-indigo-800 sm:w-auto"
+                        await signOut();
+                      }}
                     >
-                      Sign Out
-                    </Button>
-                  </form>
-                ) : (
-                  <Link href="/auth">
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 dark:hover:bg-gray-200 dark:hover:text-indigo-800 sm:w-auto"
-                    >
-                      Sign In
-                    </Button>
-                  </Link>
-                )}
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 dark:hover:bg-gray-200 dark:hover:text-indigo-800 sm:w-auto"
+                      >
+                        Sign Out
+                      </Button>
+                    </form>
+                  ) : (
+                    <Link href="/auth">
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 dark:hover:bg-gray-200 dark:hover:text-indigo-800 sm:w-auto"
+                      >
+                        Sign In
+                      </Button>
+                    </Link>
+                  )}
+                </Suspense>
               </div>
             </div>
             <div className="relative mt-10 lg:mt-0 lg:w-1/2">
