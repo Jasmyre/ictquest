@@ -12,6 +12,16 @@ enum UserRole {
   USER
 }
 
+model Post {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+}
+
+
 model User {
   id               String            @id @default(cuid())
   name             String
