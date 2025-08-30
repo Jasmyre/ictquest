@@ -13,6 +13,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { db } from "@/server/db";
+import { env } from "process";
 
 /**
  * 1. CONTEXT
@@ -111,6 +112,8 @@ const WINDOW_SEC = 40; // 40 seconds
 const LIMIT = 10; // max 10 requests per window
 
 const publicRateLimiter = t.middleware(async ({ ctx, next, path }) => {
+  if (env.NODE_ENV === "development") return next();
+
   const ip =
     ctx.headers.get("x-forwarded-for") ??
     ctx.headers.get("cf-connecting-ip") ??
