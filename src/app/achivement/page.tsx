@@ -67,7 +67,9 @@ export default function HomePage() {
       <p>Click anywhere to increase the click count.</p>
       <p>Click Count: {clickCount}</p>
       {isAchievementUnlocked ? (
-        <p style={{ color: "green" }}>Achievement &quot;Clicktastic&quot; unlocked!</p>
+        <p style={{ color: "green" }}>
+          Achievement &quot;Clicktastic&quot; unlocked!
+        </p>
       ) : (
         <p>Keep clicking to unlock an achievement!</p>
       )}

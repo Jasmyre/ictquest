@@ -32,7 +32,7 @@ const ButtonChoice = ({
       disabled={disabled}
       onClick={onClick}
       variant={"outline"}
-      className="rounded border text-wrap max-w-[100vw] border-gray-200 bg-gray-700 px-6 py-2 text-accent-foreground text-gray-200 hover:bg-[#282C34] hover:brightness-200 dark:border-gray-700 hover:dark:brightness-125 max-md:text-white"
+      className="text-accent-foreground max-w-[100vw] rounded border border-gray-200 bg-gray-700 px-6 py-2 text-wrap text-gray-200 hover:bg-[#282C34] hover:brightness-200 max-md:text-white dark:border-gray-700 hover:dark:brightness-125"
       {...props}
     >
       <pre
@@ -46,8 +46,8 @@ const ButtonChoice = ({
         className="m-0 p-2"
       >
         <code
-        tabIndex={-1}
-          className={`language-${language} text-wrap m-0 h-full min-h-[20vh] rounded-[0_0_.75rem_.75rem] border-none bg-[#282C34]`}
+          tabIndex={-1}
+          className={`language-${language} m-0 h-full min-h-[20vh] rounded-[0_0_.75rem_.75rem] border-none bg-[#282C34] text-wrap`}
           dangerouslySetInnerHTML={{
             __html: escapeHtml(children as string).trim(),
           }}

@@ -9,16 +9,16 @@ export default function loading() {
     <main>
       <div className="py-10">
         <header>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Loading className="sm:w-[325px] h-[32px]" />
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Loading className="h-[32px] sm:w-[325px]" />
             <br />
-            <Loading className="sm:w-[500px] h-[16px]" />
+            <Loading className="h-[16px] sm:w-[500px]" />
           </div>
         </header>
         <main className="min-h-[65vh]">
-          <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="px-4 py-8 sm:px-0">
-              <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+              <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                 <CardHeader>
                   <CardTitle className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
                     Subtopics
@@ -29,20 +29,20 @@ export default function loading() {
                     {[1, 2, 3].map((_, index) => (
                       <li
                         key={index++}
-                        className="py-4 border-b border-gray-200 dark:border-gray-700 last:border-b-0"
+                        className="border-b border-gray-200 py-4 last:border-b-0 dark:border-gray-700"
                       >
                         <div className="flex items-center space-x-4">
                           <div className="flex-shrink-0">
                             <Book className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <Loading className="sm:w-[325px] h-[16px]" />
+                          <div className="min-w-0 flex-1">
+                            <Loading className="h-[16px] sm:w-[325px]" />
                           </div>
                           <div>
                             <Button
                               disabled
                               size="sm"
-                              className="bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-700 dark:hover:bg-indigo-600"
+                              className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
                             >
                               Start Lesson
                               <ArrowRight className="ml-2 h-4 w-4" />

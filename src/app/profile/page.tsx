@@ -9,7 +9,7 @@ export default async function ProfilePage() {
       <main>
         <div className="py-10">
           <header className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-gray-100">
+            <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-gray-100">
               Your Profile
             </h1>
           </header>
@@ -19,7 +19,7 @@ export default async function ProfilePage() {
         </div>
       </main>
     );
-  };
+  }
 
   const user = await getUserById(session.user.id!);
 
@@ -28,7 +28,7 @@ export default async function ProfilePage() {
       <main>
         <div className="py-10">
           <header className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-gray-100">
+            <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-gray-100">
               Your Profile
             </h1>
           </header>
@@ -42,9 +42,9 @@ export default async function ProfilePage() {
 
   return (
     <main>
-      <div className="py-10 min-h-[80vh]">
+      <div className="min-h-[80vh] py-10">
         <header className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-gray-100">
+          <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-gray-100">
             Your Profile
           </h1>
         </header>

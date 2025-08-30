@@ -16,7 +16,7 @@ export default async function page({
 
   return (
     <main>
-      <Suspense fallback={<Loading/>}>
+      <Suspense fallback={<Loading />}>
         <SessionProvider>
           <Lesson
             topic={topic}

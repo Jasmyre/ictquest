@@ -65,7 +65,6 @@ export const Practice = ({
     setHasSubmitted(false);
   }, [setIsFinishedAction]);
 
-
   useEffect(() => {
     Prism.highlightAll();
     if (!hasSubmitted) {
@@ -92,10 +91,10 @@ export const Practice = ({
         setNumberOfInCorrectAction((prev) => prev + 1);
         if (!isResetEnabled) {
           setIsFinishedAction(true);
-          setIsCorrect(true)
+          setIsCorrect(true);
         } else {
           setIsFinishedAction(false);
-          setIsCorrect(false)
+          setIsCorrect(false);
         }
       }
       setHasSubmitted(true);
@@ -104,7 +103,7 @@ export const Practice = ({
     console.log(code);
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     code,
     correctCodeFormatted,
@@ -114,7 +113,6 @@ export const Practice = ({
     shuffledData,
     hasSubmitted,
   ]);
-
 
   const handleClick = (label: string, priority: number) => {
     setCode((prevCode) => {

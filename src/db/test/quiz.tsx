@@ -1,10 +1,9 @@
-import { MultipleChoice
- } from "@/components/MultipleChoice";
+import { MultipleChoice } from "@/components/MultipleChoice";
 import { LessonContent } from "../lessons";
 import { shuffle } from "@/lib/utils";
 import { Practice } from "@/components/Practice";
 
-const reset = false
+const reset = false;
 
 export const quiz: LessonContent = {
   title: "HTML and Its History Quiz",
@@ -33,7 +32,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -66,7 +65,7 @@ export const quiz: LessonContent = {
         {
           id: 2,
           type: "element",
-          label:  ({
+          label: ({
             setIsFinished,
             setNumberOfCorrect,
             setNumberOfInCorrect,
@@ -119,7 +118,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -162,7 +161,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -199,7 +198,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -407,7 +406,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -439,7 +438,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -471,7 +470,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -503,7 +502,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -540,7 +539,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -577,7 +576,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -822,7 +821,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -854,7 +853,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -891,7 +890,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -923,7 +922,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -960,7 +959,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -992,7 +991,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1079,7 +1078,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1116,7 +1115,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1153,7 +1152,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1190,7 +1189,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1227,7 +1226,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1266,7 +1265,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1298,7 +1297,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1335,7 +1334,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1374,7 +1373,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1408,7 +1407,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1444,7 +1443,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1477,7 +1476,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1510,7 +1509,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1542,7 +1541,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1580,7 +1579,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1617,7 +1616,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1654,7 +1653,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1691,7 +1690,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1723,7 +1722,7 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-            isResetEnabled={reset}
+              isResetEnabled={reset}
               setNumberOfCorrectAction={setNumberOfCorrect}
               setNumberOfInCorrectAction={setNumberOfInCorrect}
               setIsFinishedAction={setIsFinished}
@@ -1744,5 +1743,4 @@ export const quiz: LessonContent = {
       ],
     },
   ],
-  
 };

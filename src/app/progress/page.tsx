@@ -7,7 +7,7 @@ export default function Progress() {
       <div className="py-10">
         <header>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-gray-100">
+            <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-gray-100">
               Your Progress
             </h1>
           </div>

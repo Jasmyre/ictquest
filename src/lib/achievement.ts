@@ -1,4 +1,3 @@
-
 import { db } from "@/lib/db";
 
 export async function unlockUserAchievement(
@@ -30,7 +29,7 @@ export async function unlockUserAchievement(
     return {
       message: "Achievement already unlocked",
       achievement: existingUnlock,
-      status: "unlocked"
+      status: "unlocked",
     };
   }
 
@@ -43,6 +42,9 @@ export async function unlockUserAchievement(
     },
   });
 
-
-  return { message: "Achievement unlocked!", achievement: newUnlock, status: "new" };
+  return {
+    message: "Achievement unlocked!",
+    achievement: newUnlock,
+    status: "new",
+  };
 }

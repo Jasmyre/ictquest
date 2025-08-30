@@ -25,7 +25,7 @@ const PreviousButton = ({
 
   return (
     <Button
-      className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-whiteZ"
+      className="dark:text-whiteZ border border-gray-200 bg-white text-gray-900 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-700"
       variant="outline"
       onClick={() => router.back()}
       disabled={disabled}

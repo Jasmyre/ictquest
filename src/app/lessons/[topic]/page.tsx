@@ -5,8 +5,5 @@ export default async function TopicPage({
 }: Readonly<{ params: Promise<{ topic: string }> }>) {
   const topic = (await params).topic;
 
-  return (
-    
-    <RenderSubtopics paramsTopic={topic}/>
-  );
+  return <RenderSubtopics paramsTopic={topic} />;
 }

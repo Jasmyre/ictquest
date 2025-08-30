@@ -36,7 +36,12 @@ const BrowserLikeComponent: React.FC = () => {
       <iframe
         title="Browser"
         ref={iframeRef}
-        style={{ width: "100%", height: "100%", border: "none", background: "white" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          border: "none",
+          background: "white",
+        }}
       />
     </div>
   );

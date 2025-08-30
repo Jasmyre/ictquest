@@ -13,7 +13,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Confetti from "../../components/Confetti";
 import ContinueLearningButton from "../../components/ContinueLearningButton";
-import { CustomBadge } from '@/components/CustomBadge';
+import { CustomBadge } from "@/components/CustomBadge";
 
 // const achievements = [
 //   {
@@ -225,8 +225,8 @@ export default function Compliment({
                   </div>
                   {/* <div className="rounded-2xl bg-white p-6 shadow-lg dark:bg-gray-800">
                     <div className="grid gap-8 md:grid-cols-2"> */}
-                      {/* Left Column - Score Details */}
-                      {/* <div className="space-y-6">
+                  {/* Left Column - Score Details */}
+                  {/* <div className="space-y-6">
                         <div>
                           <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
                             <Target className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
@@ -272,8 +272,8 @@ export default function Compliment({
                         </div>
                       </div> */}
 
-                      {/* Right Column - Achievement Level */}
-                      {/* <div className="flex flex-col items-center justify-center border-t pt-6 md:border-l md:border-t-0 md:pl-6 md:pt-0">
+                  {/* Right Column - Achievement Level */}
+                  {/* <div className="flex flex-col items-center justify-center border-t pt-6 md:border-l md:border-t-0 md:pl-6 md:pt-0">
                         <motion.div
                           initial={{ scale: 0.5, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
@@ -295,7 +295,7 @@ export default function Compliment({
                           </Badge>
                         </motion.div>
                       </div> */}
-                    {/* </div>
+                  {/* </div>
                   </div> */}
                   <br />
                   <br />

@@ -13,7 +13,7 @@ export default function RenderTopics() {
       <div className="min-h-[80vh] py-10">
         <header>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-gray-100">
+            <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-gray-100">
               HTML Lessons
             </h1>
           </div>
@@ -91,7 +91,7 @@ export default function RenderTopics() {
                           covering everything from basics to advanced concepts
                         </p>
                       </div>
-                      <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-10">
+                      <div className="absolute top-1/2 right-0 -translate-y-1/2 opacity-10">
                         <Trophy className="h-48 w-48" />
                       </div>
                     </div>

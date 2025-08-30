@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 
 import { Geist, Geist_Mono } from "next/font/google";
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "../components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
-import { Toaster } from '../components/ui/toaster';
+import { Toaster } from "../components/ui/toaster";
 
 import Layout from "./components/layout";
 
-import "./globals.css"
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -94,4 +94,3 @@ export default function RootLayout({
     </html>
   );
 }
-

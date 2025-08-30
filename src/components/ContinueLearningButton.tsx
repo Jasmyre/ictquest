@@ -15,11 +15,11 @@ export interface UserData {
   progressData: ProgressEntry[];
 }
 
-const ContinueLearningButton = ({...props}) => {
+const ContinueLearningButton = ({ ...props }) => {
   const searchParams = useSearchParams();
   const topic = searchParams.get("topic")!;
   const router = useRouter();
-  
+
   const handleClick = async () => {
     router.push(`/lessons/${topic}#`);
   };

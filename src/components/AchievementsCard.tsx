@@ -35,7 +35,12 @@ export function AchievementsCard() {
               <li className="flex py-4" key={achievement.achievementName}>
                 <Award className="mr-2 h-6 w-6 text-yellow-400" />
                 <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                  {String(toastDescription(achievement.achievementName, achievement.achievementDescription))}
+                  {String(
+                    toastDescription(
+                      achievement.achievementName,
+                      achievement.achievementDescription,
+                    ),
+                  )}
                 </span>
               </li>
             );

@@ -1,4 +1,3 @@
-
 import { auth } from "@/auth";
 import { unlockUserAchievement } from "@/lib/achievement";
 import { NextResponse } from "next/server";
@@ -16,7 +15,7 @@ export async function POST(request: Request) {
     const result = await unlockUserAchievement(userId, achievementName);
 
     return NextResponse.json(result);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error("Error unlocking achievement:", error);
     return NextResponse.json(

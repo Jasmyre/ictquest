@@ -63,7 +63,7 @@ export default async function LandingPage() {
                 <Link href="/lessons">
                   <Button
                     size="lg"
-                    className="w-full bg-white text-indigo-600 hover:bg-gray-100 dark:bg-gray-200 dark:text-indigo-800 dark:hover:bg-gray-300 sm:w-auto"
+                    className="w-full bg-white text-indigo-600 hover:bg-gray-100 sm:w-auto dark:bg-gray-200 dark:text-indigo-800 dark:hover:bg-gray-300"
                   >
                     Explore Lessons
                     <ArrowRight className="ml-2 h-5 w-5" />
@@ -82,7 +82,7 @@ export default async function LandingPage() {
                       <Button
                         size="lg"
                         variant="outline"
-                        className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 dark:hover:bg-gray-200 dark:hover:text-indigo-800 sm:w-auto"
+                        className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 sm:w-auto dark:hover:bg-gray-200 dark:hover:text-indigo-800"
                       >
                         Sign Out
                       </Button>
@@ -92,7 +92,7 @@ export default async function LandingPage() {
                       <Button
                         size="lg"
                         variant="outline"
-                        className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 dark:hover:bg-gray-200 dark:hover:text-indigo-800 sm:w-auto"
+                        className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 sm:w-auto dark:hover:bg-gray-200 dark:hover:text-indigo-800"
                       >
                         Sign In
                       </Button>
@@ -110,7 +110,7 @@ export default async function LandingPage() {
                 height={400}
                 className="drop-shadow-2xl"
               />
-              <Zap className="absolute right-0 top-0 h-6 w-6 scale-[3.25] text-yellow-200 dark:text-yellow-300" />
+              <Zap className="absolute top-0 right-0 h-6 w-6 scale-[3.25] text-yellow-200 dark:text-yellow-300" />
             </div>
           </div>
         </div>
@@ -275,7 +275,7 @@ export default async function LandingPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="italic text-gray-600 dark:text-gray-300">
+                  <p className="text-gray-600 italic dark:text-gray-300">
                     &quot;{testimonial.quote}&quot;
                   </p>
                 </CardContent>
@@ -305,7 +305,7 @@ export default async function LandingPage() {
         </div>
 
         <Coffee className="animate-float absolute bottom-5 left-10 h-8 w-8 text-indigo-200 dark:text-indigo-300" />
-        <Code className="animate-float-delayed absolute right-10 top-5 h-10 w-10 text-indigo-200 dark:text-indigo-300" />
+        <Code className="animate-float-delayed absolute top-5 right-10 h-10 w-10 text-indigo-200 dark:text-indigo-300" />
       </section>
     </main>
   );

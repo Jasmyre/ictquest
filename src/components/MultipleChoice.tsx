@@ -73,13 +73,8 @@ export const MultipleChoice = ({
         setIsFinishedAction(false);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    choice,
-    choices.answer,
-    isResetEnabled,
-    setIsFinishedAction,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [choice, choices.answer, isResetEnabled, setIsFinishedAction]);
 
   const handleMultipleChoiceClick = (label: string) => {
     setChoice(label);
@@ -97,8 +92,6 @@ export const MultipleChoice = ({
     //     setIsFinishedAction(false);
     //   }
     // }
-
-    
   };
 
   const renderMessage = () => {

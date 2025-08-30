@@ -36,30 +36,30 @@ const loading = () => {
           </div>
         </header> */}
         <main>
-          <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="px-4 py-8 sm:px-0">
-              <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+              <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                 <CardHeader>
                   <CardTitle className="flex items-center text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                    <Loading className="sm:w-[600px] h-[32px]" />
+                    <Loading className="h-[32px] sm:w-[600px]" />
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex justify-center items-center">
-                    <Loading className="w-[500px] h-[400px]" />
+                  <div className="flex items-center justify-center">
+                    <Loading className="h-[400px] w-[500px]" />
                   </div>
                   <div className="space-y-6">
                     <span>
                       <br />
-                      <Loading className="sm:w-[250px] h-[16px]" />
+                      <Loading className="h-[16px] sm:w-[250px]" />
                       <br />
-                      <Loading className="sm:w-[80%] h-[16px]" />
+                      <Loading className="h-[16px] sm:w-[80%]" />
                       <br />
                     </span>
                     <span>
-                      <Loading className="sm:w-[325px] h-[16px]" />
+                      <Loading className="h-[16px] sm:w-[325px]" />
                       <br />
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         {achievements.map((_, index) => (
                           <Loading key={index++} className="h-[104px]" />
                         ))}

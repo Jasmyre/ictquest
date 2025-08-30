@@ -8,12 +8,12 @@ const getUserId = async (): Promise<string | null> => {
 };
 
 export const GET = async () => {
-    const id = await getUserId();
-    if (!id) {
-        return NextResponse.json(null)
-    }
+  const id = await getUserId();
+  if (!id) {
+    return NextResponse.json(null);
+  }
 
-    const users = await getUserStats(id);
+  const users = await getUserStats(id);
 
-    return NextResponse.json(users)
-}
+  return NextResponse.json(users);
+};

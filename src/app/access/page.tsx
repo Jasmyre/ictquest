@@ -1,12 +1,16 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getLocalStorageItem, removeLocalStorageItem, setLocalStorageItem } from "@/lib/utils";
+import {
+  getLocalStorageItem,
+  removeLocalStorageItem,
+  setLocalStorageItem,
+} from "@/lib/utils";
 import { Eye } from "lucide-react";
 import { useState } from "react";
 
-import React from 'react'
+import React from "react";
 
 const Page = () => {
   const [isAutoSkipEnabled, setIsAutoSkipEnabled] = useState<boolean>(
@@ -15,20 +19,20 @@ const Page = () => {
 
   const handleAutoSkip = async () => {
     if (isAutoSkipEnabled) {
-      removeLocalStorageItem("skip")
-      setIsAutoSkipEnabled((prev) => !prev)
+      removeLocalStorageItem("skip");
+      setIsAutoSkipEnabled((prev) => !prev);
     } else {
       setLocalStorageItem("skip", true);
-      setIsAutoSkipEnabled((prev) => !prev)
+      setIsAutoSkipEnabled((prev) => !prev);
     }
-  } 
+  };
 
   return (
     <main>
       <div className="min-h-[80vh] py-10">
         <header>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-gray-100">
+            <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-gray-100">
               ACCESS ROLE
             </h1>
           </div>
@@ -48,7 +52,9 @@ const Page = () => {
                 <CardContent>
                   <div>
                     <Button onClick={handleAutoSkip}>
-                      {isAutoSkipEnabled ? "Disable auto skip" : "Enable auto skip"}
+                      {isAutoSkipEnabled
+                        ? "Disable auto skip"
+                        : "Enable auto skip"}
                     </Button>
                   </div>
                 </CardContent>
@@ -59,6 +65,6 @@ const Page = () => {
       </div>
     </main>
   );
-}
+};
 
-export default Page
+export default Page;

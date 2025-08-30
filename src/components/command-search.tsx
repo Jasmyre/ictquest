@@ -47,7 +47,7 @@ type ItemsGroup = {
   items: ItemType[];
 };
 
-export function CommandSearch({className}: Readonly<{className?: string}>) {
+export function CommandSearch({ className }: Readonly<{ className?: string }>) {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
 
@@ -92,7 +92,7 @@ export function CommandSearch({className}: Readonly<{className?: string}>) {
         { icon: Home, name: "Home", action: () => "/" },
         { icon: User, name: "Profile", action: () => "/profile" },
         { icon: Book, name: "Lessons", action: () => "/lessons" },
-        { icon: Globe, name: "People", action: () => "/social/new"}
+        { icon: Globe, name: "People", action: () => "/social/new" },
       ],
     },
     ...lessonGroups,
@@ -102,7 +102,7 @@ export function CommandSearch({className}: Readonly<{className?: string}>) {
         { icon: Settings, name: "Settings", action: () => "/settings" },
         { icon: FileText, name: "Terms of use", action: () => "/terms" },
         { icon: Shield, name: "Privacy policy", action: () => "/privacy" },
-        { icon: Eye, name: "Access roles", action: () => "/access"}
+        { icon: Eye, name: "Access roles", action: () => "/access" },
       ],
     },
   ];
@@ -113,11 +113,12 @@ export function CommandSearch({className}: Readonly<{className?: string}>) {
         <Button
           variant="outline"
           className={cn(
-            "w-full justify-between border-gray-300 bg-gray-50 text-sm text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-900", className
+            "w-full justify-between border-gray-300 bg-gray-50 text-sm text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-900",
+            className,
           )}
           tabIndex={-1}
         >
-          <div className="flex min-w-min max-sm:w-full max-md:w-[150px] md:w-[150px] gap-4 items-center justify-between dark:text-gray-400">
+          <div className="flex min-w-min items-center justify-between gap-4 max-md:w-[150px] max-sm:w-full md:w-[150px] dark:text-gray-400">
             <div className="flex gap-4">Search</div>
             <Search className="h-4 w-4" />
           </div>
@@ -142,7 +143,7 @@ export function CommandSearch({className}: Readonly<{className?: string}>) {
                     <CommandItem
                       key={`${item.name}-${route}`}
                       onSelect={() => runCommand(item.action)}
-                      className="hover:bg-gray-200 cursor-pointer dark:hover:bg-gray-700"
+                      className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
                     >
                       <item.icon className="mr-2 h-4 w-4" />
                       <span>{item.name}</span>

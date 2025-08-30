@@ -1,8 +1,8 @@
-import { getUsersStats } from "@/data/user"
-import { NextResponse } from "next/server"
+import { getUsersStats } from "@/data/user";
+import { NextResponse } from "next/server";
 
 export const GET = async () => {
-    const users = await getUsersStats();
+  const users = await getUsersStats();
 
-    return NextResponse.json(users)
-}
+  return NextResponse.json(users);
+};

@@ -89,7 +89,7 @@ export default async function UserProfilePage({
 
   const resData = await res.json();
   const data: ProgressData[] = resData;
-  console.log(data)
+  console.log(data);
 
   return (
     <div className="py-10">
@@ -99,7 +99,7 @@ export default async function UserProfilePage({
           <CardContent className="relative pt-0">
             <div className="-mt-12 flex flex-col gap-6 md:-mt-16 md:flex-row md:items-end md:justify-between">
               <div className="flex flex-col items-start gap-4 md:flex-row md:items-end">
-                <Avatar className="h-24 w-24 border-4 border-white dark:border-gray-800 md:h-32 md:w-32">
+                <Avatar className="h-24 w-24 border-4 border-white md:h-32 md:w-32 dark:border-gray-800">
                   <AvatarImage
                     src={user?.avatar ?? undefined}
                     alt={user?.username ?? "unknown"}
@@ -240,7 +240,10 @@ export default async function UserProfilePage({
                       {user?.averageProgress}%
                     </span>
                   </div>
-                  <CustomProgress initialValue={0} finalValue={user?.averageProgress ?? 0} />
+                  <CustomProgress
+                    initialValue={0}
+                    finalValue={user?.averageProgress ?? 0}
+                  />
                 </div>
 
                 {lessons.map((lesson) => {

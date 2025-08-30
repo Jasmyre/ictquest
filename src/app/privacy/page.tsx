@@ -7,7 +7,7 @@ export default function PrivacyPolicyPage() {
       <div className="py-10">
         <header>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-gray-100">
+            <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-gray-100">
               Privacy Policy
             </h1>
           </div>
@@ -30,7 +30,7 @@ export default function PrivacyPolicyPage() {
                       safeguard your personal information.
                     </p>
 
-                    <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <h2 className="mt-6 mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
                       1. Information We Collect
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
@@ -40,7 +40,7 @@ export default function PrivacyPolicyPage() {
                       name, email address, and learning progress.
                     </p>
 
-                    <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <h2 className="mt-6 mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
                       2. Account Registration and Login
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
@@ -57,7 +57,7 @@ export default function PrivacyPolicyPage() {
                       respective privacy policies.
                     </p>
 
-                    <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <h2 className="mt-6 mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
                       3. How We Use Your Information
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
@@ -66,7 +66,7 @@ export default function PrivacyPolicyPage() {
                       personalize your learning experience.
                     </p>
 
-                    <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <h2 className="mt-6 mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
                       4. Information Sharing and Disclosure
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
@@ -76,7 +76,7 @@ export default function PrivacyPolicyPage() {
                       services on our behalf.
                     </p>
 
-                    <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <h2 className="mt-6 mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
                       5. Data Security
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
@@ -85,7 +85,7 @@ export default function PrivacyPolicyPage() {
                       access, disclosure, alteration, and destruction.
                     </p>
 
-                    <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <h2 className="mt-6 mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
                       6. Contact Us
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">

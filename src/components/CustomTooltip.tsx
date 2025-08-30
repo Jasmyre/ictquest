@@ -19,7 +19,11 @@ export const CustomTooltip = ({
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger className={cn("flex justify-start items-center", className)}>{children}</TooltipTrigger>
+        <TooltipTrigger
+          className={cn("flex items-center justify-start", className)}
+        >
+          {children}
+        </TooltipTrigger>
         <TooltipContent className="bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
           {content()}
         </TooltipContent>

@@ -11,10 +11,10 @@ async function main() {
     // { name: "First Steps", description: "Complete your first task." },
     // { name: "Marathon", description: "Play the game for 10 hours." },
     { name: "Newbie", description: "Start your first lesson." },
-    { name: "Beginner", description: "Level up as a beginner."},
-    { name: "Intermediate", description: "Level up as an intermediate."},
-    { name: "Expert", description: "Level up as an expert."},
-  ]
+    { name: "Beginner", description: "Level up as a beginner." },
+    { name: "Intermediate", description: "Level up as an intermediate." },
+    { name: "Expert", description: "Level up as an expert." },
+  ];
 
   for (const achievement of achievementsData) {
     const existingAchievement = await db.achievement.findUnique({

@@ -18,7 +18,7 @@ export default function Lesson({
   subtopic,
   isBackEnabled = true,
 }: Readonly<{ topic: string; subtopic: string; isBackEnabled?: boolean }>) {
-  console.log("is back enabled: ", isBackEnabled)
+  console.log("is back enabled: ", isBackEnabled);
   const { data: session, status } = useSession();
 
   const [achievementUnlocked, setAchievementUnlocked] = useState(false);
@@ -63,10 +63,12 @@ export default function Lesson({
       }
     };
 
-    console.log("corrects: ",numberOfCorrect);
-    console.log("incorrects: ",numberOfInCorrect);
+    console.log("corrects: ", numberOfCorrect);
+    console.log("incorrects: ", numberOfInCorrect);
     console.log("total: ", numberOfCorrect + numberOfInCorrect);
-    setUrl(`/compliments?topic=${topic}&subtopic=${subtopic}&correct=${numberOfCorrect}&incorrect=${numberOfInCorrect}`)
+    setUrl(
+      `/compliments?topic=${topic}&subtopic=${subtopic}&correct=${numberOfCorrect}&incorrect=${numberOfInCorrect}`,
+    );
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -115,17 +117,17 @@ export default function Lesson({
               <LessonCard>
                 <div className="flex min-h-[65vh] flex-col justify-between">
                   <div className="prose dark:prose-invert max-w-none">
-                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[100%]" />
+                    <Loading className="h-[16px] rounded-md bg-gray-300 sm:w-[100%] dark:bg-gray-700" />
                     <br />
-                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[100%]" />
+                    <Loading className="h-[16px] rounded-md bg-gray-300 sm:w-[100%] dark:bg-gray-700" />
                     <br />
-                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[98%]" />
+                    <Loading className="h-[16px] rounded-md bg-gray-300 sm:w-[98%] dark:bg-gray-700" />
                     <br />
-                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[95%]" />
+                    <Loading className="h-[16px] rounded-md bg-gray-300 sm:w-[95%] dark:bg-gray-700" />
                     <br />
-                    <Loading className="h-[16px] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[66%]" />
+                    <Loading className="h-[16px] rounded-md bg-gray-300 sm:w-[66%] dark:bg-gray-700" />
                     <br />
-                    <Loading className="h-[25vh] rounded-md bg-gray-300 dark:bg-gray-700 sm:w-[100%]" />
+                    <Loading className="h-[25vh] rounded-md bg-gray-300 sm:w-[100%] dark:bg-gray-700" />
                     <br />
                   </div>
                   <br />
@@ -190,7 +192,7 @@ export default function Lesson({
     <div className="py-10">
       <header>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-white">
+          <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-white">
             {lesson?.content[subtopic].title}
           </h1>
           <CustomProgress
@@ -212,7 +214,11 @@ export default function Lesson({
                     {item.type === "element" && (
                       <div>
                         {typeof item.label === "function"
-                          ? item.label({ setIsFinished, setNumberOfCorrect, setNumberOfInCorrect })
+                          ? item.label({
+                              setIsFinished,
+                              setNumberOfCorrect,
+                              setNumberOfInCorrect,
+                            })
                           : item.label}
                       </div>
                     )}

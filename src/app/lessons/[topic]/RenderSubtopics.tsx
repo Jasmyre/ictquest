@@ -15,7 +15,7 @@ import Loading from "@/components/Loading";
 
 export default function RenderSubtopics({
   paramsTopic,
-}: Readonly<{ paramsTopic: string; }>) {
+}: Readonly<{ paramsTopic: string }>) {
   const lesson = lessons.find((item) => item.slug === paramsTopic);
   const router = useRouter();
 
@@ -127,7 +127,7 @@ export default function RenderSubtopics({
       <div className="py-10">
         <header>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-gray-100">
+            <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-gray-100">
               {lesson.title}
             </h1>
             <p className="mt-2 text-lg text-gray-600 dark:text-gray-300">

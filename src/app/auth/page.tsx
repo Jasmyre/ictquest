@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,15 +14,14 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { signIn } from "next-auth/react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { LogInForm } from "../../components/LogInForm";
-import { SignupForm } from '../../components/SignupForm';
+import { SignupForm } from "../../components/SignupForm";
 
 export default function AuthPage() {
-
   const onClick = (provider: string) => {
     signIn(provider, {
-      callbackUrl: DEFAULT_LOGIN_REDIRECT
-    })
-  }
+      callbackUrl: DEFAULT_LOGIN_REDIRECT,
+    });
+  };
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center max-sm:px-4">
@@ -68,8 +67,8 @@ export default function AuthPage() {
 
           <div className="mt-6 flex flex-col gap-10">
             <div className="relative">
-              <Separator className="absolute bottom-[50%] left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] bg-gray-400" />
-              <span className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] bg-gray-50 px-4 text-gray-800 dark:bg-gray-800 dark:text-gray-400">
+              <Separator className="absolute top-[50%] bottom-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-gray-400" />
+              <span className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-gray-50 px-4 text-gray-800 dark:bg-gray-800 dark:text-gray-400">
                 OR
               </span>
             </div>
@@ -79,7 +78,7 @@ export default function AuthPage() {
                 className="relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
                 onClick={() => onClick("google")}
               >
-                <FaGoogle className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
+                <FaGoogle className="absolute top-[50%] bottom-[50%] left-8 translate-x-[-50%] translate-y-[-50%]" />
                 <span>Continue with Google</span>
               </Button>
               {/* <TooltipProvider>
@@ -104,7 +103,7 @@ export default function AuthPage() {
                 onClick={() => onClick("github")}
                 disabled
               >
-                <FaGithub className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
+                <FaGithub className="absolute top-[50%] bottom-[50%] left-8 translate-x-[-50%] translate-y-[-50%]" />
                 <span>Continue with Github</span>
               </Button>
             </div>

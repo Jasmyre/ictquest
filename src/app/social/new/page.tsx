@@ -35,7 +35,7 @@ async function page() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-3xl font-bold leading-tight text-gray-900 dark:text-white">
+              <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-white">
                 Community
               </h1>
               <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
@@ -44,7 +44,7 @@ async function page() {
             </div>
             <div className="relative w-full md:w-80">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                 <Input
                   placeholder="Search Users..."
                   className="w-full border-gray-200 bg-white pl-9 focus-visible:ring-indigo-600 dark:border-gray-700 dark:bg-gray-800"
@@ -98,8 +98,8 @@ async function page() {
                               alt={user.username!}
                             />
                             <AvatarFallback className="bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
-                              {String(user
-                                .username!).split(" ")
+                              {String(user.username!)
+                                .split(" ")
                                 .map((n) => n[0])
                                 .join("")}
                             </AvatarFallback>

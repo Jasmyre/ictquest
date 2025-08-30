@@ -79,7 +79,7 @@ export function ProgressCard() {
   return (
     <Card className="w-full border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
       <CardHeader>
-        <CardTitle className="flex flex-wrap items-center justify-between gap-4 text-2xl font-semibold text-gray-900 dark:text-gray-100 max-sm:flex-col max-sm:items-start max-sm:gap-4">
+        <CardTitle className="flex flex-wrap items-center justify-between gap-4 text-2xl font-semibold text-gray-900 max-sm:flex-col max-sm:items-start max-sm:gap-4 dark:text-gray-100">
           <div className="flex min-w-min flex-wrap items-center justify-start">
             <Book className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
             Learning Progress
