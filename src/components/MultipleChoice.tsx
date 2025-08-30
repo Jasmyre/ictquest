@@ -73,6 +73,7 @@ export const MultipleChoice = ({
         setIsFinishedAction(false);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     choice,
     choices.answer,

@@ -1,43 +1,37 @@
 "use client";
 
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { LogInSchema } from "@/schemas";
+import { register } from "@/actions/Register";
+import { registerSchema } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { login } from "@/actions/Login";
-
 import { useState, useTransition } from "react";
-
+import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { FormError } from "./FormError";
+import { Button } from "./ui/button";
+import { Form, FormField, FormItem, FormLabel } from "./ui/form";
+import { Input } from "./ui/input";
 import { FormSuccess } from "./FormSuccess";
-import { useSearchParams } from "next/navigation";
+import { FormError } from "./FormError";
 
-export const LogInForm = () => {
+export const SignupForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
 
-  const searchParams = useSearchParams()
-  const urlError = searchParams.get("error") === "OAuthAccountNotLinked" ? "Email already in use with different provider!" : "";
-
-  const form = useForm<z.infer<typeof LogInSchema>>({
-    resolver: zodResolver(LogInSchema),
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LogInSchema>) => {
+  const onSubmit = (values: z.infer<typeof registerSchema>) => {
     setSuccess("");
     setError("");
-    
-    startTransition(() => {
-      login(values).then((data) => {
 
+    startTransition(() => {
+      register(values).then((data) => {
         setSuccess(data?.success);
         setError(data?.error);
       });
@@ -47,6 +41,23 @@ export const LogInForm = () => {
   return (
     <Form {...form}>
       <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <Input
+                {...field}
+                id="name"
+                type="text"
+                className="mt-1 border-gray-400 dark:border-gray-600"
+                placeholder="Johnny Bravo"
+              />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="email"
@@ -80,14 +91,14 @@ export const LogInForm = () => {
             </FormItem>
           )}
         />
-        <FormError message={error ?? urlError} />
+        <FormError message={error} />
         <FormSuccess message={success} />
         <Button
           type="submit"
           className="w-full bg-indigo-500 hover:bg-indigo-400"
           disabled={isPending}
         >
-          Sign In
+          Sign Up
         </Button>
       </form>
     </Form>

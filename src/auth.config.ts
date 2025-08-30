@@ -1,7 +1,7 @@
 import type { NextAuthConfig } from "next-auth";
 
-import { LogInSchema } from "./schemas";
-import { getUserByEmail } from "./data/user";
+import { LogInSchema } from "@/schemas";
+import { getUserByEmail } from "@/data/user";
 
 import Google from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";

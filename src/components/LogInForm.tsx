@@ -1,38 +1,45 @@
 "use client";
 
-import { register } from "@/actions/Register";
-import { registerSchema } from "@/schemas";
+import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { LogInSchema } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Button } from "./ui/button";
-import { Form, FormField, FormItem, FormLabel } from "./ui/form";
-import { Input } from "./ui/input";
-import { FormSuccess } from "./FormSuccess";
-import { FormError } from "./FormError";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { login } from "@/actions/Login";
 
-export const SignupForm = () => {
+import { useState, useTransition } from "react";
+
+import * as z from "zod";
+import { FormError } from "./FormError";
+import { FormSuccess } from "./FormSuccess";
+import { useSearchParams } from "next/navigation";
+
+export const LogInForm = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
 
-  const form = useForm<z.infer<typeof registerSchema>>({
-    resolver: zodResolver(registerSchema),
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email already in use with different provider!"
+      : "";
+
+  const form = useForm<z.infer<typeof LogInSchema>>({
+    resolver: zodResolver(LogInSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof registerSchema>) => {
+  const onSubmit = (values: z.infer<typeof LogInSchema>) => {
     setSuccess("");
     setError("");
-    
-    startTransition(() => {
-      register(values).then((data) => {
 
+    startTransition(() => {
+      login(values).then((data) => {
         setSuccess(data?.success);
         setError(data?.error);
       });
@@ -42,23 +49,6 @@ export const SignupForm = () => {
   return (
     <Form {...form}>
       <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <Input
-                {...field}
-                id="name"
-                type="text"
-                className="mt-1 border-gray-400 dark:border-gray-600"
-                placeholder="Johnny Bravo"
-              />
-            </FormItem>
-          )}
-        />
-
         <FormField
           control={form.control}
           name="email"
@@ -92,14 +82,14 @@ export const SignupForm = () => {
             </FormItem>
           )}
         />
-        <FormError message={error}  />
+        <FormError message={error ?? urlError} />
         <FormSuccess message={success} />
         <Button
           type="submit"
           className="w-full bg-indigo-500 hover:bg-indigo-400"
           disabled={isPending}
         >
-          Sign Up
+          Sign In
         </Button>
       </form>
     </Form>

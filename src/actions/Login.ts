@@ -36,7 +36,7 @@ export const login = async (values: z.infer<typeof LogInSchema>) => {
       }
     }
 
-    throw error
+    throw error;
   }
 
   return { success: "Email sent!" };
