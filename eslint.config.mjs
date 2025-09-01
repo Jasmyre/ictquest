@@ -10,12 +10,47 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...compat.extends(
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:testing-library/react",
+    "plugin:jest-dom/recommended",
+  ),
   {
-    ignores: [
-      "node_modules/",
-      "components/ui/"
-    ],
+    ignores: ["node_modules/", "components/ui/"],
+  },
+  {
+    files: ["**/*.ts", "**/*.tsx"],
+    rules: {
+      "@typescript-eslint/explicit-function-return-type": [
+        "error",
+        {
+          allowExpressions: true,
+          allowTypedFunctionExpressions: true,
+          allowHigherOrderFunctions: true,
+          allowDirectConstAssertionInArrowFunctions: true,
+          allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+        },
+      ],
+
+      "@typescript-eslint/naming-convention": [
+        "error",
+        {
+          selector: "variable",
+          modifiers: ["destructured"],
+          format: null,
+        },
+        {
+          selector: "property",
+          modifiers: ["requiresQuotes"],
+          format: ["camelCase", "PascalCase", "UPPER_CASE"],
+        },
+      ],
+
+      "@typescript-eslint/no-floating-promises": "error",
+
+      "@typescript-eslint/unbound-method": "off",
+    },
   },
 ];
 
