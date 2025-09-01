@@ -45,7 +45,7 @@ export default async function LandingPage() {
 
   return (
     <main>
-      <section className="relative overflow-hidden rounded-lg bg-gradient-to-br from-indigo-600 to-purple-700 py-20 text-white dark:from-indigo-900 dark:to-purple-950">
+      <section className="relative overflow-visible rounded-lg bg-gradient-to-br from-indigo-600 to-purple-700 py-20 text-white dark:from-indigo-900 dark:to-purple-950">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center gap-4 lg:flex-row-reverse">
             <div className="z-10 lg:w-1/2 lg:pr-10">

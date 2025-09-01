@@ -1,12 +1,15 @@
+"use client";
+
 import { SessionProvider } from "next-auth/react";
 import Compliment from "./compliment";
+import { Suspense, use } from "react";
 
-export default async function ComplimentsPage({
+export default function ComplimentsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ correct: string; incorrect: string }>;
+  searchParams: Promise<{ correct?: string; incorrect?: string }>;
 }) {
-  const { correct, incorrect } = await searchParams;
+  const { correct, incorrect } = use(searchParams);
 
   const image = [
     "https://fonts.gstatic.com/s/e/notoemoji/latest/1f929/512.gif",
@@ -27,33 +30,15 @@ export default async function ComplimentsPage({
 
   const randomImage = image[Math.floor(Math.random() * image.length)];
 
-  // const compliments = [
-  //   { text: "Great job! You've mastered the basics of HTML!", icon: Trophy },
-  //   {
-  //     text: "Fantastic work! Your coding skills are improving rapidly!",
-  //     icon: Star,
-  //   },
-  //   { text: "You're on fire! Keep up the excellent progress!", icon: ThumbsUp },
-  //   {
-  //     text: "",
-  //     icon: Heart,
-  //   },
-  //   {
-  //     text: "Outstanding performance! You should be proud of yourself!",
-  //     icon: Smile,
-  //   },
-  // ];
-
-  // const compliment =
-  //     compliments[Math.floor(Math.random() * compliments.length)];
-
   return (
-    <SessionProvider>
-      <Compliment
-        img={randomImage}
-        correct={Number(correct)}
-        incorrect={Number(incorrect)}
-      />
-    </SessionProvider>
+    <Suspense fallback={<div>Loading...</div>}>
+      <SessionProvider>
+        <Compliment
+          correct={Number(correct ?? 0)}
+          incorrect={Number(incorrect ?? 0)}
+          img={randomImage}
+        />
+      </SessionProvider>
+    </Suspense>
   );
 }

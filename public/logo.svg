@@ -1,0 +1,30 @@
+<svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6A5ACD" />
+      <stop offset="100%" stop-color="#4169E1" />
+    </linearGradient>
+    <linearGradient id="screenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2D2B55" />
+      <stop offset="100%" stop-color="#3D3B75" />
+    </linearGradient>
+  </defs>
+
+  <!-- Group all shapes so we can center + scale -->
+  <g transform="translate(-25,-25) scale(1.5)">
+    <!-- Main monitor shape -->
+    <rect x="20" y="25" width="60" height="40" rx="3" fill="url(#mainGradient)" />
+    
+    <!-- Screen -->
+    <rect x="25" y="30" width="50" height="30" rx="2" fill="url(#screenGradient)" />
+    
+    <!-- Code brackets -->
+    <path d="M40 40 L45 45 L40 50 M60 40 L55 45 L60 50" stroke="#9370DB" stroke-width="1.5" fill="none" />
+    
+    <!-- Coding dots -->
+    <circle cx="50" cy="48" r="1.5" fill="#A890F0" />
+    
+    <!-- Monitor base -->
+    <rect x="40" y="65" width="20" height="5" rx="1" fill="url(#mainGradient)" />
+  </g>
+</svg>
