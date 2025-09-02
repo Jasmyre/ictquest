@@ -7,6 +7,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  reactStrictMode: true,
   images: {
     remotePatterns: [
       {
@@ -34,7 +35,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default async function () {
+export default async function config(): Promise<NextConfig> {
   // Skip env validation during tests or when explicitly requested
   if (process.env.NODE_ENV !== "test" && !process.env.SKIP_ENV_VALIDATION) {
     await import("./src/env.js");
