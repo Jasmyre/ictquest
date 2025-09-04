@@ -10,7 +10,7 @@ import { login } from "@/actions/Login";
 
 import { useState, useTransition } from "react";
 
-import * as z from "zod";
+import type * as z from "zod";
 import { FormError } from "./FormError";
 import { FormSuccess } from "./FormSuccess";
 import { useSearchParams } from "next/navigation";

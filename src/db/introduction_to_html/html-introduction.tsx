@@ -2,7 +2,7 @@ import Browser from "@/components/Browser";
 import CodeBlock from "@/components/Code";
 import { Practice } from "@/components/Practice";
 import { shuffle } from "@/lib/utils";
-import { LessonContent } from "../lessons";
+import type { LessonContent } from "../lessons";
 
 import Image from "next/image";
 import CodeHighlight from "@/components/CodeHighlight";

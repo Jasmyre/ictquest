@@ -26,6 +26,7 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "@/components/ui",
     ],
   },
   ...compat.extends(
@@ -35,7 +36,7 @@ const eslintConfig = [
     "plugin:jest-dom/recommended",
   ),
   {
-    ignores: ["node_modules/", "components/ui/"],
+    ignores: ["node_modules/", "src/components/ui/"],
   },
   {
     files: ["**/*.ts", "**/*.tsx"],
@@ -65,8 +66,17 @@ const eslintConfig = [
         },
       ],
 
-      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/no-floating-promises": [
+        "error",
+        { ignoreIIFE: true },
+      ],
       "@typescript-eslint/unbound-method": "off",
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          fixStyle: "inline-type-imports",
+        },
+      ],
     },
   },
 ];

@@ -1,9 +1,11 @@
+import type { JSX } from "react";
+
 import { FileText, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import Link from "next/link";
 
-export async function Footer() {
+export async function Footer(): Promise<JSX.Element> {
   return (
     <footer
       className={cn(

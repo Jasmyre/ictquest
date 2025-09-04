@@ -35,6 +35,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import type { JSX } from "react";
 
 type ItemType = {
   icon: React.ElementType;
@@ -47,12 +48,12 @@ type ItemsGroup = {
   items: ItemType[];
 };
 
-export function CommandSearch({ className }: Readonly<{ className?: string }>) {
+export function CommandSearch({ className }: Readonly<{ className?: string }>): JSX.Element {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
 
   React.useEffect(() => {
-    const down = (e: KeyboardEvent) => {
+    const down = (e: KeyboardEvent): void => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen((open) => !open);

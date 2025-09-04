@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import lessons from "@/db/lessons";
 import { toast } from "@/hooks/use-toast";
 import { toastDescription, toastStyle } from "@/lib/utils";
-import { ProgressData } from "@prisma/client";
+import type { ProgressData } from "@prisma/client";
 import { motion } from "framer-motion";
 import { CheckCircle2, Star, Target, XCircle } from "lucide-react";
 import { useSession } from "next-auth/react";

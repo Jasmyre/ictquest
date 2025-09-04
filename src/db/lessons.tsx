@@ -1,4 +1,4 @@
-import { JSX } from "react";
+import type { JSX } from "react";
 
 import { beyondHTML } from "./html_advanced_elements/beyond-html";
 import { htmlAdvancedElements } from "./html_advanced_elements/html-advanced-elements";
@@ -50,14 +50,14 @@ export const lessons: Lesson[] = [
       "Introduction to HTML, its History, and HTML Document structure",
     slug: "introduction-to-html",
     topics: [
-      { name: "HTML Introduction", slug: "html-introduction" },
-      { name: "HTML Brief Examples", slug: "html-brief-examples" },
-      { name: "HTML Document Structure", slug: "html-document-structure" },
+      { name: "HTML Introduction", slug: "html_introduction" },
+      { name: "HTML Brief Examples", slug: "html_brief_examples" },
+      { name: "HTML Document Structure", slug: "html_document_structure" },
     ],
     content: {
-      "html-introduction": htmlIntroduction,
-      "html-brief-examples": htmlBriefExample,
-      "html-document-structure": htmlDocumentStructure,
+      "html_introduction": htmlIntroduction,
+      "html_brief_examples": htmlBriefExample,
+      "html_document_structure": htmlDocumentStructure,
     },
   },
 
@@ -66,14 +66,14 @@ export const lessons: Lesson[] = [
     description: "Learn different HTML elements",
     slug: "html-elements",
     topics: [
-      { name: "HTML Typography", slug: "html-typography" },
-      { name: "HTML Containers", slug: "html-containers" },
-      { name: "HTML Media Elements", slug: "html-media-elements" },
+      { name: "HTML Typography", slug: "html_typography" },
+      { name: "HTML Containers", slug: "html_containers" },
+      { name: "HTML Media Elements", slug: "html_media_elements" },
     ],
     content: {
-      "html-typography": htmlTypography,
-      "html-containers": htmlContainers,
-      "html-media-elements": htmlMediaElements,
+      "html_typography": htmlTypography,
+      "html_containers": htmlContainers,
+      "html_media_elements": htmlMediaElements,
     },
   },
 
@@ -87,9 +87,9 @@ export const lessons: Lesson[] = [
       { name: "Beyond HyperText Mark-up Language", slug: "beyond-html" },
     ],
     content: {
-      "html-advanced-elements": htmlAdvancedElements,
-      "html-form": htmlForm,
-      "beyond-html": beyondHTML,
+      "html_advanced_elements": htmlAdvancedElements,
+      "html_form": htmlForm,
+      "beyond_html": beyondHTML,
     },
   },
 

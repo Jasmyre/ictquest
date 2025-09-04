@@ -6,7 +6,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "../components/theme-provider";
 import { Toaster } from "../components/ui/toaster";
 
-import { NavigationBar, NavItem } from "../components/ui/navigation-bar";
+import type { NavItem } from "../components/ui/navigation-bar";
+import { NavigationBar } from "../components/ui/navigation-bar";
 import { Book, Home, Users, FileText, Shield } from "lucide-react";
 
 import "@/styles/globals.css";

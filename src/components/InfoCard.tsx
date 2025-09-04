@@ -11,7 +11,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { toastStyle } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";

@@ -4,7 +4,7 @@ import CodeHighlight from "@/components/CodeHighlight";
 import { DifficultyParagraph } from "@/components/DifficultyParagraph";
 import { Practice } from "@/components/Practice";
 import { shuffle } from "@/lib/utils";
-import { LessonContent } from "../lessons";
+import type { LessonContent } from "../lessons";
 
 export const htmlTypography: LessonContent = {
   title: "HTML Typography",

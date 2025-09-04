@@ -1,6 +1,6 @@
 import CodeBlock from "@/components/Code";
 import CodeHighlight from "@/components/CodeHighlight";
-import { LessonContent } from "../lessons";
+import type { LessonContent } from "../lessons";
 import Browser from "@/components/Browser";
 
 export const htmlForm: LessonContent = {

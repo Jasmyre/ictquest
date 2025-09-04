@@ -1,6 +1,7 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import type { JSX, ReactNode} from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/router";
 import { ArrowLeft } from "lucide-react";
@@ -11,7 +12,7 @@ const PreviousButton = ({
 }: {
   children?: ReactNode;
   disabled?: boolean;
-}) => {
+}): JSX.Element | null => {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
 

@@ -27,7 +27,12 @@ import { env } from "process";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+export const createTRPCContext = async (opts: {
+  headers: Headers;
+}): Promise<{
+  headers: Headers;
+  db: typeof db;
+}> => {
   return {
     db,
     ...opts,

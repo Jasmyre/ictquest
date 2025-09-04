@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react";
 
-export function useScrollDirection() {
+export function useScrollDirection(): boolean {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = (): void => {
       const currentScrollY = window.scrollY;
 
       if (currentScrollY < 100) {

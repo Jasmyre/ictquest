@@ -1,7 +1,7 @@
 import React from "react";
 import { Skeleton } from "./ui/skeleton";
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export default function Loading({
   className,

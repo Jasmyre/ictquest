@@ -1,6 +1,6 @@
 import Browser from "@/components/Browser";
 import CodeBlock from "@/components/Code";
-import { LessonContent } from "../lessons";
+import type { LessonContent } from "../lessons";
 
 export const beyondHTML: LessonContent = {
   title: "Beyond HTML",

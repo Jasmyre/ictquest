@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-export function cn(...inputs: ClassValue[]) {
+export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
 }
 
@@ -21,7 +21,7 @@ export const shuffle = <T>(array: T[]): T[] => {
   return array;
 };
 
-export const wait = (time: number) => {
+export const wait = (time: number): Promise<unknown> => {
   return new Promise((res) => setTimeout(res, time));
 };
 
@@ -76,7 +76,7 @@ export const clearLocalStorage = (): void => {
 export const toastStyle =
   "border border-gray-400 dark:border-gray-700 text-gray-500 dark:text-gray-bg-gray-100 dark:bg-gray-900 border border-gray-400 dark:border-gray-700 text-gray-500 dark:text-gray-200";
 
-export const toastDescription = (name: string, description: string) => {
+export const toastDescription = (name: string, description: string): string => {
   return `${name} - ${description}`;
 };
 

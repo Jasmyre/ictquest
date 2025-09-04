@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ProgressData } from "@prisma/client";
+import type { ProgressData } from "@prisma/client";
 import BackButton from "@/components/BackButton";
 import Loading from "@/components/Loading";
 
