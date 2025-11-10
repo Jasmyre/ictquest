@@ -17,7 +17,11 @@ export default function Lesson({
   topic,
   subtopic,
   isBackEnabled = true,
-}: Readonly<{ topic: string; subtopic: string; isBackEnabled?: boolean }>): JSX.Element {
+}: Readonly<{
+  topic: string;
+  subtopic: string;
+  isBackEnabled?: boolean;
+}>): JSX.Element {
   console.log("is back enabled: ", isBackEnabled);
   const { data: session, status } = useSession();
 
@@ -79,7 +83,7 @@ export default function Lesson({
     try {
       const response = await fetch("/api/achievements", {
         method: "POST",
-        headers: new Headers({"Content-Type": "application/json"}),
+        headers: new Headers({ "Content-Type": "application/json" }),
         body: JSON.stringify({ achievementName: "Newbie" }),
       });
       const result = await response.json();

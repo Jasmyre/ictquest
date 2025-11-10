@@ -1,5 +1,5 @@
 import Prism from "prismjs";
-import type { ReactNode} from "react";
+import type { ReactNode } from "react";
 import React, { useEffect } from "react";
 import { Button } from "./ui/button";
 

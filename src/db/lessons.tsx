@@ -55,9 +55,9 @@ export const lessons: Lesson[] = [
       { name: "HTML Document Structure", slug: "html_document_structure" },
     ],
     content: {
-      "html_introduction": htmlIntroduction,
-      "html_brief_examples": htmlBriefExample,
-      "html_document_structure": htmlDocumentStructure,
+      html_introduction: htmlIntroduction,
+      html_brief_examples: htmlBriefExample,
+      html_document_structure: htmlDocumentStructure,
     },
   },
 
@@ -71,9 +71,9 @@ export const lessons: Lesson[] = [
       { name: "HTML Media Elements", slug: "html_media_elements" },
     ],
     content: {
-      "html_typography": htmlTypography,
-      "html_containers": htmlContainers,
-      "html_media_elements": htmlMediaElements,
+      html_typography: htmlTypography,
+      html_containers: htmlContainers,
+      html_media_elements: htmlMediaElements,
     },
   },
 
@@ -87,9 +87,9 @@ export const lessons: Lesson[] = [
       { name: "Beyond HyperText Mark-up Language", slug: "beyond-html" },
     ],
     content: {
-      "html_advanced_elements": htmlAdvancedElements,
-      "html_form": htmlForm,
-      "beyond_html": beyondHTML,
+      html_advanced_elements: htmlAdvancedElements,
+      html_form: htmlForm,
+      beyond_html: beyondHTML,
     },
   },
 

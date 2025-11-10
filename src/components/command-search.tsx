@@ -48,7 +48,9 @@ type ItemsGroup = {
   items: ItemType[];
 };
 
-export function CommandSearch({ className }: Readonly<{ className?: string }>): JSX.Element {
+export function CommandSearch({
+  className,
+}: Readonly<{ className?: string }>): JSX.Element {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
 

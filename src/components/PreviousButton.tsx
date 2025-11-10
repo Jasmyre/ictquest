@@ -1,6 +1,6 @@
 "use client";
 
-import type { JSX, ReactNode} from "react";
+import type { JSX, ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/router";
