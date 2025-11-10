@@ -5,7 +5,7 @@ type AchievementsProps = {
   description: string;
 };
 
-async function main() {
+async function main(): Promise<void> {
   const achievementsData: AchievementsProps[] = [
     // { name: "Clicktastic", description: "Click 1000 times." },
     // { name: "First Steps", description: "Complete your first task." },

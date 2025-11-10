@@ -7,7 +7,19 @@ import { AuthError } from "next-auth";
 
 import type * as z from "zod";
 
-export const login = async (values: z.infer<typeof LogInSchema>) => {
+export const login = async (
+  values: z.infer<typeof LogInSchema>,
+): Promise<
+  | {
+      error: string;
+      success?: undefined;
+      resetValues?: () => void;
+    }
+  | {
+      success: string;
+      error?: undefined;
+    }
+> => {
   const validatedFields = LogInSchema.safeParse(values);
 
   if (!validatedFields.success) {

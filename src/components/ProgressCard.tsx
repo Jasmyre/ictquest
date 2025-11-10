@@ -43,7 +43,9 @@ export function ProgressCard(): JSX.Element {
       };
 
       await fetchData();
-    })();
+    })().catch((error) => {
+      console.error("useEffect failed", error);
+    });
   }, []);
 
   useEffect(() => {

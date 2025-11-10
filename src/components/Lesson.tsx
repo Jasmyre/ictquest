@@ -10,14 +10,14 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Prism from "prismjs";
-import { useEffect, useState } from "react";
+import { type JSX, useEffect, useState } from "react";
 import Loading from "./Loading";
 
 export default function Lesson({
   topic,
   subtopic,
   isBackEnabled = true,
-}: Readonly<{ topic: string; subtopic: string; isBackEnabled?: boolean }>) {
+}: Readonly<{ topic: string; subtopic: string; isBackEnabled?: boolean }>): JSX.Element {
   console.log("is back enabled: ", isBackEnabled);
   const { data: session, status } = useSession();
 
@@ -63,8 +63,8 @@ export default function Lesson({
       }
     };
 
-    console.log("corrects: ", numberOfCorrect);
-    console.log("incorrects: ", numberOfInCorrect);
+    console.log("correct: ", numberOfCorrect);
+    console.log("incorrect: ", numberOfInCorrect);
     console.log("total: ", numberOfCorrect + numberOfInCorrect);
     setUrl(
       `/compliments?topic=${topic}&subtopic=${subtopic}&correct=${numberOfCorrect}&incorrect=${numberOfInCorrect}`,
@@ -75,11 +75,11 @@ export default function Lesson({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, isFinished]);
 
-  async function unlockAchievement() {
+  async function unlockAchievement(): Promise<void> {
     try {
       const response = await fetch("/api/achievements", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: new Headers({"Content-Type": "application/json"}),
         body: JSON.stringify({ achievementName: "Newbie" }),
       });
       const result = await response.json();

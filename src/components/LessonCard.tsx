@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 
 const LessonCard = ({
   children,
@@ -9,7 +9,7 @@ const LessonCard = ({
 }: {
   children: ReactNode;
   className?: string;
-}) => {
+}): JSX.Element => {
   return (
     <Card
       className={cn(

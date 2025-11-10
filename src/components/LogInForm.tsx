@@ -8,14 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { login } from "@/actions/Login";
 
-import { useState, useTransition } from "react";
-
+import { type JSX, useState, useTransition } from "react";
 import type * as z from "zod";
+
 import { FormError } from "./FormError";
 import { FormSuccess } from "./FormSuccess";
 import { useSearchParams } from "next/navigation";
 
-export const LogInForm = () => {
+export const LogInForm = (): JSX.Element => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
@@ -34,12 +34,12 @@ export const LogInForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LogInSchema>) => {
+  const onSubmit = (values: z.infer<typeof LogInSchema>): void => {
     setSuccess("");
     setError("");
 
-    startTransition(() => {
-      login(values).then((data) => {
+    startTransition(async () => {
+      await login(values).then((data) => {
         setSuccess(data?.success);
         setError(data?.error);
       });

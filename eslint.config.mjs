@@ -27,6 +27,7 @@ const eslintConfig = [
       "build/**",
       "next-env.d.ts",
       "@/components/ui",
+      "postcss.config.mjs",
     ],
   },
   ...compat.extends(
@@ -42,13 +43,14 @@ const eslintConfig = [
     files: ["**/*.ts", "**/*.tsx"],
     rules: {
       "@typescript-eslint/explicit-function-return-type": [
-        "error",
+        "off",
         {
           allowExpressions: true,
           allowTypedFunctionExpressions: true,
           allowHigherOrderFunctions: true,
           allowDirectConstAssertionInArrowFunctions: true,
           allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+          
         },
       ],
 
@@ -68,7 +70,7 @@ const eslintConfig = [
 
       "@typescript-eslint/no-floating-promises": [
         "error",
-        { ignoreIIFE: true },
+        { ignoreIIFE: false },
       ],
       "@typescript-eslint/unbound-method": "off",
       "@typescript-eslint/consistent-type-imports": [

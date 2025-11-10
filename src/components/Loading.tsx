@@ -1,13 +1,13 @@
 import React from "react";
 import { Skeleton } from "./ui/skeleton";
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 
 export default function Loading({
   className,
   children,
   ...props
-}: Readonly<{ children?: ReactNode; className?: string }>) {
+}: Readonly<{ children?: ReactNode; className?: string }>): JSX.Element {
   return (
     <Skeleton
       className={cn(

@@ -12,11 +12,13 @@ const Confetti = () => {
 
   useEffect(() => {
     if (showConfetti) {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
+      (async function () {
+        await confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+        });
+      })();
     }
   }, [showConfetti]);
   return (

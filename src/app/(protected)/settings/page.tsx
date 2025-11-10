@@ -2,7 +2,7 @@ import React from "react";
 
 import { auth } from "@/auth";
 
-const page = async () => {
+const page = async (): Promise<React.ReactNode> => {
   const session = await auth();
 
   return (

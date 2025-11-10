@@ -19,6 +19,7 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { type JSX } from "react";
 
 interface InfoCardProps {
   name?: string | null;
@@ -33,7 +34,7 @@ const formSchema = z.object({
     .max(16, { message: "Name must contain at most 16 character(s)." }),
 });
 
-export const InfoCard = ({ user }: InfoCardProps) => {
+export const InfoCard = ({ user }: InfoCardProps): JSX.Element => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,16 +42,16 @@ export const InfoCard = ({ user }: InfoCardProps) => {
     },
   });
 
-  const handleUpdate = () => {
+  const handleUpdate = (): void => {
     toast({
       description: "User name updated.",
       className: toastStyle,
     });
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
     handleUpdate();
-    updateUserName(values.username);
+    await updateUserName(values.username);
   }
 
   return (
