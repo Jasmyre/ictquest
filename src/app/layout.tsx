@@ -12,6 +12,7 @@ import { Book, Home, Users, FileText, Shield, User } from "lucide-react";
 
 import "@/styles/globals.css";
 import { Footer } from "@/components/footer";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -77,34 +78,38 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  "use cache";
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-background antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NavigationBar
-            navItems={getNavItems()}
-            pageItems={getPageItems()}
-            title="ICTQuest"
-            enableBlock={true}
-          />
-          <main className="mx-auto max-w-7xl px-4 py-6 dark:bg-gray-900">
-            {children}
-          </main>
-          <Footer />
-          <Toaster />
-        </ThemeProvider>
+        <Suspense>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <NavigationBar
+              navItems={getNavItems()}
+              pageItems={getPageItems()}
+              title="ICTQuest"
+              enableBlock={true}
+            />
+            <main className="mx-auto max-w-7xl px-4 py-6 dark:bg-gray-900">
+              {children}
+            </main>
+            <Footer />
+            <Toaster />
+          </ThemeProvider>
+        </Suspense>
         <Analytics />
         <SpeedInsights />
       </body>
@@ -127,7 +132,7 @@ function getNavItems(): NavItem[] {
     {
       name: "Profile",
       href: "/profile",
-      icon: <User />
+      icon: <User />,
     },
     {
       name: "People",
