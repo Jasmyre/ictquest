@@ -8,7 +8,7 @@ import { Toaster } from "../components/ui/toaster";
 
 import type { NavItem } from "../components/ui/navigation-bar";
 import { NavigationBar } from "../components/ui/navigation-bar";
-import { Book, Home, Users, FileText, Shield } from "lucide-react";
+import { Book, Home, Users, FileText, Shield, User } from "lucide-react";
 
 import "@/styles/globals.css";
 import { Footer } from "@/components/footer";
@@ -123,6 +123,11 @@ function getNavItems(): NavItem[] {
       name: "Lessons",
       href: "/lessons",
       icon: <Book />,
+    },
+    {
+      name: "Profile",
+      href: "/profile",
+      icon: <User />
     },
     {
       name: "People",
