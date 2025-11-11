@@ -21,11 +21,13 @@ import {
   Trophy,
   UserPlus,
 } from "lucide-react";
+import { cacheLife } from "next/dist/server/use-cache/cache-life";
 import Link from "next/link";
 
-export const revalidate = 60;
-
 async function page() {
+  "use cache";
+  cacheLife("minutes");
+
   const users = await getUsersStats();
   console.log(users);
 
