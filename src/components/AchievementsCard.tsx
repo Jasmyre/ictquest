@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toastDescription } from "@/lib/utils";
-import { UserAchievement } from "@prisma/client";
+import type { UserAchievement } from "@prisma/client";
 import { Award } from "lucide-react";
 import { useEffect, useState } from "react";
 

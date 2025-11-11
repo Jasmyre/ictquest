@@ -1,9 +1,22 @@
 import { db } from "@/lib/db";
 
+interface UnlockUserAchievement {
+  message: string;
+  achievement: {
+    id: number;
+    userId: string;
+    achievementId: number;
+    achievementName: string;
+    achievementDescription: string;
+    unlockedAt: Date;
+  };
+  status: string;
+}
+
 export async function unlockUserAchievement(
   userId: string | null | undefined,
   achievementName: string,
-) {
+): Promise<UnlockUserAchievement> {
   if (!userId) {
     throw new Error("Invalid user id");
   }

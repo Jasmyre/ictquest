@@ -1,15 +1,10 @@
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
-enum UserRole {
-  ADMIN
-  USER
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Post {
@@ -21,16 +16,15 @@ model Post {
   @@index([name])
 }
 
-
 model User {
   id               String            @id @default(cuid())
   name             String
-  userName         String?
   email            String?           @unique
   emailVerified    DateTime?
   image            String?
   password         String?
   role             UserRole          @default(USER)
+  userName         String?
   accounts         Account[]
   progressData     ProgressData[]
   userAchievements UserAchievement[]
@@ -41,8 +35,7 @@ model ProgressData {
   userId    String
   topic     String
   subtopics String[]
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -51,15 +44,14 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -75,13 +67,18 @@ model Achievement {
 
 model UserAchievement {
   id                     Int         @id @default(autoincrement())
-  user                   User        @relation(fields: [userId], references: [id])
   userId                 String
-  achievement            Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
   achievementId          Int
-  achievementName        String      @default("Unknown Achievement")
-  achievementDescription String      @default("Unknown Achievement")
   unlockedAt             DateTime    @default(now())
+  achievementDescription String      @default("Unknown Achievement")
+  achievementName        String      @default("Unknown Achievement")
+  achievement            Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  user                   User        @relation(fields: [userId], references: [id])
 
   @@unique([userId, achievementId])
+}
+
+enum UserRole {
+  ADMIN
+  USER
 }

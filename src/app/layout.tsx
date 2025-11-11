@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 
-import { Geist, Geist_Mono } from "next/font/google";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { ThemeProvider } from "../components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "../components/theme-provider";
 import { Toaster } from "../components/ui/toaster";
 
-import Layout from "./components/layout";
+import type { NavItem } from "../components/ui/navigation-bar";
+import { NavigationBar } from "../components/ui/navigation-bar";
+import { Book, Home, Users, FileText, Shield, User } from "lucide-react";
 
-import "./globals.css";
+import "@/styles/globals.css";
+import { Footer } from "@/components/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -82,10 +85,24 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-background antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <Layout>{children}</Layout>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NavigationBar
+            navItems={getNavItems()}
+            pageItems={getPageItems()}
+            title="ICTQuest"
+            enableBlock={true}
+          />
+          <main className="mx-auto max-w-7xl px-4 py-6 dark:bg-gray-900">
+            {children}
+          </main>
+          <Footer />
           <Toaster />
         </ThemeProvider>
         <Analytics />
@@ -93,4 +110,44 @@ export default function RootLayout({
       </body>
     </html>
   );
+}
+
+function getNavItems(): NavItem[] {
+  return [
+    {
+      name: "Home",
+      href: "/",
+      icon: <Home />,
+    },
+    {
+      name: "Lessons",
+      href: "/lessons",
+      icon: <Book />,
+    },
+    {
+      name: "Profile",
+      href: "/profile",
+      icon: <User />
+    },
+    {
+      name: "People",
+      href: "/social/new",
+      icon: <Users />,
+    },
+  ];
+}
+
+function getPageItems() {
+  return [
+    {
+      name: "Terms of use",
+      href: "/terms",
+      icon: <FileText />,
+    },
+    {
+      name: "Privacy policy",
+      href: "/privacy",
+      icon: <Shield />,
+    },
+  ];
 }

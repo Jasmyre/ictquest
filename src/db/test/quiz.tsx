@@ -1,5 +1,5 @@
 import { MultipleChoice } from "@/components/MultipleChoice";
-import { LessonContent } from "../lessons";
+import type { LessonContent } from "../lessons";
 import { shuffle } from "@/lib/utils";
 import { Practice } from "@/components/Practice";
 

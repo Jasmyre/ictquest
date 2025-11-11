@@ -1,12 +1,15 @@
 "use client";
 
+import type { JSX } from "react";
+
 import { CustomBadge } from "@/components/CustomBadge";
 import { CustomProgress } from "@/components/CustomProgress";
 import { CustomTooltip } from "@/components/CustomTooltip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import lessons from "@/db/lessons";
 import { Book } from "lucide-react";
 import { useEffect, useState } from "react";
+
+import lessons from "@/db/lessons";
 
 interface ProgressData {
   id: string;
@@ -15,30 +18,34 @@ interface ProgressData {
   subtopics: string[];
 }
 
-export function ProgressCard() {
+export function ProgressCard(): JSX.Element {
   const [overallProgress, setOverallProgress] = useState(0);
   const [data, setData] = useState<ProgressData[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const res = await fetch("/api/public/progress");
-        if (!res.ok) {
-          console.error("Failed to fetch progress from DB");
-          return;
+    (async () => {
+      const fetchData = async (): Promise<void> => {
+        setIsLoading(true);
+        try {
+          const res = await fetch("/api/public/progress");
+          if (!res.ok) {
+            console.error("Failed to fetch progress from DB");
+            return;
+          }
+          const fetchedData: ProgressData[] = await res.json();
+          setData(fetchedData);
+        } catch (error) {
+          console.error("Error fetching progress:", error);
+        } finally {
+          setIsLoading(false);
         }
-        const fetchedData: ProgressData[] = await res.json();
-        setData(fetchedData);
-      } catch (error) {
-        console.error("Error fetching progress:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      };
 
-    fetchData();
+      await fetchData();
+    })().catch((error) => {
+      console.error("useEffect failed", error);
+    });
   }, []);
 
   useEffect(() => {

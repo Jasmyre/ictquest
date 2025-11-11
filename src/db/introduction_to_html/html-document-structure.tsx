@@ -1,7 +1,7 @@
 import Browser from "@/components/Browser";
 import CodeBlock from "@/components/Code";
 import CodeHighlight from "@/components/CodeHighlight";
-import { LessonContent } from "../lessons";
+import type { LessonContent } from "../lessons";
 
 export const htmlDocumentStructure: LessonContent = {
   title: "Understanding HTML Document Structure",

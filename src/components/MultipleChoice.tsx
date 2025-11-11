@@ -2,7 +2,7 @@
 
 import { CircleAlert, RotateCcw } from "lucide-react";
 import Prism from "prismjs";
-import React, { useCallback, useState } from "react";
+import React, { type JSX, useCallback, useState } from "react";
 import { MultipleChoiceButton } from "./MultipleChoiceButton";
 import { Button } from "./ui/button";
 
@@ -28,7 +28,7 @@ export const MultipleChoice = ({
     negative?: string;
     positive?: string;
   };
-}) => {
+}): JSX.Element => {
   const [choice, setChoice] = useState("");
   const [disabledButtons, setDisabledButtons] = useState<string[]>([]);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
@@ -45,7 +45,7 @@ export const MultipleChoice = ({
   React.useEffect(() => {
     Prism.highlightAll();
 
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: KeyboardEvent): void => {
       console.log(event.key);
       if (event.key === "Backspace") {
         handleReset();
@@ -76,7 +76,7 @@ export const MultipleChoice = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [choice, choices.answer, isResetEnabled, setIsFinishedAction]);
 
-  const handleMultipleChoiceClick = (label: string) => {
+  const handleMultipleChoiceClick = (label: string): void => {
     setChoice(label);
     setDisabledButtons(choices.options.filter((option) => option !== label));
 
@@ -94,7 +94,7 @@ export const MultipleChoice = ({
     // }
   };
 
-  const renderMessage = () => {
+  const renderMessage = (): JSX.Element | null => {
     if (!choice) return null;
 
     if (choice === correctChoice) {

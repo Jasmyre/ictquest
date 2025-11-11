@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import lessons from "@/db/lessons";
 import { Book } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { type JSX, useEffect, useState } from "react";
 
 interface ProgressData {
   id: string;
@@ -17,7 +17,7 @@ interface ProgressData {
   subtopics: string[];
 }
 
-export function LearningProgressCard() {
+export function LearningProgressCard(): JSX.Element {
   const [overallProgress, setOverallProgress] = useState<number>(0);
   const [data, setData] = useState<ProgressData[] | null>(null);
   const router = useRouter();

@@ -1,8 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 
+import type { DefaultArgs } from "@prisma/client/runtime/library";
 import { env } from "@/env";
 
-const createPrismaClient = () =>
+const createPrismaClient = (): PrismaClient<
+  {
+    log: ("error" | "query" | "warn")[];
+  },
+  "error" | "query" | "warn",
+  DefaultArgs
+> =>
   new PrismaClient({
     log:
       env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],

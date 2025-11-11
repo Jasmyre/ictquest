@@ -1,18 +1,21 @@
 "use client";
 
-import { register } from "@/actions/Register";
+import type { JSX } from "react";
+
+import type * as z from "zod";
+
+import { Form, FormField, FormItem, FormLabel } from "./ui/form";
+import { useState, useTransition } from "react";
 import { registerSchema } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Button } from "./ui/button";
-import { Form, FormField, FormItem, FormLabel } from "./ui/form";
-import { Input } from "./ui/input";
 import { FormSuccess } from "./FormSuccess";
 import { FormError } from "./FormError";
+import { register } from "@/actions/Register";
+import { useForm } from "react-hook-form";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
-export const SignupForm = () => {
+export const SignupForm = (): JSX.Element => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
@@ -26,12 +29,12 @@ export const SignupForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof registerSchema>) => {
+  const onSubmit = (values: z.infer<typeof registerSchema>): void => {
     setSuccess("");
     setError("");
 
-    startTransition(() => {
-      register(values).then((data) => {
+    startTransition(async () => {
+      await register(values).then((data) => {
         setSuccess(data?.success);
         setError(data?.error);
       });

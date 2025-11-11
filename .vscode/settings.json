@@ -19,6 +19,7 @@
     "ictquest",
     "loremflickr",
     "maintenancu",
+    "Merriweather",
     "NEXTAUTH",
     "Noto",
     "oklch",
@@ -26,6 +27,7 @@
     "projectbrief",
     "Segoe",
     "shadcn",
+    "stylesheet",
     "textareas",
     "turbopack",
     "typesafety",
@@ -35,6 +37,7 @@
     "vercel",
     "videofile",
     "Vint",
+    "wip",
     "Zuckerberg"
   ],
   "typescript.tsdk": "node_modules\\typescript\\lib"

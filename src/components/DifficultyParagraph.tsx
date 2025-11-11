@@ -1,5 +1,7 @@
-import React, { ReactNode } from "react";
-import { CustomBadge, CustomBadgeColorProps } from "./CustomBadge";
+import type { ReactNode } from "react";
+import React from "react";
+import type { CustomBadgeColorProps } from "./CustomBadge";
+import { CustomBadge } from "./CustomBadge";
 import { cn } from "@/lib/utils";
 
 export const DifficultyParagraph = ({

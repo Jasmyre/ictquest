@@ -1,5 +1,6 @@
 import Prism from "prismjs";
-import React, { ReactNode, useEffect } from "react";
+import type { ReactNode } from "react";
+import React, { useEffect } from "react";
 import { Button } from "./ui/button";
 
 const ButtonChoice = ({
@@ -32,7 +33,7 @@ const ButtonChoice = ({
       disabled={disabled}
       onClick={onClick}
       variant={"outline"}
-      className="text-accent-foreground max-w-[100vw] rounded border border-gray-200 bg-gray-700 px-6 py-2 text-wrap text-gray-200 hover:bg-[#282C34] hover:brightness-200 max-md:text-white dark:border-gray-700 hover:dark:brightness-125"
+      className="max-w-[100vw] rounded border border-gray-200 bg-gray-700 px-6 py-2 text-wrap text-gray-200 hover:bg-[#282C34] hover:brightness-200 max-md:text-white dark:border-gray-700 hover:dark:brightness-125"
       {...props}
     >
       <pre

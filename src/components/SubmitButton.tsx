@@ -1,12 +1,17 @@
-import React from "react";
+import type { JSX } from "react";
+
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
+
+import React from "react";
 
 interface SubmitButtonProps {
   label: string;
 }
 
-const SubmitButton = ({ label = "continue" }: SubmitButtonProps) => {
+const SubmitButton = ({
+  label = "continue",
+}: SubmitButtonProps): JSX.Element => {
   return (
     <Button className="w-max border-none bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-600">
       {label}

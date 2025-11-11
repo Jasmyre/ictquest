@@ -2,7 +2,8 @@
 
 import { setSessionStorageItem } from "@/lib/utils";
 import { CircleAlert, RotateCcw } from "lucide-react";
-import React, { JSX, useCallback, useEffect, useState } from "react";
+import type { JSX } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Browser from "./Browser";
 import ButtonChoice from "./ButtonChoice";
 import CodeBlock from "./Code";
@@ -43,7 +44,7 @@ export const Practice = ({
   title,
   initialCode = ["", ""],
   response = { negative: "Incorrect, Please try again!" },
-}: PracticeProps) => {
+}: PracticeProps): JSX.Element => {
   const hint = true;
   const [code, setCode] = useState<string>("");
   const [disabledButtons, setDisabledButtons] = useState<string[]>([]);
@@ -71,7 +72,7 @@ export const Practice = ({
       setIsFinishedAction(false);
     }
 
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: KeyboardEvent): void => {
       console.log(event.key);
       if (event.key === "Backspace") {
         handleReset();
@@ -114,7 +115,7 @@ export const Practice = ({
     hasSubmitted,
   ]);
 
-  const handleClick = (label: string, priority: number) => {
+  const handleClick = (label: string, priority: number): void => {
     setCode((prevCode) => {
       const newCode = prevCode + label;
       if (newCode === choices?.answer) {
@@ -126,7 +127,7 @@ export const Practice = ({
     setDisabledButtons((prevDisabled) => [...prevDisabled, label + priority]);
   };
 
-  const renderMessage = () => {
+  const renderMessage = (): JSX.Element | null => {
     if (disabledButtons.length !== shuffledData?.length || !code) return null;
 
     if (

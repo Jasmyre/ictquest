@@ -1,11 +1,11 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { type JSX, Suspense, useState } from "react";
 import { LearningProgressCard } from "@/components/LearningProgressCard";
 import { AchievementsCard } from "@/components/AchievementsCard";
 import { DeleteDataCard } from "@/components/DeleteDataCard";
 import { InfoCard } from "./InfoCard";
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
 interface ProfileCardGridProps {
   name?: string | null;
@@ -13,10 +13,10 @@ interface ProfileCardGridProps {
   user: Prisma.UserCreateInput;
 }
 
-export function ProfileCardGrid({ user }: ProfileCardGridProps) {
+export function ProfileCardGrid({ user }: ProfileCardGridProps): JSX.Element {
   const [refreshKey, setRefreshKey] = useState<number>(1);
 
-  const handleRefresh = () => {
+  const handleRefresh = (): void => {
     setRefreshKey((prev) => prev + 1);
   };
 

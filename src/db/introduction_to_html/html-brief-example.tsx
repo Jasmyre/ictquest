@@ -2,7 +2,7 @@ import Browser from "@/components/Browser";
 import CodeHighlight from "@/components/CodeHighlight";
 import { Practice } from "@/components/Practice";
 import { shuffle } from "@/lib/utils";
-import { LessonContent } from "../lessons";
+import type { LessonContent } from "../lessons";
 
 export const htmlBriefExample: LessonContent = {
   title: "HTML Brief Examples",

@@ -1,7 +1,22 @@
 import lessons from "@/db/lessons";
+
+import type { $Enums } from "@prisma/client";
 import { db } from "@/lib/db";
 
-export const getUserByEmail = async (email: string) => {
+interface GetUserByEmail {
+  name: string;
+  id: string;
+  image: string | null;
+  email: string | null;
+  role: $Enums.UserRole;
+  userName: string | null;
+  emailVerified: Date | null;
+  password: string | null;
+}
+
+export const getUserByEmail = async (
+  email: string,
+): Promise<GetUserByEmail | null> => {
   try {
     const user = await db.user.findUnique({
       where: {
@@ -16,7 +31,18 @@ export const getUserByEmail = async (email: string) => {
   }
 };
 
-export const getUserById = async (id: string) => {
+interface GetUserByID {
+  name: string;
+  id: string;
+  userName: string | null;
+  email: string | null;
+  emailVerified: Date | null;
+  image: string | null;
+  password: string | null;
+  role: $Enums.UserRole;
+}
+
+export const getUserById = async (id: string): Promise<GetUserByID | null> => {
   try {
     const user = await db.user.findUnique({
       where: {
@@ -31,7 +57,13 @@ export const getUserById = async (id: string) => {
   }
 };
 
-export const getAllUsers = async () => {
+interface GetAllUsers {
+  id: string;
+  userName: string | null;
+  image: string | null;
+}
+
+export const getAllUsers = async (): Promise<GetAllUsers[] | null> => {
   try {
     const users = await db.user.findMany({
       select: {
@@ -49,7 +81,7 @@ export const getAllUsers = async () => {
   }
 };
 
-export const getAllUserAchievements = async () => {
+export const getAllUserAchievements = async (): Promise<string[] | null> => {
   try {
     const userAchievements = await db.userAchievement.findMany({
       select: {
@@ -80,7 +112,7 @@ export interface GetUsersStats {
   averageProgress: number;
 }
 
-export const getUsersStats = async () => {
+export const getUsersStats = async (): Promise<GetUsersStats[]> => {
   try {
     const users = await db.user.findMany({
       select: {
@@ -150,7 +182,19 @@ export const getUsersStats = async () => {
   }
 };
 
-export const getUserStats = async (userId: string) => {
+interface GetUserStats {
+  username: string | null;
+  id: string;
+  avatar: string | null;
+  numberOfAchievements: number;
+  numberOfSubtopics: number;
+  level: string;
+  averageProgress: number;
+}
+
+export const getUserStats = async (
+  userId: string,
+): Promise<GetUserStats | null> => {
   try {
     const user = await db.user.findUnique({
       where: { id: userId },

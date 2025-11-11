@@ -1,19 +1,19 @@
 "use client";
 
+import { CustomBadge } from "@/components/CustomBadge";
 import { CustomProgress } from "@/components/CustomProgress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import lessons from "@/db/lessons";
 import { toast } from "@/hooks/use-toast";
 import { toastDescription, toastStyle } from "@/lib/utils";
-import { ProgressData } from "@prisma/client";
+import type { ProgressData } from "@prisma/client";
 import { motion } from "framer-motion";
 import { CheckCircle2, Star, Target, XCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Confetti from "../../components/Confetti";
 import ContinueLearningButton from "../../components/ContinueLearningButton";
-import { CustomBadge } from "@/components/CustomBadge";
 
 // const achievements = [
 //   {
@@ -51,6 +51,9 @@ export default function Compliment({
   const [achievementUnlocked, setAchievementUnlocked] = useState(false);
   const [overallProgress, setOverallProgress] = useState(0);
   const [data, setData] = useState<ProgressData[] | null>(null);
+
+  // const correct = Number(searchParam.get("correct") ?? 0);
+  // const incorrect = Number(searchParam.get("incorrect") ?? 0);
 
   const { data: session, status } = useSession();
 
@@ -168,7 +171,6 @@ export default function Compliment({
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-6 md:grid-cols-1">
-                    {/* Left Column - Score Details */}
                     <div className="space-y-6">
                       <div>
                         <h3 className="mb-2 flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
@@ -381,9 +383,11 @@ export default function Compliment({
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 1 }}
                   >
-                    <ContinueLearningButton
-                      disabled={status === "loading" ? true : false}
-                    />
+                    <Suspense fallback={<div>Loading...</div>}>
+                      <ContinueLearningButton
+                        disabled={status === "loading" ? true : false}
+                      />
+                    </Suspense>
                   </motion.div>
                 </CardContent>
               </Card>

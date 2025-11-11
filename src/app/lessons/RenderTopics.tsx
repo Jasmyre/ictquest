@@ -12,15 +12,15 @@ export default function RenderTopics() {
     <main>
       <div className="min-h-[80vh] py-10">
         <header>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
             <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-gray-100">
               HTML Lessons
             </h1>
           </div>
         </header>
         <main>
-          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="px-4 py-8 sm:px-0">
+          <div className="mx-auto max-w-7xl">
+            <div className="py-8">
               <div className="mb-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 {lessons
                   .filter((lesson) => lesson.slug !== "test")

@@ -1,4 +1,4 @@
-import { LessonContent } from "../lessons";
+import type { LessonContent } from "../lessons";
 
 export const whatIsHTML: LessonContent = {
   title: "What is HTML?",

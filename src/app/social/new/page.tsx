@@ -11,7 +11,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getUsersStats } from "@/data/user";
-// import { baseUrl } from "@/lib/utils";
 import {
   Ban,
   Flag,
@@ -21,11 +20,13 @@ import {
   Trophy,
   UserPlus,
 } from "lucide-react";
+import { cacheLife } from "next/dist/server/use-cache/cache-life";
 import Link from "next/link";
 
-export const revalidate = 60;
-
 async function page() {
+  "use cache";
+  cacheLife("minutes");
+
   const users = await getUsersStats();
   console.log(users);
 
