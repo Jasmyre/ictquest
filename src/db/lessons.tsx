@@ -99,7 +99,7 @@ export const lessons: Lesson[] = [
     slug: "test",
     topics: [{ name: "Quiz", slug: "quiz" }],
     content: {
-      quiz: quiz,
+      quiz,
     },
   },
 

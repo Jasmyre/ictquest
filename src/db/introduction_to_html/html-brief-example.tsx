@@ -100,10 +100,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -165,10 +165,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -221,7 +221,7 @@ export const htmlBriefExample: LessonContent = {
               options: [
                 { label: `<img src="/img.png"`, priority: 1 },
                 { label: ` alt="A beautiful scene"`, priority: 2 },
-                { label: ` />`, priority: 3 },
+                { label: " />", priority: 3 },
               ],
               answer: `<img src="/img.png" alt="A beautiful scene" />`,
               initialCode: [
@@ -232,10 +232,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -287,7 +287,7 @@ export const htmlBriefExample: LessonContent = {
               options: [
                 { label: `<a href="https://example.com">`, priority: 1 },
                 { label: "Visit Example", priority: 2 },
-                { label: `</a>`, priority: 3 },
+                { label: "</a>", priority: 3 },
               ],
               answer: `<a href="https://example.com">Visit Example</a>`,
               initialCode: [
@@ -298,10 +298,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -352,13 +352,14 @@ export const htmlBriefExample: LessonContent = {
           }) => {
             const choices = {
               options: [
-                { label: `<ul>\n  `, priority: 1 },
-                { label: `<li>Home</li>\n  `, priority: 2 },
-                { label: `<li>About</li>\n  `, priority: 3 },
-                { label: `<li>Contact</li>\n`, priority: 4 },
-                { label: `</ul>`, priority: 5 },
+                { label: "<ul>\n  ", priority: 1 },
+                { label: "<li>Home</li>\n  ", priority: 2 },
+                { label: "<li>About</li>\n  ", priority: 3 },
+                { label: "<li>Contact</li>\n", priority: 4 },
+                { label: "</ul>", priority: 5 },
               ],
-              answer: `<ul>\n  <li>Home</li>\n  <li>About</li>\n  <li>Contact</li>\n</ul>`,
+              answer:
+                "<ul>\n  <li>Home</li>\n  <li>About</li>\n  <li>Contact</li>\n</ul>",
               initialCode: [
                 '<body>\n  <h1>Welcome to My Website</h1>\n  <p>This is my first webpage.</p>\n  <img src="/img.png" alt="A beautiful scene" />\n  <a href="https://example.com">Visit Example</a>\n  ',
                 "\n</body>",
@@ -373,10 +374,10 @@ export const htmlBriefExample: LessonContent = {
                 </p>
                 <br />
                 <Practice
+                  choices={choices}
+                  setIsFinishedAction={setIsFinished}
                   setNumberOfCorrectAction={setNumberOfCorrect}
                   setNumberOfInCorrectAction={setNumberOfInCorrect}
-                  setIsFinishedAction={setIsFinished}
-                  choices={choices}
                   shuffledData={shuffledData}
                 />
               </div>
@@ -462,10 +463,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -518,10 +519,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -577,10 +578,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -636,10 +637,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -695,10 +696,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -754,10 +755,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -816,10 +817,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -877,10 +878,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -936,10 +937,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -991,10 +992,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -1050,10 +1051,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -1111,10 +1112,10 @@ export const htmlBriefExample: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );

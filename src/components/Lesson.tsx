@@ -1,16 +1,16 @@
 "use client";
 
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Prism from "prismjs";
+import { type JSX, useEffect, useState } from "react";
 import { CustomProgress } from "@/components/CustomProgress";
 import LessonCard from "@/components/LessonCard";
 import { Button } from "@/components/ui/button";
 import { lessons } from "@/db/lessons";
 import { toast } from "@/hooks/use-toast";
 import { getLocalStorageItem, toastDescription, toastStyle } from "@/lib/utils";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import Prism from "prismjs";
-import { type JSX, useEffect, useState } from "react";
 import Loading from "./Loading";
 
 export default function Lesson({
@@ -71,7 +71,7 @@ export default function Lesson({
     console.log("incorrect: ", numberOfInCorrect);
     console.log("total: ", numberOfCorrect + numberOfInCorrect);
     setUrl(
-      `/compliments?topic=${topic}&subtopic=${subtopic}&correct=${numberOfCorrect}&incorrect=${numberOfInCorrect}`,
+      `/compliments?topic=${topic}&subtopic=${subtopic}&correct=${numberOfCorrect}&incorrect=${numberOfInCorrect}`
     );
 
     window.addEventListener("keydown", handleKeyDown);
@@ -92,7 +92,7 @@ export default function Lesson({
           title: "NEW ACHIEVEMENT UNLOCKED!",
           description: toastDescription(
             result.achievement.achievementName,
-            result.achievement.achievementDescription,
+            result.achievement.achievementDescription
           ),
           className: toastStyle,
         });
@@ -113,7 +113,7 @@ export default function Lesson({
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <Loading className="h-[16px] rounded-md sm:w-[325px]" />
               <br />
-              <CustomProgress initialValue={0} finalValue={0} delay={0} />
+              <CustomProgress delay={0} finalValue={0} initialValue={0} />
             </div>
           </header>
           <main className="mt-10">
@@ -196,14 +196,14 @@ export default function Lesson({
     <div className="py-10">
       <header>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-white">
+          <h1 className="font-bold text-3xl text-gray-900 leading-tight dark:text-white">
             {lesson?.content[subtopic].title}
           </h1>
           <CustomProgress
             classname="mt-4"
-            initialValue={singleProgress * index - singleProgress}
-            finalValue={singleProgress * index}
             delay={0}
+            finalValue={singleProgress * index}
+            initialValue={singleProgress * index - singleProgress}
           />
         </div>
       </header>
@@ -235,18 +235,20 @@ export default function Lesson({
                 className={`${isBackEnabled === true ? "justify-between" : "justify-end"} mt-6 flex`}
               >
                 <Button
-                  className={`hover:text-900 border border-gray-200 bg-white text-gray-600 shadow-sm ${isBackEnabled === true ? "opacity-100" : "hidden opacity-0"} hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200`}
-                  variant="outline"
-                  onClick={handleBackButton}
+                  className={`border border-gray-200 bg-white text-gray-600 shadow-sm hover:text-900 ${isBackEnabled === true ? "opacity-100" : "hidden opacity-0"} hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200`}
                   disabled={index === 0}
+                  onClick={handleBackButton}
+                  variant="outline"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Back
                 </Button>
                 <Button
-                  onClick={handleNextButton}
-                  className={`bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600`}
+                  className={
+                    "bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
+                  }
                   disabled={!isFinished}
+                  onClick={handleNextButton}
                 >
                   {contents.submit.label}
                   <ArrowRight className="ml-2 h-4 w-4" />

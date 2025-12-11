@@ -1,8 +1,7 @@
 import { SessionProvider } from "next-auth/react";
 import { Suspense } from "react";
-
-import Loading from "./subtopicLoading";
 import Lesson from "@/components/Lesson";
+import Loading from "./subtopicLoading";
 
 export default async function page({
   params,
@@ -42,7 +41,7 @@ const RenderLessons = async ({
 
   return (
     <SessionProvider>
-      <Lesson topic={topic} subtopic={subtopic} isBackEnabled={!!enabledBack} />
+      <Lesson isBackEnabled={!!enabledBack} subtopic={subtopic} topic={topic} />
     </SessionProvider>
   );
 };

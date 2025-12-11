@@ -15,7 +15,7 @@ interface UnlockUserAchievement {
 
 export async function unlockUserAchievement(
   userId: string | null | undefined,
-  achievementName: string,
+  achievementName: string
 ): Promise<UnlockUserAchievement> {
   if (!userId) {
     throw new Error("Invalid user id");

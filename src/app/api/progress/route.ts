@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
 import { auth } from "@/auth";
+import { db } from "@/lib/db";
 
 const getUserId = async (): Promise<string | null> => {
   const session = await auth();
@@ -23,7 +23,7 @@ export async function GET() {
     console.error(error);
     return NextResponse.json(
       { error: "Failed to fetch progress" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
@@ -48,13 +48,13 @@ export async function DELETE() {
     if (err.code === "P2025") {
       return NextResponse.json(
         { error: "No progress record found with that ID" },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
     return NextResponse.json(
       { error: "Failed to delete progress" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
@@ -80,21 +80,20 @@ export async function POST(request: Request) {
         return NextResponse.json(updated);
       }
       return NextResponse.json(existing);
-    } else {
-      const newEntry = await db.progressData.create({
-        data: {
-          userId,
-          topic,
-          subtopics: [subtopic],
-        },
-      });
-      return NextResponse.json(newEntry);
     }
+    const newEntry = await db.progressData.create({
+      data: {
+        userId,
+        topic,
+        subtopics: [subtopic],
+      },
+    });
+    return NextResponse.json(newEntry);
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { error: "Failed to create progress" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

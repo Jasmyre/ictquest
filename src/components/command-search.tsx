@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
   Book,
   Circle,
@@ -14,9 +13,9 @@ import {
   User,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-
-import lessons from "@/db/lessons";
-
+import type { JSX } from "react";
+import * as React from "react";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -25,17 +24,14 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-import { Button } from "@/components/ui/button";
+import lessons from "@/db/lessons";
 import { cn } from "@/lib/utils";
-import type { JSX } from "react";
 
 type ItemType = {
   icon: React.ElementType;
@@ -72,21 +68,24 @@ export function CommandSearch({
       router.push(path);
       setOpen(false);
     },
-    [router],
+    [router]
   );
 
-  const lessonGroups = React.useMemo<ItemsGroup[]>(() => {
-    return lessons
-      .filter((lesson) => lesson.topics && lesson.topics.length > 0)
-      .map((lesson) => ({
-        category: lesson.title,
-        items: lesson.topics.map((topic) => ({
-          icon: Circle,
-          name: topic.name,
-          action: () => `/lessons/subtopic/${topic.slug}?topic=${lesson.slug}`,
+  const lessonGroups = React.useMemo<ItemsGroup[]>(
+    () =>
+      lessons
+        .filter((lesson) => lesson.topics && lesson.topics.length > 0)
+        .map((lesson) => ({
+          category: lesson.title,
+          items: lesson.topics.map((topic) => ({
+            icon: Circle,
+            name: topic.name,
+            action: () =>
+              `/lessons/subtopic/${topic.slug}?topic=${lesson.slug}`,
+          })),
         })),
-      }));
-  }, []);
+    []
+  );
 
   const commandGroups: ItemsGroup[] = [
     {
@@ -111,17 +110,17 @@ export function CommandSearch({
   ];
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
         <Button
-          variant="outline"
           className={cn(
-            "w-full justify-between border-gray-300 bg-gray-50 text-sm text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-900",
-            className,
+            "w-full justify-between border-gray-300 bg-gray-50 text-gray-700 text-sm hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-900",
+            className
           )}
           tabIndex={-1}
+          variant="outline"
         >
-          <div className="flex min-w-min items-center justify-between gap-4 max-md:w-[150px] max-sm:w-full md:w-[150px] dark:text-gray-400">
+          <div className="flex min-w-min items-center justify-between gap-4 max-sm:w-full max-md:w-[150px] md:w-[150px] dark:text-gray-400">
             <div className="flex gap-4">Search</div>
             <Search className="h-4 w-4" />
           </div>
@@ -131,22 +130,22 @@ export function CommandSearch({
         <span className="sr-only">Search Command</span>
       </DialogTitle>
       <DialogContent
-        className="border-none p-0 max-sm:top-[225px]"
         aria-describedby="Search box dialog content"
+        className="border-none p-0 max-sm:top-[225px]"
       >
         <Command className="rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-900">
           <CommandInput placeholder="Type a command or search" />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             {commandGroups.map((group) => (
-              <CommandGroup key={group.category} heading={group.category}>
+              <CommandGroup heading={group.category} key={group.category}>
                 {group.items.map((item) => {
                   const route = item.action();
                   return (
                     <CommandItem
+                      className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
                       key={`${item.name}-${route}`}
                       onSelect={() => runCommand(item.action)}
-                      className="cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
                     >
                       <item.icon className="mr-2 h-4 w-4" />
                       <span>{item.name}</span>

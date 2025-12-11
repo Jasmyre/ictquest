@@ -1,17 +1,17 @@
 "use client";
 
+import type { ProgressData } from "@prisma/client";
+import { motion } from "framer-motion";
+import { CheckCircle2, Star, Target, XCircle } from "lucide-react";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { Suspense, useEffect, useState } from "react";
 import { CustomBadge } from "@/components/CustomBadge";
 import { CustomProgress } from "@/components/CustomProgress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import lessons from "@/db/lessons";
 import { toast } from "@/hooks/use-toast";
 import { toastDescription, toastStyle } from "@/lib/utils";
-import type { ProgressData } from "@prisma/client";
-import { motion } from "framer-motion";
-import { CheckCircle2, Star, Target, XCircle } from "lucide-react";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-import { useEffect, useState, Suspense } from "react";
 import Confetti from "../../components/Confetti";
 import ContinueLearningButton from "../../components/ContinueLearningButton";
 
@@ -129,7 +129,7 @@ export default function Compliment({
           title: "NEW ACHIEVEMENT UNLOCKED!",
           description: toastDescription(
             result.achievement.achievementName,
-            result.achievement.achievementDescription,
+            result.achievement.achievementDescription
           ),
           className: toastStyle,
         });
@@ -155,14 +155,14 @@ export default function Compliment({
             <div className="px-4 py-8 sm:px-0">
               <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                 <CardHeader>
-                  <CardTitle className="flex items-center text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                  <CardTitle className="flex items-center font-semibold text-2xl text-gray-900 dark:text-gray-100">
                     <motion.div
-                      initial={{ rotate: -10, scale: 0.5 }}
                       animate={{ rotate: 0, scale: 1 }}
-                      transition={{ duration: 0.5 }}
                       aria-label={
                         "Incredible effort! You're becoming a true HTML expert!"
                       }
+                      initial={{ rotate: -10, scale: 0.5 }}
+                      transition={{ duration: 0.5 }}
                     >
                       <Star className="mr-2 h-8 w-8 text-yellow-400" />
                     </motion.div>
@@ -173,7 +173,7 @@ export default function Compliment({
                   <div className="grid gap-6 md:grid-cols-1">
                     <div className="space-y-6">
                       <div>
-                        <h3 className="mb-2 flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        <h3 className="mb-2 flex items-center gap-2 font-semibold text-gray-900 text-lg dark:text-gray-100">
                           <Target className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
                           Your Score
                         </h3>
@@ -187,19 +187,19 @@ export default function Compliment({
                           <div className="flex items-center gap-2">
                             <CheckCircle2 className="h-5 w-5 text-green-500" />
                             <div>
-                              <p className="text-sm text-gray-600 dark:text-gray-400">
+                              <p className="text-gray-600 text-sm dark:text-gray-400">
                                 Correct {correct}
                               </p>
-                              <p className="text-lg font-semibold text-gray-900 dark:text-gray-100"></p>
+                              <p className="font-semibold text-gray-900 text-lg dark:text-gray-100" />
                             </div>
                           </div>
                           <div className="flex items-center justify-end gap-2">
                             <XCircle className="h-5 w-5 text-red-500" />
                             <div>
-                              <p className="text-sm text-gray-600 dark:text-gray-400">
+                              <p className="text-gray-600 text-sm dark:text-gray-400">
                                 Incorrect {incorrect}
                               </p>
-                              <p className="text-lg font-semibold text-gray-900 dark:text-gray-100"></p>
+                              <p className="font-semibold text-gray-900 text-lg dark:text-gray-100" />
                             </div>
                           </div>
                         </div>
@@ -304,25 +304,25 @@ export default function Compliment({
                   <br />
                   <div className="flex items-center justify-center">
                     <Image
-                      unoptimized
+                      alt="Celebration"
+                      className="rounded-lg"
+                      height={300}
                       priority
                       src={img || "/placeholder.svg"}
-                      alt="Celebration"
+                      unoptimized
                       width={400}
-                      height={300}
-                      className="rounded-lg"
                     />
                   </div>
                   <div className="space-y-6">
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0, y: 20 }}
                       transition={{ duration: 0.5, delay: 0.2 }}
                     >
-                      <h2 className="mb-2 text-xl font-semibold text-gray-800 dark:text-gray-200">
+                      <h2 className="mb-2 font-semibold text-gray-800 text-xl dark:text-gray-200">
                         Your Progress
                       </h2>
-                      <p className="text-lg text-gray-700 dark:text-gray-300">
+                      <p className="text-gray-700 text-lg dark:text-gray-300">
                         You&apos;ve completed the lesson and demonstrated a
                         great understanding of HTML concepts. Your hard work is
                         paying off!
@@ -363,14 +363,14 @@ export default function Compliment({
                     </motion.div> */}
 
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0, y: 20 }}
                       transition={{ duration: 0.5, delay: 0.8 }}
                     >
-                      <h2 className="mb-2 text-xl font-semibold text-gray-800 dark:text-gray-200">
+                      <h2 className="mb-2 font-semibold text-gray-800 text-xl dark:text-gray-200">
                         Next Steps
                       </h2>
-                      <p className="text-lg text-gray-700 dark:text-gray-300">
+                      <p className="text-gray-700 text-lg dark:text-gray-300">
                         Ready to take your HTML skills to the next level?
                         Explore more advanced topics and keep building your web
                         development expertise!
@@ -378,9 +378,9 @@ export default function Compliment({
                     </motion.div>
                   </div>
                   <motion.div
+                    animate={{ opacity: 1, y: 0 }}
                     className="mt-8"
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 1 }}
                   >
                     <Suspense fallback={<div>Loading...</div>}>

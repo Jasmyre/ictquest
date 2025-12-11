@@ -60,8 +60,8 @@ export default function HomePage() {
 
   return (
     <div
-      style={{ padding: "2rem", textAlign: "center" }}
       onClick={() => setClickCount((prev) => prev + 1)}
+      style={{ padding: "2rem", textAlign: "center" }}
     >
       <h1>Next.js Achievement System</h1>
       <p>Click anywhere to increase the click count.</p>

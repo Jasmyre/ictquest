@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export function useScrollDirection(): boolean {
   const [isVisible, setIsVisible] = useState(true);

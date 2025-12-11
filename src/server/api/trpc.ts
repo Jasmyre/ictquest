@@ -1,5 +1,3 @@
-import { redis } from "@/lib/redis";
-
 /**
  * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
  * 1. You want to modify request context (see Part 1).
@@ -9,11 +7,11 @@ import { redis } from "@/lib/redis";
  * need to use are documented accordingly near the end.
  */
 import { initTRPC, TRPCError } from "@trpc/server";
+import { env } from "process";
 import superjson from "superjson";
 import { ZodError } from "zod";
-
+import { redis } from "@/lib/redis";
 import { db } from "@/server/db";
-import { env } from "process";
 
 /**
  * 1. CONTEXT
@@ -32,12 +30,10 @@ export const createTRPCContext = async (opts: {
 }): Promise<{
   headers: Headers;
   db: typeof db;
-}> => {
-  return {
-    db,
-    ...opts,
-  };
-};
+}> => ({
+  db,
+  ...opts,
+});
 
 /**
  * 2. INITIALIZATION

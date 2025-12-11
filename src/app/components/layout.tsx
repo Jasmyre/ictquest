@@ -1,13 +1,13 @@
 "use client";
 
+import { Book, FileText, Menu, Moon, Shield, Sun, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import { CommandSearch } from "@/components/command-search";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Book, FileText, Menu, Moon, Shield, Sun, X } from "lucide-react";
-import { useTheme } from "next-themes";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
 export default function Layout({
   children,
@@ -25,44 +25,44 @@ export default function Layout({
   console.log(typeof process.env.NEXT_PUBLIC_IS_IN_MAINTENANCE);
 
   return (
-    <div className={`min-h-screen bg-gray-50 dark:bg-gray-900`}>
+    <div className={"min-h-screen bg-gray-50 dark:bg-gray-900"}>
       <nav
         className={cn(
-          "sticky top-0 left-0 z-[50] border-b-2 border-indigo-500/20 bg-white shadow-lg dark:bg-gray-800",
-          process.env.NEXT_IS_IN_MAINTENANCE === "true" ? "hidden" : "",
+          "sticky top-0 left-0 z-[50] border-indigo-500/20 border-b-2 bg-white shadow-lg dark:bg-gray-800",
+          process.env.NEXT_IS_IN_MAINTENANCE === "true" ? "hidden" : ""
         )}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
             <div className="flex">
-              <Link href="/" className="flex flex-shrink-0 items-center">
+              <Link className="flex flex-shrink-0 items-center" href="/">
                 <Book className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
-                <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">
+                <span className="ml-2 font-bold text-gray-900 text-xl dark:text-white">
                   ICTQuest
                 </span>
               </Link>
               <div className="hidden sm:ml-6 sm:space-x-8 md:flex">
                 <Link
+                  className={`${pathname === "/" ? "border-indigo-500" : "border-transparent"} inline-flex items-center border-b-2 px-1 pt-1 font-medium text-gray-90500 text-sm ${pathname !== "/" && "hover:border-gray-300"} hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200`}
                   href="/"
-                  className={`${pathname === "/" ? "border-indigo-500" : "border-transparent"} text-gray-90500 inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${pathname !== "/" && "hover:border-gray-300"} hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200`}
                 >
                   Home
                 </Link>
                 <Link
+                  className={`${pathname === "/lessons" ? "border-indigo-500" : "border-transparent"} inline-flex items-center border-b-2 px-1 pt-1 font-medium text-gray-500 text-sm ${pathname !== "/lessons" && "hover:border-gray-300"} hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200`}
                   href="/lessons"
-                  className={`${pathname === "/lessons" ? "border-indigo-500" : "border-transparent"} inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium text-gray-500 ${pathname !== "/lessons" && "hover:border-gray-300"} hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200`}
                 >
                   Lessons
                 </Link>
                 <Link
+                  className={`${pathname === "/profile" ? "border-indigo-500" : "border-transparent"} inline-flex items-center border-b-2 px-1 pt-1 font-medium text-gray-500 text-sm ${pathname !== "/profile" && "hover:border-gray-300"} hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200`}
                   href="/profile"
-                  className={`${pathname === "/profile" ? "border-indigo-500" : "border-transparent"} inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium text-gray-500 ${pathname !== "/profile" && "hover:border-gray-300"} hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200`}
                 >
                   Profile
                 </Link>
                 <Link
+                  className={`${pathname === "/social/new" ? "border-indigo-500" : "border-transparent"} inline-flex items-center border-b-2 px-1 pt-1 font-medium text-gray-500 text-sm ${pathname !== "/social/new" && "hover:border-gray-300"} hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200`}
                   href="/social/new"
-                  className={`${pathname === "/social/new" ? "border-indigo-500" : "border-transparent"} inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium text-gray-500 ${pathname !== "/social/new" && "hover:border-gray-300"} hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200`}
                 >
                   People
                 </Link>
@@ -73,9 +73,9 @@ export default function Layout({
                 <CommandSearch className="w-min" />
               </div>
               <Button
-                variant="ghost"
                 className="ml-3 text-gray-500 dark:text-gray-300"
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                variant="ghost"
               >
                 {theme === "dark" ? (
                   <Sun className="h-5 w-5" />
@@ -86,14 +86,14 @@ export default function Layout({
             </div>
             <div className="-mr-2 flex items-center sm:hidden">
               <Button
-                variant="ghost"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                variant="ghost"
               >
                 <span className="sr-only">Open main menu</span>
                 {isMobileMenuOpen ? (
-                  <X className="block h-6 w-6" aria-hidden="true" />
+                  <X aria-hidden="true" className="block h-6 w-6" />
                 ) : (
-                  <Menu className="block h-6 w-6" aria-hidden="true" />
+                  <Menu aria-hidden="true" className="block h-6 w-6" />
                 )}
               </Button>
             </div>
@@ -107,38 +107,38 @@ export default function Layout({
                 <CommandSearch className="w-min max-sm:w-full" />
               </div>
               <Link
+                className={`block border-l-4 ${pathname === "/" ? "border-indigo-500" : "border-transparent"} ${pathname === "/" ? "bg-indigo-50" : "bg-gray-50"} py-2 pr-4 pl-3 font-medium text-base ${pathname === "/" ? "text-indigo-700" : "text-gray-500"} ${pathname === "/" ? "dark:bg-indigo-900" : "dark:bg-gray-800"} ${pathname !== "/" && "hover:border-gray-300"} ${pathname !== "/" && "hover:bg-gray-50"} ${pathname !== "/" && "hover:text-gray-700"} dark:text-gray-300 ${pathname !== "/" && "dark:hover:bg-gray-700"} ${pathname !== "/" && "hover:text-gray-200"}`}
                 href="/"
                 onClick={() =>
                   setTimeout(() => setIsMobileMenuOpen(false), 250)
                 }
-                className={`block border-l-4 ${pathname === "/" ? "border-indigo-500" : "border-transparent"} ${pathname === "/" ? "bg-indigo-50" : "bg-gray-50"} py-2 pr-4 pl-3 text-base font-medium ${pathname === "/" ? "text-indigo-700" : "text-gray-500"} ${pathname === "/" ? "dark:bg-indigo-900" : "dark:bg-gray-800"} ${pathname !== "/" && "hover:border-gray-300"} ${pathname !== "/" && "hover:bg-gray-50"} ${pathname !== "/" && "hover:text-gray-700"} dark:text-gray-300 ${pathname !== "/" && "dark:hover:bg-gray-700"} ${pathname !== "/" && "hover:text-gray-200"}`}
               >
                 Home
               </Link>
               <Link
+                className={`block border-l-4 ${pathname === "/lessons" ? "border-indigo-500" : "border-transparent"} ${pathname === "/lessons" ? "bg-indigo-50" : "bg-gray-50"} py-2 pr-4 pl-3 font-medium text-base ${pathname === "/lessons" ? "text-indigo-700" : "text-gray-500"} ${pathname === "/lessons" ? "dark:bg-indigo-900" : "dark:bg-gray-800"} ${pathname !== "/lessons" && "hover:border-gray-300"} ${pathname !== "/lessons" && "hover:bg-gray-50"} ${pathname !== "/lessons" && "hover:text-gray-700"} dark:text-gray-300 ${pathname !== "/lessons" && "dark:hover:bg-gray-700"} ${pathname !== "/lessons" && "hover:text-gray-200"}`}
                 href="/lessons"
                 onClick={() =>
                   setTimeout(() => setIsMobileMenuOpen(false), 250)
                 }
-                className={`block border-l-4 ${pathname === "/lessons" ? "border-indigo-500" : "border-transparent"} ${pathname === "/lessons" ? "bg-indigo-50" : "bg-gray-50"} py-2 pr-4 pl-3 text-base font-medium ${pathname === "/lessons" ? "text-indigo-700" : "text-gray-500"} ${pathname === "/lessons" ? "dark:bg-indigo-900" : "dark:bg-gray-800"} ${pathname !== "/lessons" && "hover:border-gray-300"} ${pathname !== "/lessons" && "hover:bg-gray-50"} ${pathname !== "/lessons" && "hover:text-gray-700"} dark:text-gray-300 ${pathname !== "/lessons" && "dark:hover:bg-gray-700"} ${pathname !== "/lessons" && "hover:text-gray-200"}`}
               >
                 Lessons
               </Link>
               <Link
+                className={`block border-l-4 ${pathname === "/profile" ? "border-indigo-500" : "border-transparent"} ${pathname === "/profile" ? "bg-indigo-50" : "bg-gray-50"} py-2 pr-4 pl-3 font-medium text-base ${pathname === "/profile" ? "text-indigo-700" : "text-gray-500"} ${pathname === "/profile" ? "dark:bg-indigo-900" : "dark:bg-gray-800"} ${pathname !== "/profile" && "hover:border-gray-300"} ${pathname !== "/profile" && "hover:bg-gray-50"} ${pathname !== "/profile" && "hover:text-gray-700"} dark:text-gray-300 ${pathname !== "/profile" && "dark:hover:bg-gray-700"} ${pathname !== "/profile" && "hover:text-gray-200"}`}
                 href="/profile"
                 onClick={() =>
                   setTimeout(() => setIsMobileMenuOpen(false), 250)
                 }
-                className={`block border-l-4 ${pathname === "/profile" ? "border-indigo-500" : "border-transparent"} ${pathname === "/profile" ? "bg-indigo-50" : "bg-gray-50"} py-2 pr-4 pl-3 text-base font-medium ${pathname === "/profile" ? "text-indigo-700" : "text-gray-500"} ${pathname === "/profile" ? "dark:bg-indigo-900" : "dark:bg-gray-800"} ${pathname !== "/profile" && "hover:border-gray-300"} ${pathname !== "/profile" && "hover:bg-gray-50"} ${pathname !== "/profile" && "hover:text-gray-700"} dark:text-gray-300 ${pathname !== "/profile" && "dark:hover:bg-gray-700"} ${pathname !== "/profile" && "hover:text-gray-200"}`}
               >
                 Profile
               </Link>
               <Link
+                className={`block border-l-4 ${pathname === "/social/new" ? "border-indigo-500" : "border-transparent"} ${pathname === "/social/new" ? "bg-indigo-50" : "bg-gray-50"} py-2 pr-4 pl-3 font-medium text-base ${pathname === "/social/new" ? "text-indigo-700" : "text-gray-500"} ${pathname === "/social/new" ? "dark:bg-indigo-900" : "dark:bg-gray-800"} ${pathname !== "/social/new" && "hover:border-gray-300"} ${pathname !== "/social/new" && "hover:bg-gray-50"} ${pathname !== "/social/new" && "hover:text-gray-700"} dark:text-gray-300 ${pathname !== "/social/new" && "dark:hover:bg-gray-700"} ${pathname !== "/social/new" && "hover:text-gray-200"}`}
                 href="/social/new"
                 onClick={() =>
                   setTimeout(() => setIsMobileMenuOpen(false), 250)
                 }
-                className={`block border-l-4 ${pathname === "/social/new" ? "border-indigo-500" : "border-transparent"} ${pathname === "/social/new" ? "bg-indigo-50" : "bg-gray-50"} py-2 pr-4 pl-3 text-base font-medium ${pathname === "/social/new" ? "text-indigo-700" : "text-gray-500"} ${pathname === "/social/new" ? "dark:bg-indigo-900" : "dark:bg-gray-800"} ${pathname !== "/social/new" && "hover:border-gray-300"} ${pathname !== "/social/new" && "hover:bg-gray-50"} ${pathname !== "/social/new" && "hover:text-gray-700"} dark:text-gray-300 ${pathname !== "/social/new" && "dark:hover:bg-gray-700"} ${pathname !== "/social/new" && "hover:text-gray-200"}`}
               >
                 People
               </Link>
@@ -153,22 +153,22 @@ export default function Layout({
 
       <footer
         className={cn(
-          `bg-white dark:bg-gray-800`,
-          process.env.NEXT_IS_IN_MAINTENANCE === "true" ? "hidden" : "",
+          "bg-white dark:bg-gray-800",
+          process.env.NEXT_IS_IN_MAINTENANCE === "true" ? "hidden" : ""
         )}
       >
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
           <div className="flex justify-center space-x-6 md:order-2">
             <Link
-              href="/terms"
               className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"
+              href="/terms"
             >
               <span className="sr-only">Terms of Use</span>
               <FileText className="h-6 w-6" />
             </Link>
             <Link
-              href="/privacy"
               className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"
+              href="/privacy"
             >
               <span className="sr-only">Privacy Policy</span>
               <Shield className="h-6 w-6" />

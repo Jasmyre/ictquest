@@ -1,18 +1,16 @@
 "use client";
 
-import type { JSX } from "react";
-
-import type * as z from "zod";
-
-import { Form, FormField, FormItem, FormLabel } from "./ui/form";
-import { useState, useTransition } from "react";
-import { registerSchema } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormSuccess } from "./FormSuccess";
-import { FormError } from "./FormError";
-import { register } from "@/actions/Register";
+import type { JSX } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
+import type * as z from "zod";
+import { register } from "@/actions/Register";
+import { registerSchema } from "../schemas";
+import { FormError } from "./FormError";
+import { FormSuccess } from "./FormSuccess";
 import { Button } from "./ui/button";
+import { Form, FormField, FormItem, FormLabel } from "./ui/form";
 import { Input } from "./ui/input";
 
 export const SignupForm = (): JSX.Element => {
@@ -52,10 +50,10 @@ export const SignupForm = (): JSX.Element => {
               <FormLabel>Name</FormLabel>
               <Input
                 {...field}
-                id="name"
-                type="text"
                 className="mt-1 border-gray-400 dark:border-gray-600"
+                id="name"
                 placeholder="Johnny Bravo"
+                type="text"
               />
             </FormItem>
           )}
@@ -69,10 +67,10 @@ export const SignupForm = (): JSX.Element => {
               <FormLabel>Email</FormLabel>
               <Input
                 {...field}
-                id="email"
-                type="email"
                 className="mt-1 border-gray-400 dark:border-gray-600"
+                id="email"
                 placeholder="johndoe@example.com"
+                type="email"
               />
             </FormItem>
           )}
@@ -86,10 +84,10 @@ export const SignupForm = (): JSX.Element => {
               <FormLabel>Password</FormLabel>
               <Input
                 {...field}
-                id="password"
-                type="password"
                 className="mt-1 border-gray-400 dark:border-gray-600"
+                id="password"
                 placeholder="******"
+                type="password"
               />
             </FormItem>
           )}
@@ -97,9 +95,9 @@ export const SignupForm = (): JSX.Element => {
         <FormError message={error} />
         <FormSuccess message={success} />
         <Button
-          type="submit"
           className="w-full bg-indigo-500 hover:bg-indigo-400"
           disabled={isPending}
+          type="submit"
         >
           Sign Up
         </Button>

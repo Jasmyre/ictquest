@@ -1,18 +1,17 @@
-import type { Metadata } from "next";
-
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Book, FileText, Home, Shield, User, Users } from "lucide-react";
+import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "../components/theme-provider";
-import { Toaster } from "../components/ui/toaster";
 
 import type { NavItem } from "../components/ui/navigation-bar";
 import { NavigationBar } from "../components/ui/navigation-bar";
-import { Book, Home, Users, FileText, Shield, User } from "lucide-react";
+import { Toaster } from "../components/ui/toaster";
 
 import "@/styles/globals.css";
-import { Footer } from "@/components/footer";
 import { Suspense } from "react";
+import { Footer } from "@/components/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -94,14 +93,14 @@ export default async function RootLayout({
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
-            enableSystem
             disableTransitionOnChange
+            enableSystem
           >
             <NavigationBar
+              enableBlock={true}
               navItems={getNavItems()}
               pageItems={getPageItems()}
               title="ICTQuest"
-              enableBlock={true}
             />
             <main className="mx-auto max-w-7xl px-4 py-6 dark:bg-gray-900">
               {children}

@@ -52,7 +52,6 @@ export const beyondHTML: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<html>
   <head>
     <style>
@@ -71,6 +70,7 @@ export const beyondHTML: LessonContent = {
   </body>
 </html>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -128,7 +128,6 @@ export const beyondHTML: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<html>
   <body>
     <h1 id="title">Hello, world!</h1>
@@ -141,6 +140,7 @@ export const beyondHTML: LessonContent = {
   </body>
 </html>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },

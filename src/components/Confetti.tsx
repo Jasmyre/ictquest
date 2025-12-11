@@ -12,7 +12,7 @@ const Confetti = () => {
 
   useEffect(() => {
     if (showConfetti) {
-      (async function () {
+      (async () => {
         await confetti({
           particleCount: 100,
           spread: 70,
@@ -22,7 +22,7 @@ const Confetti = () => {
     }
   }, [showConfetti]);
   return (
-    <span className="sr-only" aria-label="Confetti">
+    <span aria-label="Confetti" className="sr-only">
       Confetti
     </span>
   );

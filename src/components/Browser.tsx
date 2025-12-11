@@ -65,7 +65,7 @@ ${content.toString().replace(",", "")}
     const handleMessage = (event: MessageEvent) => {
       if (event.data?.height) {
         setIframeHeight(
-          `${Math.min(event.data.height, window.innerHeight * 0.75)}px`,
+          `${Math.min(event.data.height, window.innerHeight * 0.75)}px`
         );
       }
     };
@@ -97,7 +97,7 @@ ${content.toString().replace(",", "")}
           <span className="h-2 w-2 rounded-full bg-yellow-500" />
           <span className="h-2 w-2 rounded-full bg-green-500" />
 
-          <RotateCw onClick={handleRefresh} className="h-4 w-4" />
+          <RotateCw className="h-4 w-4" onClick={handleRefresh} />
 
           <div className="ml-2 flex flex-1 items-center place-self-end rounded border bg-gray-200 px-4">
             http://localhost:3000/
@@ -105,11 +105,10 @@ ${content.toString().replace(",", "")}
         </div>
         <div>
           <iframe
-            key={refreshCounter}
             className="min-h-[20vh] px-2 py-4"
-            title={title}
-            ref={iframeRef}
+            key={refreshCounter}
             onLoad={onLoad}
+            ref={iframeRef}
             style={{
               width: "100%",
               height: iframeHeight,
@@ -118,6 +117,7 @@ ${content.toString().replace(",", "")}
               maxHeight: "75vh",
               transition: "height 0.3s ease-in-out",
             }}
+            title={title}
           />
         </div>
       </div>

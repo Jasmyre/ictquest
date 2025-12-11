@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import RenderTopics from "./RenderTopics";
 import Loading from "./lessonsLoading";
+import RenderTopics from "./RenderTopics";
 
 export default async function LessonsPage() {
   return (

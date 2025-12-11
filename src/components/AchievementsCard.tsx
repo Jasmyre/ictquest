@@ -1,10 +1,10 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { toastDescription } from "@/lib/utils";
 import type { UserAchievement } from "@prisma/client";
 import { Award } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { toastDescription } from "@/lib/utils";
 
 type AchievementProps = UserAchievement[];
 
@@ -23,28 +23,26 @@ export function AchievementsCard() {
   return (
     <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
       <CardHeader>
-        <CardTitle className="flex items-center text-2xl font-semibold text-gray-900 dark:text-gray-100">
+        <CardTitle className="flex items-center font-semibold text-2xl text-gray-900 dark:text-gray-100">
           <Award className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
           Achievements
         </CardTitle>
       </CardHeader>
       <CardContent>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {achievements.map((achievement) => {
-            return (
-              <li className="flex py-4" key={achievement.achievementName}>
-                <Award className="mr-2 h-6 w-6 text-yellow-400" />
-                <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                  {String(
-                    toastDescription(
-                      achievement.achievementName,
-                      achievement.achievementDescription,
-                    ),
-                  )}
-                </span>
-              </li>
-            );
-          })}
+          {achievements.map((achievement) => (
+            <li className="flex py-4" key={achievement.achievementName}>
+              <Award className="mr-2 h-6 w-6 text-yellow-400" />
+              <span className="font-medium text-gray-900 text-sm dark:text-gray-100">
+                {String(
+                  toastDescription(
+                    achievement.achievementName,
+                    achievement.achievementDescription
+                  )
+                )}
+              </span>
+            </li>
+          ))}
 
           {/* <li className="flex py-4">
             <Award className="mr-2 h-6 w-6 text-gray-400" />

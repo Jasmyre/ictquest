@@ -47,7 +47,6 @@ export const htmlContainers: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<h1>My First Title</h1>
 <h2>My first sub title</h2>
 <p>My first paragraph.</p>
@@ -58,6 +57,7 @@ export const htmlContainers: LessonContent = {
 <h2>My second sub title</h2>
 <p>My second paragraph.</p>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -124,7 +124,6 @@ export const htmlContainers: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<h1>My First Title</h1>
 <h2>My first sub title</h2>
 <p>My first paragraph.</p>
@@ -135,6 +134,7 @@ export const htmlContainers: LessonContent = {
 <h2>My second sub title</h2>
 <p>My second paragraph.</p>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -148,7 +148,6 @@ export const htmlContainers: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<div>
   <h1>My First Title</h1>
   <h2>My first sub title</h2>
@@ -163,6 +162,7 @@ export const htmlContainers: LessonContent = {
   <p>My second paragraph.</p>
 </div>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -321,7 +321,6 @@ export const htmlContainers: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<div>
   <h1>Group One Title</h1>
   <p>Content for group one.</p>
@@ -334,6 +333,7 @@ export const htmlContainers: LessonContent = {
   <p>Content for group two.</p>
 </div>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -417,12 +417,12 @@ export const htmlContainers: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<div>
   <img src="/img.png" alt="A sample image" />
   <p>Image Caption</p>
 </div>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -446,12 +446,12 @@ export const htmlContainers: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<div>
   <img src="/img.png" alt="A sample image" />
   <p>Image Caption</p>
 </div>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -549,7 +549,6 @@ export const htmlContainers: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<div class="page">
   <div class="header">
     <h1>Site Title</h1>
@@ -562,6 +561,7 @@ export const htmlContainers: LessonContent = {
   </div>
 </div>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -593,7 +593,6 @@ export const htmlContainers: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<div class="page">
   <div class="header">
     <h1>Site Title</h1>
@@ -606,6 +605,7 @@ export const htmlContainers: LessonContent = {
   </div>
 </div>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },

@@ -1,6 +1,5 @@
-import lessons from "@/db/lessons";
-
 import type { $Enums } from "@prisma/client";
+import lessons from "@/db/lessons";
 import { db } from "@/lib/db";
 
 interface GetUserByEmail {
@@ -15,7 +14,7 @@ interface GetUserByEmail {
 }
 
 export const getUserByEmail = async (
-  email: string,
+  email: string
 ): Promise<GetUserByEmail | null> => {
   try {
     const user = await db.user.findUnique({
@@ -130,10 +129,8 @@ export const getUsersStats = async (): Promise<GetUsersStats[]> => {
 
     const usersStats = users.map((user) => {
       const totalSubtopicsCount = user.progressData.reduce(
-        (total, progressItem) => {
-          return total + progressItem.subtopics.length;
-        },
-        0,
+        (total, progressItem) => total + progressItem.subtopics.length,
+        0
       );
 
       let totalPercentage = 0;
@@ -193,7 +190,7 @@ interface GetUserStats {
 }
 
 export const getUserStats = async (
-  userId: string,
+  userId: string
 ): Promise<GetUserStats | null> => {
   try {
     const user = await db.user.findUnique({
@@ -213,10 +210,8 @@ export const getUserStats = async (
     }
 
     const totalSubtopicsCount = user.progressData.reduce(
-      (total, progressItem) => {
-        return total + progressItem.subtopics.length;
-      },
-      0,
+      (total, progressItem) => total + progressItem.subtopics.length,
+      0
     );
 
     let totalPercentage = 0;

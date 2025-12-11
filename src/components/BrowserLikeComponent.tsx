@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import type React from "react";
+import { useEffect, useRef } from "react";
 
 const BrowserLikeComponent: React.FC = () => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -34,7 +35,6 @@ const BrowserLikeComponent: React.FC = () => {
       style={{ width: "100%", height: "500px", border: "1px solid #ccc" }}
     >
       <iframe
-        title="Browser"
         ref={iframeRef}
         style={{
           width: "100%",
@@ -42,6 +42,7 @@ const BrowserLikeComponent: React.FC = () => {
           border: "none",
           background: "white",
         }}
+        title="Browser"
       />
     </div>
   );

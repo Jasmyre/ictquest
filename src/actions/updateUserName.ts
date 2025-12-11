@@ -1,8 +1,8 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { revalidatePath } from "next/cache";
 
 export const updateUserName = async (name: string): Promise<void> => {
   const session = await auth();

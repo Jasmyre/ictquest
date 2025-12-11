@@ -1,7 +1,7 @@
 "use server";
 
-import { auth } from "@/auth";
 import { NextResponse } from "next/server";
+import { auth } from "@/auth";
 
 const getUserId = async (): Promise<string | null> => {
   const session = await auth();

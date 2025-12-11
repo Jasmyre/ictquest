@@ -23,5 +23,5 @@ export function CustomProgress({
     return () => clearTimeout(timer);
   }, [delay, finalValue]);
 
-  return <Progress value={progress} className={cn("w-full", classname)} />;
+  return <Progress className={cn("w-full", classname)} value={progress} />;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { type JSX } from "react";
+import type { JSX } from "react";
 
 export function ThemeProvider({
   children,

@@ -1,4 +1,4 @@
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]): string {
@@ -21,9 +21,8 @@ export const shuffle = <T>(array: T[]): T[] => {
   return array;
 };
 
-export const wait = (time: number): Promise<unknown> => {
-  return new Promise((res) => setTimeout(res, time));
-};
+export const wait = (time: number): Promise<unknown> =>
+  new Promise((res) => setTimeout(res, time));
 
 export const getSessionStorageItem = <T>(key: string): T | null => {
   if (typeof window === "undefined") return null;
@@ -76,9 +75,8 @@ export const clearLocalStorage = (): void => {
 export const toastStyle =
   "border border-gray-400 dark:border-gray-700 text-gray-500 dark:text-gray-bg-gray-100 dark:bg-gray-900 border border-gray-400 dark:border-gray-700 text-gray-500 dark:text-gray-200";
 
-export const toastDescription = (name: string, description: string): string => {
-  return `${name} - ${description}`;
-};
+export const toastDescription = (name: string, description: string): string =>
+  `${name} - ${description}`;
 
 export function countOccurrences<T>(arr: T[]): Record<string, number> {
   const counts: Record<string, number> = {};

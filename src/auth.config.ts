@@ -1,14 +1,11 @@
-import type { NextAuthConfig } from "next-auth";
-
-import { LogInSchema } from "@/schemas";
-import { getUserByEmail } from "@/data/user";
-
-import Google from "next-auth/providers/google";
-import GitHub from "next-auth/providers/github";
-import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-
+import type { NextAuthConfig } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import GitHub from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
 import type * as z from "zod";
+import { getUserByEmail } from "@/data/user";
+import { LogInSchema } from "@/schemas";
 
 export const runtime = "nodejs";
 
@@ -40,7 +37,7 @@ export default {
 
           const user = await getUserByEmail(email);
 
-          if (!user || !user.password) return null;
+          if (!(user && user.password)) return null;
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
 

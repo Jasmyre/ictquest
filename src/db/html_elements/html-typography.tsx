@@ -56,11 +56,11 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<h1>Main Title</h1>
 <h2>Subheading</h2>
 <h3>Section Title</h3>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -86,11 +86,11 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<h1>Main Title</h1>
 <h2>Subheading</h2>
 <h3>Section Title</h3>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -127,7 +127,7 @@ export const htmlTypography: LessonContent = {
           id: 5,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="easy" color="green">
+            <DifficultyParagraph color="green" difficulty="easy">
               Quick test.
             </DifficultyParagraph>
           ),
@@ -146,23 +146,24 @@ export const htmlTypography: LessonContent = {
                 { label: "<h2>Subheading</h2>\n", priority: 1 },
                 { label: "<h3>Section Title</h3>", priority: 2 },
               ],
-              answer: `<h1>Main Title</h1>\n<h2>Subheading</h2>\n<h3>Section Title</h3>`,
+              answer:
+                "<h1>Main Title</h1>\n<h2>Subheading</h2>\n<h3>Section Title</h3>",
               initialCode: ["", ""],
             };
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the heading elements in the correct order"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Great job!",
                   negative: "That's not quite right. Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the heading elements in the correct order"]}
               />
             );
           },
@@ -187,9 +188,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`<p>This is a sample paragraph of text.</p>`}
+              code={"<p>This is a sample paragraph of text.</p>"}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -213,9 +214,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`<p>This is a sample paragraph of text.</p>`}
+              code={"<p>This is a sample paragraph of text.</p>"}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -224,7 +225,7 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <Browser
-              content={`<p>This is a sample paragraph of text.</p>`}
+              content={"<p>This is a sample paragraph of text.</p>"}
               title="Preview Paragraph"
             />
           ),
@@ -238,7 +239,7 @@ export const htmlTypography: LessonContent = {
           id: 10,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="easy" color="green">
+            <DifficultyParagraph color="green" difficulty="easy">
               Another quick test.
             </DifficultyParagraph>
           ),
@@ -260,23 +261,23 @@ export const htmlTypography: LessonContent = {
                 },
                 { label: "</p>", priority: 2 },
               ],
-              answer: `<p>This is a sample paragraph of text.</p>`,
+              answer: "<p>This is a sample paragraph of text.</p>",
               initialCode: ["", ""],
             };
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the paragraph element in the correct order"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Well done!",
                   negative: "That's not correct, try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the paragraph element in the correct order"]}
               />
             );
           },
@@ -301,9 +302,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<blockquote>"To be or not to be, that is the question."</blockquote>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -327,9 +328,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<blockquote>"To be or not to be, that is the question."</blockquote>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -354,7 +355,7 @@ export const htmlTypography: LessonContent = {
           id: 15,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="easy" color="green">
+            <DifficultyParagraph color="green" difficulty="easy">
               Can you arrange the code bellow?
             </DifficultyParagraph>
           ),
@@ -382,17 +383,17 @@ export const htmlTypography: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the blockquote element in the correct order"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Correct!",
                   negative: "That's not quite right, try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the blockquote element in the correct order"]}
               />
             );
           },
@@ -417,9 +418,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`<p>This is <strong>important</strong> text.</p>`}
+              code={"<p>This is <strong>important</strong> text.</p>"}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -443,9 +444,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`<p>This is <strong>important</strong> text.</p>`}
+              code={"<p>This is <strong>important</strong> text.</p>"}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -454,7 +455,7 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <Browser
-              content={`<p>This is <strong>important</strong> text.</p>`}
+              content={"<p>This is <strong>important</strong> text.</p>"}
               title="Preview <strong>"
             />
           ),
@@ -468,7 +469,7 @@ export const htmlTypography: LessonContent = {
           id: 20,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="easy" color="green">
+            <DifficultyParagraph color="green" difficulty="easy">
               Quick test: Arrange the &lt;strong&gt; element in the correct
               order.
             </DifficultyParagraph>
@@ -488,23 +489,23 @@ export const htmlTypography: LessonContent = {
                 { label: "important", priority: 1 },
                 { label: "</strong>", priority: 2 },
               ],
-              answer: `<strong>important</strong>`,
+              answer: "<strong>important</strong>",
               initialCode: ["", ""],
             };
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the <strong> element in the correct order"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Correct!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the <strong> element in the correct order"]}
               />
             );
           },
@@ -529,9 +530,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`<p>This is <em>emphasized</em> text.</p>`}
+              code={"<p>This is <em>emphasized</em> text.</p>"}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -555,9 +556,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`<p>This is <em>emphasized</em> text.</p>`}
+              code={"<p>This is <em>emphasized</em> text.</p>"}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -566,7 +567,7 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <Browser
-              content={`<p>This is <em>emphasized</em> text.</p>`}
+              content={"<p>This is <em>emphasized</em> text.</p>"}
               title="Preview <em>"
             />
           ),
@@ -580,7 +581,7 @@ export const htmlTypography: LessonContent = {
           id: 25,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="easy" color="green">
+            <DifficultyParagraph color="green" difficulty="easy">
               Quick test: Arrange the &lt;em&gt; element in the correct order.
             </DifficultyParagraph>
           ),
@@ -599,23 +600,23 @@ export const htmlTypography: LessonContent = {
                 { label: "emphasized", priority: 1 },
                 { label: "</em>", priority: 2 },
               ],
-              answer: `<em>emphasized</em>`,
+              answer: "<em>emphasized</em>",
               initialCode: ["", ""],
             };
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the <em> element in the correct order"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Correct!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the <em> element in the correct order"]}
               />
             );
           },
@@ -640,9 +641,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`<p>This is <mark>highlighted</mark> text.</p>`}
+              code={"<p>This is <mark>highlighted</mark> text.</p>"}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -666,9 +667,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`<p>This is <mark>highlighted</mark> text.</p>`}
+              code={"<p>This is <mark>highlighted</mark> text.</p>"}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -677,7 +678,7 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <Browser
-              content={`<p>This is <mark>highlighted</mark> text.</p>`}
+              content={"<p>This is <mark>highlighted</mark> text.</p>"}
               title="Preview <mark>"
             />
           ),
@@ -691,7 +692,7 @@ export const htmlTypography: LessonContent = {
           id: 30,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="easy" color="green">
+            <DifficultyParagraph color="green" difficulty="easy">
               Quick test: Arrange the &lt;mark&gt; element in the correct order.
             </DifficultyParagraph>
           ),
@@ -710,23 +711,23 @@ export const htmlTypography: LessonContent = {
                 { label: "highlighted", priority: 1 },
                 { label: "</mark>", priority: 2 },
               ],
-              answer: `<mark>highlighted</mark>`,
+              answer: "<mark>highlighted</mark>",
               initialCode: ["", ""],
             };
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the <mark> element in the correct order"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Correct!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the <mark> element in the correct order"]}
               />
             );
           },
@@ -751,9 +752,11 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`<p>Use <code>const x = 10;</code> to declare a variable.</p>`}
+              code={
+                "<p>Use <code>const x = 10;</code> to declare a variable.</p>"
+              }
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -777,9 +780,11 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`<p>Use <code>const x = 10;</code> to declare a variable.</p>`}
+              code={
+                "<p>Use <code>const x = 10;</code> to declare a variable.</p>"
+              }
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -788,7 +793,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <Browser
-              content={`<p>Use <code>const x = 10;</code> to declare a variable.</p>`}
+              content={
+                "<p>Use <code>const x = 10;</code> to declare a variable.</p>"
+              }
               title="Preview <code>"
             />
           ),
@@ -802,7 +809,7 @@ export const htmlTypography: LessonContent = {
           id: 35,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="easy" color="green">
+            <DifficultyParagraph color="green" difficulty="easy">
               Quick test: Arrange the &lt;code&gt; element in the correct order.
             </DifficultyParagraph>
           ),
@@ -821,23 +828,23 @@ export const htmlTypography: LessonContent = {
                 { label: "const x = 10;", priority: 1 },
                 { label: "</code>", priority: 2 },
               ],
-              answer: `<code>const x = 10;</code>`,
+              answer: "<code>const x = 10;</code>",
               initialCode: ["", ""],
             };
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the <code> element in the correct order"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Correct!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the <code> element in the correct order"]}
               />
             );
           },
@@ -862,9 +869,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`<p>This is <small>small text</small>.</p>`}
+              code={"<p>This is <small>small text</small>.</p>"}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -888,9 +895,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`<p>This is <small>small text</small>.</p>`}
+              code={"<p>This is <small>small text</small>.</p>"}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -899,7 +906,7 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <Browser
-              content={`<p>This is <small>small text</small>.</p>`}
+              content={"<p>This is <small>small text</small>.</p>"}
               title="Preview <small>"
             />
           ),
@@ -913,7 +920,7 @@ export const htmlTypography: LessonContent = {
           id: 40,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="easy" color="green">
+            <DifficultyParagraph color="green" difficulty="easy">
               Quick test: Arrange the &lt;small&gt; element in the correct
               order.
             </DifficultyParagraph>
@@ -933,23 +940,23 @@ export const htmlTypography: LessonContent = {
                 { label: "small text", priority: 1 },
                 { label: "</small>", priority: 2 },
               ],
-              answer: `<small>small text</small>`,
+              answer: "<small>small text</small>",
               initialCode: ["", ""],
             };
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the <small> element in the correct order"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Correct!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the <small> element in the correct order"]}
               />
             );
           },
@@ -974,9 +981,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<p>An <abbr title="World Health Organization">WHO</abbr> member.</p>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -1000,9 +1007,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<p>An <abbr title="World Health Organization">WHO</abbr> member.</p>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -1025,7 +1032,7 @@ export const htmlTypography: LessonContent = {
           id: 45,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="easy" color="green">
+            <DifficultyParagraph color="green" difficulty="easy">
               Quick test: Arrange the &lt;abbr&gt; element in the correct order.
             </DifficultyParagraph>
           ),
@@ -1044,23 +1051,23 @@ export const htmlTypography: LessonContent = {
                 { label: "WHO", priority: 1 },
                 { label: "</abbr>", priority: 2 },
               ],
-              answer: `<abbr>WHO</abbr>`,
+              answer: "<abbr>WHO</abbr>",
               initialCode: ["", ""],
             };
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the <abbr> element in the correct order"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Correct!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the <abbr> element in the correct order"]}
               />
             );
           },
@@ -1085,9 +1092,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`<p><cite>Reference Title</cite></p>`}
+              code={"<p><cite>Reference Title</cite></p>"}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -1111,9 +1118,9 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`<p><cite>Reference Title</cite></p>`}
+              code={"<p><cite>Reference Title</cite></p>"}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -1122,7 +1129,7 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <Browser
-              content={`<p><cite>Reference Title</cite></p>`}
+              content={"<p><cite>Reference Title</cite></p>"}
               title="Preview <cite>"
             />
           ),
@@ -1136,7 +1143,7 @@ export const htmlTypography: LessonContent = {
           id: 50,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="easy" color="green">
+            <DifficultyParagraph color="green" difficulty="easy">
               Quick test: Arrange the &lt;cite&gt; element in the correct order.
             </DifficultyParagraph>
           ),
@@ -1155,23 +1162,23 @@ export const htmlTypography: LessonContent = {
                 { label: "Reference Title", priority: 1 },
                 { label: "</cite>", priority: 2 },
               ],
-              answer: `<cite>Reference Title</cite>`,
+              answer: "<cite>Reference Title</cite>",
               initialCode: ["", ""],
             };
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the <cite> element in the correct order"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Correct!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the <cite> element in the correct order"]}
               />
             );
           },
@@ -1196,12 +1203,12 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<address>
   Written by Jane Doe.<br>
   Email: <a href="mailto:jane@example.com">jane@example.com</a>
 </address>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -1225,12 +1232,12 @@ export const htmlTypography: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<address>
   Written by Jane Doe.<br>
   Email: <a href="mailto:jane@example.com">jane@example.com</a>
 </address>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },

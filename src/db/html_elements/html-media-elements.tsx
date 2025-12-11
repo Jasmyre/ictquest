@@ -70,12 +70,12 @@ export const htmlMediaElements: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<audio controls>
   <source src="/audio.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -102,12 +102,12 @@ export const htmlMediaElements: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<audio controls>
   <source src="/audio.mp3" type="audio/mp3">
   Your browser does not support the audio element.
 </audio>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -178,12 +178,12 @@ export const htmlMediaElements: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<video controls width="320" height="240">
   <source src="/video.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -210,12 +210,12 @@ export const htmlMediaElements: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<video controls width="320" height="240">
   <source src="/video.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -288,13 +288,13 @@ export const htmlMediaElements: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<audio controls>
   <source src="/audio.mp3" type="audio/mpeg">
   <source src="/audio.ogg" type="audio/ogg">
   Your browser does not support the audio element.
 </audio>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -319,13 +319,13 @@ export const htmlMediaElements: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<audio controls>
   <source src="/audio.mp3" type="audio/mpeg">
   <source src="/audio.ogg" type="audio/ogg">
   Your browser does not support the audio element.
 </audio>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -410,13 +410,13 @@ export const htmlMediaElements: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<video controls width="320" height="240">
   <source src="videofile.mp4" type="video/mp4">
   <track src="subtitles_en.vtt" kind="subtitles" srclang="en" label="English">
   Your browser does not support the video tag.
 </video>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -441,13 +441,13 @@ export const htmlMediaElements: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<video controls width="320" height="240">
   <source src="videofile.mp4" type="video/mp4">
   <track src="subtitles_en.vtt" kind="subtitles" srclang="en" label="English">
   Your browser does not support the video tag.
 </video>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -489,7 +489,7 @@ export const htmlMediaElements: LessonContent = {
           id: 19,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="medium" color="orange">
+            <DifficultyParagraph color="orange" difficulty="medium">
               Test: Arrange the <CodeHighlight>&lt;audio&gt;</CodeHighlight>{" "}
               element code correctly.
             </DifficultyParagraph>
@@ -505,7 +505,7 @@ export const htmlMediaElements: LessonContent = {
           }) => {
             const choices = {
               options: [
-                { label: `<audio controls>\n`, priority: 0 },
+                { label: "<audio controls>\n", priority: 0 },
                 {
                   label: `  <source src="/audio.mp3" type="audio/mpeg">\n`,
                   priority: 1,
@@ -515,10 +515,10 @@ export const htmlMediaElements: LessonContent = {
                   priority: 1,
                 },
                 {
-                  label: `  Your browser does not support the audio element.\n`,
+                  label: "  Your browser does not support the audio element.\n",
                   priority: 2,
                 },
-                { label: `</audio>`, priority: 3 },
+                { label: "</audio>", priority: 3 },
               ],
               answer: `<audio controls>\n  <source src="/audio.mp3" type="audio/mpeg">\n  <source src="/audio.ogg" type="audio/ogg">\n  Your browser does not support the audio element.\n</audio>`,
               initialCode: ["", ""],
@@ -526,17 +526,17 @@ export const htmlMediaElements: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the <audio> element code correctly"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Great job!",
                   negative: "That’s not quite right. Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the <audio> element code correctly"]}
               />
             );
           },
@@ -550,7 +550,7 @@ export const htmlMediaElements: LessonContent = {
           id: 21,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="medium" color="orange">
+            <DifficultyParagraph color="orange" difficulty="medium">
               Test: Arrange the <CodeHighlight>&lt;video&gt;</CodeHighlight>{" "}
               element code correctly.
             </DifficultyParagraph>
@@ -575,10 +575,10 @@ export const htmlMediaElements: LessonContent = {
                   priority: 1,
                 },
                 {
-                  label: `  Your browser does not support the video tag.\n`,
+                  label: "  Your browser does not support the video tag.\n",
                   priority: 2,
                 },
-                { label: `</video>`, priority: 3 },
+                { label: "</video>", priority: 3 },
               ],
               answer: `<video controls width="320" height="240">\n  <source src="/video.mp4" type="video/mp4">\n  Your browser does not support the video tag.\n</video>`,
               initialCode: ["", ""],
@@ -586,17 +586,17 @@ export const htmlMediaElements: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the <video> element code correctly"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Great job!",
                   negative: "That’s not quite right. Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the <video> element code correctly"]}
               />
             );
           },

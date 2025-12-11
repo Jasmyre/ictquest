@@ -1,5 +1,7 @@
 "use client";
 
+import { Eye } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -7,14 +9,10 @@ import {
   removeLocalStorageItem,
   setLocalStorageItem,
 } from "@/lib/utils";
-import { Eye } from "lucide-react";
-import { useState } from "react";
-
-import React from "react";
 
 const Page = () => {
   const [isAutoSkipEnabled, setIsAutoSkipEnabled] = useState<boolean>(
-    !!getLocalStorageItem("skip"),
+    !!getLocalStorageItem("skip")
   );
 
   const handleAutoSkip = async () => {
@@ -32,7 +30,7 @@ const Page = () => {
       <div className="min-h-[80vh] py-10">
         <header>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-gray-100">
+            <h1 className="font-bold text-3xl text-gray-900 leading-tight dark:text-gray-100">
               ACCESS ROLE
             </h1>
           </div>

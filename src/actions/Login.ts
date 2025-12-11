@@ -1,14 +1,13 @@
 "use server";
 
-import { LogInSchema } from "../schemas/index";
+import { AuthError } from "next-auth";
+import type * as z from "zod";
 import { signIn } from "@/auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import { AuthError } from "next-auth";
-
-import type * as z from "zod";
+import { LogInSchema } from "../schemas/index";
 
 export const login = async (
-  values: z.infer<typeof LogInSchema>,
+  values: z.infer<typeof LogInSchema>
 ): Promise<
   | {
       error: string;

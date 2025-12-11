@@ -1,7 +1,7 @@
+import Browser from "@/components/Browser";
 import CodeBlock from "@/components/Code";
 import CodeHighlight from "@/components/CodeHighlight";
 import type { LessonContent } from "../lessons";
-import Browser from "@/components/Browser";
 
 export const htmlForm: LessonContent = {
   title: "HTML Forms",
@@ -54,11 +54,11 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <!-- Form elements go here -->
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -89,12 +89,12 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <label for="username">Username:</label>
   <input type="text" id="username" name="username" />
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -123,12 +123,12 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <label for="email">Email:</label>
   <input type="email" id="email" name="email" />
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -157,12 +157,12 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <label for="email">Email:</label>
   <input type="email" id="email" name="email" />
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -205,12 +205,12 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <label for="pwd">Password:</label>
   <input type="password" id="pwd" name="pwd" />
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -240,12 +240,12 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <label for="pwd">Password:</label>
   <input type="password" id="pwd" name="pwd" />
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -287,12 +287,12 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <label for="age">Age:</label>
   <input type="number" id="age" name="age" />
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -321,12 +321,12 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <label for="age">Age:</label>
   <input type="number" id="age" name="age" />
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -372,12 +372,12 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <input type="checkbox" id="subscribe" name="subscribe" value="yes">
   <label for="subscribe">Subscribe to newsletter</label>
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -409,12 +409,12 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <input type="checkbox" id="subscribe" name="subscribe" value="yes">
   <label for="subscribe">Subscribe to newsletter</label>
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -460,7 +460,6 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <input type="radio" id="male" name="gender" value="male">
   <label for="male">Male</label>
@@ -468,6 +467,7 @@ export const htmlForm: LessonContent = {
   <label for="female">Female</label>
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -500,7 +500,6 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <input type="radio" id="male" name="gender" value="male">
   <label for="male">Male</label>
@@ -508,6 +507,7 @@ export const htmlForm: LessonContent = {
   <label for="female">Female</label>
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -548,12 +548,12 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <label for="message">Message:</label>
   <textarea id="message" name="message" rows="4" cols="50"></textarea>
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -579,12 +579,12 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <label for="message">Message:</label>
   <textarea id="message" name="message" rows="4" cols="50"></textarea>
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -624,12 +624,12 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <!-- Other form elements -->
   <button type="submit">Submit</button>
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -656,12 +656,12 @@ export const htmlForm: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<form action="/submit" method="post">
   <!-- Other form elements -->
   <button type="submit">Submit</button>
 </form>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },

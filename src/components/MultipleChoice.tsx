@@ -67,10 +67,10 @@ export const MultipleChoice = ({
     } else {
       setIsCorrect(false);
       setNumberOfInCorrectAction((prev) => prev + 1);
-      if (!isResetEnabled) {
-        setIsFinishedAction(true);
-      } else {
+      if (isResetEnabled) {
         setIsFinishedAction(false);
+      } else {
+        setIsFinishedAction(true);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,52 +108,47 @@ export const MultipleChoice = ({
           </p>
         </div>
       );
-    } else {
-      if (!response?.negative) return null;
-
-      return (
-        <div className="rounded bg-red-600 p-2 shadow">
-          <p className="flex gap-2 text-red-200">
-            <CircleAlert />
-            {response?.negative}
-          </p>
-        </div>
-      );
     }
+    if (!response?.negative) return null;
+
+    return (
+      <div className="rounded bg-red-600 p-2 shadow">
+        <p className="flex gap-2 text-red-200">
+          <CircleAlert />
+          {response?.negative}
+        </p>
+      </div>
+    );
   };
 
   return (
     <div>
       <div>
-        {title?.map((item) => {
-          return (
-            <div key={item}>
-              <p>{item}</p>
-              <br />
-            </div>
-          );
-        })}
+        {title?.map((item) => (
+          <div key={item}>
+            <p>{item}</p>
+            <br />
+          </div>
+        ))}
       </div>
       <br />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {choices.options.map((option) => {
-          return (
-            <MultipleChoiceButton
-              key={option}
-              disabledButtons={disabledButtons}
-              handleMultipleChoiceClickAction={handleMultipleChoiceClick}
-              label={option}
-            />
-          );
-        })}
+        {choices.options.map((option) => (
+          <MultipleChoiceButton
+            disabledButtons={disabledButtons}
+            handleMultipleChoiceClickAction={handleMultipleChoiceClick}
+            key={option}
+            label={option}
+          />
+        ))}
       </div>
       <div className="mt-2 flex justify-start">
         {isResetEnabled && (
           <Button
-            className="hover:text-900 border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+            className="border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 hover:text-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
             onClick={handleReset}
-            variant="outline"
             size="sm"
+            variant="outline"
           >
             <RotateCcw className="mr-2 h-4 w-4" />
             Reset

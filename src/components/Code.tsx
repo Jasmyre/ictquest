@@ -23,7 +23,7 @@ const CodeBlock = ({
   const highlightedCode = Prism.highlight(
     combinedCode,
     Prism.languages[language] || Prism.languages.markup,
-    language,
+    language
   );
 
   return (
@@ -32,19 +32,19 @@ const CodeBlock = ({
         <Code /> <p>{language}</p>
       </header>
       <pre
-        tabIndex={-1}
+        className="m-0 bg-[#2D2D2D] p-2 max-sm:text-xs"
         style={{
           margin: 0,
           padding: ".5rem 1rem",
           border: "none",
           minHeight: "20vh",
         }}
-        className="m-0 bg-[#2D2D2D] p-2 max-sm:text-xs"
+        tabIndex={-1}
       >
         <code
-          tabIndex={-1}
           className={`language-${language} m-0 h-full min-h-[20vh] rounded-b-xl border-none bg-[2D2D2D] max-sm:text-xs`}
           dangerouslySetInnerHTML={{ __html: highlightedCode }}
+          tabIndex={-1}
         />
       </pre>
     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { signOut } from "next-auth/react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,7 +14,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
 import { toastStyle } from "@/lib/utils";
-import { signOut } from "next-auth/react";
 
 interface DeleteDataCardProps {
   onResetAction: () => void;
@@ -25,7 +25,7 @@ export function DeleteDataCard({ onResetAction }: DeleteDataCardProps) {
       const endpoints = ["/api/public/progress/", "/api/user-achievements/"];
 
       const responses = await Promise.all(
-        endpoints.map((endpoint) => fetch(endpoint, { method: "DELETE" })),
+        endpoints.map((endpoint) => fetch(endpoint, { method: "DELETE" }))
       );
 
       const results = await Promise.all(
@@ -33,11 +33,11 @@ export function DeleteDataCard({ onResetAction }: DeleteDataCardProps) {
           if (!res.ok) {
             const errorBody = await res.json();
             throw new Error(
-              `Failed to delete from ${res.url}: ${res.status} - ${JSON.stringify(errorBody)}`,
+              `Failed to delete from ${res.url}: ${res.status} - ${JSON.stringify(errorBody)}`
             );
           }
           return res.json();
-        }),
+        })
       );
 
       console.log("Results:", results);

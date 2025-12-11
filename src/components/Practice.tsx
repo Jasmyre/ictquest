@@ -1,14 +1,14 @@
 "use client";
 
-import { setSessionStorageItem } from "@/lib/utils";
 import { CircleAlert, RotateCcw } from "lucide-react";
+import Prism from "prismjs";
 import type { JSX } from "react";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { setSessionStorageItem } from "@/lib/utils";
 import Browser from "./Browser";
 import ButtonChoice from "./ButtonChoice";
 import CodeBlock from "./Code";
 import { Button } from "./ui/button";
-import Prism from "prismjs";
 
 interface PracticeProps {
   setNumberOfCorrectAction: (value: (count: number) => number) => void;
@@ -90,12 +90,12 @@ export const Practice = ({
         setNumberOfCorrectAction((prev) => prev + 1);
       } else {
         setNumberOfInCorrectAction((prev) => prev + 1);
-        if (!isResetEnabled) {
-          setIsFinishedAction(true);
-          setIsCorrect(true);
-        } else {
+        if (isResetEnabled) {
           setIsFinishedAction(false);
           setIsCorrect(false);
+        } else {
+          setIsFinishedAction(true);
+          setIsCorrect(true);
         }
       }
       setHasSubmitted(true);
@@ -143,40 +143,37 @@ export const Practice = ({
           </p>
         </div>
       );
-    } else {
-      if (!response?.negative) return null;
-
-      return (
-        <div className="rounded bg-red-600 p-2 shadow">
-          <p className="flex gap-2 text-red-200">
-            <CircleAlert />
-            {response?.negative}
-          </p>
-        </div>
-      );
     }
+    if (!response?.negative) return null;
+
+    return (
+      <div className="rounded bg-red-600 p-2 shadow">
+        <p className="flex gap-2 text-red-200">
+          <CircleAlert />
+          {response?.negative}
+        </p>
+      </div>
+    );
   };
 
   return (
     <div>
       <div>
-        {title?.map((item) => {
-          return (
-            <div key={item}>
-              <p>{item}</p>
-              <br />
-            </div>
-          );
-        })}
+        {title?.map((item) => (
+          <div key={item}>
+            <p>{item}</p>
+            <br />
+          </div>
+        ))}
       </div>
-      <CodeBlock language="HTML" initialCode={initialCode} code={code} />
+      <CodeBlock code={code} initialCode={initialCode} language="HTML" />
       <div className="mt-2 flex flex-wrap justify-start gap-4">
         {isResetEnabled && (
           <Button
-            className="hover:text-900 border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+            className="border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 hover:text-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
             onClick={handleReset}
-            variant="outline"
             size="sm"
+            variant="outline"
           >
             <RotateCcw className="mr-2 h-4 w-4" />
             Reset
@@ -184,7 +181,7 @@ export const Practice = ({
         )}
 
         {hint && (
-          <div className="flex items-center justify-center text-sm text-gray-500">
+          <div className="flex items-center justify-center text-gray-500 text-sm">
             <p>Please think carefully before you choose your answer!</p>
           </div>
         )}
@@ -193,9 +190,9 @@ export const Practice = ({
       <div className="mt-4 flex flex-wrap justify-center gap-4">
         {shuffledData?.map((option) => (
           <ButtonChoice
+            disabled={disabledButtons.includes(option.label + option.priority)}
             key={option.label.trim() + option.priority}
             onClick={() => handleClick(option.label, option.priority)}
-            disabled={disabledButtons.includes(option.label + option.priority)}
           >
             {option.label.trim()}
           </ButtonChoice>
@@ -205,12 +202,12 @@ export const Practice = ({
       {code.replaceAll(" ", "").replaceAll("\n", "") ===
         correctCodeFormatted && (
         <Browser
-          title="Document"
           content={
             initialCode
               ? initialCode.toLocaleString() + correctCode
               : correctCode?.toString()
           }
+          title="Document"
         />
       )}
       <br />

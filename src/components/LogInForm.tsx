@@ -1,19 +1,17 @@
 "use client";
 
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { LogInSchema } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { login } from "@/actions/Login";
-
+import { useSearchParams } from "next/navigation";
 import { type JSX, useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
 import type * as z from "zod";
-
+import { login } from "@/actions/Login";
+import { Button } from "@/components/ui/button";
+import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { LogInSchema } from "../schemas";
 import { FormError } from "./FormError";
 import { FormSuccess } from "./FormSuccess";
-import { useSearchParams } from "next/navigation";
 
 export const LogInForm = (): JSX.Element => {
   const [isPending, startTransition] = useTransition();
@@ -57,10 +55,10 @@ export const LogInForm = (): JSX.Element => {
               <FormLabel>Email</FormLabel>
               <Input
                 {...field}
-                id="email"
-                type="email"
                 className="mt-1 border-gray-400 dark:border-gray-600"
+                id="email"
                 placeholder="johndoe@example.com"
+                type="email"
               />
             </FormItem>
           )}
@@ -74,10 +72,10 @@ export const LogInForm = (): JSX.Element => {
               <FormLabel>Password</FormLabel>
               <Input
                 {...field}
-                id="password"
-                type="password"
                 className="mt-1 border-gray-400 dark:border-gray-600"
+                id="password"
                 placeholder="******"
+                type="password"
               />
             </FormItem>
           )}
@@ -85,9 +83,9 @@ export const LogInForm = (): JSX.Element => {
         <FormError message={error ?? urlError} />
         <FormSuccess message={success} />
         <Button
-          type="submit"
           className="w-full bg-indigo-500 hover:bg-indigo-400"
           disabled={isPending}
+          type="submit"
         >
           Sign In
         </Button>

@@ -1,10 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getUserStats } from "@/data/user";
-import lessons from "@/db/lessons";
 import type { ProgressData } from "@prisma/client";
 import {
   Award,
@@ -17,6 +10,13 @@ import {
   UserMinus,
   UserPlus,
 } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getUserStats } from "@/data/user";
+import lessons from "@/db/lessons";
 import { CustomProgress } from "../../../components/CustomProgress";
 
 const userData = {
@@ -97,12 +97,12 @@ export default async function UserProfilePage({
         <Card className="mb-8 overflow-hidden border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
           <div className="h-32 bg-gradient-to-r from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-indigo-900/10" />
           <CardContent className="relative pt-0">
-            <div className="-mt-12 flex flex-col gap-6 md:-mt-16 md:flex-row md:items-end md:justify-between">
+            <div className="-mt-12 md:-mt-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div className="flex flex-col items-start gap-4 md:flex-row md:items-end">
                 <Avatar className="h-24 w-24 border-4 border-white md:h-32 md:w-32 dark:border-gray-800">
                   <AvatarImage
-                    src={user?.avatar ?? undefined}
                     alt={user?.username ?? "unknown"}
+                    src={user?.avatar ?? undefined}
                   />
                   <AvatarFallback className="text-2xl">
                     {user
@@ -112,7 +112,7 @@ export default async function UserProfilePage({
                   </AvatarFallback>
                 </Avatar>
                 <div className="text-left md:text-left">
-                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <h1 className="font-bold text-2xl text-gray-900 dark:text-white">
                     {user?.username}
                   </h1>
                   <p className="text-gray-600 dark:text-gray-400">
@@ -121,8 +121,8 @@ export default async function UserProfilePage({
                   <br className="hidden max-sm:block" />
                   <div className="mt-2 flex items-center gap-2">
                     <Badge
-                      variant="outline"
                       className="border-gray-200 bg-gray-100 text-gray-600 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300"
+                      variant="outline"
                     >
                       Student
                     </Badge>
@@ -134,8 +134,8 @@ export default async function UserProfilePage({
               </div>
               <div className="flex gap-3 md:self-center">
                 <Button
-                  variant={isFollowing ? "secondary" : "default"}
                   className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
+                  variant={isFollowing ? "secondary" : "default"}
                 >
                   {isFollowing ? (
                     <>
@@ -150,8 +150,8 @@ export default async function UserProfilePage({
                   )}
                 </Button>
                 <Button
-                  variant="outline"
                   className="border-gray-200 text-red-600 hover:bg-red-50 dark:border-gray-700 dark:text-red-400 dark:hover:bg-red-900/20"
+                  variant="outline"
                 >
                   <Flag className="h-4 w-4" />
                   <span className="sr-only">Report user</span>
@@ -178,8 +178,8 @@ export default async function UserProfilePage({
             },
           ].map((stat, index) => (
             <Card
-              key={index}
               className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+              key={index}
             >
               <CardContent className="pt-6">
                 <div className="flex items-center gap-4">
@@ -187,10 +187,10 @@ export default async function UserProfilePage({
                     <stat.icon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-gray-600 text-sm dark:text-gray-400">
                       {stat.label}
                     </p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <p className="font-bold text-2xl text-gray-900 dark:text-white">
                       {stat.value}
                     </p>
                   </div>
@@ -200,29 +200,29 @@ export default async function UserProfilePage({
           ))}
         </div>
 
-        <Tabs defaultValue="progress" className="w-full">
+        <Tabs className="w-full" defaultValue="progress">
           <TabsList className="mx-auto w-full max-w-md border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
             <TabsTrigger
-              value="progress"
               className="flex-1 data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
+              value="progress"
             >
               Progress
             </TabsTrigger>
             <TabsTrigger
-              value="achievements"
               className="flex-1 data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
+              value="achievements"
             >
               Achievements
             </TabsTrigger>
             <TabsTrigger
-              value="activity"
               className="flex-1 data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
+              value="activity"
             >
               Activity
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="progress" className="mt-6">
+          <TabsContent className="mt-6" value="progress">
             <Card className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
@@ -233,22 +233,22 @@ export default async function UserProfilePage({
               <CardContent className="space-y-6">
                 <div>
                   <div className="mb-2 flex justify-between">
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">
+                    <span className="font-medium text-gray-900 text-sm dark:text-white">
                       Overall HTML Mastery
                     </span>
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                    <span className="text-gray-600 text-sm dark:text-gray-400">
                       {user?.averageProgress}%
                     </span>
                   </div>
                   <CustomProgress
-                    initialValue={0}
                     finalValue={user?.averageProgress ?? 0}
+                    initialValue={0}
                   />
                 </div>
 
                 {lessons.map((lesson) => {
                   const progress = data?.find(
-                    (item) => item.topic === lesson.slug,
+                    (item) => item.topic === lesson.slug
                   );
 
                   const completedSubtopics = progress?.subtopics?.length ?? 0;
@@ -262,16 +262,16 @@ export default async function UserProfilePage({
                   return (
                     <div key={lesson.slug}>
                       <div className="mb-2 flex justify-between">
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">
+                        <span className="font-medium text-gray-900 text-sm dark:text-white">
                           {lesson.title}
                         </span>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                        <span className="text-gray-600 text-sm dark:text-gray-400">
                           {percentage}%
                         </span>
                       </div>
                       <CustomProgress
-                        initialValue={0}
                         finalValue={percentage}
+                        initialValue={0}
                       />
                     </div>
                   );
@@ -293,7 +293,7 @@ export default async function UserProfilePage({
             </Card>
           </TabsContent>
 
-          <TabsContent value="achievements" className="mt-6">
+          <TabsContent className="mt-6" value="achievements">
             <Card className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
@@ -305,8 +305,8 @@ export default async function UserProfilePage({
                 <div className="grid gap-4">
                   {userData.achievements.map((achievement) => (
                     <Card
-                      key={achievement.name}
                       className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+                      key={achievement.name}
                     >
                       <CardContent className="pt-6">
                         <div className="flex items-center gap-4">
@@ -317,7 +317,7 @@ export default async function UserProfilePage({
                             <p className="font-semibold text-gray-900 dark:text-white">
                               {achievement.name}
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-gray-600 text-sm dark:text-gray-400">
                               {achievement.description}
                             </p>
                           </div>
@@ -330,7 +330,7 @@ export default async function UserProfilePage({
             </Card>
           </TabsContent>
 
-          <TabsContent value="activity" className="mt-6">
+          <TabsContent className="mt-6" value="activity">
             <Card className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
@@ -341,7 +341,7 @@ export default async function UserProfilePage({
               <CardContent>
                 <div className="space-y-4">
                   {userData.recentActivity.map((activity, index) => (
-                    <div key={index} className="flex items-center gap-4">
+                    <div className="flex items-center gap-4" key={index}>
                       <div className="rounded-lg bg-indigo-100 p-2 dark:bg-indigo-900/20">
                         {activity.type === "completed" && (
                           <Book className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
@@ -354,7 +354,7 @@ export default async function UserProfilePage({
                         )}
                       </div>
                       <div>
-                        <p className="text-sm text-gray-900 dark:text-white">
+                        <p className="text-gray-900 text-sm dark:text-white">
                           {activity.type === "completed" &&
                             `Completed ${activity.lesson}`}
                           {activity.type === "achieved" &&
@@ -362,7 +362,7 @@ export default async function UserProfilePage({
                           {activity.type === "started" &&
                             `Started ${activity.lesson}`}
                         </p>
-                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                        <p className="text-gray-600 text-xs dark:text-gray-400">
                           {activity.date}
                         </p>
                       </div>

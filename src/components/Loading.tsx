@@ -1,7 +1,6 @@
-import React from "react";
-import { Skeleton } from "./ui/skeleton";
-import { cn } from "@/lib/utils";
 import type { JSX, ReactNode } from "react";
+import { cn } from "@/lib/utils";
+import { Skeleton } from "./ui/skeleton";
 
 export default function Loading({
   className,
@@ -12,7 +11,7 @@ export default function Loading({
     <Skeleton
       className={cn(
         "h-[16px] w-full rounded-md bg-gray-300 dark:bg-gray-700",
-        className,
+        className
       )}
       {...props}
     >

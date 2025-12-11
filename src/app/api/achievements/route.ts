@@ -1,6 +1,6 @@
+import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { unlockUserAchievement } from "@/lib/achievement";
-import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     console.error("Error unlocking achievement:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

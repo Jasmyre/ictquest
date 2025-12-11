@@ -1,11 +1,11 @@
 "use client";
 
+import type { Prisma } from "@prisma/client";
 import { type JSX, Suspense, useState } from "react";
-import { LearningProgressCard } from "@/components/LearningProgressCard";
 import { AchievementsCard } from "@/components/AchievementsCard";
 import { DeleteDataCard } from "@/components/DeleteDataCard";
+import { LearningProgressCard } from "@/components/LearningProgressCard";
 import { InfoCard } from "./InfoCard";
-import type { Prisma } from "@prisma/client";
 
 interface ProfileCardGridProps {
   name?: string | null;

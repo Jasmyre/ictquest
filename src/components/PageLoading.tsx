@@ -1,11 +1,11 @@
 import { Loader2 } from "lucide-react";
-import { type JSX } from "react";
+import type { JSX } from "react";
 
 export default function PageLoading(): JSX.Element {
   return (
     <div className="flex h-screen items-center justify-center">
-      <Loader2 className="text-primary h-8 w-8 animate-spin" />
-      <span className="ml-2 text-lg font-medium text-gray-700 dark:text-gray-300">
+      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <span className="ml-2 font-medium text-gray-700 text-lg dark:text-gray-300">
         Loading...
       </span>
     </div>
