@@ -40,7 +40,7 @@ export async function DELETE() {
       where: { userId },
     });
     return NextResponse.json(deleted);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: Allow type any for catching errors
   } catch (error: any) {
     const err = error ?? {};
     console.error("Error deleting progress record:", err);

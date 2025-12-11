@@ -2,7 +2,7 @@ import type { $Enums } from "@prisma/client";
 import lessons from "@/db/lessons";
 import { db } from "@/lib/db";
 
-interface GetUserByEmail {
+type GetUserByEmail = {
   name: string;
   id: string;
   image: string | null;
@@ -11,7 +11,7 @@ interface GetUserByEmail {
   userName: string | null;
   emailVerified: Date | null;
   password: string | null;
-}
+};
 
 export const getUserByEmail = async (
   email: string
@@ -30,19 +30,12 @@ export const getUserByEmail = async (
   }
 };
 
-interface GetUserByID {
-  name: string;
-  id: string;
-  userName: string | null;
-  email: string | null;
-  emailVerified: Date | null;
-  image: string | null;
-  password: string | null;
-  role: $Enums.UserRole;
-}
-
-export const getUserById = async (id: string): Promise<GetUserByID | null> => {
+export const getUserById = async (id: string | null) => {
   try {
+    if (id === null) {
+      throw new Error("Use does not exist");
+    }
+
     const user = await db.user.findUnique({
       where: {
         id,
@@ -56,11 +49,11 @@ export const getUserById = async (id: string): Promise<GetUserByID | null> => {
   }
 };
 
-interface GetAllUsers {
+type GetAllUsers = {
   id: string;
   userName: string | null;
   image: string | null;
-}
+};
 
 export const getAllUsers = async (): Promise<GetAllUsers[] | null> => {
   try {
@@ -90,9 +83,9 @@ export const getAllUserAchievements = async (): Promise<string[] | null> => {
 
     const id: string[] = [];
 
-    userAchievements.forEach((item) => {
+    for (const item of userAchievements) {
       id.push(item.userId);
-    });
+    }
 
     return id;
   } catch (error) {
@@ -101,7 +94,7 @@ export const getAllUserAchievements = async (): Promise<string[] | null> => {
   }
 };
 
-export interface GetUsersStats {
+export type GetUsersStats = {
   username: string | null;
   id: string;
   avatar: string | null;
@@ -109,7 +102,7 @@ export interface GetUsersStats {
   numberOfSubtopics: number;
   level: string;
   averageProgress: number;
-}
+};
 
 export const getUsersStats = async (): Promise<GetUsersStats[]> => {
   try {
@@ -136,7 +129,7 @@ export const getUsersStats = async (): Promise<GetUsersStats[]> => {
       let totalPercentage = 0;
       let lessonsCounted = 0;
 
-      lessons.forEach((lesson) => {
+      for (const lesson of lessons) {
         const progress = user.progressData.find((p) => p.topic === lesson.slug);
         const completedSubtopics = progress ? progress.subtopics.length : 0;
         const totalSubtopicsForLesson = lesson.topics.length;
@@ -145,9 +138,9 @@ export const getUsersStats = async (): Promise<GetUsersStats[]> => {
           const lessonProgress =
             (completedSubtopics / totalSubtopicsForLesson) * 100;
           totalPercentage += lessonProgress;
-          lessonsCounted++;
+          lessonsCounted += 1;
         }
-      });
+      }
 
       const averageProgress =
         lessonsCounted > 0 ? totalPercentage / lessonsCounted : 0;
@@ -179,7 +172,7 @@ export const getUsersStats = async (): Promise<GetUsersStats[]> => {
   }
 };
 
-interface GetUserStats {
+type GetUserStats = {
   username: string | null;
   id: string;
   avatar: string | null;
@@ -187,7 +180,7 @@ interface GetUserStats {
   numberOfSubtopics: number;
   level: string;
   averageProgress: number;
-}
+};
 
 export const getUserStats = async (
   userId: string
@@ -217,7 +210,7 @@ export const getUserStats = async (
     let totalPercentage = 0;
     let lessonsCounted = 0;
 
-    lessons.forEach((lesson) => {
+    for (const lesson of lessons) {
       const progress = user.progressData.find((p) => p.topic === lesson.slug);
       const completedSubtopics = progress ? progress.subtopics.length : 0;
       const totalSubtopicsForLesson = lesson.topics.length;
@@ -226,9 +219,9 @@ export const getUserStats = async (
         const lessonProgress =
           (completedSubtopics / totalSubtopicsForLesson) * 100;
         totalPercentage += lessonProgress;
-        lessonsCounted++;
+        lessonsCounted += 1;
       }
-    });
+    }
 
     const averageProgress =
       lessonsCounted > 0 ? totalPercentage / lessonsCounted : 0;

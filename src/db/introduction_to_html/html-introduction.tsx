@@ -1,8 +1,8 @@
 import Image from "next/image";
-import Browser from "@/components/Browser";
-import CodeBlock from "@/components/Code";
-import CodeHighlight from "@/components/CodeHighlight";
-import { Practice } from "@/components/Practice";
+import Browser from "@/components/browser";
+import CodeBlock from "@/components/code";
+import CodeHighlight from "@/components/code-highlight";
+import { Practice } from "@/components/practice";
 import { shuffle } from "@/lib/utils";
 import type { LessonContent } from "../lessons";
 

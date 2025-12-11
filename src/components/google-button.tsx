@@ -21,6 +21,7 @@ export default function GoogleSignInButton() {
         border: "none",
         borderRadius: "4px",
       }}
+      type="button"
     >
       Continue with Google
     </button>

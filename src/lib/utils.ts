@@ -10,7 +10,7 @@ export const shuffle = <T>(array: T[]): T[] => {
 
   while (currentIndex !== 0) {
     const randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
+    currentIndex -= 1;
 
     [array[currentIndex], array[randomIndex]] = [
       array[randomIndex],
@@ -25,7 +25,9 @@ export const wait = (time: number): Promise<unknown> =>
   new Promise((res) => setTimeout(res, time));
 
 export const getSessionStorageItem = <T>(key: string): T | null => {
-  if (typeof window === "undefined") return null;
+  if (typeof window === "undefined") {
+    return null;
+  }
   const item = window.sessionStorage.getItem(key);
   return item ? JSON.parse(item) : null;
 };
@@ -49,7 +51,9 @@ export const clearSessionStorage = (): void => {
 };
 
 export const getLocalStorageItem = <T>(key: string): T | null => {
-  if (typeof window === "undefined") return null;
+  if (typeof window === "undefined") {
+    return null;
+  }
   const item = window.localStorage.getItem(key);
   return item ? JSON.parse(item) : null;
 };

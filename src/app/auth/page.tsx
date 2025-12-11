@@ -13,8 +13,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import { LogInForm } from "../../components/LogInForm";
-import { SignupForm } from "../../components/SignupForm";
+import { LogInForm } from "../../components/login-form";
+import { SignupForm } from "../../components/sign-up-form";
 
 export default function AuthPage() {
   const onClick = (provider: string) => {

@@ -6,8 +6,9 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
+
+import { env } from "node:process";
 import { initTRPC, TRPCError } from "@trpc/server";
-import { env } from "process";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { redis } from "@/lib/redis";
@@ -113,7 +114,9 @@ const WINDOW_SEC = 40; // 40 seconds
 const LIMIT = 10; // max 10 requests per window
 
 const publicRateLimiter = t.middleware(async ({ ctx, next, path }) => {
-  if (env.NODE_ENV === "development") return next();
+  if (env.NODE_ENV === "development") {
+    return next();
+  }
 
   const ip =
     ctx.headers.get("x-forwarded-for") ??

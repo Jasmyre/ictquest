@@ -2,11 +2,11 @@ import { Code } from "lucide-react";
 import Prism from "prismjs";
 import "prismjs/themes/prism-tomorrow.css";
 
-interface CodeBlockProps {
+type CodeBlockProps = {
   language?: string;
   initialCode: string[];
   code?: string;
-}
+};
 
 const CodeBlock = ({
   language = "html",
@@ -15,9 +15,7 @@ const CodeBlock = ({
 }: CodeBlockProps) => {
   const header = initialCode && initialCode.length > 0 ? initialCode[0] : "";
   const footer =
-    initialCode && initialCode.length > 1
-      ? initialCode[initialCode.length - 1]
-      : "";
+    initialCode && initialCode.length > 1 ? initialCode.at(-1) : "";
   const combinedCode = header + code + footer;
 
   const highlightedCode = Prism.highlight(
@@ -43,9 +41,12 @@ const CodeBlock = ({
       >
         <code
           className={`language-${language} m-0 h-full min-h-[20vh] rounded-b-xl border-none bg-[2D2D2D] max-sm:text-xs`}
-          dangerouslySetInnerHTML={{ __html: highlightedCode }}
+          // Todo: investigate whether it's safe to use dangerouslySetInnerHTML
+          // dangerouslySetInnerHTML={{ __html: highlightedCode }}
           tabIndex={-1}
-        />
+        >
+          {highlightedCode}
+        </code>
       </pre>
     </div>
   );

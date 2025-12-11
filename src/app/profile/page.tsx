@@ -1,10 +1,10 @@
 import { auth } from "@/auth";
-import { ProfileCardGrid } from "@/components/ProfileCardGrid";
+import { ProfileCardGrid } from "@/components/profile-card-grid";
 import { getUserById } from "@/data/user";
 
 export default async function ProfilePage() {
   const session = await auth();
-  if (!session) {
+  if (!session?.user) {
     return (
       <main>
         <div className="py-10">
@@ -21,7 +21,7 @@ export default async function ProfilePage() {
     );
   }
 
-  const user = await getUserById(session.user.id!);
+  const user = await getUserById(session.user.id ?? null);
 
   if (!user) {
     return (
@@ -48,7 +48,7 @@ export default async function ProfilePage() {
             Your Profile
           </h1>
         </header>
-        <ProfileCardGrid user={user!} />
+        <ProfileCardGrid user={user} />
       </div>
     </main>
   );

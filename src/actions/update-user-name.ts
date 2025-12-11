@@ -6,7 +6,9 @@ import { db } from "@/lib/db";
 
 export const updateUserName = async (name: string): Promise<void> => {
   const session = await auth();
-  if (!session) return;
+  if (!session) {
+    return;
+  }
 
   const id = session.user.id;
   const newUserName = name;

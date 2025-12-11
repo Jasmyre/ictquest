@@ -7,6 +7,7 @@ import { getUserById } from "@/data/user";
 import { db } from "@/lib/db";
 
 declare module "next-auth" {
+  // biome-ignore lint/style/useConsistentTypeDefinitions: interface appropriate to extent Session type
   interface Session {
     user: {
       role: UserRole;
@@ -23,7 +24,7 @@ declare module "next-auth" {
 }
 
 declare module "@auth/core" {
-  interface JWT {
+  type JWT = {
     role?: UserRole;
     emailVerified?: Date;
     userName?: string;
@@ -33,7 +34,7 @@ declare module "@auth/core" {
       subtopics?: Prisma.ProgressDataCreatesubtopicsInput | string[];
       user: Prisma.UserCreateNestedOneWithoutProgressDataInput;
     };
-  }
+  };
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -50,10 +51,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   callbacks: {
-    async redirect({ baseUrl }) {
+    redirect({ baseUrl }) {
       return baseUrl;
     },
-    async session({ token, session }) {
+    session({ token, session }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
       }
@@ -71,11 +72,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
     async jwt({ token }) {
-      if (!token.sub) return token;
+      if (!token.sub) {
+        return token;
+      }
 
       const existingUser = await getUserById(token.sub);
 
-      if (!existingUser) return token;
+      if (!existingUser) {
+        return token;
+      }
 
       token.role = existingUser?.role;
       token.emailVerified = existingUser?.emailVerified;

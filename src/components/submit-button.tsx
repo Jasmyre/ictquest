@@ -2,9 +2,9 @@ import { ArrowRight } from "lucide-react";
 import type { JSX } from "react";
 import { Button } from "./ui/button";
 
-interface SubmitButtonProps {
+type SubmitButtonProps = {
   label: string;
-}
+};
 
 const SubmitButton = ({
   label = "continue",

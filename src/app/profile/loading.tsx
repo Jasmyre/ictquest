@@ -1,5 +1,5 @@
 import { Award, Book, User } from "lucide-react";
-import { CustomProgress } from "@/components/CustomProgress";
+import { CustomProgress } from "@/components/custom-progress";
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

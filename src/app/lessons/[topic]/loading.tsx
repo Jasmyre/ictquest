@@ -1,6 +1,6 @@
 import { ArrowRight, Book } from "lucide-react";
-import BackButton from "@/components/BackButton";
-import Loading from "@/components/Loading";
+import BackButton from "@/components/back-button";
+import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -29,7 +29,7 @@ export default function loading() {
                     {[1, 2, 3].map((_, index) => (
                       <li
                         className="border-gray-200 border-b py-4 last:border-b-0 dark:border-gray-700"
-                        key={index++}
+                        key={index}
                       >
                         <div className="flex items-center space-x-4">
                           <div className="flex-shrink-0">

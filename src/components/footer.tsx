@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { JSX } from "react";
 import { cn } from "@/lib/utils";
 
-export async function Footer(): Promise<JSX.Element> {
+export function Footer(): JSX.Element {
   return (
     <footer
       className={cn(

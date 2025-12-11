@@ -48,11 +48,14 @@ const ButtonChoice = ({
       >
         <code
           className={`language-${language} m-0 h-full min-h-[20vh] text-wrap rounded-[0_0_.75rem_.75rem] border-none bg-[#282C34]`}
-          dangerouslySetInnerHTML={{
-            __html: escapeHtml(children as string).trim(),
-          }}
+          // Todo: investigate whether it's safe to use dangerouslySetInnerHTML
+          // dangerouslySetInnerHTML={{
+          //   __html: escapeHtml(children as string).trim(),
+          // }}
           tabIndex={-1}
-        />
+        >
+          {escapeHtml((children as string).trim())}
+        </code>
       </pre>
     </Button>
   );

@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const revalidate = 60;
 
-async function Loading() {
+function Loading() {
   return (
     <div className="min-h-[80vh] py-10">
       <header className="mb-8">

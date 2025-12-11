@@ -15,9 +15,9 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { toastStyle } from "@/lib/utils";
 
-interface DeleteDataCardProps {
+type DeleteDataCardProps = {
   onResetAction: () => void;
-}
+};
 
 export function DeleteDataCard({ onResetAction }: DeleteDataCardProps) {
   const handleReset = async () => {

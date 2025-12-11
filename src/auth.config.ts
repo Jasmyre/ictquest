@@ -6,14 +6,15 @@ import Google from "next-auth/providers/google";
 import type * as z from "zod";
 import { getUserByEmail } from "@/data/user";
 import { LogInSchema } from "@/schemas";
+import { env } from "./env";
 
 export const runtime = "nodejs";
 
 export default {
   providers: [
     Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
       authorization: {
         params: {
           prompt: "consent",
@@ -23,8 +24,8 @@ export default {
       },
     }),
     GitHub({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      clientId: env.GITHUB_CLIENT_ID,
+      clientSecret: env.GITHUB_CLIENT_SECRET,
     }),
     Credentials({
       async authorize(credentials) {
@@ -37,11 +38,15 @@ export default {
 
           const user = await getUserByEmail(email);
 
-          if (!(user && user.password)) return null;
+          if (!user?.password) {
+            return null;
+          }
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
-          if (passwordsMatch) return user;
+          if (passwordsMatch) {
+            return user;
+          }
         }
 
         return null;

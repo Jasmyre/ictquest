@@ -1,41 +1,50 @@
 "use client";
 
 import { Book } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { type JSX, useEffect, useState } from "react";
-import { CustomBadge } from "@/components/CustomBadge";
-import { CustomProgress } from "@/components/CustomProgress";
-import { CustomTooltip } from "@/components/CustomTooltip";
-import { Button } from "@/components/ui/button";
+import type { JSX } from "react";
+import { useEffect, useState } from "react";
+import { CustomBadge } from "@/components/custom-badge";
+import { CustomProgress } from "@/components/custom-progress";
+import { CustomTooltip } from "@/components/custom-tooltip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import lessons from "@/db/lessons";
 
-interface ProgressData {
+type ProgressData = {
   id: string;
   userId: string;
   topic: string;
   subtopics: string[];
-}
+};
 
-export function LearningProgressCard(): JSX.Element {
-  const [overallProgress, setOverallProgress] = useState<number>(0);
+export function ProgressCard(): JSX.Element {
+  const [overallProgress, setOverallProgress] = useState(0);
   const [data, setData] = useState<ProgressData[] | null>(null);
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      try {
-        const res = await fetch("/api/public/progress");
-        if (!res.ok) {
-          console.error("Failed to fetch progress from DB");
-          return;
+      const fetchData = async (): Promise<void> => {
+        setIsLoading(true);
+        try {
+          const res = await fetch("/api/public/progress");
+          if (!res.ok) {
+            console.error("Failed to fetch progress from DB");
+            return;
+          }
+          const fetchedData: ProgressData[] = await res.json();
+          setData(fetchedData);
+        } catch (error) {
+          console.error("Error fetching progress:", error);
+        } finally {
+          setIsLoading(false);
         }
-        const fetchedData: ProgressData[] = await res.json();
-        setData(fetchedData);
-      } catch (error) {
-        console.error("Error fetching progress:", error);
-      }
-    })();
+      };
+
+      await fetchData();
+    })().catch((error) => {
+      console.error("useEffect failed", error);
+    });
   }, []);
 
   useEffect(() => {
@@ -43,37 +52,41 @@ export function LearningProgressCard(): JSX.Element {
       let totalPercentage = 0;
       let count = 0;
 
-      lessons.forEach((lesson) => {
-        const progress = data.find((entry) => entry.topic === lesson.slug);
+      for (const lesson of lessons) {
+        const progress = data.find((item) => item.topic === lesson.slug);
+
         const completedSubtopics = progress?.subtopics?.length ?? 0;
         const totalSubtopics = lesson.topics.length;
 
         if (totalSubtopics > 0) {
           totalPercentage += (completedSubtopics / totalSubtopics) * 100;
-          count++;
+          count += 1;
         }
-      });
+      }
 
       const averageProgress = count > 0 ? totalPercentage / count : 0;
       setOverallProgress(Number(averageProgress.toFixed(2)));
 
       if (averageProgress < 33.33) {
-        console.log("Beginner: " + averageProgress);
+        console.log(`Beginner: ${overallProgress}`);
       } else if (averageProgress < 66.67) {
-        console.log("Intermediate: " + averageProgress);
+        console.log(`Intermediate: ${overallProgress}`);
       } else if (averageProgress < 100) {
-        console.log("Expert: " + averageProgress);
+        console.log(`Expert: ${overallProgress}`);
       }
     }
-  }, [data]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, overallProgress]);
 
-  const lessonsToShow = lessons.slice(0, 2);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+    <Card className="w-full border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
       <CardHeader>
-        <CardTitle className="flex flex-wrap items-center justify-between gap-4 font-semibold text-2xl text-gray-900 dark:text-gray-100">
-          <div className="flex items-center">
+        <CardTitle className="flex flex-wrap items-center justify-between gap-4 font-semibold text-2xl text-gray-900 max-sm:flex-col max-sm:items-start max-sm:gap-4 dark:text-gray-100">
+          <div className="flex min-w-min flex-wrap items-center justify-start">
             <Book className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
             Learning Progress
           </div>
@@ -81,7 +94,7 @@ export function LearningProgressCard(): JSX.Element {
             content={() =>
               overallProgress < 33.33
                 ? "You are a beginner in HTML."
-                : overallProgress < 66.67
+                : overallProgress < 66.66
                   ? "You are now in intermediate HTML."
                   : "You are an Expert in HTML."
             }
@@ -90,14 +103,14 @@ export function LearningProgressCard(): JSX.Element {
               color={
                 overallProgress < 33.33
                   ? "green"
-                  : overallProgress < 66.67
+                  : overallProgress < 66.66
                     ? "orange"
                     : "red"
               }
             >
               {overallProgress < 33.33
                 ? "Beginner"
-                : overallProgress < 66.67
+                : overallProgress < 66.66
                   ? "Intermediate"
                   : "Expert"}
             </CustomBadge>
@@ -117,10 +130,13 @@ export function LearningProgressCard(): JSX.Element {
             </div>
             <CustomProgress finalValue={overallProgress} initialValue={0} />
           </div>
-          {lessonsToShow.map((lesson) => {
-            const progress = data?.find((entry) => entry.topic === lesson.slug);
-            const completedSubtopics = progress?.subtopics.length ?? 0;
+
+          {lessons.map((lesson) => {
+            const progress = data?.find((item) => item.topic === lesson.slug);
+
+            const completedSubtopics = progress?.subtopics?.length ?? 0;
             const totalSubtopics = lesson.topics.length;
+
             const percentage =
               totalSubtopics === 0
                 ? 0
@@ -140,16 +156,6 @@ export function LearningProgressCard(): JSX.Element {
               </div>
             );
           })}
-          {lessons.length > 2 && (
-            <div className="mt-4">
-              <Button
-                className="border border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200 dark:border-gray-800 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                onClick={() => router.push("/progress")}
-              >
-                View All
-              </Button>
-            </div>
-          )}
         </div>
       </CardContent>
     </Card>

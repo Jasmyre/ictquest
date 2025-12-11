@@ -95,11 +95,11 @@ async function page() {
                         >
                           <Avatar className="h-12 w-12 border-2 border-gray-200 transition-colors duration-200 group-hover:border-gray-500 dark:border-gray-600">
                             <AvatarImage
-                              alt={user.username!}
+                              alt={user.username ?? "Null Name"}
                               src={user.avatar ?? undefined}
                             />
                             <AvatarFallback className="bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
-                              {String(user.username!)
+                              {String(user.username)
                                 .split(" ")
                                 .map((n) => n[0])
                                 .join("")}
@@ -107,7 +107,7 @@ async function page() {
                           </Avatar>
                           <div>
                             <h2 className="font-semibold text-gray-600 text-lg transition-colors duration-200 group-hover:text-gray-800 dark:text-gray-400 dark:group-hover:text-gray-300">
-                              {user.username!}
+                              {user.username}
                             </h2>
                             <p className="text-gray-600 text-sm dark:text-gray-400">
                               {user.id}
@@ -183,10 +183,8 @@ async function page() {
                               Follow
                             </>
                           )} */}
-                          <>
-                            <UserPlus className="mr-2 h-4 w-4" />
-                            Follow
-                          </>
+                          <UserPlus className="mr-2 h-4 w-4" />
+                          Follow
                         </Button>
                         <Button
                           asChild

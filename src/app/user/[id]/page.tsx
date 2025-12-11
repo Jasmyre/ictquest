@@ -17,7 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getUserStats } from "@/data/user";
 import lessons from "@/db/lessons";
-import { CustomProgress } from "../../../components/CustomProgress";
+import { CustomProgress } from "../../../components/custom-progress";
 
 const userData = {
   id: 1,
@@ -72,15 +72,15 @@ export default async function UserProfilePage({
   const isFollowing = userData.following;
   const { id } = await params;
 
-  const user = await getUserStats(id!)!;
+  const user = await getUserStats(id);
   console.log(user);
 
   const baseUrl = process.env.NEXTAUTH_URL;
   console.log(baseUrl);
 
-  const res = await fetch(baseUrl + "/api/public/progress/" + id);
+  const res = await fetch(`${baseUrl}/api/public/progress/${id}`);
 
-  console.log(baseUrl + "/api/public/progress/" + id);
+  console.log(`${baseUrl}/api/public/progress/${id}`);
   if (!res.ok) {
     const errorText = await res.text();
     console.error("Failed to fetch progress, got:", errorText);
@@ -105,8 +105,8 @@ export default async function UserProfilePage({
                     src={user?.avatar ?? undefined}
                   />
                   <AvatarFallback className="text-2xl">
-                    {user
-                      ?.username!.split(" ")
+                    {user?.username
+                      ?.split(" ")
                       .map((n) => n[0])
                       .join("")}
                   </AvatarFallback>

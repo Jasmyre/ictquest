@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     const result = await unlockUserAchievement(userId, achievementName);
 
     return NextResponse.json(result);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: Allow all object types for catching errors
   } catch (error: any) {
     console.error("Error unlocking achievement:", error);
     return NextResponse.json(

@@ -1,7 +1,7 @@
 import { HttpResponse, http } from "msw";
 
 export const handlers = [
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // biome-ignore lint/correctness/noUnusedFunctionParameters: This is required
   http.get("https://api.example.com/user", ({ request }) =>
     HttpResponse.json({
       id: "abc-123",
@@ -11,4 +11,5 @@ export const handlers = [
   ),
 ];
 
+// biome-ignore lint/suspicious/noEvolvingTypes: Let application handle type
 export const trpcHandlers = [];

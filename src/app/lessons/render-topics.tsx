@@ -7,20 +7,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { lessons } from "@/db/lessons";
 
-export default function Loading() {
+export default function RenderTopics() {
   return (
     <main>
       <div className="min-h-[80vh] py-10">
         <header>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
             <h1 className="font-bold text-3xl text-gray-900 leading-tight dark:text-gray-100">
               HTML Lessons
             </h1>
           </div>
         </header>
         <main>
-          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="px-4 py-8 sm:px-0">
+          <div className="mx-auto max-w-7xl">
+            <div className="py-8">
               <div className="mb-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 {lessons
                   .filter((lesson) => lesson.slug !== "test")
@@ -29,7 +29,7 @@ export default function Loading() {
                       className={
                         "flex flex-col border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
                       }
-                      key={index++}
+                      key={index}
                     >
                       <CardHeader className="">
                         <CardTitle className="flex items-center font-semibold text-gray-900 text-lg dark:text-gray-100">
@@ -43,7 +43,7 @@ export default function Loading() {
                         </p>
                         <ul className="mt-4 flex-1 space-y-2">
                           {lesson.topics.map((topic, topicIndex) => (
-                            <li key={topicIndex++}>
+                            <li key={topicIndex}>
                               <Link
                                 className="text-indigo-600 text-sm hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
                                 href={`/lessons/subtopic/${topic.slug}?topic=${lesson.slug}&isBackEnabled=true`}

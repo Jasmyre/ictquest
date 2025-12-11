@@ -6,14 +6,14 @@ import { CheckCircle2, Star, Target, XCircle } from "lucide-react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { Suspense, useEffect, useState } from "react";
-import { CustomBadge } from "@/components/CustomBadge";
-import { CustomProgress } from "@/components/CustomProgress";
+import { CustomBadge } from "@/components/custom-badge";
+import { CustomProgress } from "@/components/custom-progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import lessons from "@/db/lessons";
 import { toast } from "@/hooks/use-toast";
 import { toastDescription, toastStyle } from "@/lib/utils";
-import Confetti from "../../components/Confetti";
-import ContinueLearningButton from "../../components/ContinueLearningButton";
+import Confetti from "../../components/confetti";
+import ContinueLearningButton from "../../components/continue-learning-button";
 
 // const achievements = [
 //   {
@@ -69,19 +69,19 @@ export default function Compliment({
         setData(fetchedData);
       } catch (error) {
         console.error("Error fetching progress:", error);
-      } finally {
       }
     };
 
     fetchData();
   }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: UnlockAchievement changes on every re-render and should not be used as a hook dependency.
   useEffect(() => {
     if (data) {
       let totalPercentage = 0;
       let count = 0;
 
-      lessons.forEach((lesson) => {
+      for (const lesson of lessons) {
         const progress = data.find((item) => item.topic === lesson.slug);
 
         const completedSubtopics = progress?.subtopics?.length ?? 0;
@@ -89,9 +89,9 @@ export default function Compliment({
 
         if (totalSubtopics > 0) {
           totalPercentage += (completedSubtopics / totalSubtopics) * 100;
-          count++;
+          count += 1;
         }
-      });
+      }
 
       const averageProgress = count > 0 ? totalPercentage / count : 0;
       setOverallProgress(Number(averageProgress.toFixed(2)));
@@ -102,19 +102,19 @@ export default function Compliment({
         !achievementUnlocked
       ) {
         if (averageProgress < 33.33) {
-          console.log("Beginner: " + overallProgress);
+          console.log(`Beginner: ${overallProgress}`);
           unlockAchievement("Beginner");
         } else if (averageProgress < 66.67) {
-          console.log("Intermediate: " + overallProgress);
+          console.log(`Intermediate: ${overallProgress}`);
           unlockAchievement("Intermediate");
         } else if (averageProgress < 100) {
-          console.log("Expert: " + overallProgress);
+          console.log(`Expert: ${overallProgress}`);
           unlockAchievement("Expert");
         }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, [data, achievementUnlocked, overallProgress, session?.user?.id, status]);
 
   async function unlockAchievement(name: string) {
     try {
@@ -384,9 +384,7 @@ export default function Compliment({
                     transition={{ duration: 0.5, delay: 1 }}
                   >
                     <Suspense fallback={<div>Loading...</div>}>
-                      <ContinueLearningButton
-                        disabled={status === "loading" ? true : false}
-                      />
+                      <ContinueLearningButton disabled={status === "loading"} />
                     </Suspense>
                   </motion.div>
                 </CardContent>

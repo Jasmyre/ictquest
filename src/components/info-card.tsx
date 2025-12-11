@@ -4,8 +4,8 @@ import { User } from "lucide-react";
 import type { JSX } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { updateUserName } from "@/actions/updateUserName";
-import { CustomTooltip } from "@/components/CustomTooltip";
+import { updateUserName } from "@/actions/update-user-name";
+import { CustomTooltip } from "@/components/custom-tooltip";
 import {
   Form,
   FormControl,
@@ -21,11 +21,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
-interface InfoCardProps {
+type InfoCardProps = {
   name?: string | null;
   email?: string | null;
   user: Prisma.UserCreateInput;
-}
+};
 
 const formSchema = z.object({
   username: z
@@ -38,7 +38,7 @@ export const InfoCard = ({ user }: InfoCardProps): JSX.Element => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: user.userName!,
+      username: user.name,
     },
   });
 
@@ -102,7 +102,7 @@ export const InfoCard = ({ user }: InfoCardProps): JSX.Element => {
               >
                 <Input
                   className="cursor-pointer border-gray-300 bg-white text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
-                  defaultValue={user.email!}
+                  defaultValue={user.email ?? "Unknown email"}
                   disabled
                   id="email"
                   name="email"

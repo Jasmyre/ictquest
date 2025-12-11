@@ -250,10 +250,8 @@ function page() {
                               Follow
                             </>
                           )} */}
-                          <>
-                            <UserPlus className="mr-2 h-4 w-4" />
-                            Follow
-                          </>
+                          <UserPlus className="mr-2 h-4 w-4" />
+                          Follow
                         </Button>
                         <Button
                           asChild

@@ -53,7 +53,7 @@ export default async function LandingPage() {
             ].map((feature, index) => (
               <Card
                 className="border-indigo-500 border-t-4 bg-white transition-shadow duration-300 hover:shadow-lg dark:border-indigo-400 dark:bg-gray-800"
-                key={index++}
+                key={index}
               >
                 <CardHeader>
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-800">
@@ -114,7 +114,7 @@ export default async function LandingPage() {
             ].map((step, index) => (
               <div
                 className={`mb-8 flex items-center ${index % 2 === 0 ? "flex-row-reverse" : ""}`}
-                key={index++}
+                key={index}
               >
                 <div
                   className={`w-1/2 ${index % 2 === 0 ? "pr-8 text-right" : "pl-8"}`}
@@ -167,10 +167,10 @@ export default async function LandingPage() {
               >
                 <CardHeader>
                   <div className="mb-4 flex items-center">
-                    {[...Array(5)].map((_, i) => (
+                    {[...new Array(5)].map((_, i) => (
                       <Star
                         className="mr-1 h-5 w-5 text-yellow-400 dark:text-yellow-300"
-                        key={i++}
+                        key={i}
                       />
                     ))}
                   </div>

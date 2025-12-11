@@ -2,16 +2,16 @@
 
 import type { Prisma } from "@prisma/client";
 import { type JSX, Suspense, useState } from "react";
-import { AchievementsCard } from "@/components/AchievementsCard";
-import { DeleteDataCard } from "@/components/DeleteDataCard";
-import { LearningProgressCard } from "@/components/LearningProgressCard";
-import { InfoCard } from "./InfoCard";
+import { AchievementsCard } from "@/components/achievements-card";
+import { DeleteDataCard } from "@/components/delete-data-card";
+import { LearningProgressCard } from "@/components/learning-progress-card";
+import { InfoCard } from "./info-card";
 
-interface ProfileCardGridProps {
+type ProfileCardGridProps = {
   name?: string | null;
   email?: string | null;
   user: Prisma.UserCreateInput;
-}
+};
 
 export function ProfileCardGrid({ user }: ProfileCardGridProps): JSX.Element {
   const [refreshKey, setRefreshKey] = useState<number>(1);

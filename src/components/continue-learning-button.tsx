@@ -4,23 +4,23 @@ import { ArrowRight } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "./ui/button";
 
-interface ProgressEntry {
+type ProgressEntry = {
   topic: string;
   subtopics: string[];
-}
+};
 
-export interface UserData {
+export type UserData = {
   name: string;
   email: string;
   progressData: ProgressEntry[];
-}
+};
 
 const ContinueLearningButton = ({ ...props }) => {
   const searchParams = useSearchParams();
-  const topic = searchParams.get("topic")!;
+  const topic = searchParams.get("topic");
   const router = useRouter();
 
-  const handleClick = async () => {
+  const handleClick = () => {
     router.push(`/lessons/${topic}#`);
   };
 

@@ -1,5 +1,5 @@
-import Browser from "@/components/Browser";
-import CodeBlock from "@/components/Code";
+import Browser from "@/components/browser";
+import CodeBlock from "@/components/code";
 import type { LessonContent } from "../lessons";
 
 export const beyondHTML: LessonContent = {

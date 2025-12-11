@@ -3,10 +3,10 @@
 import { Globe, RotateCw } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-interface BrowserProps {
+type BrowserProps = {
   title?: string;
   content?: string;
-}
+};
 
 const Browser = ({ title = "Browser", content = "" }: BrowserProps) => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -59,7 +59,7 @@ ${content.toString().replace(",", "")}
         doc.close();
       }
     }
-  }, [content, refreshCounter, title]);
+  }, [content, title]);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -75,11 +75,12 @@ ${content.toString().replace(",", "")}
   }, []);
 
   const onLoad = () => {
-    if (!iframeRef.current) return null;
+    if (!iframeRef.current) {
+      return null;
+    }
 
     try {
-      iframeRef.current.style.height =
-        iframeRef.current?.contentWindow?.document.body.scrollHeight + "px";
+      iframeRef.current.style.height = `${iframeRef.current?.contentWindow?.document.body.scrollHeight}px`;
     } catch (error) {
       console.log(error);
     }
@@ -104,6 +105,7 @@ ${content.toString().replace(",", "")}
           </div>
         </div>
         <div>
+          {/** biome-ignore lint/a11y/noNoninteractiveElementInteractions: This interactive element simulates a browser */}
           <iframe
             className="min-h-[20vh] px-2 py-4"
             key={refreshCounter}

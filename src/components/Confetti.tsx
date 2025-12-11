@@ -21,11 +21,7 @@ const Confetti = () => {
       })();
     }
   }, [showConfetti]);
-  return (
-    <span aria-label="Confetti" className="sr-only">
-      Confetti
-    </span>
-  );
+  return <span className="sr-only">Confetti</span>;
 };
 
 export default Confetti;

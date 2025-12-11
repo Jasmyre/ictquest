@@ -5,12 +5,12 @@ import Prism from "prismjs";
 import type { JSX } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { setSessionStorageItem } from "@/lib/utils";
-import Browser from "./Browser";
-import ButtonChoice from "./ButtonChoice";
-import CodeBlock from "./Code";
+import Browser from "./browser";
+import ButtonChoice from "./button-choice";
+import CodeBlock from "./code";
 import { Button } from "./ui/button";
 
-interface PracticeProps {
+type PracticeProps = {
   setNumberOfCorrectAction: (value: (count: number) => number) => void;
   setNumberOfInCorrectAction: (value: (count: number) => number) => void;
   setIsFinishedAction: (value: boolean) => void;
@@ -32,7 +32,7 @@ interface PracticeProps {
     positive?: string;
   };
   isResetEnabled?: boolean;
-}
+};
 
 export const Practice = ({
   choices,
@@ -113,6 +113,9 @@ export const Practice = ({
     disabledButtons,
     shuffledData,
     hasSubmitted,
+    isResetEnabled,
+    setNumberOfCorrectAction,
+    setNumberOfInCorrectAction,
   ]);
 
   const handleClick = (label: string, priority: number): void => {
@@ -128,12 +131,16 @@ export const Practice = ({
   };
 
   const renderMessage = (): JSX.Element | null => {
-    if (disabledButtons.length !== shuffledData?.length || !code) return null;
+    if (disabledButtons.length !== shuffledData?.length || !code) {
+      return null;
+    }
 
     if (
       code.replaceAll(" ", "").replaceAll("\n", "") === correctCodeFormatted
     ) {
-      if (!response?.positive) return null;
+      if (!response?.positive) {
+        return null;
+      }
       console.log(isCorrect);
       return (
         <div className="rounded bg-green-600 p-2 shadow">
@@ -144,7 +151,9 @@ export const Practice = ({
         </div>
       );
     }
-    if (!response?.negative) return null;
+    if (!response?.negative) {
+      return null;
+    }
 
     return (
       <div className="rounded bg-red-600 p-2 shadow">
@@ -168,7 +177,7 @@ export const Practice = ({
       </div>
       <CodeBlock code={code} initialCode={initialCode} language="HTML" />
       <div className="mt-2 flex flex-wrap justify-start gap-4">
-        {isResetEnabled && (
+        {isResetEnabled ? (
           <Button
             className="border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 hover:text-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
             onClick={handleReset}
@@ -178,7 +187,7 @@ export const Practice = ({
             <RotateCcw className="mr-2 h-4 w-4" />
             Reset
           </Button>
-        )}
+        ) : null}
 
         {hint && (
           <div className="flex items-center justify-center text-gray-500 text-sm">

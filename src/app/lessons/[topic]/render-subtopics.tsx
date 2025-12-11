@@ -5,9 +5,9 @@ import { ArrowLeft, ArrowRight, Book, Check } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import BackButton from "@/components/BackButton";
-import { CustomTooltip } from "@/components/CustomTooltip";
-import Loading from "@/components/Loading";
+import BackButton from "@/components/back-button";
+import { CustomTooltip } from "@/components/custom-tooltip";
+import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { lessons } from "@/db/lessons";
@@ -86,7 +86,7 @@ export default function RenderSubtopics({
                       {[1, 2, 3].map((_, index) => (
                         <li
                           className="border-gray-200 border-b py-4 last:border-b-0 dark:border-gray-700"
-                          key={index++}
+                          key={index}
                         >
                           <div className="flex items-center space-x-4">
                             <div className="flex-shrink-0">
@@ -150,7 +150,7 @@ export default function RenderSubtopics({
                       completedLesson?.includes(subtopic.slug) ? (
                         <li
                           className="border-gray-200 border-b py-4 last:border-b-0 dark:border-gray-700"
-                          key={index++}
+                          key={index}
                         >
                           <div className="flex items-center space-x-4">
                             <div className="flex-1">
@@ -203,7 +203,7 @@ export default function RenderSubtopics({
                       ) : (
                         <li
                           className="border-gray-200 border-b py-4 last:border-b-0 dark:border-gray-700"
-                          key={index++}
+                          key={index}
                         >
                           <div className="flex items-center space-x-4">
                             <div className="flex-shrink-0">

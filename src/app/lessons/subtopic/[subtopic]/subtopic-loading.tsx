@@ -1,6 +1,6 @@
-import { CustomProgress } from "@/components/CustomProgress";
-import LessonCard from "@/components/LessonCard";
-import Loading from "@/components/Loading";
+import { CustomProgress } from "@/components/custom-progress";
+import LessonCard from "@/components/lesson-card";
+import Loading from "@/components/loading";
 
 const loading = async () => (
   <main>

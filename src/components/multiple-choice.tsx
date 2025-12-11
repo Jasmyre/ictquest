@@ -3,7 +3,7 @@
 import { CircleAlert, RotateCcw } from "lucide-react";
 import Prism from "prismjs";
 import React, { type JSX, useCallback, useState } from "react";
-import { MultipleChoiceButton } from "./MultipleChoiceButton";
+import { MultipleChoiceButton } from "./multiple-choice-button";
 import { Button } from "./ui/button";
 
 export const MultipleChoice = ({
@@ -54,10 +54,12 @@ export const MultipleChoice = ({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [choice, choices.answer, handleReset, setIsFinishedAction]);
+  }, [handleReset]);
 
   React.useEffect(() => {
-    if (choice === "") return;
+    if (choice === "") {
+      return;
+    }
 
     if (choice === choices.answer) {
       console.log("Correct answer!");
@@ -74,7 +76,14 @@ export const MultipleChoice = ({
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [choice, choices.answer, isResetEnabled, setIsFinishedAction]);
+  }, [
+    choice,
+    choices.answer,
+    isResetEnabled,
+    setIsFinishedAction,
+    setNumberOfCorrectAction,
+    setNumberOfInCorrectAction,
+  ]);
 
   const handleMultipleChoiceClick = (label: string): void => {
     setChoice(label);
@@ -95,10 +104,14 @@ export const MultipleChoice = ({
   };
 
   const renderMessage = (): JSX.Element | null => {
-    if (!choice) return null;
+    if (!choice) {
+      return null;
+    }
 
     if (choice === correctChoice) {
-      if (!response?.positive) return null;
+      if (!response?.positive) {
+        return null;
+      }
       console.log(isCorrect);
       return (
         <div className="rounded bg-green-600 p-2 shadow">
@@ -109,7 +122,9 @@ export const MultipleChoice = ({
         </div>
       );
     }
-    if (!response?.negative) return null;
+    if (!response?.negative) {
+      return null;
+    }
 
     return (
       <div className="rounded bg-red-600 p-2 shadow">
@@ -143,7 +158,7 @@ export const MultipleChoice = ({
         ))}
       </div>
       <div className="mt-2 flex justify-start">
-        {isResetEnabled && (
+        {isResetEnabled ? (
           <Button
             className="border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 hover:text-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
             onClick={handleReset}
@@ -153,7 +168,7 @@ export const MultipleChoice = ({
             <RotateCcw className="mr-2 h-4 w-4" />
             Reset
           </Button>
-        )}
+        ) : null}
       </div>
       <br />
       <div className="hidden rounded bg-green-600 p-2">

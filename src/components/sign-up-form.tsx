@@ -1,43 +1,38 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSearchParams } from "next/navigation";
-import { type JSX, useState, useTransition } from "react";
+import type { JSX } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
-import { login } from "@/actions/Login";
-import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { LogInSchema } from "../schemas";
-import { FormError } from "./FormError";
-import { FormSuccess } from "./FormSuccess";
+import { register } from "@/actions/register";
+import { registerSchema } from "../schemas";
+import { FormError } from "./form-error";
+import { FormSuccess } from "./form-success";
+import { Button } from "./ui/button";
+import { Form, FormField, FormItem, FormLabel } from "./ui/form";
+import { Input } from "./ui/input";
 
-export const LogInForm = (): JSX.Element => {
+export const SignupForm = (): JSX.Element => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
 
-  const searchParams = useSearchParams();
-  const urlError =
-    searchParams.get("error") === "OAuthAccountNotLinked"
-      ? "Email already in use with different provider!"
-      : "";
-
-  const form = useForm<z.infer<typeof LogInSchema>>({
-    resolver: zodResolver(LogInSchema),
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LogInSchema>): void => {
+  const onSubmit = (values: z.infer<typeof registerSchema>): void => {
     setSuccess("");
     setError("");
 
     startTransition(async () => {
-      await login(values).then((data) => {
+      await register(values).then((data) => {
         setSuccess(data?.success);
         setError(data?.error);
       });
@@ -47,6 +42,23 @@ export const LogInForm = (): JSX.Element => {
   return (
     <Form {...form}>
       <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <Input
+                {...field}
+                className="mt-1 border-gray-400 dark:border-gray-600"
+                id="name"
+                placeholder="Johnny Bravo"
+                type="text"
+              />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="email"
@@ -80,14 +92,14 @@ export const LogInForm = (): JSX.Element => {
             </FormItem>
           )}
         />
-        <FormError message={error ?? urlError} />
+        <FormError message={error} />
         <FormSuccess message={success} />
         <Button
           className="w-full bg-indigo-500 hover:bg-indigo-400"
           disabled={isPending}
           type="submit"
         >
-          Sign In
+          Sign Up
         </Button>
       </form>
     </Form>

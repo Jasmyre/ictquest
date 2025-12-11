@@ -38,7 +38,7 @@ export async function DELETE() {
     });
 
     return NextResponse.json(deleted);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: Allow type any for catching errors
   } catch (error: any) {
     console.error("Error deleting achievement records:", error);
 

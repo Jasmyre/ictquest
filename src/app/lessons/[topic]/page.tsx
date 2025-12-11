@@ -1,4 +1,4 @@
-import RenderSubtopics from "./RenderSubtopics";
+import RenderSubtopics from "./render-subtopics";
 
 export default async function TopicPage({
   params,

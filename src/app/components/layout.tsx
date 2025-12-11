@@ -20,7 +20,10 @@ export default function Layout({
 
   useEffect(() => setMounted(true), []);
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return null;
+  }
+
   console.log(process.env.NEXT_PUBLIC_IS_IN_MAINTENANCE);
   console.log(typeof process.env.NEXT_PUBLIC_IS_IN_MAINTENANCE);
 
@@ -100,7 +103,7 @@ export default function Layout({
           </div>
         </div>
 
-        {isMobileMenuOpen && (
+        {isMobileMenuOpen ? (
           <div className="hidden max-md:block">
             <div className="space-y-1 pt-2 pb-3">
               <div className="relative mb-4 px-2">
@@ -144,7 +147,7 @@ export default function Layout({
               </Link>
             </div>
           </div>
-        )}
+        ) : null}
       </nav>
 
       <main>

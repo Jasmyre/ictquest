@@ -1,5 +1,5 @@
-import BackButton from "@/components/BackButton";
-import { ProgressCard } from "@/components/ProgressCard";
+import BackButton from "@/components/back-button";
+import { ProgressCard } from "@/components/progress-card";
 
 export default function Progress() {
   return (

@@ -1,6 +1,6 @@
-import Browser from "@/components/Browser";
-import CodeBlock from "@/components/Code";
-import CodeHighlight from "@/components/CodeHighlight";
+import Browser from "@/components/browser";
+import CodeBlock from "@/components/code";
+import CodeHighlight from "@/components/code-highlight";
 import type { LessonContent } from "../lessons";
 
 export const htmlContainers: LessonContent = {

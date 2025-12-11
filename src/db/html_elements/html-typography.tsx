@@ -1,8 +1,8 @@
-import Browser from "@/components/Browser";
-import CodeBlock from "@/components/Code";
-import CodeHighlight from "@/components/CodeHighlight";
-import { DifficultyParagraph } from "@/components/DifficultyParagraph";
-import { Practice } from "@/components/Practice";
+import Browser from "@/components/browser";
+import CodeBlock from "@/components/code";
+import CodeHighlight from "@/components/code-highlight";
+import { DifficultyParagraph } from "@/components/difficulty-paragraph";
+import { Practice } from "@/components/practice";
 import { shuffle } from "@/lib/utils";
 import type { LessonContent } from "../lessons";
 

@@ -68,7 +68,7 @@ export const metadata: Metadata = {
         url: "/thumbnail.png",
         width: 1200,
         height: 630,
-        alt: "Thumbnail image for " + BASE_URL,
+        alt: `Thumbnail image for ${BASE_URL}`,
       },
     ],
   },

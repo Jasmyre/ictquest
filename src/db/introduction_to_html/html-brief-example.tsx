@@ -1,6 +1,6 @@
-import Browser from "@/components/Browser";
-import CodeHighlight from "@/components/CodeHighlight";
-import { Practice } from "@/components/Practice";
+import Browser from "@/components/browser";
+import CodeHighlight from "@/components/code-highlight";
+import { Practice } from "@/components/practice";
 import { shuffle } from "@/lib/utils";
 import type { LessonContent } from "../lessons";
 

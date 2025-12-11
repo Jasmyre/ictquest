@@ -13,8 +13,7 @@ import {
   User,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import type { JSX } from "react";
-import * as React from "react";
+import { type JSX, useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -47,14 +46,14 @@ type ItemsGroup = {
 export function CommandSearch({
   className,
 }: Readonly<{ className?: string }>): JSX.Element {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const down = (e: KeyboardEvent): void => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setOpen((open) => !open);
+        setOpen((prev) => !prev);
       }
     };
 
@@ -62,7 +61,7 @@ export function CommandSearch({
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const runCommand = React.useCallback(
+  const runCommand = useCallback(
     (command: () => string) => {
       const path = command();
       router.push(path);
@@ -71,7 +70,7 @@ export function CommandSearch({
     [router]
   );
 
-  const lessonGroups = React.useMemo<ItemsGroup[]>(
+  const lessonGroups = useMemo<ItemsGroup[]>(
     () =>
       lessons
         .filter((lesson) => lesson.topics && lesson.topics.length > 0)
