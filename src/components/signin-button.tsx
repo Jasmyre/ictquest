@@ -32,7 +32,7 @@ const SigninButton = async () => {
           }}
         >
           <Button
-            className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 sm:w-auto dark:hover:bg-gray-200 dark:hover:text-indigo-800"
+            className="w-full cursor-pointer border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 sm:w-auto dark:hover:bg-gray-200 dark:hover:text-indigo-800"
             size="lg"
             variant="outline"
           >
@@ -42,7 +42,7 @@ const SigninButton = async () => {
       ) : (
         <Link href="/auth">
           <Button
-            className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 sm:w-auto dark:hover:bg-gray-200 dark:hover:text-indigo-800"
+            className="w-full cursor-pointer border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 sm:w-auto dark:hover:bg-gray-200 dark:hover:text-indigo-800"
             size="lg"
             variant="outline"
           >
