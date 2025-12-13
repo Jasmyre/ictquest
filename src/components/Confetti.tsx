@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 const Confetti = () => {
   const [showConfetti, setShowConfetti] = useState(false);
+
   useEffect(() => {
     setShowConfetti(true);
   }, []);
