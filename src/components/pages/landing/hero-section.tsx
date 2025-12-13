@@ -23,7 +23,7 @@ const HeroSection = async () => (
           <div className="flex flex-col gap-4 sm:flex-row">
             <Link href="/lessons">
               <Button
-                className="w-full bg-white text-indigo-600 hover:bg-gray-100 sm:w-auto dark:bg-gray-200 dark:text-indigo-800 dark:hover:bg-gray-300"
+                className="w-full cursor-pointer bg-white text-indigo-600 hover:bg-gray-100 sm:w-auto dark:bg-gray-200 dark:text-indigo-800 dark:hover:bg-gray-300"
                 size="lg"
               >
                 Explore Lessons
