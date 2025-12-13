@@ -1,7 +1,7 @@
-import { MultipleChoice } from "@/components/MultipleChoice";
-import type { LessonContent } from "../lessons";
+import { MultipleChoice } from "@/components/multiple-choice";
+import { Practice } from "@/components/practice";
 import { shuffle } from "@/lib/utils";
-import { Practice } from "@/components/Practice";
+import type { LessonContent } from "../lessons";
 
 const reset = false;
 
@@ -32,11 +32,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What does HTML stand for?"]}
               choices={{
                 options: [
                   "HyperText Markup Language",
@@ -46,10 +41,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "HyperText Markup Language",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Yup, you got it!",
                 negative: "Nope, give it another shot!",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["What does HTML stand for?"]}
             />
           ),
         },
@@ -77,27 +77,27 @@ export const quiz: LessonContent = {
                 { label: "</button>", priority: 3 },
               ],
               answer: "<button>Click me!</button>",
-              initialCode: [`<body>\n  `, `\n</body>`],
+              initialCode: ["<body>\n  ", "\n</body>"],
             };
 
             const shuffledData = shuffle(choices.options);
 
             return (
               <Practice
-                isResetEnabled={reset}
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={[
-                  "Now, let's try creating a button using HTML. Can you put the pieces in the correct order?",
-                ]}
                 initialCode={choices.initialCode}
+                isResetEnabled={reset}
                 response={{
                   negative: "Incorrect, Please try again!",
                   positive: "Correct, you are a fast learner!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={[
+                  "Now, let's try creating a button using HTML. Can you put the pieces in the correct order?",
+                ]}
               />
             );
           },
@@ -118,11 +118,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Who invented HTML?"]}
               choices={{
                 options: [
                   "Bill Gates",
@@ -132,10 +127,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "Tim Berners-Lee",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Exactly right!",
                 negative: "Nah, try again!",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Who invented HTML?"]}
             />
           ),
         },
@@ -161,19 +161,19 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Choose the correct version:"]}
               choices={{
                 options: ["HTML 2.0", "HTML 4.01", "HTML5", "XHTML"],
                 answer: "HTML5",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "That's it!",
                 negative: "Nope, not that one.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Choose the correct version:"]}
             />
           ),
         },
@@ -198,16 +198,16 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Is HTML a programming language?"]}
               choices={{ options: ["True", "False"], answer: "False" }}
+              isResetEnabled={reset}
               response={{
                 positive: "Exactly, it's just a markup language!",
                 negative: "Nope, it's not a programming language.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Is HTML a programming language?"]}
             />
           ),
         },
@@ -243,11 +243,11 @@ export const quiz: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
                 isResetEnabled={reset}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -277,7 +277,7 @@ export const quiz: LessonContent = {
               options: [
                 { label: `<img src="/img.png"`, priority: 1 },
                 { label: ` alt="A beautiful scene"`, priority: 2 },
-                { label: ` />`, priority: 3 },
+                { label: " />", priority: 3 },
               ],
               answer: `<img src="/img.png" alt="A beautiful scene" />`,
               initialCode: [
@@ -288,11 +288,11 @@ export const quiz: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
                 isResetEnabled={reset}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -322,7 +322,7 @@ export const quiz: LessonContent = {
               options: [
                 { label: `<a href="https://example.com">`, priority: 1 },
                 { label: "Visit Example", priority: 2 },
-                { label: `</a>`, priority: 3 },
+                { label: "</a>", priority: 3 },
               ],
               answer: `<a href="https://example.com">Visit Example</a>`,
               initialCode: [
@@ -333,11 +333,11 @@ export const quiz: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
                 isResetEnabled={reset}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -375,11 +375,11 @@ export const quiz: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
+                choices={choices}
                 isResetEnabled={reset}
+                setIsFinishedAction={setIsFinished}
                 setNumberOfCorrectAction={setNumberOfCorrect}
                 setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
-                choices={choices}
                 shuffledData={shuffledData}
               />
             );
@@ -406,19 +406,19 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Select the correct tag:"]}
               choices={{
                 options: ["<br>", "<hr>", "<p>", "<span>"],
                 answer: "<br>",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "That's right! <br> adds a line break.",
                 negative: "Not quite, try again.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Select the correct tag:"]}
             />
           ),
         },
@@ -438,19 +438,19 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which tag shows the page title on the browser tab?"]}
               choices={{
                 options: ["<title>", "<header>", "<h1>", "<meta>"],
                 answer: "<title>",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct! It’s the <title> tag.",
                 negative: "Not quite, try again.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Which tag shows the page title on the browser tab?"]}
             />
           ),
         },
@@ -470,19 +470,19 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What is the default language code for most HTML docs?"]}
               choices={{
                 options: ["en", "fr", "es", "de"],
                 answer: "en",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "That's it! Usually it's en.",
                 negative: "Try again, it's en.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["What is the default language code for most HTML docs?"]}
             />
           ),
         },
@@ -502,11 +502,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What does the <body> tag do?"]}
               choices={{
                 options: [
                   "Holds all the visible content",
@@ -516,10 +511,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "Holds all the visible content",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Yup, the body shows what you see!",
                 negative: "Nah, that's not it.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["What does the <body> tag do?"]}
             />
           ),
         },
@@ -539,11 +539,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Where should you put the charset meta tag?"]}
               choices={{
                 options: [
                   "Inside the <head> tag",
@@ -553,10 +548,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "Inside the <head> tag",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Right on!",
                 negative: "Nope, try again.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Where should you put the charset meta tag?"]}
             />
           ),
         },
@@ -576,11 +576,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What is the correct order of basic HTML tags?"]}
               choices={{
                 options: [
                   "<!DOCTYPE html>, <html>, <head>, <body>",
@@ -590,10 +585,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "<!DOCTYPE html>, <html>, <head>, <body>",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "That's the right order!",
                 negative: "Nope, check the basics again.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["What is the correct order of basic HTML tags?"]}
             />
           ),
         },
@@ -654,24 +654,24 @@ export const quiz: LessonContent = {
                 { label: "important", priority: 1 },
                 { label: "</strong>", priority: 2 },
               ],
-              answer: `<strong>important</strong>`,
+              answer: "<strong>important</strong>",
               initialCode: ["", ""],
             };
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                isResetEnabled={reset}
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the <strong> element in the correct order"]}
                 initialCode={choices.initialCode}
+                isResetEnabled={reset}
                 response={{
                   positive: "Correct!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the <strong> element in the correct order"]}
               />
             );
           },
@@ -697,24 +697,24 @@ export const quiz: LessonContent = {
                 { label: "highlighted", priority: 1 },
                 { label: "</mark>", priority: 2 },
               ],
-              answer: `<mark>highlighted</mark>`,
+              answer: "<mark>highlighted</mark>",
               initialCode: ["", ""],
             };
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                isResetEnabled={reset}
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the <mark> element in the correct order"]}
                 initialCode={choices.initialCode}
+                isResetEnabled={reset}
                 response={{
                   positive: "Correct!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the <mark> element in the correct order"]}
               />
             );
           },
@@ -740,24 +740,24 @@ export const quiz: LessonContent = {
                 { label: "small text", priority: 1 },
                 { label: "</small>", priority: 2 },
               ],
-              answer: `<small>small text</small>`,
+              answer: "<small>small text</small>",
               initialCode: ["", ""],
             };
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                isResetEnabled={reset}
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the <small> element in the correct order"]}
                 initialCode={choices.initialCode}
+                isResetEnabled={reset}
                 response={{
                   positive: "Correct!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the <small> element in the correct order"]}
               />
             );
           },
@@ -783,24 +783,24 @@ export const quiz: LessonContent = {
                 { label: "WHO", priority: 1 },
                 { label: "</abbr>", priority: 2 },
               ],
-              answer: `<abbr>WHO</abbr>`,
+              answer: "<abbr>WHO</abbr>",
               initialCode: ["", ""],
             };
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                isResetEnabled={reset}
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the <abbr> element in the correct order"]}
                 initialCode={choices.initialCode}
+                isResetEnabled={reset}
                 response={{
                   positive: "Correct!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the <abbr> element in the correct order"]}
               />
             );
           },
@@ -821,19 +821,19 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which tag is used to highlight text?"]}
               choices={{
                 options: ["<mark>", "<strong>", "<em>", "<code>"],
                 answer: "<mark>",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct!",
                 negative: "Try again!",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Which tag is used to highlight text?"]}
             />
           ),
         },
@@ -853,11 +853,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What's the main purpose of a <div> tag?"]}
               choices={{
                 options: [
                   "To group related content",
@@ -867,10 +862,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "To group related content",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Yup, that's right!",
                 negative: "Nope, try again!",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["What's the main purpose of a <div> tag?"]}
             />
           ),
         },
@@ -890,19 +890,19 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which tag is most commonly used as a container?"]}
               choices={{
                 options: ["<div>", "<span>", "<p>", "<header>"],
                 answer: "<div>",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct!",
                 negative: "Try again!",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Which tag is most commonly used as a container?"]}
             />
           ),
         },
@@ -922,11 +922,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Why do we use <div> containers?"]}
               choices={{
                 options: [
                   "To organize content",
@@ -936,10 +931,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "To organize content",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Right on!",
                 negative: "Oops, that's not it.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Why do we use <div> containers?"]}
             />
           ),
         },
@@ -959,19 +959,19 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["True or False: <div> tags add meaning to the content."]}
               choices={{
                 options: ["True", "False"],
                 answer: "False",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct, it's just for grouping.",
                 negative: "Not quite, try again.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["True or False: <div> tags add meaning to the content."]}
             />
           ),
         },
@@ -991,21 +991,21 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={[
-                "Which attribute is most often used with <div> for styling?",
-              ]}
               choices={{
                 options: ["class", "id", "src", "alt"],
                 answer: "class",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct!",
                 negative: "Not really, try again.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={[
+                "Which attribute is most often used with <div> for styling?",
+              ]}
             />
           ),
         },
@@ -1035,10 +1035,10 @@ export const quiz: LessonContent = {
                   priority: 1,
                 },
                 {
-                  label: `  Your browser does not support the video tag.\n`,
+                  label: "  Your browser does not support the video tag.\n",
                   priority: 2,
                 },
-                { label: `</video>`, priority: 3 },
+                { label: "</video>", priority: 3 },
               ],
               answer: `<video controls width="320" height="240">\n  <source src="/video.mp4" type="video/mp4">\n  Your browser does not support the video tag.\n</video>`,
               initialCode: ["", ""],
@@ -1046,18 +1046,18 @@ export const quiz: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                isResetEnabled={reset}
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the <video> element code correctly"]}
                 initialCode={choices.initialCode}
+                isResetEnabled={reset}
                 response={{
                   positive: "Great job!",
                   negative: "That’s not quite right. Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the <video> element code correctly"]}
               />
             );
           },
@@ -1078,11 +1078,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What does the audio element do?"]}
               choices={{
                 options: [
                   "To display texts",
@@ -1092,10 +1087,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "To play sounds",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct!",
                 negative: "Try again!",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["What does the audio element do?"]}
             />
           ),
         },
@@ -1115,11 +1115,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What does the source element do?"]}
               choices={{
                 options: [
                   "To specify multiple media source",
@@ -1129,10 +1124,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "To specify multiple media source",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct!",
                 negative: "Try again!",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["What does the source element do?"]}
             />
           ),
         },
@@ -1152,11 +1152,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What does the image element do?"]}
               choices={{
                 options: [
                   "To specify multiple media source",
@@ -1166,10 +1161,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "To display images",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct!",
                 negative: "Try again!",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["What does the image element do?"]}
             />
           ),
         },
@@ -1189,11 +1189,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What does the video element do?"]}
               choices={{
                 options: [
                   "To specify multiple media source",
@@ -1203,10 +1198,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "To play videos",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct!",
                 negative: "Try again!",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["What does the video element do?"]}
             />
           ),
         },
@@ -1226,13 +1226,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={[
-                "In an <option> tag, what does the 'value' attribute do?",
-              ]}
               choices={{
                 options: [
                   "It sets the option's value when selected",
@@ -1242,10 +1235,17 @@ export const quiz: LessonContent = {
                 ],
                 answer: "It sets the option's value when selected",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Exactly!",
                 negative: "Nope, give it another shot.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={[
+                "In an <option> tag, what does the 'value' attribute do?",
+              ]}
             />
           ),
         },
@@ -1265,19 +1265,19 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which tag is used inside <select> to list options?"]}
               choices={{
                 options: ["<option>", "<item>", "<choice>", "<list>"],
                 answer: "<option>",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Right on!",
                 negative: "Oops, that's not it.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Which tag is used inside <select> to list options?"]}
             />
           ),
         },
@@ -1297,11 +1297,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What does the <select> element do?"]}
               choices={{
                 options: [
                   "It creates a dropdown menu",
@@ -1311,10 +1306,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "It creates a dropdown menu",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Yup, that's right!",
                 negative: "Nope, try again!",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["What does the <select> element do?"]}
             />
           ),
         },
@@ -1334,13 +1334,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={[
-                "What do the <details> and <summary> elements let you do?",
-              ]}
               choices={{
                 options: [
                   "Create collapsible sections",
@@ -1350,10 +1343,17 @@ export const quiz: LessonContent = {
                 ],
                 answer: "Create collapsible sections",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Yep, that's it!",
                 negative: "Not quite, try again!",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={[
+                "What do the <details> and <summary> elements let you do?",
+              ]}
             />
           ),
         },
@@ -1373,21 +1373,21 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={[
-                "Which tag defines the visible heading in a collapsible section?",
-              ]}
               choices={{
                 options: ["<summary>", "<header>", "<caption>", "<title>"],
                 answer: "<summary>",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Right on!",
                 negative: "Nope, that's not it.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={[
+                "Which tag defines the visible heading in a collapsible section?",
+              ]}
             />
           ),
         },
@@ -1407,23 +1407,23 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={[
-                "Which attribute of the <form> element specifies where to send form data?",
-              ]}
               choices={{
                 options: ["action", "method", "enctype", "target"],
                 answer: "action",
               }}
+              isResetEnabled={reset}
               response={{
                 positive:
                   "Correct! The 'action' attribute sets the destination.",
                 negative:
                   "That's not correct. Remember, 'action' is used to specify the destination URL.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={[
+                "Which attribute of the <form> element specifies where to send form data?",
+              ]}
             />
           ),
         },
@@ -1443,20 +1443,20 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which input type should you use for a password field?"]}
               choices={{
                 options: ["text", "password", "email", "number"],
                 answer: "password",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct!",
                 negative:
                   "That's not right. The password field uses type 'password'.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Which input type should you use for a password field?"]}
             />
           ),
         },
@@ -1476,20 +1476,20 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which input type is used for numeric data?"]}
               choices={{
                 options: ["text", "number", "password", "email"],
                 answer: "number",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct!",
                 negative:
                   "Incorrect. The type 'number' is used for numeric input.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Which input type is used for numeric data?"]}
             />
           ),
         },
@@ -1509,19 +1509,19 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which input type is ideal for email addresses?"]}
               choices={{
                 options: ["text", "email", "password", "number"],
                 answer: "email",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct!",
                 negative: "Incorrect. The correct type is 'email'.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Which input type is ideal for email addresses?"]}
             />
           ),
         },
@@ -1541,11 +1541,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Radio buttons allow users to select:"]}
               choices={{
                 options: [
                   "Multiple options",
@@ -1555,11 +1550,16 @@ export const quiz: LessonContent = {
                 ],
                 answer: "A single option",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct!",
                 negative:
                   "Incorrect. Radio buttons allow only one selection per group.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Radio buttons allow users to select:"]}
             />
           ),
         },
@@ -1579,11 +1579,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What does CSS do for an HTML page?"]}
               choices={{
                 options: [
                   "It adds style",
@@ -1593,10 +1588,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "It adds style",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Yup, that's right!",
                 negative: "Nope, try again!",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["What does CSS do for an HTML page?"]}
             />
           ),
         },
@@ -1616,11 +1616,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Where is CSS usually placed in an HTML document?"]}
               choices={{
                 options: [
                   "Inside a <style> tag in the <head>",
@@ -1630,10 +1625,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "Inside a <style> tag in the <head>",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct!",
                 negative: "Nope, that's not it.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Where is CSS usually placed in an HTML document?"]}
             />
           ),
         },
@@ -1653,11 +1653,6 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["What does JavaScript add to an HTML page?"]}
               choices={{
                 options: [
                   "Interactivity",
@@ -1667,10 +1662,15 @@ export const quiz: LessonContent = {
                 ],
                 answer: "Interactivity",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Right on!",
                 negative: "Oops, not that one.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["What does JavaScript add to an HTML page?"]}
             />
           ),
         },
@@ -1690,19 +1690,19 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={["Which language is used to style the webpage?"]}
               choices={{
                 options: ["CSS", "HTML", "JavaScript", "PHP"],
                 answer: "CSS",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "You got it!",
                 negative: "Nope, not that one.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={["Which language is used to style the webpage?"]}
             />
           ),
         },
@@ -1722,21 +1722,21 @@ export const quiz: LessonContent = {
             setNumberOfInCorrect,
           }) => (
             <MultipleChoice
-              isResetEnabled={reset}
-              setNumberOfCorrectAction={setNumberOfCorrect}
-              setNumberOfInCorrectAction={setNumberOfInCorrect}
-              setIsFinishedAction={setIsFinished}
-              title={[
-                "What is the typical file extension for a JavaScript file?",
-              ]}
               choices={{
                 options: [".js", ".css", ".html", ".java"],
                 answer: ".js",
               }}
+              isResetEnabled={reset}
               response={{
                 positive: "Correct!",
                 negative: "Nope, try again.",
               }}
+              setIsFinishedAction={setIsFinished}
+              setNumberOfCorrectAction={setNumberOfCorrect}
+              setNumberOfInCorrectAction={setNumberOfInCorrect}
+              title={[
+                "What is the typical file extension for a JavaScript file?",
+              ]}
             />
           ),
         },

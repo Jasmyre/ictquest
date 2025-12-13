@@ -1,6 +1,6 @@
+import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { unlockUserAchievement } from "@/lib/achievement";
-import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
@@ -15,12 +15,12 @@ export async function POST(request: Request) {
     const result = await unlockUserAchievement(userId, achievementName);
 
     return NextResponse.json(result);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: Allow all object types for catching errors
   } catch (error: any) {
     console.error("Error unlocking achievement:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

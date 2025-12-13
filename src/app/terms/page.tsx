@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollText } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function TermsOfUsePage() {
   return (
@@ -7,7 +7,7 @@ export default function TermsOfUsePage() {
       <div className="py-10">
         <header>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-gray-100">
+            <h1 className="font-bold text-3xl text-gray-900 leading-tight dark:text-gray-100">
               Terms of Use
             </h1>
           </div>
@@ -17,7 +17,7 @@ export default function TermsOfUsePage() {
             <div className="px-4 py-8 sm:px-0">
               <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                 <CardHeader>
-                  <CardTitle className="flex items-center text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                  <CardTitle className="flex items-center font-semibold text-2xl text-gray-900 dark:text-gray-100">
                     <ScrollText className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                     ICTQuest Terms of Use
                   </CardTitle>
@@ -30,7 +30,7 @@ export default function TermsOfUsePage() {
                       terms and conditions:
                     </p>
 
-                    <h2 className="mt-6 mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <h2 className="mt-6 mb-3 font-semibold text-gray-900 text-xl dark:text-gray-100">
                       1. Acceptance of Terms
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
@@ -40,7 +40,7 @@ export default function TermsOfUsePage() {
                       terms, you may not use our services.
                     </p>
 
-                    <h2 className="mt-6 mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <h2 className="mt-6 mb-3 font-semibold text-gray-900 text-xl dark:text-gray-100">
                       2. Use of Service
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
@@ -49,7 +49,7 @@ export default function TermsOfUsePage() {
                       unauthorized purpose.
                     </p>
 
-                    <h2 className="mt-6 mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <h2 className="mt-6 mb-3 font-semibold text-gray-900 text-xl dark:text-gray-100">
                       3. User Account
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
@@ -59,7 +59,7 @@ export default function TermsOfUsePage() {
                       password.
                     </p>
 
-                    <h2 className="mt-6 mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <h2 className="mt-6 mb-3 font-semibold text-gray-900 text-xl dark:text-gray-100">
                       4. Intellectual Property
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
@@ -69,7 +69,7 @@ export default function TermsOfUsePage() {
                       intellectual property laws.
                     </p>
 
-                    <h2 className="mt-6 mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <h2 className="mt-6 mb-3 font-semibold text-gray-900 text-xl dark:text-gray-100">
                       5. Limitation of Liability
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
@@ -80,7 +80,7 @@ export default function TermsOfUsePage() {
                       intangible losses.
                     </p>
 
-                    <h2 className="mt-6 mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <h2 className="mt-6 mb-3 font-semibold text-gray-900 text-xl dark:text-gray-100">
                       6. Changes to Terms
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">
@@ -89,7 +89,7 @@ export default function TermsOfUsePage() {
                       check these Terms periodically for changes.
                     </p>
 
-                    <h2 className="mt-6 mb-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+                    <h2 className="mt-6 mb-3 font-semibold text-gray-900 text-xl dark:text-gray-100">
                       7. Contact Information
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300">

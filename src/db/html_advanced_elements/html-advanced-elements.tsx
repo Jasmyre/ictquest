@@ -1,8 +1,8 @@
-import Browser from "@/components/Browser";
-import CodeBlock from "@/components/Code";
-import CodeHighlight from "@/components/CodeHighlight";
-import { DifficultyParagraph } from "@/components/DifficultyParagraph";
-import { Practice } from "@/components/Practice";
+import Browser from "@/components/browser";
+import CodeBlock from "@/components/code";
+import CodeHighlight from "@/components/code-highlight";
+import { DifficultyParagraph } from "@/components/difficulty-paragraph";
+import { Practice } from "@/components/practice";
 import { shuffle } from "@/lib/utils";
 import type { LessonContent } from "../lessons";
 
@@ -60,13 +60,13 @@ export const htmlAdvancedElements: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<select>
   <option value="apple">Apple</option>
   <option value="banana">Banana</option>
   <option value="cherry">Cherry</option>
 </select>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -109,7 +109,7 @@ export const htmlAdvancedElements: LessonContent = {
           id: 4,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="easy" color="green">
+            <DifficultyParagraph color="green" difficulty="easy">
               Quick test: Arrange the{" "}
               <CodeHighlight>{"<select>"}</CodeHighlight> element code
               correctly.
@@ -126,7 +126,7 @@ export const htmlAdvancedElements: LessonContent = {
           }) => {
             const choices = {
               options: [
-                { label: `<select>\n`, priority: 0 },
+                { label: "<select>\n", priority: 0 },
                 {
                   label: `  <option value="apple">Apple</option>\n`,
                   priority: 1,
@@ -139,7 +139,7 @@ export const htmlAdvancedElements: LessonContent = {
                   label: `  <option value="cherry">Cherry</option>\n`,
                   priority: 1,
                 },
-                { label: `</select>`, priority: 2 },
+                { label: "</select>", priority: 2 },
               ],
               answer: `<select>\n  <option value="apple">Apple</option>\n  <option value="banana">Banana</option>\n  <option value="cherry">Cherry</option>\n</select>`,
               initialCode: ["", ""],
@@ -147,17 +147,17 @@ export const htmlAdvancedElements: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the dropdown menu code correctly"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Great job!",
                   negative: "That’s not quite right. Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the dropdown menu code correctly"]}
               />
             );
           },
@@ -187,12 +187,12 @@ export const htmlAdvancedElements: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<details>
   <summary>More Info</summary>
   <p>This is the hidden content.</p>
 </details>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -228,7 +228,7 @@ export const htmlAdvancedElements: LessonContent = {
           id: 10,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="easy" color="green">
+            <DifficultyParagraph color="green" difficulty="easy">
               Quick test: Arrange the collapsible section code correctly.
             </DifficultyParagraph>
           ),
@@ -243,31 +243,32 @@ export const htmlAdvancedElements: LessonContent = {
           }) => {
             const choices = {
               options: [
-                { label: `<details>\n`, priority: 0 },
-                { label: `  <summary>More Info</summary>\n`, priority: 1 },
+                { label: "<details>\n", priority: 0 },
+                { label: "  <summary>More Info</summary>\n", priority: 1 },
                 {
-                  label: `  <p>This is the hidden content.</p>\n`,
+                  label: "  <p>This is the hidden content.</p>\n",
                   priority: 2,
                 },
-                { label: `</details>`, priority: 3 },
+                { label: "</details>", priority: 3 },
               ],
-              answer: `<details>\n  <summary>More Info</summary>\n  <p>This is the hidden content.</p>\n</details>`,
+              answer:
+                "<details>\n  <summary>More Info</summary>\n  <p>This is the hidden content.</p>\n</details>",
               initialCode: ["", ""],
             };
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the collapsible section code correctly"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Great job!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the collapsible section code correctly"]}
               />
             );
           },
@@ -294,13 +295,13 @@ export const htmlAdvancedElements: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<dialog id="myDialog">
   <p>This is a modal dialog.</p>
   <button onclick="document.getElementById('myDialog').close()">Close</button>
 </dialog>
 <button onclick="document.getElementById('myDialog').showModal()">Open Dialog</button>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -341,7 +342,7 @@ export const htmlAdvancedElements: LessonContent = {
           id: 16,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="medium" color="orange">
+            <DifficultyParagraph color="orange" difficulty="medium">
               Quick test: Arrange the dialog element code correctly.
             </DifficultyParagraph>
           ),
@@ -357,12 +358,12 @@ export const htmlAdvancedElements: LessonContent = {
             const choices = {
               options: [
                 { label: `<dialog id="myDialog">\n`, priority: 0 },
-                { label: `  <p>This is a modal dialog.</p>\n`, priority: 1 },
+                { label: "  <p>This is a modal dialog.</p>\n", priority: 1 },
                 {
                   label: `  <button onclick="document.getElementById('myDialog').close()">Close</button>\n`,
                   priority: 2,
                 },
-                { label: `</dialog>\n`, priority: 3 },
+                { label: "</dialog>\n", priority: 3 },
                 {
                   label: `<button onclick="document.getElementById('myDialog').showModal()">Open Dialog</button>`,
                   priority: 4,
@@ -374,17 +375,17 @@ export const htmlAdvancedElements: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the dialog element code correctly"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Great job!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the dialog element code correctly"]}
               />
             );
           },
@@ -413,13 +414,13 @@ export const htmlAdvancedElements: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<fieldset>
   <legend>Personal Information</legend>
   <label for="name">Name:</label>
   <input type="text" id="name" name="name" />
 </fieldset>`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -461,7 +462,7 @@ export const htmlAdvancedElements: LessonContent = {
           id: 22,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="easy" color="green">
+            <DifficultyParagraph color="green" difficulty="easy">
               Quick test: Arrange the fieldset and legend code correctly.
             </DifficultyParagraph>
           ),
@@ -476,9 +477,9 @@ export const htmlAdvancedElements: LessonContent = {
           }) => {
             const choices = {
               options: [
-                { label: `<fieldset>\n`, priority: 0 },
+                { label: "<fieldset>\n", priority: 0 },
                 {
-                  label: `  <legend>Personal Information</legend>\n`,
+                  label: "  <legend>Personal Information</legend>\n",
                   priority: 1,
                 },
                 { label: `  <label for="name">Name:</label>\n`, priority: 2 },
@@ -486,7 +487,7 @@ export const htmlAdvancedElements: LessonContent = {
                   label: `  <input type="text" id="name" name="name" />\n`,
                   priority: 3,
                 },
-                { label: `</fieldset>`, priority: 4 },
+                { label: "</fieldset>", priority: 4 },
               ],
               answer: `<fieldset>\n  <legend>Personal Information</legend>\n  <label for="name">Name:</label>\n  <input type="text" id="name" name="name" />\n</fieldset>`,
               initialCode: ["", ""],
@@ -494,17 +495,17 @@ export const htmlAdvancedElements: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the fieldset and legend code correctly"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Great job!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the fieldset and legend code correctly"]}
               />
             );
           },
@@ -531,10 +532,10 @@ export const htmlAdvancedElements: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<label for="email">Email:</label>
 <input type="email" id="email" name="email" />`}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -578,7 +579,7 @@ export const htmlAdvancedElements: LessonContent = {
           id: 28,
           type: "element",
           label: (
-            <DifficultyParagraph difficulty="easy" color="green">
+            <DifficultyParagraph color="green" difficulty="easy">
               Quick test: Arrange the label element code correctly.
             </DifficultyParagraph>
           ),
@@ -594,8 +595,8 @@ export const htmlAdvancedElements: LessonContent = {
             const choices = {
               options: [
                 { label: `<label for="email">`, priority: 0 },
-                { label: `Email:`, priority: 1 },
-                { label: `</label>\n`, priority: 2 },
+                { label: "Email:", priority: 1 },
+                { label: "</label>\n", priority: 2 },
                 {
                   label: `<input type="email" id="email" name="email" />`,
                   priority: 3,
@@ -607,17 +608,17 @@ export const htmlAdvancedElements: LessonContent = {
             const shuffledData = shuffle(choices.options);
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={["Arrange the label element code correctly"]}
                 initialCode={choices.initialCode}
                 response={{
                   positive: "Great job!",
                   negative: "Try again!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={["Arrange the label element code correctly"]}
               />
             );
           },

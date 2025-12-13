@@ -1,8 +1,8 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-import Compliment from "./compliment";
 import { Suspense, use } from "react";
+import Compliment from "./compliment";
 
 export default function ComplimentsPage({
   searchParams,
@@ -35,8 +35,8 @@ export default function ComplimentsPage({
       <SessionProvider>
         <Compliment
           correct={Number(correct ?? 0)}
-          incorrect={Number(incorrect ?? 0)}
           img={randomImage}
+          incorrect={Number(incorrect ?? 0)}
         />
       </SessionProvider>
     </Suspense>

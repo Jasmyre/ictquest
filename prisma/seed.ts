@@ -21,13 +21,13 @@ async function main(): Promise<void> {
       where: { name: achievement.name },
     });
 
-    if (!existingAchievement) {
+    if (existingAchievement) {
+      console.log(`Achievement already exists: ${achievement.name}`);
+    } else {
       await db.achievement.create({
         data: achievement,
       });
       console.log(`Seeded achievement: ${achievement.name}`);
-    } else {
-      console.log(`Achievement already exists: ${achievement.name}`);
     }
   }
 }

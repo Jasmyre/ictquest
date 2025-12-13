@@ -1,22 +1,18 @@
-import React from "react";
-
-import { auth } from "@/auth";
 import { Suspense } from "react";
+import { auth } from "@/auth";
 
-const page = async () => {
-  return (
-    <div>
-      Settings page
-      <br />
-      <br />
-      <pre>
-        <Suspense>
-          <Data />
-        </Suspense>
-      </pre>
-    </div>
-  );
-};
+const page = async () => (
+  <div>
+    Settings page
+    <br />
+    <br />
+    <pre>
+      <Suspense>
+        <Data />
+      </Suspense>
+    </pre>
+  </div>
+);
 
 const Data = async () => {
   const session = await auth();

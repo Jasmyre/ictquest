@@ -2,9 +2,9 @@ import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
 
 import {
-  DEFAULT_LOGIN_REDIRECT,
   apiAuthPrefix,
   authRoutes,
+  DEFAULT_LOGIN_REDIRECT,
   publicRoutes,
 } from "./routes";
 
@@ -15,10 +15,8 @@ export default auth((req) => {
 
   const isInMaintenance = process.env.NEXT_PUBLIC_IS_IN_MAINTENANCE === "true";
 
-  if (isInMaintenance) {
-    if (!nextUrl.pathname.startsWith("/maintenance")) {
-      return Response.redirect(new URL("/maintenance", nextUrl));
-    }
+  if (isInMaintenance && !nextUrl.pathname.startsWith("/maintenance")) {
+    return Response.redirect(new URL("/maintenance", nextUrl));
   }
 
   const isLoggedIn = !!req.auth;
@@ -28,25 +26,25 @@ export default auth((req) => {
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
   if (isApiAuthRoute) {
-    return undefined;
+    return;
   }
 
   if (isAuthRoute) {
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
-    return undefined;
+    return;
   }
 
   if (nextUrl.pathname.startsWith("/api/public")) {
-    return undefined;
+    return;
   }
 
-  if (!isLoggedIn && !isPublicRoute) {
+  if (!(isLoggedIn || isPublicRoute)) {
     return Response.redirect(new URL("/auth", nextUrl), 302);
   }
 
-  return undefined;
+  return;
 });
 
 export const config = {

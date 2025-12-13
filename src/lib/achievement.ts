@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 
-interface UnlockUserAchievement {
+type UnlockUserAchievement = {
   message: string;
   achievement: {
     id: number;
@@ -11,11 +11,11 @@ interface UnlockUserAchievement {
     unlockedAt: Date;
   };
   status: string;
-}
+};
 
 export async function unlockUserAchievement(
   userId: string | null | undefined,
-  achievementName: string,
+  achievementName: string
 ): Promise<UnlockUserAchievement> {
   if (!userId) {
     throw new Error("Invalid user id");

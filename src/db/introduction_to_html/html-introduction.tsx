@@ -1,11 +1,10 @@
-import Browser from "@/components/Browser";
-import CodeBlock from "@/components/Code";
-import { Practice } from "@/components/Practice";
+import Image from "next/image";
+import Browser from "@/components/browser";
+import CodeBlock from "@/components/code";
+import CodeHighlight from "@/components/code-highlight";
+import { Practice } from "@/components/practice";
 import { shuffle } from "@/lib/utils";
 import type { LessonContent } from "../lessons";
-
-import Image from "next/image";
-import CodeHighlight from "@/components/CodeHighlight";
 
 export const htmlIntroduction: LessonContent = {
   title: "What is HTML and Its History",
@@ -24,11 +23,11 @@ export const htmlIntroduction: LessonContent = {
           type: "element",
           label: (
             <Image
-              src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f916/512.gif"
               alt="HTML Structure"
-              width={400}
-              height={300}
               className="mt-4 rounded-lg shadow-md"
+              height={300}
+              src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f916/512.gif"
+              width={400}
             />
           ),
         },
@@ -101,9 +100,9 @@ export const htmlIntroduction: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={"<p>This is a paragraph.</p>"}
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -136,9 +135,9 @@ export const htmlIntroduction: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code="<p>This is a paragraph.</p>"
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -185,26 +184,26 @@ export const htmlIntroduction: LessonContent = {
                 { label: "</button>", priority: 3 },
               ],
               answer: "<button>Click me!</button>",
-              initialCode: [`<body>\n  `, `\n</body>`],
+              initialCode: ["<body>\n  ", "\n</body>"],
             };
 
             const shuffledData = shuffle(choices.options);
 
             return (
               <Practice
-                setNumberOfCorrectAction={setNumberOfCorrect}
-                setNumberOfInCorrectAction={setNumberOfInCorrect}
-                setIsFinishedAction={setIsFinished}
                 choices={choices}
-                shuffledData={shuffledData}
-                title={[
-                  "Now, let's try creating a button using HTML. Can you put the pieces in the correct order?",
-                ]}
                 initialCode={choices.initialCode}
                 response={{
                   negative: "Incorrect, Please try again!",
                   positive: "Correct, you are a fast learner!",
                 }}
+                setIsFinishedAction={setIsFinished}
+                setNumberOfCorrectAction={setNumberOfCorrect}
+                setNumberOfInCorrectAction={setNumberOfInCorrect}
+                shuffledData={shuffledData}
+                title={[
+                  "Now, let's try creating a button using HTML. Can you put the pieces in the correct order?",
+                ]}
               />
             );
           },

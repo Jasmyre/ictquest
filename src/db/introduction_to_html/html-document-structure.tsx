@@ -1,6 +1,6 @@
-import Browser from "@/components/Browser";
-import CodeBlock from "@/components/Code";
-import CodeHighlight from "@/components/CodeHighlight";
+import Browser from "@/components/browser";
+import CodeBlock from "@/components/code";
+import CodeHighlight from "@/components/code-highlight";
 import type { LessonContent } from "../lessons";
 
 export const htmlDocumentStructure: LessonContent = {
@@ -31,9 +31,9 @@ export const htmlDocumentStructure: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code="<!DOCTYPE html>"
               initialCode={["", ""]}
+              language="HTML"
             />
           ),
         },
@@ -71,11 +71,11 @@ export const htmlDocumentStructure: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
               code={`<html>
   ... 
 </html>`}
               initialCode={["<!DOCTYPE html>\n", ""]}
+              language="HTML"
             />
           ),
         },
@@ -102,9 +102,11 @@ export const htmlDocumentStructure: LessonContent = {
           label: (
             <div>
               <CodeBlock
-                language="HTML"
-                code={`  <head>\n    ...\n  </head>\n\n  <body>\n    ...\n  </body>\n`}
+                code={
+                  "  <head>\n    ...\n  </head>\n\n  <body>\n    ...\n  </body>\n"
+                }
                 initialCode={["<!DOCTYPE html>\n<html>\n", "<html>"]}
+                language="HTML"
               />
             </div>
           ),
@@ -125,12 +127,14 @@ export const htmlDocumentStructure: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`    <title>My Page</title>\n    <!-- Other meta info -->\n`}
+              code={
+                "    <title>My Page</title>\n    <!-- Other meta info -->\n"
+              }
               initialCode={[
                 "<!DOCTYPE html>\n<html>\n  <head>\n",
                 "  </head>\n\n  <body>\n    ...\n  </body>\n<html>",
               ]}
+              language="HTML"
             />
           ),
         },
@@ -150,12 +154,12 @@ export const htmlDocumentStructure: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`    <h1>Hello World</h1>\n    <p>This is my page.</p>\n`}
+              code={"    <h1>Hello World</h1>\n    <p>This is my page.</p>\n"}
               initialCode={[
                 "<!DOCTYPE html>\n<html>\n  <head>\n    <title>My Page</title>\n    <!-- Other meta info -->\n  </head>\n\n  <body>\n",
                 "  </body>\n<html>",
               ]}
+              language="HTML"
             />
           ),
         },
@@ -175,12 +179,12 @@ export const htmlDocumentStructure: LessonContent = {
           type: "element",
           label: (
             <CodeBlock
-              language="HTML"
-              code={`    <h1>Hello World</h1>\n    <p>This is my page.</p>\n`}
+              code={"    <h1>Hello World</h1>\n    <p>This is my page.</p>\n"}
               initialCode={[
                 "<!DOCTYPE html>\n<html>\n  <head>\n    <title>My Page</title>\n    <!-- Other meta info -->\n  </head>\n\n  <body>\n",
                 "  </body>\n<html>",
               ]}
+              language="HTML"
             />
           ),
         },

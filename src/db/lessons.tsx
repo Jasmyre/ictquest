@@ -11,12 +11,12 @@ import { htmlDocumentStructure } from "./introduction_to_html/html-document-stru
 import { htmlIntroduction } from "./introduction_to_html/html-introduction";
 import { quiz } from "./test/quiz";
 
-export interface Topic {
+export type Topic = {
   name: string;
   slug: string;
-}
+};
 
-export interface LessonContent {
+export type LessonContent = {
   title: string;
   contents: Array<{
     submit: { label: string };
@@ -33,15 +33,15 @@ export interface LessonContent {
           }) => JSX.Element);
     }>;
   }>;
-}
+};
 
-export interface Lesson {
+export type Lesson = {
   title: string;
   description: string;
   slug: string;
   topics: Topic[];
   content: Record<string, LessonContent>;
-}
+};
 
 export const lessons: Lesson[] = [
   {
@@ -99,7 +99,7 @@ export const lessons: Lesson[] = [
     slug: "test",
     topics: [{ name: "Quiz", slug: "quiz" }],
     content: {
-      quiz: quiz,
+      quiz,
     },
   },
 

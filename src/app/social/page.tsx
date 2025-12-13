@@ -1,5 +1,15 @@
 "use client";
 
+import {
+  Ban,
+  Flag,
+  MoreVertical,
+  Search,
+  Sparkles,
+  Trophy,
+  UserPlus,
+} from "lucide-react";
+import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,16 +22,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Ban,
-  Flag,
-  MoreVertical,
-  Search,
-  Sparkles,
-  Trophy,
-  UserPlus,
-} from "lucide-react";
-import Link from "next/link";
 
 // Sample user data (unchanged)
 const users = [
@@ -102,19 +102,19 @@ function page() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-white">
+              <h1 className="font-bold text-3xl text-gray-900 leading-tight dark:text-white">
                 Community
               </h1>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+              <p className="mt-2 text-gray-600 text-sm dark:text-gray-400">
                 Connect with fellow learners
               </p>
             </div>
             <div className="relative w-full md:w-80">
               <div className="relative">
-                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <Search className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 text-gray-400" />
                 <Input
-                  placeholder="Search users..."
                   className="w-full border-gray-200 bg-white pl-9 focus-visible:ring-indigo-600 dark:border-gray-700 dark:bg-gray-800"
+                  placeholder="Search users..."
                   //   value={searchQuery}
                   //   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -125,43 +125,43 @@ function page() {
       </header>
       <main>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Tabs defaultValue="all" className="w-full">
+          <Tabs className="w-full" defaultValue="all">
             <TabsList className="mx-auto mb-8 w-full max-w-md border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
               <TabsTrigger
-                value="all"
                 className="flex-1 data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
+                value="all"
               >
                 All Users
               </TabsTrigger>
               <TabsTrigger
-                value="following"
                 className="flex-1 data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
+                value="following"
               >
                 Following
               </TabsTrigger>
               <TabsTrigger
-                value="teachers"
                 className="flex-1 data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
+                value="teachers"
               >
                 Teachers
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="all" className="mt-0">
+            <TabsContent className="mt-0" value="all">
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {users.map((user) => (
                   <Card
-                    key={user.id}
                     className="flex flex-col border-gray-200 bg-white transition-shadow duration-200 hover:border-indigo-200 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600"
+                    key={user.id}
                   >
                     <CardContent className="flex flex-col gap-6 p-6">
                       {/* Card Header */}
                       <div className="flex items-start justify-between">
                         <Link
-                          href={`/profile/${user.id}`}
                           className="group flex items-center gap-4"
+                          href={`/profile/${user.id}`}
                         >
                           <Avatar className="h-12 w-12 border-2 border-gray-200 transition-colors duration-200 group-hover:border-indigo-600 dark:border-gray-600">
-                            <AvatarImage src={user.avatar} alt={user.name} />
+                            <AvatarImage alt={user.name} src={user.avatar} />
                             <AvatarFallback className="bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
                               {user.name
                                 .split(" ")
@@ -170,10 +170,10 @@ function page() {
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <h2 className="text-lg font-semibold text-gray-900 transition-colors duration-200 group-hover:text-indigo-600 dark:text-white">
+                            <h2 className="font-semibold text-gray-900 text-lg transition-colors duration-200 group-hover:text-indigo-600 dark:text-white">
                               {user.name}
                             </h2>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-gray-600 text-sm dark:text-gray-400">
                               {user.username}
                             </p>
                           </div>
@@ -181,8 +181,8 @@ function page() {
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button
-                              variant="ghost"
                               className="h-8 w-8 p-0 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+                              variant="ghost"
                             >
                               <span className="sr-only">Open menu</span>
                               <MoreVertical className="h-4 w-4" />
@@ -218,7 +218,7 @@ function page() {
                       </div>
 
                       {/* Stats */}
-                      <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
+                      <div className="flex items-center justify-between text-gray-600 text-sm dark:text-gray-400">
                         <div className="flex items-center gap-1">
                           <Trophy className="h-4 w-4" />
                           <span>{user.achievements} achievements</span>
@@ -232,12 +232,12 @@ function page() {
                       {/* Buttons */}
                       <div className="mt-auto flex items-center gap-3">
                         <Button
+                          className="w-full flex-1 place-self-end bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
+                          //   onClick={() => toggleFollow(user.id)}
                           variant={
                             // followingStatus[user.id] ? "secondary" : "default"
                             "default"
                           }
-                          //   onClick={() => toggleFollow(user.id)}
-                          className="w-full flex-1 place-self-end bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
                         >
                           {/* {followingStatus[user.id] ? (
                             <>
@@ -250,15 +250,13 @@ function page() {
                               Follow
                             </>
                           )} */}
-                          <>
-                            <UserPlus className="mr-2 h-4 w-4" />
-                            Follow
-                          </>
+                          <UserPlus className="mr-2 h-4 w-4" />
+                          Follow
                         </Button>
                         <Button
-                          variant="outline"
-                          className="flex-1 border border-gray-200 bg-white text-gray-900 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
                           asChild
+                          className="flex-1 border border-gray-200 bg-white text-gray-900 shadow-sm hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+                          variant="outline"
                         >
                           <Link href={`/profile/${user.id}`}>View Profile</Link>
                         </Button>

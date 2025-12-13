@@ -3,20 +3,6 @@
 
 import { useEffect, useState } from "react";
 
-// Define a type for achievements
-// type Achievement = {
-//   name: string;
-//   description: string;
-// };
-
-// Our list of achievements (for example purposes)
-// const achievementsList: Achievement[] = [
-//   {
-//     name: "Clicktastic",
-//     description: "Click 1000 times",
-//   },
-// ];
-
 export default function HomePage() {
   // State to track the number of clicks
   const [clickCount, setClickCount] = useState(0);
@@ -26,6 +12,7 @@ export default function HomePage() {
   // Replace with the actual current user's ID from your authentication system
   const currentUserId = "cm7h7bvzb0000hpbogs4hvxi1";
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: unlockAchievement changes on every re-render and should not be used as a hook dependency.
   useEffect(() => {
     // When the click count reaches 1000 and the achievement hasn't been unlocked, attempt to unlock it.
     if (clickCount >= 10 && !isAchievementUnlocked) {
@@ -59,9 +46,12 @@ export default function HomePage() {
   }
 
   return (
+    // biome-ignore lint/a11y/noNoninteractiveElementInteractions: Allow non-interactive element interaction for achievements purposes
+    // biome-ignore lint/a11y/noStaticElementInteractions: Allow non-interactive element interaction for achievements purposes
     <div
-      style={{ padding: "2rem", textAlign: "center" }}
       onClick={() => setClickCount((prev) => prev + 1)}
+      onKeyUp={() => setClickCount((prev) => prev + 1)}
+      style={{ padding: "2rem", textAlign: "center" }}
     >
       <h1>Next.js Achievement System</h1>
       <p>Click anywhere to increase the click count.</p>

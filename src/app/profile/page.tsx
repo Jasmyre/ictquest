@@ -1,15 +1,15 @@
 import { auth } from "@/auth";
-import { ProfileCardGrid } from "@/components/ProfileCardGrid";
+import { ProfileCardGrid } from "@/components/profile-card-grid";
 import { getUserById } from "@/data/user";
 
 export default async function ProfilePage() {
   const session = await auth();
-  if (!session) {
+  if (!session?.user) {
     return (
       <main>
         <div className="py-10">
           <header className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-gray-100">
+            <h1 className="font-bold text-3xl text-gray-900 leading-tight dark:text-gray-100">
               Your Profile
             </h1>
           </header>
@@ -21,14 +21,14 @@ export default async function ProfilePage() {
     );
   }
 
-  const user = await getUserById(session.user.id!);
+  const user = await getUserById(session.user.id ?? null);
 
   if (!user) {
     return (
       <main>
         <div className="py-10">
           <header className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-gray-100">
+            <h1 className="font-bold text-3xl text-gray-900 leading-tight dark:text-gray-100">
               Your Profile
             </h1>
           </header>
@@ -44,11 +44,11 @@ export default async function ProfilePage() {
     <main>
       <div className="min-h-[80vh] py-10">
         <header className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl leading-tight font-bold text-gray-900 dark:text-gray-100">
+          <h1 className="font-bold text-3xl text-gray-900 leading-tight dark:text-gray-100">
             Your Profile
           </h1>
         </header>
-        <ProfileCardGrid user={user!} />
+        <ProfileCardGrid user={user} />
       </div>
     </main>
   );

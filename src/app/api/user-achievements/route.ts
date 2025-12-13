@@ -1,6 +1,6 @@
+import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { NextResponse } from "next/server";
 
 const getUserId = async (): Promise<string | null> => {
   const session = await auth();
@@ -13,12 +13,12 @@ export async function GET() {
   if (!userId) {
     return NextResponse.json(
       { message: "Please log in or create an account!" },
-      { status: 401 },
+      { status: 401 }
     );
   }
 
   const userAchievement = await db.userAchievement.findMany({
-    where: { userId: userId },
+    where: { userId },
     include: { achievement: true },
   });
 
@@ -38,20 +38,20 @@ export async function DELETE() {
     });
 
     return NextResponse.json(deleted);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: Allow type any for catching errors
   } catch (error: any) {
     console.error("Error deleting achievement records:", error);
 
     if (error.code === "P2025") {
       return NextResponse.json(
         { error: "No achievement record found for this user" },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
     return NextResponse.json(
       { error: "Failed to delete achievement records" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

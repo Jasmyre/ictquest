@@ -1,9 +1,8 @@
+import Link from "next/link";
 import { auth, signOut } from "@/auth";
 import { getUserById } from "@/data/user";
 import { db } from "@/lib/db";
 import { Button } from "./ui/button";
-
-import Link from "next/link";
 
 const SigninButton = async () => {
   const session = await auth();
@@ -33,9 +32,9 @@ const SigninButton = async () => {
           }}
         >
           <Button
+            className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 sm:w-auto dark:hover:bg-gray-200 dark:hover:text-indigo-800"
             size="lg"
             variant="outline"
-            className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 sm:w-auto dark:hover:bg-gray-200 dark:hover:text-indigo-800"
           >
             Sign Out
           </Button>
@@ -43,9 +42,9 @@ const SigninButton = async () => {
       ) : (
         <Link href="/auth">
           <Button
+            className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 sm:w-auto dark:hover:bg-gray-200 dark:hover:text-indigo-800"
             size="lg"
             variant="outline"
-            className="w-full border-white bg-transparent text-white hover:bg-white hover:text-indigo-600 sm:w-auto dark:hover:bg-gray-200 dark:hover:text-indigo-800"
           >
             Sign In
           </Button>
