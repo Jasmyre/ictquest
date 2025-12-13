@@ -1,7 +1,7 @@
-"use client";
-
-import { signIn } from "next-auth/react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
+import { AuthProviderButton } from "@/components/auth-provider-button";
+import { LogInForm } from "@/components/login-form";
+import { SignupForm } from "@/components/sign-up-form";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,17 +12,8 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import { LogInForm } from "../../components/login-form";
-import { SignupForm } from "../../components/sign-up-form";
 
 export default function AuthPage() {
-  const onClick = (provider: string) => {
-    signIn(provider, {
-      callbackUrl: DEFAULT_LOGIN_REDIRECT,
-    });
-  };
-
   return (
     <div className="flex min-h-[80vh] items-center justify-center max-sm:px-4">
       <Card className="w-full max-w-md border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -74,39 +65,17 @@ export default function AuthPage() {
               </span>
             </div>
             <div className="space-y-2">
-              <Button
-                className="relative flex w-full cursor-pointer justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
-                onClick={() => onClick("google")}
-                variant="outline"
-              >
-                <FaGoogle className="absolute top-[50%] bottom-[50%] left-8 translate-x-[-50%] translate-y-[-50%]" />
-                <span>Continue with Google</span>
-              </Button>
-              {/* <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger
-                    disabled
-                    className={cn(
-                      "relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500",
-                    )}
-                  >
-                    <FaGithub className="absolute bottom-[50%] left-8 top-[50%] translate-x-[-50%] translate-y-[-50%]" />
-                    <span>Continue with Github</span>
-                  </TooltipTrigger>
-                  <TooltipContent className="bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
-                    <p>Github provider is currently not available.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider> */}
-              <Button
-                className="relative flex w-full cursor-pointer justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
+              <AuthProviderButton
+                icon={<FaGoogle />}
+                label="Continue with Google"
+                provider="google"
+              />
+              <AuthProviderButton
                 disabled
-                onClick={() => onClick("github")}
-                variant="outline"
-              >
-                <FaGithub className="absolute top-[50%] bottom-[50%] left-8 translate-x-[-50%] translate-y-[-50%]" />
-                <span>Continue with Github</span>
-              </Button>
+                icon={<FaGithub />}
+                label="Continue with Github"
+                provider="github"
+              />
             </div>
           </div>
         </CardContent>
