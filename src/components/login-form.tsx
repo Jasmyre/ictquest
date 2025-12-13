@@ -83,7 +83,7 @@ export const LogInForm = (): JSX.Element => {
         <FormError message={error ?? urlError} />
         <FormSuccess message={success} />
         <Button
-          className="w-full bg-indigo-500 hover:bg-indigo-400"
+          className="w-full cursor-pointer bg-indigo-500 hover:bg-indigo-400"
           disabled={isPending}
           type="submit"
         >

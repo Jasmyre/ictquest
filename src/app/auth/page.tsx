@@ -36,15 +36,15 @@ export default function AuthPage() {
         </CardHeader>
         <CardContent>
           <Tabs className="w-full" defaultValue="signin">
-            <TabsList className="mb-4 grid w-full grid-cols-2 gap-2 bg-gray-200 dark:bg-gray-600">
+            <TabsList className="mb-4 grid w-full grid-cols-2 bg-gray-200 dark:bg-gray-600">
               <TabsTrigger
-                className="text-gray-500 hover:bg-gray-100 data-[state=active]:bg-white data-[state=active]:text-gray-800 dark:text-gray-400 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-gray-300 dark:hover:bg-gray-500"
+                className="cursor-pointer text-gray-500 hover:bg-gray-100 data-[state=active]:bg-white data-[state=active]:text-gray-800 dark:text-gray-400 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-gray-300 dark:hover:bg-gray-500"
                 value="signin"
               >
                 Sign In
               </TabsTrigger>
               <TabsTrigger
-                className="text-gray-500 hover:bg-gray-100 data-[state=active]:bg-white data-[state=active]:text-gray-800 dark:text-gray-400 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-gray-300 dark:hover:bg-gray-500"
+                className="cursor-pointer text-gray-500 hover:bg-gray-100 data-[state=active]:bg-white data-[state=active]:text-gray-800 dark:text-gray-400 dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-gray-300 dark:hover:bg-gray-500"
                 value="signup"
               >
                 Sign Up
@@ -53,7 +53,8 @@ export default function AuthPage() {
             <TabsContent value="signin">
               <LogInForm />
               <Button
-                className="mt-2 p-0 text-indigo-400 hover:text-indigo-300"
+                className="mt-2 cursor-pointer p-0 text-indigo-400 hover:text-indigo-300"
+                disabled
                 variant="link"
               >
                 Forgot password?
@@ -74,7 +75,7 @@ export default function AuthPage() {
             </div>
             <div className="space-y-2">
               <Button
-                className="relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
+                className="relative flex w-full cursor-pointer justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
                 onClick={() => onClick("google")}
                 variant="outline"
               >
@@ -98,7 +99,7 @@ export default function AuthPage() {
                 </Tooltip>
               </TooltipProvider> */}
               <Button
-                className="relative flex w-full justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
+                className="relative flex w-full cursor-pointer justify-center border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500"
                 disabled
                 onClick={() => onClick("github")}
                 variant="outline"
