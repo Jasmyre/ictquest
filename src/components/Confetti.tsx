@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const Confetti = () => {
   const [showConfetti, setShowConfetti] = useState(false);
   // test
-
+  
   useEffect(() => {
     setShowConfetti(true);
   }, []);
