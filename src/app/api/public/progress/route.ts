@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
+import { getUserProgress } from "@/lib/progress";
 
 const getUserId = async (): Promise<string | null> => {
   const session = await auth();
@@ -9,26 +10,19 @@ const getUserId = async (): Promise<string | null> => {
   return id;
 };
 
-export async function GET() {
-  const userId = await getUserId();
-  if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  try {
-    const progress = await db.progressData.findMany({
-      where: { userId },
+export async function GET(_request: NextRequest) {
+  const data = await getUserProgress();
+
+  if (!data.success) {
+    return NextResponse.json(data, {
+      status: data.status,
     });
-    return NextResponse.json(progress);
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Failed to fetch progress" },
-      { status: 500 }
-    );
   }
+
+  return NextResponse.json(data);
 }
 
-export async function DELETE() {
+export async function DELETE(_request: NextRequest) {
   const userId = await getUserId();
 
   if (!userId) {

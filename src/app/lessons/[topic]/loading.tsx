@@ -1,5 +1,5 @@
 import { ArrowRight, Book } from "lucide-react";
-import BackButton from "@/components/back-button";
+import MagicBackButton from "@/components/custom-ui/magic-back-button";
 import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +10,7 @@ export default function loading() {
       <div className="py-10">
         <header>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <Loading className="h-[32px] sm:w-[325px]" />
+            <Loading className="h-[34px] sm:w-[325px]" />
             <br />
             <Loading className="h-[16px] sm:w-[500px]" />
           </div>
@@ -55,7 +55,10 @@ export default function loading() {
                 </CardContent>
               </Card>
               <div className="mt-6">
-                <BackButton>Go Back</BackButton>
+                <MagicBackButton
+                  className="cursor-pointer"
+                  variant={"outline"}
+                />
               </div>
             </div>
           </div>

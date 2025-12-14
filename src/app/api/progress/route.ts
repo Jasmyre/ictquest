@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 
@@ -9,11 +9,12 @@ const getUserId = async (): Promise<string | null> => {
   return id;
 };
 
-export async function GET() {
+export async function GET(_request: NextRequest) {
   const userId = await getUserId();
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
   try {
     const progress = await db.progressData.findMany({
       where: { userId },

@@ -4,16 +4,18 @@ import { db } from "@/lib/db";
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: Readonly<{ params: Promise<{ id: string }> }>
 ): Promise<NextResponse> {
   const { id } = await params;
   if (!id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
   try {
     const progress = await db.progressData.findMany({
       where: { userId: id },
     });
+
     return NextResponse.json(progress);
   } catch (error) {
     console.error(error);

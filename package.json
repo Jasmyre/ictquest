@@ -68,6 +68,7 @@
     "react-dom": "^19.2.1",
     "react-hook-form": "^7.62.0",
     "react-icons": "^5.5.0",
+    "react-page-tracker": "^0.5.0",
     "superjson": "^2.2.2",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
