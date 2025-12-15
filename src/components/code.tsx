@@ -2,6 +2,8 @@ import { Code } from "lucide-react";
 import Prism from "prismjs";
 import "prismjs/themes/prism-tomorrow.css";
 
+import DOMPurify from "dompurify";
+
 type CodeBlockProps = {
   language?: string;
   initialCode: string[];
@@ -24,6 +26,8 @@ const CodeBlock = ({
     language
   );
 
+  const safeHighlightedCode = DOMPurify.sanitize(highlightedCode);
+
   return (
     <div className="rounded-xl border border-gray-300 dark:border-gray-700">
       <header className="flex gap-4 rounded-t-xl bg-indigo-500 p-2 px-4 text-gray-200">
@@ -41,12 +45,10 @@ const CodeBlock = ({
       >
         <code
           className={`language-${language} m-0 h-full min-h-[20vh] rounded-b-xl border-none bg-[2D2D2D] max-sm:text-xs`}
-          // Todo: investigate whether it's safe to use dangerouslySetInnerHTML
-          // dangerouslySetInnerHTML={{ __html: highlightedCode }}
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: biome-ignore lint/security/noDangerouslySetInnerHtmlWithChildren: safeHighlightedCode is sanitized and safe to use
+          dangerouslySetInnerHTML={{ __html: safeHighlightedCode }}
           tabIndex={-1}
-        >
-          {highlightedCode}
-        </code>
+        />
       </pre>
     </div>
   );

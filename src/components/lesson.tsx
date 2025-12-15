@@ -246,7 +246,7 @@ export default function Lesson({
               >
                 {isBackEnabled ? (
                   <Button
-                    className="border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 hover:text-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+                    className="cursor-pointer border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 hover:text-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
                     disabled={index === 0}
                     onClick={handleBackButton}
                     variant="outline"
@@ -256,7 +256,7 @@ export default function Lesson({
                   </Button>
                 ) : null}
                 <Button
-                  className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
+                  className="cursor-pointer bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
                   disabled={!isFinished}
                   onClick={handleNextButton}
                 >
