@@ -5,8 +5,8 @@ import MagicBackButton from "@/components/custom-ui/magic-back-button";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import lessons from "@/db/lessons";
-import { getUserProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
+import { api } from "@/trpc/server";
 
 export default async function TopicPage({
   params,
@@ -15,7 +15,7 @@ export default async function TopicPage({
   const lesson = lessons.find((item) => item.slug === topicParam);
   const topic = lesson?.topics;
 
-  const userProgress = await getUserProgress();
+  const userProgress = await api.user.getUserProgress();
   const data = userProgress.data;
 
   const foundItem = data?.find((item) => item.topic === topicParam);
@@ -167,6 +167,7 @@ export default async function TopicPage({
               </Card>
               <div className="mt-6">
                 <MagicBackButton
+                  backLink="/lessons"
                   className="cursor-pointer"
                   variant={"outline"}
                 />

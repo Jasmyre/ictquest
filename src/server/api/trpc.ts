@@ -9,8 +9,10 @@
 
 import { env } from "node:process";
 import { initTRPC, TRPCError } from "@trpc/server";
+import type { Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { auth } from "@/auth";
 import { redis } from "@/lib/redis";
 import { db } from "@/server/db";
 
@@ -31,8 +33,10 @@ export const createTRPCContext = async (opts: {
 }): Promise<{
   headers: Headers;
   db: typeof db;
+  user: Session["user"] | null;
 }> => ({
   db,
+  user: (await auth())?.user ?? null,
   ...opts,
 });
 
@@ -143,3 +147,17 @@ const publicRateLimiter = t.middleware(async ({ ctx, next, path }) => {
 
 export const publicRateLimitedProcedure =
   publicProcedure.use(publicRateLimiter);
+
+export const privateProcedure = t.procedure.use(function isAuthed(opts) {
+  const { ctx } = opts;
+
+  if (!ctx.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  return opts.next({
+    ctx: {
+      user: ctx.user,
+    },
+  });
+});
