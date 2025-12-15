@@ -1,8 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User } from "lucide-react";
-import { useEffect } from "react";
+import { User as UserIcon } from "lucide-react";
+import type { Session } from "next-auth";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 import { Button } from "@/components/ui/button";
@@ -15,8 +15,6 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { api } from "@/trpc/react";
-import { ProfileInfoCardLoading } from "./profile-info-card-loading";
 
 const profileInfoCardSchema = z.object({
   userName: z
@@ -31,40 +29,25 @@ const profileInfoCardSchema = z.object({
     .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email address."),
 });
 
-export const ProfileInfoCard = () => {
-  const user = api.user.getUser.useQuery();
-
+export const ProfileInfoCard = ({ user }: { user: Session["user"] }) => {
   const form = useForm<z.infer<typeof profileInfoCardSchema>>({
     resolver: zodResolver(profileInfoCardSchema),
     defaultValues: {
-      userName: user.data?.name ?? "Unknown name",
-      email: user.data?.email ?? "Unknown email",
+      userName: user.name ?? "Unknown name",
+      email: user.email ?? "Unknown email",
     },
   });
-
-  useEffect(() => {
-    if (user.data) {
-      form.reset({
-        userName: user.data.name ?? "Unknown name",
-        email: user.data.email ?? "Unknown email",
-      });
-    }
-  }, [user.data, form]);
 
   const handleSubmit = (values: z.infer<typeof profileInfoCardSchema>) => {
     console.log(values);
   };
-
-  if (user.isLoading) {
-    return <ProfileInfoCardLoading />;
-  }
 
   return (
     <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
       <CardHeader>
         <CardTitle className="flex items-center justify-between font-semibold text-2xl text-gray-900 dark:text-gray-100">
           <div className="flex min-w-min flex-wrap gap-2">
-            <User className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+            <UserIcon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
             <p>Personal Information</p>
           </div>
         </CardTitle>

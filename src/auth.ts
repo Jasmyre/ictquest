@@ -1,41 +1,9 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import type { Prisma, UserRole } from "@prisma/client";
-import type { DefaultSession } from "next-auth";
+import type { UserRole } from "@prisma/client";
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
 import { getUserById } from "@/data/user";
 import { db } from "@/lib/db";
-
-declare module "next-auth" {
-  // biome-ignore lint/style/useConsistentTypeDefinitions: interface appropriate to extent Session type
-  interface Session {
-    user: {
-      role: UserRole;
-      emailVerified: Date;
-      userName: string;
-      progressData?: {
-        id?: string;
-        topic: string;
-        subtopics?: Prisma.ProgressDataCreatesubtopicsInput | string[];
-        user: Prisma.UserCreateNestedOneWithoutProgressDataInput;
-      };
-    } & DefaultSession["user"];
-  }
-}
-
-declare module "@auth/core" {
-  type JWT = {
-    role?: UserRole;
-    emailVerified?: Date;
-    userName?: string;
-    progressData?: {
-      id?: string;
-      topic: string;
-      subtopics?: Prisma.ProgressDataCreatesubtopicsInput | string[];
-      user: Prisma.UserCreateNestedOneWithoutProgressDataInput;
-    };
-  };
-}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
