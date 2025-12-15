@@ -25,4 +25,10 @@ export const userRouter = createTRPCRouter({
       };
     }
   }),
+
+  getUser: privateProcedure.query((opts) => {
+    const { user } = opts.ctx;
+
+    return user;
+  }),
 });

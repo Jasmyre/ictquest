@@ -10,8 +10,8 @@ import { NavigationBar } from "../components/ui/navigation-bar";
 import { Toaster } from "../components/ui/toaster";
 
 import "@/styles/globals.css";
-import { Suspense } from "react";
 import { Footer } from "@/components/footer";
+import { TRPCReactProvider } from "../trpc/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -89,7 +89,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-background antialiased`}
       >
-        <Suspense>
+        <TRPCReactProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -108,9 +108,9 @@ export default async function RootLayout({
             <Footer />
             <Toaster />
           </ThemeProvider>
-        </Suspense>
-        <Analytics />
-        <SpeedInsights />
+          <Analytics />
+          <SpeedInsights />
+        </TRPCReactProvider>
       </body>
     </html>
   );
