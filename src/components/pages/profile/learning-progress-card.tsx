@@ -12,15 +12,15 @@ import lessons from "@/db/lessons";
 import type { api } from "@/trpc/server";
 
 export const LearningProgressCard = ({
-  userProgress,
+  getUserProgress,
 }: {
-  userProgress: Awaited<ReturnType<typeof api.user.getUserProgress>>;
+  getUserProgress: Awaited<ReturnType<typeof api.user.getUserProgress>>;
 }) => {
   /**
    * The progress data array returned from the API.
    * Each item corresponds to a lesson/topic and may include `subtopics`.
    */
-  const progressData = userProgress.data;
+  const userProgress = getUserProgress.data;
 
   /**
    * Compute all derived progress values from `lessons` + `progressData`.
@@ -32,7 +32,7 @@ export const LearningProgressCard = ({
    */
   const { _items, overall } = useMemo(() => {
     const mapped = lessons.map((lesson) => {
-      const progress = progressData?.find((p) => p.topic === lesson.slug);
+      const progress = userProgress?.find((p) => p.topic === lesson.slug);
       const completed = progress?.subtopics?.length ?? 0;
       const total = lesson.topics.length;
       const percentage =
@@ -56,7 +56,7 @@ export const LearningProgressCard = ({
     const overallPercent = Number((overallRatio * 100).toFixed(2));
 
     return { _items: mapped, overall: overallPercent };
-  }, [progressData]);
+  }, [userProgress]);
 
   /**
    * Beginner threshold (~33%) and Intermediate threshold (~66%).
@@ -80,7 +80,7 @@ export const LearningProgressCard = ({
   const badge = getBadge(overall);
   const lessonsToShow = lessons.slice(0, 3);
 
-  if (!userProgress.success) {
+  if (!getUserProgress.success) {
     /**
      * If the API failed, show the server message and don't render progress UI.
      */
@@ -95,7 +95,7 @@ export const LearningProgressCard = ({
           </CardTitle>
         </CardHeader>
 
-        <CardContent>{userProgress.message}</CardContent>
+        <CardContent>{getUserProgress.message}</CardContent>
       </Card>
     );
   }
@@ -135,7 +135,7 @@ export const LearningProgressCard = ({
             <CustomProgress finalValue={overall} initialValue={0} />
           </div>
           {lessonsToShow.map((lesson) => {
-            const progress = progressData?.find(
+            const progress = userProgress?.find(
               (entry) => entry.topic === lesson.slug
             );
             const completedSubtopics = progress?.subtopics.length ?? 0;

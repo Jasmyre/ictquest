@@ -1,11 +1,13 @@
+import { AchievementsCard } from "@/components/pages/profile/achievements-card";
 import { LearningProgressCard } from "@/components/pages/profile/learning-progress-card";
 import { ProfileInfoCard } from "@/components/pages/profile/profile-info-card";
 import { api } from "@/trpc/server";
 
 export default async function ProfilePage() {
-  const [user, userProgress] = await Promise.all([
+  const [user, userProgress, getUserAchievements] = await Promise.all([
     api.user.getUser(),
     api.user.getUserProgress(),
+    api.user.getUserAchievements(),
   ]);
 
   if (!user) {
@@ -36,7 +38,8 @@ export default async function ProfilePage() {
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <ProfileInfoCard user={user} />
-            <LearningProgressCard userProgress={userProgress} />
+            <LearningProgressCard getUserProgress={userProgress} />
+            <AchievementsCard getUserAchievements={getUserAchievements} />
           </div>
         </div>
       </div>

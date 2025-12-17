@@ -40,7 +40,7 @@ export const ProfileInfoCardLoading = () => {
                   placeholder="Loading..."
                 />
               </Field>
-              <div className="flex justify-end">
+              <div>
                 <Button
                   className="cursor-pointer border border-border bg-muted text-foreground"
                   disabled

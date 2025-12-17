@@ -31,4 +31,29 @@ export const userRouter = createTRPCRouter({
 
     return user;
   }),
+
+  getUserAchievements: privateProcedure.query(async (opts) => {
+    const { user } = opts.ctx;
+
+    try {
+      const achievements = await db.userAchievement.findMany({
+        where: { userId: user.id },
+        include: { achievement: true },
+      });
+
+      return {
+        success: true,
+        data: achievements,
+      };
+    } catch (error) {
+      console.error("getUserAchievements error:", error);
+
+      return {
+        success: false,
+        status: 500,
+        message:
+          "Unable to load your achievements right now. Please try again later.",
+      };
+    }
+  }),
 });

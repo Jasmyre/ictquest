@@ -1,25 +1,29 @@
-"use client";
-
-import type { UserAchievement } from "@prisma/client";
 import { Award } from "lucide-react";
-import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toastDescription } from "@/lib/utils";
+import type { api } from "@/trpc/server";
 
-type AchievementProps = UserAchievement[];
+export const AchievementsCard = ({
+  getUserAchievements,
+}: {
+  getUserAchievements: Awaited<ReturnType<typeof api.user.getUserAchievements>>;
+}) => {
+  const achievements = getUserAchievements.data;
 
-export function AchievementsCard() {
-  const [achievements, setAchievements] = useState<AchievementProps>([]);
+  if (!getUserAchievements.success) {
+    return (
+      <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+        <CardHeader>
+          <CardTitle className="flex items-center font-semibold text-2xl text-gray-900 dark:text-gray-100">
+            <Award className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+            Achievements
+          </CardTitle>
+        </CardHeader>
+        <CardContent>{getUserAchievements.message}</CardContent>
+      </Card>
+    );
+  }
 
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("/api/user-achievements");
-      const data: AchievementProps = await response.json();
-      setAchievements(data);
-    })();
-  }, []);
-
-  console.log(achievements);
   return (
     <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
       <CardHeader>
@@ -30,7 +34,7 @@ export function AchievementsCard() {
       </CardHeader>
       <CardContent>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {achievements.map((achievement) => (
+          {achievements?.map((achievement) => (
             <li className="flex py-4" key={achievement.achievementName}>
               <Award className="mr-2 h-6 w-6 text-yellow-400" />
               <span className="font-medium text-gray-900 text-sm dark:text-gray-100">
@@ -43,21 +47,8 @@ export function AchievementsCard() {
               </span>
             </li>
           ))}
-
-          {/* <li className="flex py-4">
-            <Award className="mr-2 h-6 w-6 text-gray-400" />
-            <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-              Form Builder
-            </span>
-          </li>
-          <li className="flex py-4">
-            <Award className="mr-2 h-6 w-6 text-yellow-600" />
-            <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-              HTML5 Pioneer
-            </span>
-          </li> */}
         </ul>
       </CardContent>
     </Card>
   );
-}
+};
