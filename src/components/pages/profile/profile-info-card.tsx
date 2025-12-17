@@ -98,11 +98,11 @@ export const ProfileInfoCard = ({ user }: { user: Session["user"] }) => {
                   </Field>
                 )}
               />
-              <div className="flex justify-end">
+              <div>
                 <Button
-                  className="cursor-pointer border border-border bg-muted text-foreground"
+                  className="cursor-pointer max-sm:w-full"
                   type="submit"
-                  variant={"ghost"}
+                  variant={"card-button"}
                 >
                   Submit
                 </Button>

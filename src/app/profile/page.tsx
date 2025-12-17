@@ -1,8 +1,12 @@
+import { LearningProgressCard } from "@/components/pages/profile/learning-progress-card";
 import { ProfileInfoCard } from "@/components/pages/profile/profile-info-card";
 import { api } from "@/trpc/server";
 
 export default async function ProfilePage() {
-  const user = await api.user.getUser();
+  const [user, userProgress] = await Promise.all([
+    api.user.getUser(),
+    api.user.getUserProgress(),
+  ]);
 
   if (!user) {
     return (
@@ -32,6 +36,7 @@ export default async function ProfilePage() {
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <ProfileInfoCard user={user} />
+            <LearningProgressCard userProgress={userProgress} />
           </div>
         </div>
       </div>
