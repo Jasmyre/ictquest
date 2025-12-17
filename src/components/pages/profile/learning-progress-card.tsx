@@ -95,7 +95,9 @@ export const LearningProgressCard = ({
           </CardTitle>
         </CardHeader>
 
-        <CardContent>{getUserProgress.message}</CardContent>
+        <CardContent>
+          Unable to load your progress right now. Please try again later.
+        </CardContent>
       </Card>
     );
   }

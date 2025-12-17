@@ -3,7 +3,7 @@ import { ProgressCard } from "@/components/pages/progress/progress-card";
 import { api } from "@/trpc/server";
 
 export default async function Progress() {
-  const userProgress = await api.user.getUserProgress();
+  const userProgress = await api.user.getUserProgress({});
 
   return (
     <main className="min-h-[80vh]">

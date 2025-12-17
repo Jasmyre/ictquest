@@ -19,7 +19,9 @@ export const AchievementsCard = ({
             Achievements
           </CardTitle>
         </CardHeader>
-        <CardContent>{getUserAchievements.message}</CardContent>
+        <CardContent>
+          Unable to load your achievements right now. Please try again later.
+        </CardContent>
       </Card>
     );
   }
@@ -34,19 +36,25 @@ export const AchievementsCard = ({
       </CardHeader>
       <CardContent>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {achievements?.map((achievement) => (
-            <li className="flex py-4" key={achievement.achievementName}>
-              <Award className="mr-2 h-6 w-6 text-yellow-400" />
-              <span className="font-medium text-gray-900 text-sm dark:text-gray-100">
-                {String(
-                  toastDescription(
-                    achievement.achievementName,
-                    achievement.achievementDescription
-                  )
-                )}
-              </span>
-            </li>
-          ))}
+          {achievements.length ? (
+            achievements?.map((achievement) => (
+              <li className="flex py-4" key={achievement.achievementName}>
+                <Award className="mr-2 h-6 w-6 text-yellow-400" />
+                <span className="font-medium text-gray-900 text-sm dark:text-gray-100">
+                  {String(
+                    toastDescription(
+                      achievement.achievementName,
+                      achievement.achievementDescription
+                    )
+                  )}
+                </span>
+              </li>
+            ))
+          ) : (
+            <p className="text-muted-foreground">
+              You have not unlocked any achievements yet.
+            </p>
+          )}
         </ul>
       </CardContent>
     </Card>

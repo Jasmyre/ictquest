@@ -15,7 +15,7 @@ export default async function TopicPage({
   const lesson = lessons.find((item) => item.slug === topicParam);
   const topic = lesson?.topics;
 
-  const userProgress = await api.user.getUserProgress();
+  const userProgress = await api.user.getUserProgress({});
   const data = userProgress.data;
 
   const foundItem = data?.find((item) => item.topic === topicParam);

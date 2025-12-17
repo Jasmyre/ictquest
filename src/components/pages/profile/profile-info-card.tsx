@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User as UserIcon } from "lucide-react";
-import type { Session } from "next-auth";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,7 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import type { api } from "@/trpc/server";
 
 const profileInfoCardSchema = z.object({
   userName: z
@@ -29,12 +29,18 @@ const profileInfoCardSchema = z.object({
     .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email address."),
 });
 
-export const ProfileInfoCard = ({ user }: { user: Session["user"] }) => {
+export const ProfileInfoCard = ({
+  getUser,
+}: {
+  getUser: Awaited<ReturnType<typeof api.user.getUser>>;
+}) => {
+  const user = getUser.data;
+
   const form = useForm<z.infer<typeof profileInfoCardSchema>>({
     resolver: zodResolver(profileInfoCardSchema),
     defaultValues: {
-      userName: user.name ?? "Unknown name",
-      email: user.email ?? "Unknown email",
+      userName: user?.name ?? "Unknown name",
+      email: user?.email ?? "Unknown email",
     },
   });
 

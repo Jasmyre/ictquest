@@ -99,7 +99,11 @@ export const ProgressCard = ({
           </CardTitle>
         </CardHeader>
 
-        <CardContent>{userProgress.message}</CardContent>
+        <CardContent>
+          <p className="text-muted-foreground">
+            Unable to load your progress right now. Please try again later.
+          </p>
+        </CardContent>
       </Card>
     );
   }
