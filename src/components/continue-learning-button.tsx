@@ -28,7 +28,7 @@ const ContinueLearningButton = ({ ...props }) => {
     <Button
       onClick={handleClick}
       {...props}
-      className="w-full place-self-end bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
+      className="w-full cursor-pointer place-self-end bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
     >
       Continue Learning
       <ArrowRight className="ml-2 h-4 w-4" />

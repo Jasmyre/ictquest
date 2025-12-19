@@ -1,6 +1,6 @@
+import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { db } from "@/lib/db";
 import { createTRPCRouter, privateProcedure } from "@/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
@@ -10,7 +10,7 @@ export const userRouter = createTRPCRouter({
     if (!user) {
       throw new TRPCError({
         code: "UNAUTHORIZED",
-        message: "Authorization is unavailable or may have been removed.",
+        message: "User is not authenticated.",
       });
     }
 
@@ -25,7 +25,7 @@ export const userRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const { user } = ctx;
+      const { user, db } = ctx;
       const { skip = 0, take = 20 } = input;
 
       try {
@@ -55,7 +55,7 @@ export const userRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const { user } = ctx;
+      const { user, db } = ctx;
       const { skip = 0, take = 20 } = input;
 
       try {
@@ -78,7 +78,7 @@ export const userRouter = createTRPCRouter({
     }),
 
   deleteAllUserProgress: privateProcedure.mutation(async ({ ctx }) => {
-    const { user } = ctx;
+    const { user, db } = ctx;
 
     try {
       await db.progressData.deleteMany({
@@ -97,7 +97,7 @@ export const userRouter = createTRPCRouter({
   }),
 
   deleteAllUserAchievements: privateProcedure.mutation(async ({ ctx }) => {
-    const { user } = ctx;
+    const { user, db } = ctx;
 
     try {
       await db.userAchievement.deleteMany({
@@ -114,4 +114,115 @@ export const userRouter = createTRPCRouter({
       });
     }
   }),
+
+  unlockUserAchievement: privateProcedure
+    .input(
+      z.object({
+        achievementName: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { user, db } = ctx;
+      const { achievementName } = input;
+
+      if (!user?.id) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "User is not authenticated.",
+        });
+      }
+
+      try {
+        const achievement = await db.achievement.findUnique({
+          where: { name: achievementName },
+        });
+
+        if (!achievement) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "The achievement is unavailable or may have been removed.",
+          });
+        }
+
+        const existingUnlock = await db.userAchievement.findUnique({
+          where: {
+            userId_achievementId: {
+              userId: user.id,
+              achievementId: achievement.id,
+            },
+          },
+        });
+
+        if (existingUnlock) {
+          return {
+            success: true,
+            data: {
+              message: "Achievement already unlocked",
+              achievement: existingUnlock,
+              status: "unlocked",
+            },
+          };
+        }
+
+        // try creating; handle possible unique-constraint race (P2002)
+        try {
+          const newUnlock = await db.userAchievement.create({
+            data: {
+              userId: user.id,
+              achievementId: achievement.id,
+              achievementName: achievement.name,
+              achievementDescription:
+                achievement.description ?? "No description",
+            },
+          });
+
+          return {
+            success: true,
+            data: {
+              message: "Achievement unlocked!",
+              achievement: newUnlock,
+              status: "new",
+            },
+          };
+        } catch (createErr) {
+          // If another concurrent request created the record, return the existing one
+          if (
+            createErr instanceof Prisma.PrismaClientKnownRequestError &&
+            createErr.code === "P2002"
+          ) {
+            const already = await db.userAchievement.findUnique({
+              where: {
+                userId_achievementId: {
+                  userId: user.id,
+                  achievementId: achievement.id,
+                },
+              },
+            });
+
+            return {
+              success: true,
+              data: {
+                message: "Achievement already unlocked",
+                achievement: already,
+                status: "unlocked",
+              },
+            };
+          }
+
+          // rethrow other create errors
+          throw createErr;
+        }
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+
+        console.error("unlockUserAchievement error: ", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message:
+            "Unable to unlock achievement right now. Please try again later.",
+        });
+      }
+    }),
 });

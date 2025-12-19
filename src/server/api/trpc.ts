@@ -152,7 +152,10 @@ export const privateProcedure = t.procedure.use(function isAuthed(opts) {
   const { ctx } = opts;
 
   if (!ctx.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "User is not authenticated.",
+    });
   }
 
   return opts.next({
