@@ -17,6 +17,66 @@ export const userRouter = createTRPCRouter({
     return { success: true, data: user };
   }),
 
+  addProgress: privateProcedure
+    .input(
+      z.object({
+        topic: z.string().min(1),
+        subtopic: z.string().min(1),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { db, user } = ctx;
+      if (!user?.id) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Not authenticated",
+        });
+      }
+
+      const { topic, subtopic } = input;
+
+      try {
+        const existing = await db.progressData.findFirst({
+          where: { userId: user.id, topic },
+        });
+
+        if (existing) {
+          // if subtopic already recorded, return existing record
+          if (existing.subtopics?.includes(subtopic)) {
+            return { success: true, data: existing };
+          }
+
+          // append new subtopic to array
+          const updated = await db.progressData.update({
+            where: { id: existing.id },
+            data: {
+              // Prisma supports push for Postgres array fields
+              subtopics: { push: subtopic },
+            },
+          });
+
+          return { success: true, data: updated };
+        }
+
+        // create a new progress row
+        const created = await db.progressData.create({
+          data: {
+            userId: user.id,
+            topic,
+            subtopics: [subtopic],
+          },
+        });
+
+        return { success: true, data: created };
+      } catch (error) {
+        console.error("addProgress error:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Unable to record progress right now. Try again later.",
+        });
+      }
+    }),
+
   getUserProgress: privateProcedure
     .input(
       z.object({
@@ -163,7 +223,7 @@ export const userRouter = createTRPCRouter({
             },
           };
         }
-
+        // TODO: Fix achievement already unlocked even tho its not
         // try creating; handle possible unique-constraint race (P2002)
         try {
           const newUnlock = await db.userAchievement.create({
@@ -175,6 +235,8 @@ export const userRouter = createTRPCRouter({
                 achievement.description ?? "No description",
             },
           });
+
+          console.log("Achievement Unlocked - test");
 
           return {
             success: true,
@@ -198,6 +260,8 @@ export const userRouter = createTRPCRouter({
                 },
               },
             });
+
+            console.log("Achievement already unlocked - test");
 
             return {
               success: true,

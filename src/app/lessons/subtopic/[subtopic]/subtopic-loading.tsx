@@ -2,7 +2,7 @@ import { CustomProgress } from "@/components/custom-progress";
 import LessonCard from "@/components/lesson-card";
 import Loading from "@/components/loading";
 
-const loading = async () => (
+const Skeleton = async () => (
   <main>
     <div className="py-10">
       <header>
@@ -39,4 +39,4 @@ const loading = async () => (
   </main>
 );
 
-export default loading;
+export default Skeleton;

@@ -1,7 +1,6 @@
-import { SessionProvider } from "next-auth/react";
 import { Suspense } from "react";
-import Lesson from "@/components/lesson";
-import Loading from "./subtopic-loading";
+import Lesson from "@/components/pages/lessons/subtopic/lesson";
+import Skeleton from "./subtopic-loading";
 
 export default async function page({
   params,
@@ -10,38 +9,26 @@ export default async function page({
   params: Promise<{ subtopic: string }>;
   searchParams: Promise<{ topic: string; isBackEnabled: string }>;
 }>) {
-  const { subtopic } = await params;
-  const { topic, isBackEnabled } = await searchParams;
-
-  const enabledBack = isBackEnabled ?? false;
-
   return (
-    <main>
-      <Suspense fallback={<Loading />}>
-        <RenderLessons
-          enabledBack={enabledBack}
-          subtopic={subtopic}
-          topic={topic}
-        />
-      </Suspense>
-    </main>
+    <Suspense fallback={<Skeleton />}>
+      <Renderer params={params} searchParams={searchParams} />
+    </Suspense>
   );
 }
 
-const RenderLessons = async ({
-  subtopic,
-  topic,
-  enabledBack,
+const Renderer = async ({
+  params,
+  searchParams,
 }: {
-  subtopic: string;
-  topic: string;
-  enabledBack: string;
+  params: Promise<{ subtopic: string }>;
+  searchParams: Promise<{ topic: string; isBackEnabled: string }>;
 }) => {
-  "use cache";
+  const { subtopic } = await params;
+  const { topic, isBackEnabled } = await searchParams;
+
+  const enabledBack = !!isBackEnabled;
 
   return (
-    <SessionProvider>
-      <Lesson isBackEnabled={!!enabledBack} subtopic={subtopic} topic={topic} />
-    </SessionProvider>
+    <Lesson isBackEnabled={enabledBack} subtopic={subtopic} topic={topic} />
   );
 };

@@ -21,14 +21,22 @@ type Props = {
 };
 
 function getAchievementNameFromProgress(avg: number) {
-  if (avg < 33.33) return "Beginner";
-  if (avg < 66.66) return "Intermediate";
+  if (avg < 33.33) {
+    return "Beginner";
+  }
+  if (avg < 66.66) {
+    return "Intermediate";
+  }
   return "Expert";
 }
 
 function getBadgeColorFromProgress(avg: number) {
-  if (avg < 33.33) return "green";
-  if (avg < 66.66) return "orange";
+  if (avg < 33.33) {
+    return "green";
+  }
+  if (avg < 66.66) {
+    return "orange";
+  }
   return "red";
 }
 
@@ -80,11 +88,17 @@ export default function ComplimentsUI({
 
   const unlockAchievement = useCallback(
     async (name: string) => {
-      if (!name) return;
+      if (!name) {
+        return;
+      }
       // avoid double calls
-      if (unlockAttemptedRef.current) return;
+      if (unlockAttemptedRef.current) {
+        return;
+      }
       // avoid calling while mutation already in flight
-      if (unlockUserAchievementMutation.isPending) return;
+      if (unlockUserAchievementMutation.isPending) {
+        return;
+      }
 
       try {
         unlockAttemptedRef.current = true; // mark we attempted
@@ -102,10 +116,16 @@ export default function ComplimentsUI({
   const targetAchievementName = getAchievementNameFromProgress(averageProgress);
 
   useEffect(() => {
-    if (achievementUnlocked) return;
+    if (achievementUnlocked) {
+      return;
+    }
 
-    if (achievementsQuery.isLoading || achievementsQuery.isFetching) return;
-    if (achievementsQuery.isError) return;
+    if (achievementsQuery.isLoading || achievementsQuery.isFetching) {
+      return;
+    }
+    if (achievementsQuery.isError) {
+      return;
+    }
 
     const existing = achievementsQuery.data?.data?.some(
       (ua) => ua.achievementName === targetAchievementName
