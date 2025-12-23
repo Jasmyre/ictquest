@@ -162,6 +162,7 @@ export const getUsersStats = async (): Promise<GetUsersStats[]> => {
         numberOfSubtopics: totalSubtopicsCount,
         level,
         averageProgress: Number(averageProgress.toFixed(2)),
+        progressData: user.progressData,
       };
     });
 

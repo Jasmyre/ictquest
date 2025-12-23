@@ -1,7 +1,12 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, privateProcedure } from "@/server/api/trpc";
+import { calculateAverageProgress } from "@/lib/progress";
+import {
+  createTRPCRouter,
+  privateProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
   getUser: privateProcedure.query(({ ctx }) => {
@@ -223,7 +228,7 @@ export const userRouter = createTRPCRouter({
             },
           };
         }
-        // TODO: Fix achievement already unlocked even tho its not
+
         // try creating; handle possible unique-constraint race (P2002)
         try {
           const newUnlock = await db.userAchievement.create({
@@ -286,6 +291,80 @@ export const userRouter = createTRPCRouter({
           code: "INTERNAL_SERVER_ERROR",
           message:
             "Unable to unlock achievement right now. Please try again later.",
+        });
+      }
+    }),
+
+  getUserStatsById: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { db } = ctx;
+      const { id } = input;
+
+      try {
+        const user = await db.user.findUnique({
+          where: {
+            id,
+          },
+          select: {
+            id: true,
+            userName: true,
+            image: true,
+            userAchievements: { select: { id: true } },
+            progressData: { select: { subtopics: true, topic: true } },
+          },
+        });
+
+        if (!user) {
+          // if no user found, throw error
+          console.error("User not found with id: ", id);
+
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "User not found.",
+          });
+        }
+
+        const totalSubtopicsCount = user.progressData.reduce(
+          (total, progressItem) => total + progressItem.subtopics.length,
+          0
+        );
+
+        const averageProgress = calculateAverageProgress({ user });
+
+        let level = "";
+
+        if (averageProgress < 33.33) {
+          level = "Beginner";
+        } else if (averageProgress < 66.67) {
+          level = "Intermediate";
+        } else {
+          level = "Expert";
+        }
+
+        return {
+          success: true,
+          data: {
+            userName: user.userName,
+            id: user.id,
+            image: user.image,
+            totalAchievements: user.userAchievements.length,
+            totalSubtopicsCompleted: totalSubtopicsCount,
+            level,
+            totalProgress: Number(averageProgress.toFixed(2)),
+            progressData: user.progressData,
+          },
+        };
+      } catch (error) {
+        console.error("getUserStatsById error: ", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message:
+            "Unable to fetch user stats right now. Please try again later.",
         });
       }
     }),

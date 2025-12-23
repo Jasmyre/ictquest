@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import Lesson from "@/components/pages/lessons/subtopic/lesson";
-import Skeleton from "./subtopic-loading";
+import Skeleton from "@/components/pages/lessons/subtopic/subtopic-loading";
 
-export default async function page({
+export default async function SubtopicPage({
   params,
   searchParams,
 }: Readonly<{
@@ -23,6 +23,8 @@ const Renderer = async ({
   params: Promise<{ subtopic: string }>;
   searchParams: Promise<{ topic: string; isBackEnabled: string }>;
 }) => {
+  "use cache";
+
   const { subtopic } = await params;
   const { topic, isBackEnabled } = await searchParams;
 
