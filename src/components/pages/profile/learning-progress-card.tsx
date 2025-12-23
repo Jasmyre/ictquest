@@ -61,8 +61,8 @@ export const LearningProgressCard = ({
   /**
    * Beginner threshold (~33%) and Intermediate threshold (~66%).
    */
-  const beginnerLimit = 100 / 3;
-  const intermediateLimit = (100 / 3) * 2;
+  const beginnerLimit = 33.33;
+  const intermediateLimit = 66.66;
 
   /**
    * Helper to pick badge color and label based on overall percentage.

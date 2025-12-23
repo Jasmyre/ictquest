@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { CheckCircle2, Star, XCircle } from "lucide-react";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ContinueLearningButton from "@/components/continue-learning-button";
 import { CustomBadge } from "@/components/custom-badge";
 import { CustomProgress } from "@/components/custom-progress";
@@ -47,10 +47,13 @@ export default function ComplimentsUI({
   averageProgress,
   randomImage,
 }: Props) {
-  const [achievementUnlocked, setAchievementUnlocked] = useState(false);
+  console.log(`average: ${averageProgress}`);
 
-  // new: ref to avoid calling unlock more than once
-  const unlockAttemptedRef = useRef(false);
+  // visible state for rendering
+  const [_unlockedNames, setUnlockedNames] = useState<Set<string>>(new Set());
+  // synchronous ref for immediate checks (avoids races with setState)
+  const unlockedNamesRef = useRef<Set<string>>(new Set());
+  const inFlightRef = useRef<string | null>(null);
 
   const achievementsQuery = api.user.getUserAchievements.useQuery(
     { skip: 0, take: 100 },
@@ -60,66 +63,119 @@ export default function ComplimentsUI({
   const unlockUserAchievementMutation =
     api.user.unlockUserAchievement.useMutation({
       onSuccess: (res) => {
-        if (res?.success) {
-          toast({
-            title:
-              res.data.status === "new"
-                ? "NEW ACHIEVEMENT UNLOCKED!"
-                : "Achievement already unlocked",
-            description: toastDescription(
-              res.data.achievement?.achievementName ?? "No title",
-              res.data.achievement?.achievementDescription ?? "No description"
-            ),
-            className: toastStyle,
+        const name = res?.data?.achievement?.achievementName;
+        if (name) {
+          // update both ref and state
+          unlockedNamesRef.current.add(name);
+          setUnlockedNames((prev) => {
+            const next = new Set(prev);
+            next.add(name);
+            return next;
           });
-          setAchievementUnlocked(true);
+        }
+
+        toast({
+          title:
+            res?.success && res.data.status === "new"
+              ? "NEW ACHIEVEMENT UNLOCKED!"
+              : "Achievement already unlocked",
+          description: toastDescription(
+            res?.data?.achievement?.achievementName ?? "No title",
+            res?.data?.achievement?.achievementDescription ?? "No description"
+          ),
+          className: toastStyle,
+        });
+
+        // refresh server list to keep in sync
+        achievementsQuery.refetch();
+
+        // clear in-flight (safety)
+        if (inFlightRef.current) {
+          inFlightRef.current = null;
         }
       },
       onError: (err) => {
         console.error("Failed to unlock achievement", err);
-        // allow retry after failure
-        unlockAttemptedRef.current = false;
         toast({
           title: "Failed to unlock achievement",
           className: toastStyle,
         });
+        if (inFlightRef.current) {
+          inFlightRef.current = null;
+        }
       },
     });
 
-  const unlockAchievement = useCallback(
-    async (name: string) => {
-      if (!name) {
-        return;
+  // helper: merge server known names into our ref + state
+  function mergeServerNamesToLocal() {
+    const serverList = achievementsQuery.data?.data ?? [];
+    let added = false;
+    for (const a of serverList) {
+      if (!unlockedNamesRef.current.has(a.achievementName)) {
+        unlockedNamesRef.current.add(a.achievementName);
+        added = true;
       }
-      // avoid double calls
-      if (unlockAttemptedRef.current) {
-        return;
-      }
-      // avoid calling while mutation already in flight
-      if (unlockUserAchievementMutation.isPending) {
-        return;
-      }
+    }
+    if (added) {
+      setUnlockedNames(new Set(unlockedNamesRef.current));
+    }
+  }
 
-      try {
-        unlockAttemptedRef.current = true; // mark we attempted
-        await unlockUserAchievementMutation.mutateAsync({
-          achievementName: name,
-        });
-        // onSuccess will set state and toast
-      } catch {
-        // onError handles unlockingAttemptRef reset and toast
-      }
-    },
-    [unlockUserAchievementMutation]
-  );
-
-  const targetAchievementName = getAchievementNameFromProgress(averageProgress);
-
-  useEffect(() => {
-    if (achievementUnlocked) {
+  // perform unlock: only uses inFlightRef & unlockedNamesRef (no mutation flags)
+  async function unlockAchievement(name: string) {
+    if (!name) {
+      return;
+    }
+    // already known unlocked (server or local)
+    if (unlockedNamesRef.current.has(name)) {
+      return;
+    }
+    // already sending this exact name
+    if (inFlightRef.current === name) {
       return;
     }
 
+    inFlightRef.current = name;
+    try {
+      await unlockUserAchievementMutation.mutateAsync({
+        achievementName: name,
+      });
+      // onSuccess will update local sets and clear inFlightRef
+    } catch {
+      // onError will clear inFlightRef
+    } finally {
+      // as extra safety: clear if still the same name
+      if (inFlightRef.current === name) {
+        inFlightRef.current = null;
+      }
+    }
+  }
+
+  const targetAchievementName = getAchievementNameFromProgress(averageProgress);
+
+  // sync server names when query finishes/changes
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
+  useEffect(() => {
+    if (achievementsQuery.isLoading || achievementsQuery.isFetching) {
+      return;
+    }
+    if (achievementsQuery.isError) {
+      return;
+    }
+    mergeServerNamesToLocal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    achievementsQuery.isLoading,
+    achievementsQuery.isFetching,
+    achievementsQuery.isError,
+  ]);
+
+  // try unlocking whenever target changes and it's not yet known locally
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
+  useEffect(() => {
+    if (!targetAchievementName) {
+      return;
+    }
     if (achievementsQuery.isLoading || achievementsQuery.isFetching) {
       return;
     }
@@ -127,25 +183,23 @@ export default function ComplimentsUI({
       return;
     }
 
-    const existing = achievementsQuery.data?.data?.some(
-      (ua) => ua.achievementName === targetAchievementName
-    );
+    // make sure server-known names are merged first
+    mergeServerNamesToLocal();
 
-    if (existing) {
-      setAchievementUnlocked(true);
+    if (unlockedNamesRef.current.has(targetAchievementName)) {
+      // already unlocked
       return;
     }
 
-    // Not unlocked yet -> attempt to unlock
+    // attempt unlock
     unlockAchievement(targetAchievementName);
+    // intentionally do not include unlockedNames state in deps (we use the ref)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    achievementUnlocked,
-    achievementsQuery.data,
+    targetAchievementName,
     achievementsQuery.isLoading,
     achievementsQuery.isFetching,
     achievementsQuery.isError,
-    unlockAchievement,
-    targetAchievementName,
   ]);
 
   return (
