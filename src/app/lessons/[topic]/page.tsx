@@ -8,7 +8,7 @@ import lessons from "@/db/lessons";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/server";
 
-export default async function TopicPage({
+async function page({
   params,
 }: Readonly<{ params: Promise<{ topic: string }> }>) {
   const topicParam = (await params).topic;
@@ -179,3 +179,5 @@ export default async function TopicPage({
     </main>
   );
 }
+
+export default page;

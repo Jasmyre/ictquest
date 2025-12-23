@@ -28,7 +28,6 @@ async function page() {
   cacheLife("minutes");
 
   const users = await getUsersStats();
-  console.log(users);
 
   return (
     <div className="min-h-[80vh] py-10">

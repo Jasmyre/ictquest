@@ -25,7 +25,7 @@ export const getUserByEmail = async (
 
     return user;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 };
@@ -44,7 +44,7 @@ export const getUserById = async (id: string | null) => {
 
     return user;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 };
@@ -64,7 +64,6 @@ export const getAllUsers = async (): Promise<GetAllUsers[] | null> => {
         image: true,
       },
     });
-    console.log(users);
 
     return users;
   } catch (error) {

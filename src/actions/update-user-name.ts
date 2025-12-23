@@ -20,7 +20,5 @@ export const updateUserName = async (name: string): Promise<void> => {
     },
   });
 
-  console.log(await db.user.findUnique({ where: { id } }));
-
   revalidatePath("/profile");
 };

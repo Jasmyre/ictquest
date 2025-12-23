@@ -1,9 +1,27 @@
+import { Suspense } from "react";
 import BackButton from "@/components/back-button";
 import { ProgressCard } from "@/components/pages/progress/progress-card";
 import { api } from "@/trpc/server";
 
-export default async function Progress() {
+async function page() {
+  return (
+    <Suspense>
+      <Fetcher />
+    </Suspense>
+  );
+}
+
+const Fetcher = async () => {
   const userProgress = await api.user.getUserProgress({});
+  return <Renderer userProgress={userProgress} />;
+};
+
+const Renderer = async ({
+  userProgress,
+}: {
+  userProgress: Awaited<ReturnType<typeof api.user.getUserProgress>>;
+}) => {
+  "use cache";
 
   return (
     <main className="min-h-[80vh]">
@@ -31,4 +49,6 @@ export default async function Progress() {
       </div>
     </main>
   );
-}
+};
+
+export default page;

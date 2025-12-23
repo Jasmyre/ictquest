@@ -241,8 +241,6 @@ export const userRouter = createTRPCRouter({
             },
           });
 
-          console.log("Achievement Unlocked - test");
-
           return {
             success: true,
             data: {
@@ -265,8 +263,6 @@ export const userRouter = createTRPCRouter({
                 },
               },
             });
-
-            console.log("Achievement already unlocked - test");
 
             return {
               success: true,

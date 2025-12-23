@@ -47,8 +47,6 @@ export default function ComplimentsUI({
   averageProgress,
   randomImage,
 }: Props) {
-  console.log(`average: ${averageProgress}`);
-
   // visible state for rendering
   const [_unlockedNames, setUnlockedNames] = useState<Set<string>>(new Set());
   // synchronous ref for immediate checks (avoids races with setState)

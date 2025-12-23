@@ -5,11 +5,7 @@ import UserStatSummary from "@/components/pages/user/[id]/user-stat-summary";
 import UserStats from "@/components/pages/user/[id]/user-stats";
 import { api } from "@/trpc/server";
 
-export default function UserPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+async function page({ params }: { params: Promise<{ id: string }> }) {
   return (
     <Suspense>
       <Renderer params={params} />
@@ -85,3 +81,5 @@ const userData = {
     { type: "started", lesson: "CSS Grid", date: "4 days ago" },
   ],
 };
+
+export default page;

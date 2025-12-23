@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Lesson from "@/components/pages/lessons/subtopic/lesson";
 import Skeleton from "@/components/pages/lessons/subtopic/subtopic-loading";
 
-export default async function SubtopicPage({
+async function page({
   params,
   searchParams,
 }: Readonly<{
@@ -34,3 +34,5 @@ const Renderer = async ({
     <Lesson isBackEnabled={enabledBack} subtopic={subtopic} topic={topic} />
   );
 };
+
+export default page;

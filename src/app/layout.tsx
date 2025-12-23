@@ -10,6 +10,7 @@ import { NavigationBar } from "../components/ui/navigation-bar";
 import { Toaster } from "../components/ui/toaster";
 
 import "@/styles/globals.css";
+import { Suspense } from "react";
 import { Footer } from "@/components/footer";
 import { TRPCReactProvider } from "../trpc/react";
 
@@ -96,12 +97,14 @@ export default async function RootLayout({
             disableTransitionOnChange
             enableSystem
           >
-            <NavigationBar
-              enableBlock={true}
-              navItems={getNavItems()}
-              pageItems={getPageItems()}
-              title="ICTQuest"
-            />
+            <Suspense>
+              <NavigationBar
+                enableBlock={true}
+                navItems={getNavItems()}
+                pageItems={getPageItems()}
+                title="ICTQuest"
+              />
+            </Suspense>
             <main className="mx-auto max-w-7xl px-4 py-6 dark:bg-gray-900">
               {children}
             </main>

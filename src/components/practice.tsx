@@ -48,7 +48,7 @@ export const Practice = ({
   const hint = true;
   const [code, setCode] = useState<string>("");
   const [disabledButtons, setDisabledButtons] = useState<string[]>([]);
-  const [isCorrect, setIsCorrect] = useState<boolean>(false);
+  const [_isCorrect, setIsCorrect] = useState<boolean>(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const correctCode = choices?.answer;
@@ -56,7 +56,6 @@ export const Practice = ({
     .toString()
     .replaceAll(" ", "")
     .replaceAll("\n", "");
-  console.log(correctCode);
 
   const handleReset = useCallback(() => {
     setCode("");
@@ -73,7 +72,6 @@ export const Practice = ({
     }
 
     const handleKeyDown = (event: KeyboardEvent): void => {
-      console.log(event.key);
       if (event.key === "Backspace") {
         handleReset();
       }
@@ -101,7 +99,6 @@ export const Practice = ({
       setHasSubmitted(true);
     }
 
-    console.log(code);
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,7 +138,6 @@ export const Practice = ({
       if (!response?.positive) {
         return null;
       }
-      console.log(isCorrect);
       return (
         <div className="rounded bg-green-600 p-2 shadow">
           <p className="flex gap-2 text-green-200">

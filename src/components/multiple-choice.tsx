@@ -31,7 +31,7 @@ export const MultipleChoice = ({
 }): JSX.Element => {
   const [choice, setChoice] = useState("");
   const [disabledButtons, setDisabledButtons] = useState<string[]>([]);
-  const [isCorrect, setIsCorrect] = useState<boolean>(false);
+  const [_isCorrect, setIsCorrect] = useState<boolean>(false);
 
   const correctChoice = choices?.answer;
 
@@ -46,7 +46,6 @@ export const MultipleChoice = ({
     Prism.highlightAll();
 
     const handleKeyDown = (event: KeyboardEvent): void => {
-      console.log(event.key);
       if (event.key === "Backspace") {
         handleReset();
       }
@@ -62,7 +61,6 @@ export const MultipleChoice = ({
     }
 
     if (choice === choices.answer) {
-      console.log("Correct answer!");
       setIsCorrect(true);
       setNumberOfCorrectAction((prev) => prev + 1);
       setIsFinishedAction(true);
@@ -90,7 +88,6 @@ export const MultipleChoice = ({
     setDisabledButtons(choices.options.filter((option) => option !== label));
 
     // if (label === choices.answer) {
-    //   console.log("Correct answer!");
     //   setNumberOfCorrectAction((prev) => prev + 1);
     //   setIsFinishedAction(true);
     // } else {
@@ -112,7 +109,6 @@ export const MultipleChoice = ({
       if (!response?.positive) {
         return null;
       }
-      console.log(isCorrect);
       return (
         <div className="rounded bg-green-600 p-2 shadow">
           <p className="flex gap-2 text-green-200">

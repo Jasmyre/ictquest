@@ -16,16 +16,12 @@ export default function Layout({
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
-  console.log(pathname);
 
   useEffect(() => setMounted(true), []);
 
   if (!mounted) {
     return null;
   }
-
-  console.log(process.env.NEXT_PUBLIC_IS_IN_MAINTENANCE);
-  console.log(typeof process.env.NEXT_PUBLIC_IS_IN_MAINTENANCE);
 
   return (
     <div className={"min-h-screen bg-gray-50 dark:bg-gray-900"}>
