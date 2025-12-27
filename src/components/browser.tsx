@@ -82,7 +82,7 @@ ${content.toString().replace(",", "")}
     try {
       iframeRef.current.style.height = `${iframeRef.current?.contentWindow?.document.body.scrollHeight}px`;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

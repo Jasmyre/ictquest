@@ -7,17 +7,17 @@ import { lessons } from "@/db/lessons";
 
 export default async function LessonsPage() {
   return (
-    <main>
+    <div>
       <div className="min-h-[80vh] py-10">
         <header>
-          <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h1 className="font-bold text-3xl text-gray-900 leading-tight dark:text-gray-100">
               HTML Lessons
             </h1>
           </div>
         </header>
-        <main>
-          <div className="mx-auto max-w-7xl">
+        <section>
+          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="py-8">
               <div className="mb-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 {lessons
@@ -166,8 +166,8 @@ export default async function LessonsPage() {
               </div>
             </div>
           </div>
-        </main>
+        </section>
       </div>
-    </main>
+    </div>
   );
 }

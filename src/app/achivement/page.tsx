@@ -35,7 +35,6 @@ export default function HomePage() {
       });
       const result = await response.json();
       if (response.ok) {
-        console.log("Achievement unlocked:", result);
         setIsAchievementUnlocked(true);
       } else {
         console.error("Failed to unlock achievement:", result);

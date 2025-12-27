@@ -23,7 +23,7 @@ import {
 
 export default async function LandingPage() {
   return (
-    <main>
+    <main className="sm:px-6 lg:px-8">
       <HeroSection />
       <section className="bg-gray-50 py-20 dark:bg-gray-900">
         <div className="container mx-auto px-4">

@@ -12,6 +12,12 @@ const nextConfig: NextConfig = {
   experimental: {
     turbopackFileSystemCacheForDev: true,
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+      hmrRefreshes: true,
+    },
+  },
   images: {
     remotePatterns: [
       {
