@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/prisma": ["./prisma/*"]
     },
     "strictNullChecks": true
   },
@@ -31,7 +32,8 @@
     "jest.config.ts",
     "eslint.config.mjs",
     ".next/dev/types/**/*.ts",
-    "src/types/**/*.d.ts"
+    "src/types/**/*.d.ts",
+    ".config/*.ts"
   ],
   "exclude": ["node_modules"]
 }

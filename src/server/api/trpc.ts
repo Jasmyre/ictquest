@@ -7,14 +7,14 @@
  * need to use are documented accordingly near the end.
  */
 
-import { env } from "node:process";
 import { initTRPC, TRPCError } from "@trpc/server";
 import type { Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { auth } from "@/auth";
+import { env } from "@/env";
+import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
-import { db } from "@/server/db";
 
 /**
  * 1. CONTEXT

@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-
-import type { DefaultArgs } from "@prisma/client/runtime/library";
+import type { DefaultArgs } from "@prisma/client/runtime/client";
 import { env } from "@/env";
 
 const createPrismaClient = (): PrismaClient<

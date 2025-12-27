@@ -7,18 +7,18 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    DATABASE_URL: z.string().url(),
+    DATABASE_URL: z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
-    BASE_URL: z.string().url(),
+    BASE_URL: z.string(),
     GOOGLE_SITE_VERIFICATION: z.string(),
     AUTH_SECRET: z.string(),
     GITHUB_CLIENT_ID: z.string(),
     GITHUB_CLIENT_SECRET: z.string(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
-    NEXTAUTH_URL: z.string().url(),
+    NEXTAUTH_URL: z.string(),
     KV_REST_API_TOKEN: z.string(),
     KV_REST_API_URL: z.string(),
   },
