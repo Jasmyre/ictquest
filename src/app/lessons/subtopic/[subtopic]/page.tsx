@@ -16,6 +16,12 @@ async function page({
   );
 }
 
+/**
+ * Cache policy (migration 09, #32 — see `src/lib/lessons/cache.ts`): lesson
+ * reads are static, keyed by route params only. Per-user progress writes
+ * happen client-side through uncached tRPC mutations (`userRouter`), so they
+ * always stay fresh.
+ */
 const Renderer = async ({
   params,
   searchParams,

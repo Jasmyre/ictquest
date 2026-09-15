@@ -56,6 +56,12 @@ const Fetcher = async ({ params }: { params: Promise<{ topic: string }> }) => {
   );
 };
 
+/**
+ * Cache policy (migration 09, #32 — see `src/lib/lessons/cache.ts`):
+ * per-user progress must always read fresh, so this component carries no
+ * `"use cache"`. The static lesson metadata below is cached separately in
+ * `StaticLessonHeader`, keyed only by serializable lesson strings.
+ */
 const Renderer = async ({
   userProgress,
   topicParam,
@@ -67,8 +73,6 @@ const Renderer = async ({
   lesson: Lesson;
   topic: Lesson["topics"] | undefined;
 }) => {
-  "use cache";
-
   const data = userProgress.data;
 
   const foundItem = data?.find((item) => item.topic === topicParam);
@@ -77,16 +81,10 @@ const Renderer = async ({
   return (
     <div className="min-h-screen">
       <div className="py-10">
-        <header>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="font-bold text-3xl text-gray-900 leading-tight dark:text-gray-100">
-              {lesson.title}
-            </h1>
-            <p className="mt-2 text-gray-600 text-lg dark:text-gray-300">
-              {lesson.description}
-            </p>
-          </div>
-        </header>
+        <StaticLessonHeader
+          description={lesson.description}
+          title={lesson.title}
+        />
         <section className="min-h-[65vh]">
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="py-8">
@@ -130,6 +128,35 @@ const Renderer = async ({
         </section>
       </div>
     </div>
+  );
+};
+
+/**
+ * Static lesson shell (migration 09, #32): lesson reads are static
+ * build-time content, so this header is cached keyed by lesson strings only.
+ * It must never receive per-user progress — completion state renders in the
+ * uncached `Renderer` above.
+ */
+const StaticLessonHeader = async ({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) => {
+  "use cache";
+
+  return (
+    <header>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <h1 className="font-bold text-3xl text-gray-900 leading-tight dark:text-gray-100">
+          {title}
+        </h1>
+        <p className="mt-2 text-gray-600 text-lg dark:text-gray-300">
+          {description}
+        </p>
+      </div>
+    </header>
   );
 };
 

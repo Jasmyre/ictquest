@@ -86,9 +86,10 @@ for (const file of files) {
     console.error(`MISSING lesson slug for ${rel}: "${fm.lesson}"`);
     failed = true;
   }
-  // Word-boundary match on the content key (e.g. `html_introduction:`), so a
-  // shared substring elsewhere in the legacy DB cannot fake a match.
-  const subtopicKey = new RegExp(`\\b${escapeRegExp(fm.subtopic)}\\s*:`);
+  // Word-boundary match on the content key (e.g. `html_introduction:` or the
+  // shorthand `quiz,`), so a shared substring elsewhere in the legacy DB
+  // cannot fake a match.
+  const subtopicKey = new RegExp(`\\b${escapeRegExp(fm.subtopic)}\\s*[:,]`);
   if (!subtopicKey.test(legacy)) {
     console.error(`MISSING subtopic key for ${rel}: "${fm.subtopic}"`);
     failed = true;

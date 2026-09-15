@@ -1,0 +1,78 @@
+---
+lesson: introduction-to-html
+subtopic: html_document_structure
+slug: html_document_structure
+title: "Understanding HTML Document Structure"
+order: 3
+---
+
+{/* Migration 09 (#32). One file per Subtopic; slugs stay stable so existing
+    ProgressData keys ({ topic, subtopic }) still match.
+    Legacy source: src/db/introduction_to_html/html-document-structure.tsx.
+    Presentation lives here plus the central component map
+    (src/components/lessons/mdx-components.tsx) — never in row data. */}
+
+<Step submit="Continue">
+
+Hey there! In this lesson, we're gonna learn the basic structure of an HTML
+document. Let's dive in!
+
+</Step>
+
+<Step submit="Continue">
+
+First things first, every HTML document starts with a doctype declaration. It
+tells the browser that we're using HTML5.
+
+<CodeBlock code="<!DOCTYPE html>" language="HTML" />
+
+In this case we will be using <CodeHighlight>{"<!DOCTYPE html>"}</CodeHighlight>,
+which is also the latest version of HTML.
+
+</Step>
+
+<Step submit="Continue">
+
+Next up, we have the <CodeHighlight>{"<html>"}</CodeHighlight> tag. This tag wraps
+the entire document, kinda like the outer shell.
+
+<CodeBlock code={"<html>\n  ... \n</html>"} language="HTML" />
+
+</Step>
+
+<Step submit="Continue">
+
+Inside the <CodeHighlight>{"<html>"}</CodeHighlight> tag, there are two main
+sections: the <CodeHighlight>{"<head>"}</CodeHighlight> and the
+<CodeHighlight>{"<body>"}</CodeHighlight>.
+
+<CodeBlock code={"  <head>\n    ...\n  </head>\n\n  <body>\n    ...\n  </body>\n"} language="HTML" />
+
+</Step>
+
+<Step submit="Continue">
+
+The <CodeHighlight>{"<head>"}</CodeHighlight> section holds all the meta info, like
+the title of the page, meta tags, and links to CSS files.
+
+<CodeBlock code={"    <title>My Page</title>\n    <!-- Other meta info -->\n"} language="HTML" />
+
+</Step>
+
+<Step submit="Continue">
+
+The <CodeHighlight>{"<body>"}</CodeHighlight> section is where all the visible stuff
+goes — texts, images, links, etc.
+
+<CodeBlock code={"    <h1>Hello World</h1>\n    <p>This is my page.</p>\n"} language="HTML" />
+
+<Browser content="<h1>Hello World</h1><p>This is my page.</p>" title="My Page" />
+
+</Step>
+
+<Step submit="Continue">
+
+Great work! Now you know how to set up a basic HTML document. Keep practicing
+and you'll be a pro in no time!
+
+</Step>

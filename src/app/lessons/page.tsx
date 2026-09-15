@@ -5,6 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { lessons } from "@/db/lessons";
 
+/**
+ * Cache policy (migration 09, #32): the lesson list is cacheable — it reads
+ * only the static lesson registry, never per-user rows. See
+ * `src/lib/lessons/cache.ts` (LESSON_LIST_REVALIDATE).
+ */
+export const revalidate = 3600;
+
 export default async function LessonsPage() {
   return (
     <div>

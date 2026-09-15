@@ -1,0 +1,106 @@
+---
+lesson: html-elements
+subtopic: html_typography
+slug: html_typography
+title: "HTML Typography"
+order: 1
+---
+
+{/* Migration 09 (#32). One file per Subtopic; slugs stay stable so existing
+    ProgressData keys ({ topic, subtopic }) still match.
+    Legacy source: src/db/html_elements/html-typography.tsx.
+    Presentation lives here plus the central component map
+    (src/components/lessons/mdx-components.tsx) — never in row data. */}
+
+<Step submit="Continue">
+
+Typography is how text looks and feels on a page. Headings, paragraphs, quotes,
+and inline marks all come from a small family of HTML tags. Let's meet them one
+by one.
+
+<CodeBlock code={"<h1>Main Title</h1>\n<h2>Subheading</h2>\n<h3>Section Title</h3>"} language="HTML" />
+
+</Step>
+
+<Step submit="Continue">
+
+Headings first: <CodeHighlight>{"<h1>"}</CodeHighlight> down to
+<CodeHighlight>{"<h6>"}</CodeHighlight> rank your sections. Arrange them in order.
+
+<PracticeQuiz
+  answer={"<h1>Main Title</h1>\n<h2>Subheading</h2>\n<h3>Section Title</h3>"}
+  options={[
+    { label: "<h1>Main Title</h1>\n", priority: 0 },
+    { label: "<h2>Subheading</h2>\n", priority: 1 },
+    { label: "<h3>Section Title</h3>", priority: 2 },
+  ]}
+  response={{
+    positive: "Great job!",
+    negative: "That's not quite right. Try again!",
+  }}
+  title={["Arrange the heading elements in the correct order"]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+Paragraphs carry your body text. The <CodeHighlight>{"<p>"}</CodeHighlight> tag wraps
+a block of sentences into one neat paragraph.
+
+<Browser content="<p>This is a sample paragraph of text.</p>" title="Paragraph" />
+
+<PracticeQuiz
+  answer="<p>This is a sample paragraph of text.</p>"
+  options={[
+    { label: "<p>", priority: 0 },
+    { label: "This is a sample paragraph of text.", priority: 1 },
+    { label: "</p>", priority: 2 },
+  ]}
+  response={{
+    positive: "Well done!",
+    negative: "That's not correct, try again!",
+  }}
+  title={["Arrange the paragraph element in the correct order"]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+For quotes or excerpts, use the <CodeHighlight>{"<blockquote>"}</CodeHighlight> tag
+to set the text apart from the rest.
+
+<CodeBlock code="<blockquote>This is a quote.</blockquote>" language="HTML" />
+
+<Browser content="<blockquote>This is a quote.</blockquote>" title="Blockquote" />
+
+</Step>
+
+<Step submit="Continue">
+
+Inline marks change meaning inside a sentence: <CodeHighlight>{"<strong>"}</CodeHighlight>
+for important text, <CodeHighlight>{"<em>"}</CodeHighlight> for emphasis,
+<CodeHighlight>{"<mark>"}</CodeHighlight> for highlights, and
+<CodeHighlight>{"<code>"}</CodeHighlight> for code snippets.
+
+<CodeBlock code="<strong>Important</strong> and <em>emphasized</em>" language="HTML" />
+
+</Step>
+
+<Step submit="Continue">
+
+Small details matter too: <CodeHighlight>{"<small>"}</CodeHighlight> shrinks side
+notes, <CodeHighlight>{"<abbr>"}</CodeHighlight> expands abbreviations, and
+<CodeHighlight>{"<address>"}</CodeHighlight> marks contact info.
+
+<Browser content="<p><abbr>HTML</abbr> makes <small>small</small> things clear.</p>" title="Text Details" />
+
+</Step>
+
+<Step submit="Finish">
+
+Nice! You can now structure headings, paragraphs, quotes, and inline marks.
+Typography is the voice of your page — keep it clear and consistent.
+
+</Step>

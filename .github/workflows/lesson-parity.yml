@@ -1,0 +1,41 @@
+# Slug-parity CI (migration 09, #32 / ADR-0001).
+#
+# Every `content/lessons/<lesson>/<subtopic>.mdx` file must resolve to a
+# legacy progress key ({ topic: lesson slug, subtopic: content key }) with
+# `slug === subtopic`. If any slug drifts from progress keys, this workflow
+# fails the build so stored ProgressData rows never stop matching.
+
+name: lesson-parity
+
+on:
+  push:
+    paths:
+      - "content/lessons/**"
+      - "src/db/lessons.tsx"
+      - "src/db/**"
+      - "scripts/check-lesson-slug-parity.mjs"
+      - "tests/unit/mdx-*.test.*"
+      - "src/lib/lessons/**"
+  pull_request:
+    paths:
+      - "content/lessons/**"
+      - "src/db/lessons.tsx"
+      - "src/db/**"
+      - "scripts/check-lesson-slug-parity.mjs"
+      - "tests/unit/mdx-*.test.*"
+      - "src/lib/lessons/**"
+
+jobs:
+  slug-parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Slug-parity check (fails the build on drift)
+        run: npm run lesson:parity
+      - name: MDX migration tests (parity, order, cache policy)
+        run: npx vitest run tests/unit/mdx-pilot.test.tsx tests/unit/mdx-remaining.test.ts
