@@ -2,7 +2,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { UserRole } from "@prisma/client";
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
-import { getUserById } from "@/data/user";
+import { getUserWithRoles } from "@/data/user";
 import { db } from "@/lib/db";
 import type { RoleName } from "@/lib/roles";
 import { ensureDefaultRole } from "@/lib/roles";
@@ -50,7 +50,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return token;
       }
 
-      const existingUser = await getUserById(token.sub);
+      const existingUser = await getUserWithRoles(token.sub);
 
       if (!existingUser) {
         return token;

@@ -15,6 +15,7 @@ import { auth } from "@/auth";
 import { env } from "@/env";
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
+import { hasRole, type RoleName } from "@/lib/roles";
 
 /**
  * 1. CONTEXT
@@ -164,3 +165,64 @@ export const privateProcedure = t.procedure.use(function isAuthed(opts) {
     },
   });
 });
+
+/**
+ * Shared privileged-role gate.
+ *
+ * Throws FORBIDDEN unless the caller's session `roles` include at least one
+ * of the allowed roles. Unauthenticated callers never reach here — the
+ * underlying privateProcedure rejects them with UNAUTHORIZED first.
+ */
+function requireAnyRole(
+  roles: readonly string[] | undefined | null,
+  allowed: readonly RoleName[],
+  message: string
+): void {
+  if (!allowed.some((role) => hasRole(roles, role))) {
+    throw new TRPCError({ code: "FORBIDDEN", message });
+  }
+}
+
+/**
+ * Admin-only procedure.
+ *
+ * Requires an authenticated session whose `roles` include ADMIN.
+ * Non-admin callers receive FORBIDDEN; unauthenticated callers receive
+ * UNAUTHORIZED via the underlying privateProcedure.
+ */
+export const adminProcedure = privateProcedure.use(function isAdmin(opts) {
+  const { ctx } = opts;
+
+  requireAnyRole(ctx.user.roles, ["ADMIN"], "Admin role is required.");
+
+  return opts.next({
+    ctx: {
+      user: ctx.user,
+    },
+  });
+});
+
+/**
+ * Moderator-or-admin procedure.
+ *
+ * MODERATOR is seeded with zero assignments (reserved for future UGC work),
+ * so this seam exists ahead of its first consumer. ADMIN inherits moderator
+ * access; callers holding neither role receive FORBIDDEN.
+ */
+export const moderatorProcedure = privateProcedure.use(
+  function isModerator(opts) {
+    const { ctx } = opts;
+
+    requireAnyRole(
+      ctx.user.roles,
+      ["MODERATOR", "ADMIN"],
+      "Moderator role is required."
+    );
+
+    return opts.next({
+      ctx: {
+        user: ctx.user,
+      },
+    });
+  }
+);
