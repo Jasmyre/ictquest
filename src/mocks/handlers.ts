@@ -10,6 +10,3 @@ export const handlers = [
     })
   ),
 ];
-
-// biome-ignore lint/suspicious/noEvolvingTypes: Let application handle type
-export const trpcHandlers = [];
