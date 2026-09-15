@@ -7,6 +7,7 @@
     "dev:lan": "node scripts/dev-lan.mjs",
     "pwa:assets": "node scripts/pwa-assets.mjs",
     "build": "next build",
+    "lesson:parity": "node scripts/check-lesson-slug-parity.mjs",
     "check": "biome check .",
     "check:unsafe": "biome check --write --unsafe .",
     "check:write": "biome check --write .",
