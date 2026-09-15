@@ -30,10 +30,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "jest.config.ts",
-    "eslint.config.mjs",
     ".next/dev/types/**/*.ts",
-    "src/types/**/*.d.ts",
-    ".config/*.ts"
+    "src/types/**/*.d.ts"
   ],
   "exclude": ["node_modules"]
 }

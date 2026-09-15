@@ -1,0 +1,3 @@
+# Normalize line endings to LF so `npm run check` (Biome) passes on a clean
+# tree regardless of the checkout platform (see #26).
+* text=auto eol=lf

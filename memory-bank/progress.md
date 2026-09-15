@@ -30,8 +30,8 @@ Status tracker. Execution spec: #23. Decisions: `docs/adr/0001–0005` (#24 base
 
 ## Current status
 
-Current focus: #23 execution spec; latest completed: #25 (this ticket).
-Next: #26.
+Current focus: #23 execution spec; latest completed: #26.
+Next: #27.
 
 ## Known issues / constraints
 
@@ -50,3 +50,7 @@ Next: #26.
 - #24: five ADRs accepted (MDX lessons; ABAC+PAT auth; route-group guards;
   Vitest+Playwright; dev-only interactive docs) + research published.
 - #25: memory-bank rewritten from closed tickets; ownership doc retired.
+- #26: lint/scripts/root baseline landed (Biome/Ultracite lock with Vitest
+  globals, `dev-lan` + provisional `pwa-assets` scripts, `todo.ts` stub
+  deleted, stale tsconfig includes dropped, LF normalization); Jest harness
+  failure is pre-existing and owned by #27.
