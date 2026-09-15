@@ -16,17 +16,19 @@ model Post {
 }
 
 model User {
-  id               String            @id @default(cuid())
-  name             String
-  email            String?           @unique
-  emailVerified    DateTime?
-  image            String?
-  password         String?
-  role             UserRole          @default(USER)
-  userName         String?
-  accounts         Account[]
-  progressData     ProgressData[]
-  userAchievements UserAchievement[]
+  id                   String                @id @default(cuid())
+  name                 String
+  email                String?               @unique
+  emailVerified        DateTime?
+  image                String?
+  password             String?
+  role                 UserRole              @default(USER)
+  userName             String?
+  accounts             Account[]
+  progressData         ProgressData[]
+  userAchievements     UserAchievement[]
+  roleAssignments      UserRoleAssignment[]
+  personalAccessTokens PersonalAccessToken[]
 }
 
 model ProgressData {
@@ -80,4 +82,39 @@ model UserAchievement {
 enum UserRole {
   ADMIN
   USER
+}
+
+model Role {
+  id        String               @id @default(cuid())
+  name      String               @unique
+  createdAt DateTime             @default(now())
+  members   UserRoleAssignment[]
+}
+
+model UserRoleAssignment {
+  userId     String
+  roleId     String
+  assignedAt DateTime @default(now())
+  assignedBy String?
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
+}
+
+model PersonalAccessToken {
+  id         String    @id @default(cuid())
+  userId     String
+  name       String
+  tokenHash  String    @unique
+  scopes     String[]  @default([])
+  expiresAt  DateTime?
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+  revokedAt  DateTime?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
