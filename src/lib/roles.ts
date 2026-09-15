@@ -1,0 +1,111 @@
+import type { PrismaClient } from "@prisma/client";
+
+export const ROLE_NAMES = ["ADMIN", "MODERATOR", "USER"] as const;
+export type RoleName = (typeof ROLE_NAMES)[number];
+
+export const DEFAULT_ROLE_NAME: RoleName = "USER";
+
+// Minimal structural surface over PrismaClient so unit tests can import this
+// module without pulling in `@/lib/db` (which validates env at import time).
+export type RoleStore = Pick<PrismaClient, "role" | "userRoleAssignment">;
+
+async function defaultStore(): Promise<RoleStore> {
+  const { db } = await import("@/lib/db");
+  return db as RoleStore;
+}
+
+export function hasRole(
+  roles: readonly string[] | undefined | null,
+  role: RoleName
+): boolean {
+  if (!roles) {
+    return false;
+  }
+  return roles.includes(role);
+}
+
+export async function getUserRoleNames(
+  userId: string,
+  client?: RoleStore
+): Promise<RoleName[]> {
+  const store = client ?? (await defaultStore());
+  const assignments = await store.userRoleAssignment.findMany({
+    where: { userId },
+    include: { role: true },
+  });
+  return assignments.map((a) => a.role.name as RoleName);
+}
+
+export async function ensureDefaultRole(
+  userId: string,
+  client?: RoleStore
+): Promise<RoleName[]> {
+  const store = client ?? (await defaultStore());
+  const existing = await getUserRoleNames(userId, store);
+  if (existing.includes(DEFAULT_ROLE_NAME)) {
+    return existing;
+  }
+  const role = await store.role.upsert({
+    where: { name: DEFAULT_ROLE_NAME },
+    update: {},
+    create: { name: DEFAULT_ROLE_NAME },
+  });
+  await store.userRoleAssignment.upsert({
+    where: { userId_roleId: { userId, roleId: role.id } },
+    update: {},
+    create: { userId, roleId: role.id, assignedBy: "session-heal" },
+  });
+  return [...existing, DEFAULT_ROLE_NAME];
+}
+
+export type BackfillUserInput = {
+  id: string;
+  legacyRole: RoleName;
+  existing: readonly string[];
+};
+
+export type BackfillAssignment = {
+  userId: string;
+  roleName: RoleName;
+  assignedBy: string;
+};
+
+export function buildBackfillPlan(
+  users: BackfillUserInput[]
+): BackfillAssignment[] {
+  const plan: BackfillAssignment[] = [];
+  for (const user of users) {
+    const has = new Set(user.existing);
+    const wanted = new Set<RoleName>();
+    if (user.legacyRole === "ADMIN") {
+      wanted.add("ADMIN");
+    } else {
+      wanted.add("USER");
+    }
+    // Guarantee pass: every user must hold the default learner role.
+    wanted.add(DEFAULT_ROLE_NAME);
+    for (const roleName of wanted) {
+      if (!has.has(roleName)) {
+        plan.push({
+          userId: user.id,
+          roleName,
+          assignedBy: "backfill",
+        });
+      }
+    }
+  }
+  return plan;
+}
+
+export function assertZeroWithoutDefault(
+  users: { id: string; roles: readonly string[] }[]
+): void {
+  const missing = users
+    .filter((u) => !u.roles.includes(DEFAULT_ROLE_NAME))
+    .map((u) => u.id);
+  if (missing.length > 0) {
+    throw new Error(
+      `Backfill invariant violated: ${missing.length} user(s) without "${DEFAULT_ROLE_NAME}": ${missing.join(", ")}`
+    );
+  }
+}

@@ -4,6 +4,8 @@ import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
 import { getUserById } from "@/data/user";
 import { db } from "@/lib/db";
+import type { RoleName } from "@/lib/roles";
+import { ensureDefaultRole } from "@/lib/roles";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
@@ -31,6 +33,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.role = token.role as UserRole;
       }
 
+      if (session.user) {
+        session.user.roles = (token.roles as RoleName[] | undefined) ?? [];
+      }
+
       session.user.emailVerified = token.emailVerified as Date;
 
       if (token.userName && session.user) {
@@ -53,6 +59,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       token.role = existingUser?.role;
       token.emailVerified = existingUser?.emailVerified;
       token.userName = existingUser?.userName;
+
+      // Every sign-in converges on the backfill invariant (zero users without
+      // the default "USER" role): empty memberships are healed and ADMIN-only
+      // memberships gain USER, so nobody is ever locked out.
+      const roleNames = await ensureDefaultRole(token.sub);
+      token.roles = [...roleNames];
 
       return token;
     },
