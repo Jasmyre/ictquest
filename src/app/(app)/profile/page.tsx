@@ -5,10 +5,12 @@ import { ProfileInfoCard } from "@/components/pages/profile/profile-info-card";
 import { api } from "@/trpc/server";
 
 async function page() {
+  // Canonical achievement slice (#36): inventory list from the achievement
+  // router, fed by the same service as the legacy user aliases.
   const [getUser, userProgress, getUserAchievements] = await Promise.all([
     api.user.getUser(),
     api.user.getUserProgress({}),
-    api.user.getUserAchievements({}),
+    api.achievement.list({}),
   ]);
 
   return (

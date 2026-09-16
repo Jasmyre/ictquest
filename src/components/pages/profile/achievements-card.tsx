@@ -6,13 +6,16 @@ import type { api } from "@/trpc/server";
 export const AchievementsCard = ({
   getUserAchievements,
 }: {
-  getUserAchievements: Awaited<ReturnType<typeof api.user.getUserAchievements>>;
+  getUserAchievements: Awaited<ReturnType<typeof api.achievement.list>>;
 }) => {
   const achievements = getUserAchievements.data;
 
   if (!getUserAchievements.success) {
     return (
-      <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+      <Card
+        className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+        data-testid="achievement-inventory"
+      >
         <CardHeader>
           <CardTitle className="flex items-center font-semibold text-2xl text-gray-900 dark:text-gray-100">
             <Award className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
@@ -27,7 +30,10 @@ export const AchievementsCard = ({
   }
 
   return (
-    <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+    <Card
+      className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+      data-testid="achievement-inventory"
+    >
       <CardHeader>
         <CardTitle className="flex items-center font-semibold text-2xl text-gray-900 dark:text-gray-100">
           <Award className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
@@ -38,7 +44,11 @@ export const AchievementsCard = ({
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {achievements.length ? (
             achievements?.map((achievement) => (
-              <li className="flex py-4" key={achievement.achievementName}>
+              <li
+                className="flex py-4"
+                data-testid="achievement-item"
+                key={achievement.achievementName}
+              >
                 <Award className="mr-2 h-6 w-6 text-yellow-400" />
                 <span className="font-medium text-gray-900 text-sm dark:text-gray-100">
                   {String(
