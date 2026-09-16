@@ -1,7 +1,7 @@
 import { LearningProgressCardLoading } from "@/components/pages/profile/learning-progress-card-loading";
 import { ProfileInfoCardLoading } from "@/components/pages/profile/profile-info-card-loading";
-import { AchievementsCardLoading } from "../../components/pages/profile/achievements-card-loading";
-import { DeleteDataCardLoading } from "../../components/pages/profile/delete-data-card-loading";
+import { AchievementsCardLoading } from "@/components/pages/profile/achievements-card-loading";
+import { DeleteDataCardLoading } from "@/components/pages/profile/delete-data-card-loading";
 
 export default function LoadingProfile() {
   return (

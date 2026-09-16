@@ -172,7 +172,7 @@ describe("MDX remaining lessons (migration 09, #32)", () => {
     // single source of truth (route config requires a literal, so the test
     // pins the literal to the policy constant instead of importing it).
     const listPage = fs.readFileSync(
-      path.join(ROOT, "src/app/lessons/page.tsx"),
+      path.join(ROOT, "src/app/(marketing)/lessons/page.tsx"),
       "utf8"
     );
     expect(listPage).toMatch(REVALIDATE_EXPORT_RE);

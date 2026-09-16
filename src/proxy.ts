@@ -1,46 +1,80 @@
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
+import { hasRole } from "@/lib/roles";
 
 import {
   apiAuthPrefix,
-  authRoutes,
   DEFAULT_LOGIN_REDIRECT,
-  publicRoutes,
+  isAdminRoute,
+  isAuthRoute,
+  isMaintenanceBypass,
+  isPublicApiRoute,
+  isPublicRoute,
 } from "./routes";
 
 const { auth } = NextAuth(authConfig);
+
+function isAdminSession(session: unknown): boolean {
+  if (typeof session !== "object" || session === null) {
+    return false;
+  }
+  const user = (session as { user?: unknown }).user;
+  if (typeof user !== "object" || user === null) {
+    return false;
+  }
+  const roles = (user as { roles?: unknown }).roles;
+  return Array.isArray(roles) && hasRole(roles, "ADMIN");
+}
 
 export default auth((req) => {
   const { nextUrl } = req;
 
   const isInMaintenance = process.env.NEXT_PUBLIC_IS_IN_MAINTENANCE === "true";
 
-  if (isInMaintenance && !nextUrl.pathname.startsWith("/maintenance")) {
+  // Maintenance bypasses all guards and shells (env-gated).
+  if (isMaintenanceBypass(nextUrl.pathname)) {
+    return;
+  }
+  if (isInMaintenance) {
     return Response.redirect(new URL("/maintenance", nextUrl));
   }
 
   const isLoggedIn = !!req.auth;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-
   if (isApiAuthRoute) {
     return;
   }
 
-  if (isAuthRoute) {
+  if (isPublicApiRoute(nextUrl.pathname)) {
+    return;
+  }
+
+  if (isAuthRoute(nextUrl.pathname)) {
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
     return;
   }
 
-  if (nextUrl.pathname.startsWith("/api/public")) {
+  // Admin prefix requires session plus the ADMIN role (shell lands in #34).
+  if (isAdminRoute(nextUrl.pathname)) {
+    if (!isLoggedIn) {
+      return Response.redirect(new URL("/auth", nextUrl), 302);
+    }
+    if (!isAdminSession(req.auth)) {
+      return Response.redirect(new URL("/", nextUrl), 302);
+    }
     return;
   }
 
-  if (!(isLoggedIn || isPublicRoute)) {
+  // Exact-public marketing routes (incl. the `/lessons` exact-exception:
+  // `/lessons` is public, `/lessons/*` falls through to the auth check).
+  if (isPublicRoute(nextUrl.pathname)) {
+    return;
+  }
+
+  if (!isLoggedIn) {
     return Response.redirect(new URL("/auth", nextUrl), 302);
   }
 

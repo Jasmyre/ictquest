@@ -1,5 +1,5 @@
 import { Award, Book, GraduationCap, Sparkles, Trophy } from "lucide-react";
-import type { UserData } from "@/app/user/[id]/page";
+import type { UserData } from "@/app/(app)/user/[id]/page";
 import { CustomProgress } from "@/components/custom-progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
