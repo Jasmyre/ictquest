@@ -12,16 +12,25 @@ async function page() {
 }
 
 const Fetcher = async () => {
-  const userProgress = await api.user.getUserProgress({});
-  return <Renderer userProgress={userProgress} />;
+  // Canonical progress slice (#35): list plus self stats from the progress
+  // router, fed by the same service as the legacy user aliases.
+  const [userProgress, userStats] = await Promise.all([
+    api.progress.list({}),
+    api.progress.getMyStats(),
+  ]);
+  return <Renderer userProgress={userProgress} userStats={userStats} />;
 };
 
 const Renderer = async ({
   userProgress,
+  userStats,
 }: {
-  userProgress: Awaited<ReturnType<typeof api.user.getUserProgress>>;
+  userProgress: Awaited<ReturnType<typeof api.progress.list>>;
+  userStats: Awaited<ReturnType<typeof api.progress.getMyStats>>;
 }) => {
-  "use cache";
+  // Per-user progress plus stats must always read fresh (ADR 0005): no cache
+  // directive here. Static lesson metadata stays cached separately.
+  const stats = userStats.success ? userStats.data : null;
 
   return (
     <main className="min-h-[80vh]">
@@ -36,6 +45,33 @@ const Renderer = async ({
         <main>
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="px-4 py-8 sm:px-0">
+              {stats ? (
+                <div
+                  className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4"
+                  data-testid="progress-stats"
+                >
+                  <div data-testid="stat-subtopics">
+                    <p className="text-gray-500 text-sm">Subtopics completed</p>
+                    <p className="font-bold text-2xl">
+                      {stats.totalSubtopicsCompleted}
+                    </p>
+                  </div>
+                  <div data-testid="stat-achievements">
+                    <p className="text-gray-500 text-sm">Achievements</p>
+                    <p className="font-bold text-2xl">
+                      {stats.totalAchievements}
+                    </p>
+                  </div>
+                  <div data-testid="stat-level">
+                    <p className="text-gray-500 text-sm">Level</p>
+                    <p className="font-bold text-2xl">{stats.level}</p>
+                  </div>
+                  <div data-testid="stat-total-progress">
+                    <p className="text-gray-500 text-sm">Total progress</p>
+                    <p className="font-bold text-2xl">{stats.totalProgress}%</p>
+                  </div>
+                </div>
+              ) : null}
               <ProgressCard userProgress={userProgress} />
               <br />
               <div>

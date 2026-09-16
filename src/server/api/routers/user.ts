@@ -1,12 +1,17 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { calculateAverageProgress } from "@/lib/progress";
 import {
   createTRPCRouter,
   privateProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
+import {
+  createProgress,
+  deleteAllProgress,
+  getStatsById,
+  listProgress,
+} from "@/server/services/progress";
 
 export const userRouter = createTRPCRouter({
   getUser: privateProcedure.query(({ ctx }) => {
@@ -29,57 +34,15 @@ export const userRouter = createTRPCRouter({
         subtopic: z.string().min(1),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      const { db, user } = ctx;
-      if (!user?.id) {
+    .mutation(({ ctx, input }) => {
+      if (!ctx.user?.id) {
         throw new TRPCError({
           code: "UNAUTHORIZED",
           message: "Not authenticated",
         });
       }
-
-      const { topic, subtopic } = input;
-
-      try {
-        const existing = await db.progressData.findFirst({
-          where: { userId: user.id, topic },
-        });
-
-        if (existing) {
-          // if subtopic already recorded, return existing record
-          if (existing.subtopics?.includes(subtopic)) {
-            return { success: true, data: existing };
-          }
-
-          // append new subtopic to array
-          const updated = await db.progressData.update({
-            where: { id: existing.id },
-            data: {
-              // Prisma supports push for Postgres array fields
-              subtopics: { push: subtopic },
-            },
-          });
-
-          return { success: true, data: updated };
-        }
-
-        // create a new progress row
-        const created = await db.progressData.create({
-          data: {
-            userId: user.id,
-            topic,
-            subtopics: [subtopic],
-          },
-        });
-
-        return { success: true, data: created };
-      } catch (error) {
-        console.error("addProgress error:", error);
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Unable to record progress right now. Try again later.",
-        });
-      }
+      // Backward-compatible alias fed by the canonical progress service (#35).
+      return createProgress(ctx.db, ctx.user.id as string, input);
     }),
 
   getUserProgress: privateProcedure
@@ -89,28 +52,10 @@ export const userRouter = createTRPCRouter({
         take: z.number().min(1).max(100).optional(),
       })
     )
-    .query(async ({ ctx, input }) => {
-      const { user, db } = ctx;
-      const { skip = 0, take = 20 } = input;
-
-      try {
-        const progress = await db.progressData.findMany({
-          where: { userId: user.id },
-          skip,
-          take,
-        });
-
-        return { success: true, data: progress };
-      } catch (error) {
-        console.error("getUserProgress error:", error);
-
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message:
-            "Unable to load your progress right now. Please try again later.",
-        });
-      }
-    }),
+    .query(({ ctx, input }) =>
+      // Backward-compatible alias fed by the canonical progress service (#35).
+      listProgress(ctx.db, ctx.user.id as string, input)
+    ),
 
   getUserAchievements: privateProcedure
     .input(
@@ -142,24 +87,10 @@ export const userRouter = createTRPCRouter({
       }
     }),
 
-  deleteAllUserProgress: privateProcedure.mutation(async ({ ctx }) => {
-    const { user, db } = ctx;
-
-    try {
-      await db.progressData.deleteMany({
-        where: { userId: user.id },
-      });
-
-      return { success: true };
-    } catch (error) {
-      console.error("deleteAllUserProgress error:", error);
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message:
-          "Unable to delete all your progress right now. Please try again later.",
-      });
-    }
-  }),
+  deleteAllUserProgress: privateProcedure.mutation(({ ctx }) =>
+    // Backward-compatible alias fed by the canonical progress service (#35).
+    deleteAllProgress(ctx.db, ctx.user.id as string)
+  ),
 
   deleteAllUserAchievements: privateProcedure.mutation(async ({ ctx }) => {
     const { user, db } = ctx;
@@ -297,71 +228,8 @@ export const userRouter = createTRPCRouter({
         id: z.string(),
       })
     )
-    .query(async ({ ctx, input }) => {
-      const { db } = ctx;
-      const { id } = input;
-
-      try {
-        const user = await db.user.findUnique({
-          where: {
-            id,
-          },
-          select: {
-            id: true,
-            userName: true,
-            image: true,
-            userAchievements: { select: { id: true } },
-            progressData: { select: { subtopics: true, topic: true } },
-          },
-        });
-
-        if (!user) {
-          // if no user found, throw error
-          console.error("User not found with id: ", id);
-
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "User not found.",
-          });
-        }
-
-        const totalSubtopicsCount = user.progressData.reduce(
-          (total, progressItem) => total + progressItem.subtopics.length,
-          0
-        );
-
-        const averageProgress = calculateAverageProgress({ user });
-
-        let level = "";
-
-        if (averageProgress < 33.33) {
-          level = "Beginner";
-        } else if (averageProgress < 66.67) {
-          level = "Intermediate";
-        } else {
-          level = "Expert";
-        }
-
-        return {
-          success: true,
-          data: {
-            userName: user.userName,
-            id: user.id,
-            image: user.image,
-            totalAchievements: user.userAchievements.length,
-            totalSubtopicsCompleted: totalSubtopicsCount,
-            level,
-            totalProgress: Number(averageProgress.toFixed(2)),
-            progressData: user.progressData,
-          },
-        };
-      } catch (error) {
-        console.error("getUserStatsById error: ", error);
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message:
-            "Unable to fetch user stats right now. Please try again later.",
-        });
-      }
-    }),
+    .query(async ({ ctx, input }) =>
+      // Backward-compatible alias fed by the canonical progress service (#35).
+      getStatsById(ctx.db, input.id)
+    ),
 });
