@@ -1,7 +1,8 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SwProvider } from "../components/pwa/sw-provider";
 import { ThemeProvider } from "../components/theme-provider";
 
 import { Toaster } from "../components/ui/toaster";
@@ -56,6 +57,21 @@ export const metadata: Metadata = {
     template: "%s | ICTQuest",
   },
   description: "ICTQuest. Master HTML from zero to hero",
+  applicationName: "ICTQuest",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "ICTQuest | Master HTML",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/pwa/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/pwa/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/pwa/apple-touch-icon.png",
+  },
   openGraph: {
     title: "ICTQuest | Master HTML",
     url: new URL(BASE_URL),
@@ -73,10 +89,19 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#4F46E5",
+};
+
 /**
  * Thin root layout (ADR 0003): fonts, theme, and providers only. Per-group
  * shells own their chrome — `(marketing)` minimal, `(app)` full
  * nav-plus-footer — while `/auth/*` and `/maintenance` stay shell-less.
+ *
+ * PWA head tags (manifest, apple web-app, icons, theme color) are static so
+ * they are cache-safe here; worker registration lives in the non-cached
+ * client boundary `SwProvider` (Migration 16, #39 — full worker build in
+ * #40).
  */
 export default async function RootLayout({
   children,
@@ -90,19 +115,21 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-background antialiased`}
       >
-        <TRPCReactProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            disableTransitionOnChange
-            enableSystem
-          >
-            {children}
-            <Toaster />
-          </ThemeProvider>
-          <Analytics />
-          <SpeedInsights />
-        </TRPCReactProvider>
+        <SwProvider swUrl="/sw.js">
+          <TRPCReactProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              disableTransitionOnChange
+              enableSystem
+            >
+              {children}
+              <Toaster />
+            </ThemeProvider>
+            <Analytics />
+            <SpeedInsights />
+          </TRPCReactProvider>
+        </SwProvider>
       </body>
     </html>
   );

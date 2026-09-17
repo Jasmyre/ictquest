@@ -3,6 +3,9 @@
  *
  * - `(marketing)` public, minimal shell: `/`, `/lessons` (exact only),
  *   `/terms`, `/privacy`.
+ * - Shell-less public fallback: `/~offline` (exact only, precached offline
+ *   page — reachable without a session so the worker fallback never bounces
+ *   to `/auth`).
  * - `(app)` authenticated, full shell: everything else that renders a page
  *   except auth, maintenance, and admin prefixes.
  * - Standalone shell-less: `/auth/*` (redirect-if-logged-in), `/maintenance`
@@ -13,7 +16,13 @@
  * is exact-public while `/lessons/*` is authed.
  */
 
-export const publicRoutes = ["/", "/lessons", "/terms", "/privacy"];
+export const publicRoutes = [
+  "/",
+  "/lessons",
+  "/terms",
+  "/privacy",
+  "/~offline",
+];
 
 export const authRoutes = ["/auth", "/auth/error", "/api/auth/callback/google"];
 
