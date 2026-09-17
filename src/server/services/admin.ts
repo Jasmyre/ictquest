@@ -2,21 +2,31 @@ import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import type { RoleName } from "@/lib/roles";
 import type {
+  CreateAchievementDefinitionInput,
+  DeleteAchievementDefinitionInput,
   GrantAchievementInput,
+  ListAchievementDefinitionsInput,
   ListUsersInput,
   ResetProgressInput,
   RevokeAchievementInput,
+  UpdateAchievementDefinitionInput,
 } from "@/server/schemas/admin";
 import { unlockAchievement } from "@/server/services/achievement";
 
 /**
- * Admin user plus progress-op service (Migration 14, #37).
+ * Admin user plus progress-op service (Migration 14, #37; extended in
+ * Migration 15, #38 with Achievement-definition management).
  *
  * Backs the ADMIN-gated `admin` router procedures: user/role assignment
- * management and per-user progress support ops (grant/revoke achievements,
- * reset progress). All procedures sit behind `adminProcedure`, so learners
- * are denied with FORBIDDEN and anonymous callers with UNAUTHORIZED before
- * these helpers ever run.
+ * management, per-user progress support ops (grant/revoke achievements,
+ * reset progress), and Achievement definition CRUD (list/create/update/
+ * delete on the `Achievement` model). All procedures sit behind
+ * `adminProcedure`, so learners are denied with FORBIDDEN and anonymous
+ * callers with UNAUTHORIZED before these helpers ever run.
+ *
+ * Lesson content has no helpers here by design: curriculum stays
+ * dev-authored MDX in git and is served read-only through
+ * `src/server/services/lesson-content.ts`.
  */
 
 type Db = Pick<
@@ -270,6 +280,127 @@ export async function resetUserProgress(db: Db, input: ResetProgressInput) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to reset progress right now. Please try again later.",
+    });
+  }
+}
+
+function isUniqueViolation(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    (error as { code?: unknown }).code === "P2002"
+  );
+}
+
+function isMissingRow(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    (error as { code?: unknown }).code === "P2025"
+  );
+}
+
+export async function listAchievementDefinitions(
+  db: Pick<Db, "achievement">,
+  input: ListAchievementDefinitionsInput
+) {
+  const skip = input.skip ?? 0;
+  const take = input.take ?? 20;
+  try {
+    const data = await db.achievement.findMany({
+      skip,
+      take,
+      orderBy: { id: "asc" },
+    });
+    return { success: true as const, data };
+  } catch (error) {
+    console.error("listAchievementDefinitions error:", error);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Unable to load achievement definitions. Try again later.",
+    });
+  }
+}
+
+export async function createAchievementDefinition(
+  db: Pick<Db, "achievement">,
+  input: CreateAchievementDefinitionInput
+) {
+  try {
+    const data = await db.achievement.create({
+      data: {
+        name: input.name,
+        description: input.description ?? null,
+      },
+    });
+    return { success: true as const, data };
+  } catch (error) {
+    if (isUniqueViolation(error)) {
+      throw new TRPCError({
+        code: "CONFLICT",
+        message: "An achievement with this name already exists.",
+      });
+    }
+    console.error("createAchievementDefinition error:", error);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Unable to create the achievement right now. Try again later.",
+    });
+  }
+}
+
+export async function updateAchievementDefinition(
+  db: Pick<Db, "achievement">,
+  input: UpdateAchievementDefinitionInput
+) {
+  try {
+    const data = await db.achievement.update({
+      where: { id: input.id },
+      data: {
+        ...(typeof input.name === "string" ? { name: input.name } : {}),
+        ...("description" in input ? { description: input.description } : {}),
+      },
+    });
+    return { success: true as const, data };
+  } catch (error) {
+    if (isMissingRow(error)) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Achievement definition not found.",
+      });
+    }
+    if (isUniqueViolation(error)) {
+      throw new TRPCError({
+        code: "CONFLICT",
+        message: "An achievement with this name already exists.",
+      });
+    }
+    console.error("updateAchievementDefinition error:", error);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Unable to update the achievement right now. Try again later.",
+    });
+  }
+}
+
+export async function deleteAchievementDefinition(
+  db: Pick<Db, "achievement">,
+  input: DeleteAchievementDefinitionInput
+) {
+  try {
+    const data = await db.achievement.delete({ where: { id: input.id } });
+    return { success: true as const, data: { id: data.id } };
+  } catch (error) {
+    if (isMissingRow(error)) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Achievement definition not found.",
+      });
+    }
+    console.error("deleteAchievementDefinition error:", error);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Unable to delete the achievement right now. Try again later.",
     });
   }
 }
