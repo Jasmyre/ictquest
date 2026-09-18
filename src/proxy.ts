@@ -10,6 +10,7 @@ import {
   isMaintenanceBypass,
   isPublicApiRoute,
   isPublicRoute,
+  isV1ApiRoute,
 } from "./routes";
 
 const { auth } = NextAuth(authConfig);
@@ -47,6 +48,12 @@ export default auth((req) => {
   }
 
   if (isPublicApiRoute(nextUrl.pathname)) {
+    return;
+  }
+
+  // Versioned REST handles its own bearer-or-cookie auth; never redirect API
+  // consumers to `/auth` (Migration 18, #41).
+  if (isV1ApiRoute(nextUrl.pathname)) {
     return;
   }
 

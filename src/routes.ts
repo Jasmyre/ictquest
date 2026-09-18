@@ -32,6 +32,8 @@ export const apiAuthPrefix = "/api/auth";
 
 export const publicApiPrefix = "/api/public";
 
+export const v1ApiPrefix = "/api/v1";
+
 export const maintenanceRoute = "/maintenance";
 
 export const DEFAULT_LOGIN_REDIRECT = "/";
@@ -68,4 +70,17 @@ export function isMaintenanceBypass(pathname: string): boolean {
 /** Public API prefix bypasses session guards (rate-limited REST reads). */
 export function isPublicApiRoute(pathname: string): boolean {
   return matchesPrefix(pathname, publicApiPrefix);
+}
+
+/**
+ * Versioned REST prefix bypasses proxy session guards (Migration 18, #41).
+ *
+ * Auth is bearer-PAT-or-cookie inside the `/api/v1` handler itself
+ * (`createV1Context`), so the proxy must not redirect anonymous API
+ * consumers to `/auth`. Protected operations still deny with 401/403 via
+ * `privateProcedure`; the public OpenAPI JSON stays reachable without a
+ * session.
+ */
+export function isV1ApiRoute(pathname: string): boolean {
+  return matchesPrefix(pathname, v1ApiPrefix);
 }
