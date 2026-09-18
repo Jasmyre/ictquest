@@ -1,20 +1,51 @@
-import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
+
+const alias = {
+  "@": fileURLToPath(new URL("./src", import.meta.url)),
+  "server-only": fileURLToPath(
+    new URL("./tests/server-only-stub.ts", import.meta.url)
+  ),
+  "next/cache": fileURLToPath(
+    new URL("./tests/next-cache-stub.ts", import.meta.url)
+  ),
+};
 
 export default defineConfig({
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+    alias,
   },
   test: {
-    environment: "jsdom",
-    globals: true,
-    setupFiles: ["./vitest.setup.ts"],
-    include: ["tests/unit/**/*.test.{ts,tsx}"],
     coverage: {
       provider: "v8",
-      reporter: ["text", "lcov"],
+      include: [
+        "src/components/**",
+        "src/hooks/**",
+        "src/server/api/routers/**",
+        "src/services/**",
+        "src/data/**",
+        "src/schemas/**",
+        "src/actions/**",
+      ],
+      exclude: ["src/components/ui/**"],
     },
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: "unit",
+          environment: "jsdom",
+          globals: true,
+          include: ["tests/unit/**/*.test.{ts,tsx}"],
+          environmentOptions: {
+            jsdom: {
+              url: "http://localhost:3000",
+            },
+          },
+          setupFiles: ["./tests/unit/setup.ts"],
+        },
+      },
+      "./vitest.config.integration.ts",
+    ],
   },
 });
