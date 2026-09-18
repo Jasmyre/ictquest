@@ -16,6 +16,11 @@ export default defineConfig({
     alias,
   },
   test: {
+    // Silence stdout plus stderr from passing tests (expected NOT_FOUND
+    // logs like "User not found" stay hidden when green, but still print
+    // when a test fails for debugging). Root-only: `silent` is a
+    // NonProjectOption, so it cannot live inside `projects`.
+    silent: "passed-only",
     coverage: {
       provider: "v8",
       include: [
