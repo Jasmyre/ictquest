@@ -37,7 +37,7 @@ export default function ScalarDocs() {
         }
       }
     }
-    void load();
+    load();
     return () => {
       cancelled = true;
     };
@@ -46,8 +46,8 @@ export default function ScalarDocs() {
   if (status === "fallback") {
     return (
       <p data-testid="api-docs-fallback">
-        Scalar interactive docs are unavailable here. Fetch
-        /api/v1/openapi.json directly.
+        Scalar interactive docs are unavailable here. Fetch /api/v1/openapi.json
+        directly.
       </p>
     );
   }

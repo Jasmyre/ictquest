@@ -82,9 +82,7 @@ export const progressRouter = createTRPCRouter({
       },
     })
     .output(deleteAllProgressOutputSchema)
-    .mutation(({ ctx }) =>
-      deleteAllProgress(ctx.db, ctx.user.id as string)
-    ),
+    .mutation(({ ctx }) => deleteAllProgress(ctx.db, ctx.user.id as string)),
 
   getMyStats: privateProcedure
     .output(statsOutputSchema)

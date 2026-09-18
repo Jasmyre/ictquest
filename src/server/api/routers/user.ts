@@ -5,21 +5,13 @@ import {
   privateProcedure,
   publicRateLimitedProcedure,
 } from "@/server/api/trpc";
+import { statsByIdSchema, statsOutputSchema } from "@/server/schemas/progress";
 import { meOutputSchema } from "@/server/schemas/user";
 import {
   deleteAllAchievements,
   listAchievements,
   unlockAchievement,
 } from "@/server/services/achievement";
-import {
-  createProgressOutputSchema,
-  createProgressSchema,
-  deleteAllProgressOutputSchema,
-  listProgressOutputSchema,
-  listProgressSchema,
-  statsByIdSchema,
-  statsOutputSchema,
-} from "@/server/schemas/progress";
 import {
   createProgress,
   deleteAllProgress,

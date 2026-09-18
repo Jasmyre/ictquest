@@ -44,7 +44,5 @@ export const lessonRouter = createTRPCRouter({
     })
     .input(lessonParamsSchema)
     .output(getLessonOutputSchema)
-    .query(({ input }) =>
-      getLessonContentEntry(input.lesson, input.subtopic)
-    ),
+    .query(({ input }) => getLessonContentEntry(input.lesson, input.subtopic)),
 });

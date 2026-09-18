@@ -11,6 +11,7 @@ export type MintPatOptions = {
 
 const TOKEN_PREFIX = "ictq_";
 const TOKEN_BYTES = 32;
+const BEARER_TOKEN_PATTERN = /^Bearer\s+(.+)$/i;
 
 /**
  * Hash-only PAT storage (Migration 18, #41 / ADR 0002).
@@ -45,10 +46,7 @@ export async function mintPersonalAccessToken(
   return { record, plainToken };
 }
 
-export async function verifyPersonalAccessToken(
-  db: PatDb,
-  plainToken: string
-) {
+export async function verifyPersonalAccessToken(db: PatDb, plainToken: string) {
   if (!plainToken || typeof plainToken !== "string") {
     return null;
   }
@@ -82,7 +80,7 @@ export function extractBearerToken(
   if (!authorizationHeader) {
     return null;
   }
-  const match = authorizationHeader.match(/^Bearer\s+(.+)$/i);
+  const match = authorizationHeader.match(BEARER_TOKEN_PATTERN);
   if (!match?.[1]) {
     return null;
   }

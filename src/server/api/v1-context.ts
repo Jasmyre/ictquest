@@ -24,7 +24,9 @@ export async function resolveV1UserFromRequest(req: Request): Promise<{
 }> {
   const bearer = extractBearerToken(req.headers.get("authorization"));
   if (bearer) {
-    const record = await verifyPersonalAccessToken(db, bearer).catch(() => null);
+    const record = await verifyPersonalAccessToken(db, bearer).catch(
+      () => null
+    );
     if (record) {
       const owner = await db.user
         .findUnique({ where: { id: record.userId } })

@@ -21,8 +21,8 @@ export default function AdminApiDocsPage() {
       </h1>
       <p className="text-gray-600 text-sm dark:text-gray-300">
         Interactive reference for the versioned REST contract. Public OpenAPI
-        JSON is served at /api/v1/openapi.json; this UI is admin-only and
-        never ships in the default bundle.
+        JSON is served at /api/v1/openapi.json; this UI is admin-only and never
+        ships in the default bundle.
       </p>
       <Suspense fallback={<p>Loading API reference…</p>}>
         <ScalarDocs />

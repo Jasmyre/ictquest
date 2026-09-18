@@ -60,10 +60,7 @@ describe("Migration 18 — Versioned REST core plus PAT plus OpenAPI", () => {
               rows.find((r) => r.tokenHash === args.where.tokenHash) ?? null
             );
           },
-          update(args: {
-            where: { id: string };
-            data: Partial<PatRow>;
-          }) {
+          update(args: { where: { id: string }; data: Partial<PatRow> }) {
             const row = rows.find((r) => r.id === args.where.id);
             if (!row) {
               throw new Error("not found");
@@ -124,7 +121,7 @@ describe("Migration 18 — Versioned REST core plus PAT plus OpenAPI", () => {
     ).resolves.toBeNull();
   });
 
-  it("annotates me/progress/achievement procedures with method/path/protection plus output schemas", async () => {
+  it("annotates me/progress/achievement procedures with method/path/protection plus output schemas", () => {
     const trpcSrc = read("src/server/api/trpc.ts");
     expect(trpcSrc).toContain("OpenApiMeta");
     expect(trpcSrc).toContain(".meta<OpenApiMeta>()");
@@ -195,7 +192,7 @@ describe("Migration 18 — Versioned REST core plus PAT plus OpenAPI", () => {
       const src = read("src/app/(admin)/admin/api-docs/page.tsx");
       expect(src).toMatch(/Scalar|Redoc|openapi\.json|api-docs/i);
       // Client-only docs UI so the Scalar bundle never lands in prod server output.
-      expect(src).toMatch(/dynamic|\"use client\"|lazy|Suspense/i);
+      expect(src).toMatch(/dynamic|"use client"|lazy|Suspense/i);
     }
   });
 

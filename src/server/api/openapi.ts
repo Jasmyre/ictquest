@@ -1,6 +1,8 @@
 import { generateOpenApiDocument } from "trpc-to-openapi";
 import { appRouter } from "@/server/api/root";
 
+const TRAILING_SLASH_REGEX = /\/$/;
+
 /**
  * Public OpenAPI document (Migration 18, #41 / ADR 0005; lessons + stats in
  * Migration 19, #42).
@@ -12,7 +14,10 @@ import { appRouter } from "@/server/api/root";
  * be cached briefly.
  */
 export function getV1BaseUrl(req?: Request): string {
-  const fromEnv = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "");
+  const fromEnv = process.env.NEXT_PUBLIC_APP_URL?.replace(
+    TRAILING_SLASH_REGEX,
+    ""
+  );
   if (fromEnv) {
     return fromEnv;
   }

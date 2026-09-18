@@ -20,17 +20,13 @@ function findBreakingMigration(): { dir: string; sql: string } {
     if (!e.isDirectory()) {
       continue;
     }
-    try {
-      const sql = readMigrationSql(e.name);
-      if (
-        /DROP COLUMN.*"role"/.test(sql) &&
-        sql.includes("DROP TYPE") &&
-        sql.includes("UserRole")
-      ) {
-        return { dir: e.name, sql };
-      }
-    } catch {
-      continue;
+    const sql = readMigrationSql(e.name);
+    if (
+      /DROP COLUMN.*"role"/.test(sql) &&
+      sql.includes("DROP TYPE") &&
+      sql.includes("UserRole")
+    ) {
+      return { dir: e.name, sql };
     }
   }
   throw new Error("breaking auth-contract migration.sql not found");
@@ -50,7 +46,7 @@ describe("Migration 20 — Auth contract plus final green gate (#43)", () => {
 
   it("ships a breaking migration that drops legacy artefacts and adds missing indexes", () => {
     const { sql } = findBreakingMigration();
-    expect(sql).toMatch(/DROP COLUMN.*\"role\"/);
+    expect(sql).toMatch(/DROP COLUMN.*"role"/);
     expect(sql).toMatch(/DROP TYPE.*UserRole/);
     // Missing indexes land after every caller migrated.
     expect(sql).toContain("CREATE INDEX");
@@ -70,9 +66,9 @@ describe("Migration 20 — Auth contract plus final green gate (#43)", () => {
       .map((e) => e.name);
     // Legacy history plus additive plus breaking must all still exist.
     expect(entries.length).toBeGreaterThan(3);
-    expect(
-      entries.some((n) => n.includes("migration_for_google_error"))
-    ).toBe(true);
+    expect(entries.some((n) => n.includes("migration_for_google_error"))).toBe(
+      true
+    );
     expect(entries.some((n) => n.includes("achievement"))).toBe(true);
     const { dir } = findBreakingMigration();
     expect(entries).toContain(dir);

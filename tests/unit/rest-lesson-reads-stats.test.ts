@@ -75,7 +75,10 @@ describe("Migration 19 — REST lesson reads plus stats plus retire legacy (#42)
     await expect(
       (
         caller.lesson as {
-          get: (input: { lesson: string; subtopic: string }) => Promise<unknown>;
+          get: (input: {
+            lesson: string;
+            subtopic: string;
+          }) => Promise<unknown>;
         }
       ).get({ lesson: "nope", subtopic: "missing" })
     ).rejects.toMatchObject({ code: "NOT_FOUND" });
