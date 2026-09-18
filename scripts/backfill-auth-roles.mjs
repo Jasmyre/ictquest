@@ -1,13 +1,14 @@
 /**
- * Auth backfill (migration 07, #30 / ADR-0002).
+ * Auth backfill (migration 07, #30 / ADR-0002; finalized in #43).
  *
- * Maps the legacy `User.role` column onto the explicit `UserRoleAssignment`
- * join, then guarantees every user holds the default learner role:
+ * Post-cutover guarantee pass: ensures every user holds the default learner
+ * role via the explicit `UserRoleAssignment` join.
  *
- * - legacy ADMIN -> ADMIN membership
- * - legacy USER  -> USER membership
- * - guarantee pass -> USER membership wherever it is still missing
- *   (so admins end up with ADMIN + USER)
+ * Historical note: before Migration 20 this script mapped the legacy
+ * `User.role` column (ADMIN -> ADMIN membership, USER -> USER membership).
+ * The legacy column plus enum were dropped in
+ * `20260918000000_auth_contract_final`, so this script no longer reads them;
+ * it only guarantees USER membership wherever it is still missing.
  *
  * Runs in one transaction, asserts zero users without "USER", logs per-role
  * counts, and leaves ProgressData, UserAchievement, and Account row counts
@@ -15,11 +16,6 @@
  *
  * Run: `node scripts/backfill-auth-roles.mjs` (also `npm run db:backfill:auth`).
  * Requires DATABASE_URL. Safe to re-run (upserts + skip-duplicates).
- *
- * NOTE: the legacy->membership mapping below deliberately mirrors
- * `buildBackfillPlan` in `src/lib/roles.ts` (same ADMIN->ADMIN+USER,
- * USER->USER, guarantee-USER shape) so this script stays dependency-free
- * in CI with no `@/` alias resolution. Keep the two in sync.
  */
 
 import { PrismaClient } from "@prisma/client";
@@ -42,7 +38,7 @@ async function main() {
 
     const [roles, users, assignments] = await Promise.all([
       tx.role.findMany(),
-      tx.user.findMany({ select: { id: true, role: true } }),
+      tx.user.findMany({ select: { id: true } }),
       tx.userRoleAssignment.findMany({
         include: { role: { select: { name: true } } },
       }),
@@ -60,33 +56,26 @@ async function main() {
     let created = 0;
     for (const user of users) {
       const existing = existingByUser.get(user.id) ?? new Set();
-      const wanted = new Set();
-      if (user.role === "ADMIN") {
-        wanted.add("ADMIN");
-      } else {
-        wanted.add(DEFAULT_ROLE);
-      }
       // Guarantee pass: every user must hold the default learner role.
-      wanted.add(DEFAULT_ROLE);
-      for (const roleName of wanted) {
-        if (!existing.has(roleName)) {
-          await tx.userRoleAssignment.upsert({
-            where: {
-              userId_roleId: {
-                userId: user.id,
-                roleId: roleIdByName.get(roleName),
-              },
-            },
-            update: {},
-            create: {
+      // (Legacy ADMIN->ADMIN / USER->USER mapping retired with the column
+      // drop in Migration 20; existing memberships are left untouched.)
+      if (!existing.has(DEFAULT_ROLE)) {
+        await tx.userRoleAssignment.upsert({
+          where: {
+            userId_roleId: {
               userId: user.id,
-              roleId: roleIdByName.get(roleName),
-              assignedBy: "backfill",
+              roleId: roleIdByName.get(DEFAULT_ROLE),
             },
-          });
-          existing.add(roleName);
-          created += 1;
-        }
+          },
+          update: {},
+          create: {
+            userId: user.id,
+            roleId: roleIdByName.get(DEFAULT_ROLE),
+            assignedBy: "backfill",
+          },
+        });
+        existing.add(DEFAULT_ROLE);
+        created += 1;
       }
     }
 

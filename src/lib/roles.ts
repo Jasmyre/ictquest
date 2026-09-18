@@ -70,6 +70,14 @@ export type BackfillAssignment = {
   assignedBy: string;
 };
 
+/**
+ * Historical backfill planner (pre-Migration 20, #30 / ADR-0002).
+ *
+ * Maps the retired legacy `User.role` column onto membership rows. Kept for
+ * the documented cutover history and its unit coverage; the runnable
+ * `scripts/backfill-auth-roles.mjs` no longer reads the dropped column and
+ * only guarantees the default role.
+ */
 export function buildBackfillPlan(
   users: BackfillUserInput[]
 ): BackfillAssignment[] {

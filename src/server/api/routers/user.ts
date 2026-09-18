@@ -55,7 +55,6 @@ export const userRouter = createTRPCRouter({
         email?: string | null;
         image?: string | null;
         userName?: string | null;
-        role?: string;
         roles?: string[];
       };
       return {
@@ -66,7 +65,6 @@ export const userRouter = createTRPCRouter({
           email: u.email ?? null,
           image: u.image ?? null,
           userName: u.userName ?? null,
-          role: typeof u.role === "string" ? u.role : undefined,
           roles: Array.isArray(u.roles) ? u.roles : undefined,
         },
       };

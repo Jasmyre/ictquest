@@ -13,7 +13,6 @@ model User {
   emailVerified        DateTime?
   image                String?
   password             String?
-  role                 UserRole              @default(USER)
   userName             String?
   accounts             Account[]
   progressData         ProgressData[]
@@ -28,6 +27,9 @@ model ProgressData {
   topic     String
   subtopics String[]
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, topic])
 }
 
 model Account {
@@ -46,6 +48,7 @@ model Account {
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Achievement {
@@ -68,11 +71,8 @@ model UserAchievement {
   user                   User        @relation(fields: [userId], references: [id])
 
   @@unique([userId, achievementId])
-}
-
-enum UserRole {
-  ADMIN
-  USER
+  @@index([userId])
+  @@index([achievementId])
 }
 
 model Role {

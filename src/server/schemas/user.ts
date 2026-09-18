@@ -14,7 +14,6 @@ export const meUserSchema = z
     email: z.string().nullable().optional(),
     image: z.string().nullable().optional(),
     userName: z.string().nullable().optional(),
-    role: z.string().optional(),
     roles: z.array(z.string()).optional(),
   })
   .passthrough();

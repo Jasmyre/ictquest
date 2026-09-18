@@ -32,12 +32,18 @@ function findAdditiveMigrationSql(): string {
 }
 
 describe("Migration 05 — Auth expand (additive schema)", () => {
-  it("keeps the legacy role column and enum live", () => {
+  it("kept the legacy role column and enum live until the final cutover", () => {
+    // Historical additive step: no drops (final drop lives in Migration 20).
+    const additiveSql = findAdditiveMigrationSql();
+    expect(additiveSql).not.toContain("DROP COLUMN");
+    expect(additiveSql).not.toContain("DROP TYPE");
+    // Postgres forbids a table sharing the legacy "UserRole" enum type name.
+    expect(additiveSql).not.toContain('CREATE TABLE "UserRole"');
+    // Final schema (Migration 20, #43) drops the legacy artefacts.
     const schema = readFileSync(SCHEMA_PATH, "utf8");
     expect(schema).toContain("model User {");
-    expect(schema).toContain("UserRole              @default(USER)");
-    expect(schema).toContain("enum UserRole {");
-    expect(schema).toContain("ADMIN");
+    expect(schema).not.toContain("enum UserRole {");
+    expect(schema).not.toMatch(/role\s+UserRole/);
     expect(schema).not.toContain("model UserRole {");
   });
 

@@ -1,4 +1,3 @@
-import type { $Enums } from "@prisma/client";
 import lessons from "@/db/lessons";
 import { db } from "@/lib/db";
 import { getUserRoleNames, type RoleName } from "@/lib/roles";
@@ -8,7 +7,6 @@ type GetUserByEmail = {
   id: string;
   image: string | null;
   email: string | null;
-  role: $Enums.UserRole;
   userName: string | null;
   emailVerified: Date | null;
   password: string | null;
