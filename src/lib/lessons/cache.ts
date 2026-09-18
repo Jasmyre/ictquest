@@ -1,8 +1,9 @@
 /**
  * Lesson read-vs-write caching policy (migration 09, #32 / ADR-0001).
  *
- * - Lesson list: cacheable. `src/app/lessons/page.tsx` exports
- *   `revalidate = LESSON_LIST_REVALIDATE` (hourly); the list reads only the
+ * - Lesson list: cacheable. `src/app/lessons/page.tsx` uses
+ *   `"use cache"` + `cacheLife("hours")` (hourly, matching
+ *   LESSON_LIST_REVALIDATE); the list reads only the
  *   static lesson registry, never per-user rows.
  * - Lesson reads: static. MDX files under `content/lessons/<lesson>/` are
  *   build-time content keyed by `(lesson, subtopic)` params; the subtopic
@@ -10,10 +11,10 @@
  *   per-user progress inside a cached component.
  * - Progress writes (and per-user progress reads): always fresh. tRPC
  *   `userRouter` mutations/queries (`addProgress`, `getUserProgress`, …)
- *   run uncached against Postgres — no `"use cache"`, no `revalidate`,
+ *   run uncached against Postgres — no `"use cache"`, no `cacheLife`,
  *   no `unstable_cache` — so stats and completion counts never go stale.
  *
- * Observed by: `src/app/lessons/page.tsx` (revalidate export),
+ * Observed by: `src/app/lessons/page.tsx` (`"use cache"` + `cacheLife`),
  * `src/app/lessons/[topic]/page.tsx` (progress read outside the cached
  * static shell), `src/server/api/routers/user.ts` (no cache directives).
  */

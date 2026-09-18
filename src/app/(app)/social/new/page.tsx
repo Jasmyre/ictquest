@@ -7,7 +7,7 @@ import {
   Trophy,
   UserPlus,
 } from "lucide-react";
-import { cacheLife } from "next/dist/server/use-cache/cache-life";
+import { cacheLife } from "next/cache";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";

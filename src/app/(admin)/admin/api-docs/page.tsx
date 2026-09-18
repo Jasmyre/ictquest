@@ -1,5 +1,5 @@
-import dynamic from "next/dynamic";
 import { Suspense } from "react";
+import ScalarDocs from "./scalar-docs";
 
 /**
  * Admin API docs (`/admin/api-docs`, Migration 18, #41 / ADR 0005).
@@ -7,11 +7,11 @@ import { Suspense } from "react";
  * Interactive Scalar reference UI is dev-or-admin-only: this page lives
  * under the `(admin)` shell plus the `proxy.ts` ADMIN guard, so only ADMIN
  * sessions reach it in production (devs use an admin account). The Scalar
- * bundle is client-only via `next/dynamic` with `ssr: false`, so it never
+ * bundle is client-only via the `"use client"` `scalar-docs` component,
+ * which lazy-imports `@scalar/api-reference` inside `useEffect`, so it never
  * lands in the default server bundle. The public contract stays at
  * `/api/v1/openapi.json` with no auth.
  */
-const ScalarDocs = dynamic(() => import("./scalar-docs"), { ssr: false });
 
 export default function AdminApiDocsPage() {
   return (

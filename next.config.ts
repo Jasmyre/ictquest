@@ -8,6 +8,23 @@ import { randomUUID } from "node:crypto";
 import withSerwistInit from "@serwist/next";
 import type { NextConfig } from "next";
 
+/**
+ * Silence the `@serwist/next` Turbopack warning in dev.
+ *
+ * The worker is already `disable`d outside production (so `next dev --turbo`
+ * never builds/caches a service worker), but `withSerwistInit` still prints
+ * its Turbopack warning on dev startup. Setting
+ * `SERWIST_SUPPRESS_TURBOPACK_WARNING` here — before `withSerwistInit` runs
+ * and only outside production — keeps `next build` (production) behavior
+ * unchanged: the worker is still bundled via the wrapper.
+ */
+if (
+  process.env.NODE_ENV !== "production" &&
+  !process.env.SERWIST_SUPPRESS_TURBOPACK_WARNING
+) {
+  process.env.SERWIST_SUPPRESS_TURBOPACK_WARNING = "1";
+}
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   cacheComponents: true,

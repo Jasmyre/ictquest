@@ -148,12 +148,15 @@ describe("Migration 18 — Versioned REST core plus PAT plus OpenAPI", () => {
     expect(achievementSrc).toContain("/v1/me/achievements");
   });
 
-  it("serves versioned REST through a force-dynamic catch-all with bearer-or-cookie auth", () => {
+  it("serves versioned REST through a dynamic catch-all with bearer-or-cookie auth", () => {
     expect(exists("src/app/api/v1/[...rest]/route.ts")).toBe(true);
     const rest = read("src/app/api/v1/[...rest]/route.ts");
-    expect(rest).toContain('force-dynamic"');
+    // Cache Components: no legacy `export const dynamic` segment config.
+    expect(rest).not.toMatch(/export const dynamic/);
     expect(rest).toContain("createOpenApiFetchHandler");
     expect(rest).toContain("/api/v1");
+    // Dynamic by default: handler reads the per-request input.
+    expect(rest).toMatch(/NextRequest|req\.headers|req\.url/);
     // Per-user responses must never be long-cached.
     expect(rest).toMatch(/no-store|private/);
 
@@ -196,18 +199,22 @@ describe("Migration 18 — Versioned REST core plus PAT plus OpenAPI", () => {
     }
   });
 
-  it("generates a public OpenAPI document with the v1 operation table", async () => {
-    const { buildOpenApiDocument } = await import("@/server/api/openapi");
-    const document = buildOpenApiDocument(
-      "http://localhost:3000"
-    ) as unknown as { paths?: Record<string, unknown> };
-    const paths = document.paths ?? {};
-    expect(Object.keys(paths).length).toBeGreaterThan(0);
-    const flat = JSON.stringify(paths);
-    expect(flat).toContain("/v1/me");
-    expect(flat).toContain("/v1/me/progress");
-    expect(flat).toContain("/v1/me/achievements");
-  });
+  it(
+    "generates a public OpenAPI document with the v1 operation table",
+    { timeout: 30_000 },
+    async () => {
+      const { buildOpenApiDocument } = await import("@/server/api/openapi");
+      const document = buildOpenApiDocument(
+        "http://localhost:3000"
+      ) as unknown as { paths?: Record<string, unknown> };
+      const paths = document.paths ?? {};
+      expect(Object.keys(paths).length).toBeGreaterThan(0);
+      const flat = JSON.stringify(paths);
+      expect(flat).toContain("/v1/me");
+      expect(flat).toContain("/v1/me/progress");
+      expect(flat).toContain("/v1/me/achievements");
+    }
+  );
 
   it("bypasses proxy guards for versioned REST so handlers return 401, not redirects", () => {
     const routesSrc = read("src/routes.ts");

@@ -13,13 +13,13 @@ import { createV1Context } from "@/server/api/v1-context";
  * rate-limited `user.getUserStatsById` (`GET /v1/users/{id}/stats`), and
  * public MDX-backed `lesson` list/get (`GET /v1/lessons`,
  * `GET /v1/lessons/{lesson}/{subtopic}`) with bearer-PAT-or-cookie auth.
- * Force-dynamic so per-user responses are never statically cached.
+ * Dynamic by default under Cache Components (reads `req.headers`/`req.url`
+ * per request), so per-user responses are never statically cached.
  *
  * Cache split (#42): lesson reads are public content and get a cacheable
  * window (`public, s-maxage=3600`); every per-user operation keeps
  * `private, no-store` so stats and personal data stay fresh.
  */
-export const dynamic = "force-dynamic";
 
 const NO_STORE = "private, no-store";
 const LESSON_LIST_CACHE = "public, s-maxage=3600, stale-while-revalidate=86400";

@@ -3,8 +3,6 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export const revalidate = 60;
-
 function Loading() {
   return (
     <div className="min-h-[80vh] py-10">

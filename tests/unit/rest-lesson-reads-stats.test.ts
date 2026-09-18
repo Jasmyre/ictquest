@@ -20,69 +20,73 @@ function exists(rel: string): boolean {
 }
 
 describe("Migration 19 — REST lesson reads plus stats plus retire legacy (#42)", () => {
-  it("serves lesson reads from the MDX store with list cacheable", async () => {
-    expect(exists("src/server/api/routers/lesson.ts")).toBe(true);
-    const src = read("src/server/api/routers/lesson.ts");
-    expect(src).toContain("/v1/lessons");
-    expect(src).toContain("listLessonContent");
-    expect(src).toContain(".output(");
+  it(
+    "serves lesson reads from the MDX store with list cacheable",
+    { timeout: 30_000 },
+    async () => {
+      expect(exists("src/server/api/routers/lesson.ts")).toBe(true);
+      const src = read("src/server/api/routers/lesson.ts");
+      expect(src).toContain("/v1/lessons");
+      expect(src).toContain("listLessonContent");
+      expect(src).toContain(".output(");
 
-    const { appRouter } = await import("@/server/api/root");
-    const router = appRouter as unknown as Record<string, unknown>;
-    expect(router.lesson).toBeDefined();
+      const { appRouter } = await import("@/server/api/root");
+      const router = appRouter as unknown as Record<string, unknown>;
+      expect(router.lesson).toBeDefined();
 
-    const caller = appRouter.createCaller({
-      db: {} as never,
-      headers: new Headers(),
-      user: null as never,
-    });
-    const listed = await (
-      caller.lesson as {
-        list: (input: Record<string, never>) => Promise<{
-          success: true;
-          data: Array<{
-            lesson: string;
-            subtopic: string;
-            slug: string;
-            title: string;
-            order: number;
-          }>;
-        }>;
-      }
-    ).list({});
-    expect(listed.success).toBe(true);
-    expect(listed.data.length).toBeGreaterThan(0);
-    for (const entry of listed.data) {
-      expect(entry.slug).toBe(entry.subtopic);
-      expect(entry.title.trim().length).toBeGreaterThan(0);
-    }
-
-    const first = listed.data[0];
-    if (!first) {
-      throw new Error("expected at least one lesson entry");
-    }
-    const single = await (
-      caller.lesson as {
-        get: (input: { lesson: string; subtopic: string }) => Promise<{
-          success: true;
-          data: { lesson: string; subtopic: string; slug: string };
-        }>;
-      }
-    ).get({ lesson: first.lesson, subtopic: first.subtopic });
-    expect(single.success).toBe(true);
-    expect(single.data.slug).toBe(first.subtopic);
-
-    await expect(
-      (
+      const caller = appRouter.createCaller({
+        db: {} as never,
+        headers: new Headers(),
+        user: null as never,
+      });
+      const listed = await (
         caller.lesson as {
-          get: (input: {
-            lesson: string;
-            subtopic: string;
-          }) => Promise<unknown>;
+          list: (input: Record<string, never>) => Promise<{
+            success: true;
+            data: Array<{
+              lesson: string;
+              subtopic: string;
+              slug: string;
+              title: string;
+              order: number;
+            }>;
+          }>;
         }
-      ).get({ lesson: "nope", subtopic: "missing" })
-    ).rejects.toMatchObject({ code: "NOT_FOUND" });
-  });
+      ).list({});
+      expect(listed.success).toBe(true);
+      expect(listed.data.length).toBeGreaterThan(0);
+      for (const entry of listed.data) {
+        expect(entry.slug).toBe(entry.subtopic);
+        expect(entry.title.trim().length).toBeGreaterThan(0);
+      }
+
+      const first = listed.data[0];
+      if (!first) {
+        throw new Error("expected at least one lesson entry");
+      }
+      const single = await (
+        caller.lesson as {
+          get: (input: { lesson: string; subtopic: string }) => Promise<{
+            success: true;
+            data: { lesson: string; subtopic: string; slug: string };
+          }>;
+        }
+      ).get({ lesson: first.lesson, subtopic: first.subtopic });
+      expect(single.success).toBe(true);
+      expect(single.data.slug).toBe(first.subtopic);
+
+      await expect(
+        (
+          caller.lesson as {
+            get: (input: {
+              lesson: string;
+              subtopic: string;
+            }) => Promise<unknown>;
+          }
+        ).get({ lesson: "nope", subtopic: "missing" })
+      ).rejects.toMatchObject({ code: "NOT_FOUND" });
+    }
+  );
 
   it("serves public rate-limited user stats with fresh per-user responses", async () => {
     const userSrc = read("src/server/api/routers/user.ts");

@@ -9,8 +9,9 @@ import { buildOpenApiDocument, getV1BaseUrl } from "@/server/api/openapi";
  * Scalar/Redoc UI stays dev-or-admin-only and never ships in the default
  * bundle. The contract document itself is static and may be cached briefly;
  * per-user operation responses stay `private, no-store` at the catch-all.
+ *
+ * Dynamic by default under Cache Components (reads the request for base URL).
  */
-export const dynamic = "force-dynamic";
 
 export function GET(req: NextRequest): Response {
   const baseUrl = getV1BaseUrl(req as unknown as Request);

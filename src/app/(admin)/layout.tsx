@@ -9,6 +9,7 @@ import {
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
+import { Suspense } from "react";
 import { auth } from "@/auth";
 import { hasRole } from "@/lib/roles";
 
@@ -30,20 +31,14 @@ const ADMIN_NAV = [
  * non-admins to `/`, and this layout re-checks the same rule so direct
  * renders stay denied even if the proxy is bypassed in tests.
  * MODERATOR intentionally has zero routes here (reserved).
+ *
+ * Cache Components: the shell (sidebar chrome) is static and prerenders;
+ * the per-request session/role gate streams inside Suspense so admin routes
+ * stay dynamically gated without blocking the static shell.
  */
-export default async function AdminLayout({
+export default function AdminLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  const session = await auth();
-
-  if (!session?.user) {
-    redirect("/auth");
-  }
-
-  if (!hasRole(session.user.roles, "ADMIN")) {
-    redirect("/");
-  }
-
   return (
     <div
       className="min-h-screen bg-gray-50 dark:bg-gray-900"
@@ -81,8 +76,26 @@ export default async function AdminLayout({
             </Link>
           </div>
         </aside>
-        <main className="min-w-0 flex-1">{children}</main>
+        <main className="min-w-0 flex-1">
+          <Suspense fallback={<p>Checking admin access…</p>}>
+            <AdminGuard>{children}</AdminGuard>
+          </Suspense>
+        </main>
       </div>
     </div>
   );
+}
+
+async function AdminGuard({ children }: Readonly<{ children: ReactNode }>) {
+  const session = await auth();
+
+  if (!session?.user) {
+    redirect("/auth");
+  }
+
+  if (!hasRole(session.user.roles, "ADMIN")) {
+    redirect("/");
+  }
+
+  return <>{children}</>;
 }

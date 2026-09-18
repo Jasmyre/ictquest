@@ -12,8 +12,8 @@ const CONTENT_DIR = path.resolve(__dirname, "../../content/lessons");
 const ROOT = path.resolve(__dirname, "../..");
 const FRONTMATTER_STRIP_RE = /^---[\s\S]*?---/;
 const TAG_RE = /<([A-Z][A-Za-z]*)/g;
-const REVALIDATE_EXPORT_RE = /export const revalidate\s*=\s*\d+/;
-const DIGITS_RE = /\d+/;
+const USE_CACHE_RE = /"use cache"|'use cache'/;
+const CACHE_LIFE_HOURS_RE = /cacheLife\(\s*["']hours["']\s*\)/;
 
 /** Full collection: pilot (order 1) + remaining migration (#32). */
 const EXPECTED = [
@@ -168,18 +168,16 @@ describe("MDX remaining lessons (migration 09, #32)", () => {
     expect(policy.LESSON_READ_STATIC).toBe(true);
     expect(policy.PROGRESS_WRITE_FRESH).toBe(true);
 
-    // Lesson list page declares a cacheable revalidate window matching the
-    // single source of truth (route config requires a literal, so the test
-    // pins the literal to the policy constant instead of importing it).
+    // Lesson list page declares a cacheable hourly window via Cache Components
+    // (`"use cache"` + `cacheLife("hours")`, matching the single source of
+    // truth LESSON_LIST_REVALIDATE = 3600).
     const listPage = fs.readFileSync(
       path.join(ROOT, "src/app/(marketing)/lessons/page.tsx"),
       "utf8"
     );
-    expect(listPage).toMatch(REVALIDATE_EXPORT_RE);
-    const revalidateValue = Number(
-      listPage.match(REVALIDATE_EXPORT_RE)?.[0].match(DIGITS_RE)?.[0]
-    );
-    expect(revalidateValue).toBe(policy.LESSON_LIST_REVALIDATE);
+    expect(listPage).toMatch(USE_CACHE_RE);
+    expect(listPage).toMatch(CACHE_LIFE_HOURS_RE);
+    expect(policy.LESSON_LIST_REVALIDATE).toBe(3600);
 
     // Progress mutations bypass cache: no "use cache" in the user router.
     const userRouter = fs.readFileSync(
