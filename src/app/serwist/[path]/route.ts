@@ -30,5 +30,10 @@ export const { dynamic, dynamicParams, revalidate, generateStaticParams, GET } =
       url,
       revision,
     })),
+    // Serwist defaults to 2 MiB; the app shell plus content chunks exceed
+    // that, so large entries would silently drop from the precache manifest.
+    // 12 MiB keeps the full shell precached without green-lighting anything
+    // unbounded.
+    maximumFileSizeToCacheInBytes: 12 * 1024 * 1024,
     useNativeEsbuild: true,
   });

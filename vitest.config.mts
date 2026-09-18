@@ -34,7 +34,13 @@ export default defineConfig({
         extends: true,
         test: {
           name: "unit",
-          environment: "jsdom",
+          // node by default: only component tests pay for jsdom. 20 of 21
+          // unit files are pure logic (fs reads, routers, route modules) —
+          // forcing jsdom on all of them dominated the worker startup clock
+          // (environment ~60% of total run time). Component (.tsx) tests opt
+          // into jsdom via a `// @vitest-environment jsdom` pragma (pinned
+          // by tests/unit/vitest-harness.test.ts).
+          environment: "node",
           globals: true,
           include: ["tests/unit/**/*.test.{ts,tsx}"],
           environmentOptions: {
@@ -43,6 +49,12 @@ export default defineConfig({
             },
           },
           setupFiles: ["./tests/unit/setup.ts"],
+          // Keep worker isolation on: disabling it trades correctness for
+          // speed. Startup is fixed at the source instead (light setupFiles
+          // above, node-by-default here, zero vite plugins in this config
+          // so no third-party init runs per thread).
+          isolate: true,
+          pool: "forks",
         },
       },
       "./vitest.config.integration.mts",
