@@ -10,8 +10,9 @@ import { serwist } from "@serwist/next/config";
  * `precachePrerendered` stays off: only the public deployment-versioned set
  * below plus the build-globbed revisioned static assets and `public/`
  * files are precached. The page list must match `SW_PRECACHED_URLS` in
- * `src/sw-policy.ts` (pinned by `src/sw-policy.test.ts`); `/landing` is
- * excluded there because the proxy redirects signed-in traffic on it.
+ * `src/sw-policy.ts` (pinned by `tests/unit/sw-policy.test.ts`); `/` is
+ * excluded there because the marketing landing renders session-aware chrome,
+ * so its bytes are not deployment-constant.
  */
 const gitRevision = spawnSync("git", ["rev-parse", "HEAD"], {
   encoding: "utf-8",
@@ -27,10 +28,9 @@ export default serwist({
   swDest: "public/sw.js",
   precachePrerendered: false,
   additionalPrecacheEntries: [
-    { url: "/offline", revision },
+    { url: "/~offline", revision },
     { url: "/maintenance", revision },
-    { url: "/reference", revision },
     { url: "/manifest.webmanifest", revision },
-    { url: "/api/openapi.json", revision },
+    { url: "/api/v1/openapi.json", revision },
   ],
 });

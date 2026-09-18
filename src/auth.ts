@@ -1,6 +1,7 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
+import { authEvents } from "@/auth-events";
 import { getUserWithRoles } from "@/data/user";
 import { db } from "@/lib/db";
 import type { RoleName } from "@/lib/roles";
@@ -11,14 +12,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/auth",
     error: "/auth/error",
   },
-  events: {
-    async linkAccount({ user }) {
-      await db.user.update({
-        where: { id: user.id },
-        data: { emailVerified: new Date() },
-      });
-    },
-  },
+  events: authEvents,
   callbacks: {
     redirect({ baseUrl }) {
       return baseUrl;
