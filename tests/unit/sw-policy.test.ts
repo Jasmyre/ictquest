@@ -38,7 +38,7 @@ const headerSnapshot = (url: string, header: string): SwRequestSnapshot =>
 
 describe("Service-worker routing policy — pure offline decision", () => {
   it("exposes the worker identity and fallback", () => {
-    expect(SW_URL).toBe("/sw.js");
+    expect(SW_URL).toBe("/serwist/sw.js");
     expect(SW_SCOPE).toBe("/");
     expect(OFFLINE_FALLBACK_URL).toBe("/~offline");
   });
@@ -122,11 +122,14 @@ describe("Service-worker routing policy — pure offline decision", () => {
     expect(sw).toContain("NetworkOnly");
     expect(sw).toContain("document");
 
-    const config = read("serwist.config.js");
+    const config = read("src/app/serwist/[path]/route.ts");
+    expect(config).toContain("createSerwistRoute");
     expect(config).toContain("SW_PRECACHED_URLS");
-    for (const url of SW_PRECACHED_URLS) {
-      expect(config).toContain(`"${url}"`);
-    }
+    // The versioned set is consumed, not duplicated: every allowlisted URL
+    // flows into additionalPrecacheEntries via the shared constant (whose
+    // exact contents are pinned above).
+    expect(config).toContain("additionalPrecacheEntries");
+    expect(config).toMatch(/SW_PRECACHED_URLS\.map/);
     // No stale template entries survive the adaptation.
     expect(config).not.toContain('"/offline"');
     expect(config).not.toContain('"/reference"');

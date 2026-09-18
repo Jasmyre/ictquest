@@ -29,12 +29,12 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "vitest.config.ts",
+    "vitest.config.mts",
     "vitest.setup.ts",
     "playwright.config.ts",
     "tests/**/*",
     ".next/dev/types/**/*.ts",
     "src/types/**/*.d.ts"
   ],
-  "exclude": ["node_modules", "public/sw.js", "public/swe-worker.js"]
+  "exclude": ["node_modules"]
 }

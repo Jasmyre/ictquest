@@ -105,7 +105,12 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   const result = await next();
 
   const end = Date.now();
-  console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
+  // Keep test output quiet: procedure timing is a dev/prod diagnostic and
+  // every caller-based unit test would otherwise spam `[TRPC] ...` lines.
+  // Tests mock `@/env` with `NODE_ENV: "test"`, and vitest sets it for real.
+  if (env.NODE_ENV !== "test") {
+    console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
+  }
 
   return result;
 });

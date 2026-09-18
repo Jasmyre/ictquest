@@ -45,7 +45,7 @@ export default defineConfig({
           setupFiles: ["./tests/unit/setup.ts"],
         },
       },
-      "./vitest.config.integration.ts",
+      "./vitest.config.integration.mts",
     ],
   },
 });

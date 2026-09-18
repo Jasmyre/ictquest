@@ -1,6 +1,6 @@
 "use client";
 
-import { SerwistProvider } from "@serwist/next/react";
+import { SerwistProvider } from "@serwist/turbopack/react";
 import type { ReactNode } from "react";
 
 /**
@@ -11,12 +11,12 @@ import type { ReactNode } from "react";
  * touches `window`/`navigator` on the client and no-ops on the server.
  * `reloadOnOnline` stays `false` so a reconnect never wipes in-progress
  * quiz/form state; registration itself is disabled outside production to
- * avoid dev cache hell. The full worker build (swSrc/swDest, precache,
- * cache rules) lands in #40 — this only wires the provider at `/sw.js`.
+ * avoid dev cache hell. The worker is built by the Serwist route handler
+ * (`src/app/serwist/[path]/route.ts`) and served at `/serwist/sw.js`.
  */
 export function SwProvider({
   children,
-  swUrl = "/sw.js",
+  swUrl = "/serwist/sw.js",
 }: Readonly<{ children: ReactNode; swUrl?: string }>) {
   return (
     <SerwistProvider

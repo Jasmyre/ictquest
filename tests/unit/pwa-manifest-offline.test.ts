@@ -72,7 +72,7 @@ describe("Migration 16 — PWA manifest plus offline page", () => {
     expect(root).toContain("appleWebApp");
     expect(root).toContain("themeColor");
     expect(root).toContain("swUrl");
-    expect(root).toContain("/sw.js");
+    expect(root).toContain("/serwist/sw.js");
 
     const providerRel = "src/components/pwa/sw-provider.tsx";
     expect(exists(providerRel), providerRel).toBe(true);

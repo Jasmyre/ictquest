@@ -1,4 +1,4 @@
-import { defaultCache } from "@serwist/next/worker";
+import { defaultCache } from "@serwist/turbopack/worker";
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
 import { NetworkOnly, Serwist } from "serwist";
 
@@ -15,12 +15,12 @@ declare global {
 declare const self: ServiceWorkerGlobalScope;
 
 /**
- * Service worker (Migration 17, #40).
+ * Service worker (@serwist/turbopack).
  *
- * Built from app source (`swSrc`) to public output (`swDest`) via
- * `withSerwistInit` in `next.config.ts`, production-only. Shell plus offline
- * (`/` and `/~offline`) are precached by source revision; favicon plus PWA
- * assets come from `globPublicPatterns`.
+ * Built from app source (`swSrc`) by the route handler at
+ * `src/app/serwist/[path]/route.ts` and served at `/serwist/sw.js`,
+ * production-only. The precache manifest is the Turbopack build output plus
+ * the public deployment-versioned set (`SW_PRECACHED_URLS`).
  *
  * Cache rules: mutations/POSTs and heavy lesson media stay `NetworkOnly`
  * (never serve stale); document requests fall back to `/~offline`.

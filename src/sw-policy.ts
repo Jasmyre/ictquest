@@ -25,7 +25,7 @@
  *   documented on `/` instead (see below).
  */
 
-export const SW_URL = "/sw.js";
+export const SW_URL = "/serwist/sw.js";
 
 export const SW_SCOPE = "/";
 
@@ -33,15 +33,14 @@ export const OFFLINE_FALLBACK_URL = "/~offline";
 
 /**
  * Public deployment-versioned inventory for `additionalPrecacheEntries` in
- * `serwist.config.js` (kept in sync by `tests/unit/sw-policy.test.ts`): the
+ * the Serwist route handler (`src/app/serwist/[path]/route.ts`, kept in sync
+ * by `tests/unit/sw-policy.test.ts`): the
  * generic fallback, the redirect-free maintenance page, the served manifest,
  * and the static contract document.
  *
  * `/` is excluded on purpose even though it is public: the marketing landing
  * renders session-aware chrome, so its bytes are not deployment-constant and
- * precaching it would store a signed-in response under a public key. (The
- * `withSerwistInit` wrapper in `next.config.ts` precaches the app shell
- * separately; the `serwist build` precache here is the versioned public set.)
+ * precaching it would store a signed-in response under a public key.
  */
 export const SW_PRECACHED_URLS: readonly string[] = [
   OFFLINE_FALLBACK_URL,

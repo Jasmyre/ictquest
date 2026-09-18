@@ -115,7 +115,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-background antialiased`}
       >
-        <SwProvider swUrl="/sw.js">
+        <SwProvider swUrl="/serwist/sw.js">
           <TRPCReactProvider>
             <ThemeProvider
               attribute="class"

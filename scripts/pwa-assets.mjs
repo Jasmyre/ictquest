@@ -6,9 +6,11 @@
  * tickets (#39 manifest + offline page, #40 service worker + cache rules).
  * Per docs/research/pwa-rest-surface.md the final set is:
  *   - public/pwa/icon-192.png, icon-512.png, maskable-512.png, apple-touch-icon.png
- *   - public/favicon.ico (globPublicPatterns)
- *   - public/sw.js (built from src/app/sw.ts, production only)
+ *   - public/favicon.ico
  *   - src/app/manifest.ts route + src/app/~offline page
+ *   - src/app/sw.ts worker source, built by the Serwist route handler at
+ *     src/app/serwist/[path]/route.ts and served at /serwist/sw.js
+ *     (@serwist/turbopack — no static public/sw.js artifact is emitted).
  *
  * Until those tickets land this script reports missing entries as warnings
  * and exits 0. Pass --strict to fail on missing assets (for CI after PWA lands).
@@ -28,10 +30,11 @@ const expectedFiles = [
 const expectedSources = [
   "src/app/manifest.ts",
   "src/app/sw.ts",
+  "src/app/serwist/[path]/route.ts",
   "src/app/~offline/page.tsx",
 ];
 
-const generatedArtifacts = ["public/sw.js", "public/manifest.webmanifest"];
+const generatedArtifacts = ["public/manifest.webmanifest"];
 
 let missing = 0;
 

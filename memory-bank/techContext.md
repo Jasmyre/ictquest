@@ -16,8 +16,8 @@ Technologies, setup, and constraints. Cutover order and rationale per ADR 0004 a
 - Auth: `next-auth ^5.0.0-beta.30` (Auth.js v5 beta, JWT + Prisma adapter),
   `@auth/prisma-adapter`, `bcryptjs`; target adds `Role` / `UserRole` / PAT tables
   per ADR 0002.
-- PWA: Serwist (`@serwist/next`) wrapper, `swSrc: src/app/sw.ts` →
-  `swDest: public/sw.js`; manifest via `src/app/manifest.ts`; `public/pwa/` icon
+- PWA: Serwist (`@serwist/turbopack`), `swSrc: src/app/sw.ts` served at
+  `/serwist/sw.js` via `src/app/serwist/[path]/route.ts`; manifest via `src/app/manifest.ts`; `public/pwa/` icon
   set (192/512/maskable + apple touch). Not installed yet — lands with migrations
   #39–#40 (ADR 0005).
 - MDX: `@next/mdx` + `@mdx-js/*` (or `next-mdx-remote-client` for DB-stored MDX)

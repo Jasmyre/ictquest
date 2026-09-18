@@ -12,36 +12,51 @@ function exists(rel: string): boolean {
   return existsSync(join(ROOT, rel));
 }
 
+const ROUTE_REL = "src/app/serwist/[path]/route.ts";
+
 const MUTATION_RE = /POST|method.*GET|request\.method/i;
 const MEDIA_RE = /mp4|webm/;
 const LESSON_PRECACHE_RE = /precache.*lessons/i;
 const DEFERRED_RE = /deferred|per-user|never public/i;
 
-describe("Migration 17 — Service worker plus cache rules", () => {
-  it("builds the worker from app source to public output, production-only", () => {
+describe("Service worker plus cache rules (@serwist/turbopack)", () => {
+  it("wraps the Next config with the Turbopack integration", () => {
     const config = read("next.config.ts");
-    expect(config).toContain("@serwist/next");
-    expect(config).toContain("withSerwistInit");
-    expect(config).toContain("src/app/sw.ts");
-    expect(config).toContain("public/sw.js");
-    // Production-only: disabled outside production to avoid dev cache hell.
-    expect(config).toContain("disable");
-    expect(config).toContain('NODE_ENV !== "production"');
+    expect(config).toContain("@serwist/turbopack");
+    expect(config).toContain("withSerwist");
+    // No webpack-only wrapper and no Turbopack-warning suppression hack:
+    // the worker build lives in the route handler below.
+    expect(config).not.toContain("@serwist/next");
+    expect(config).not.toContain("withSerwistInit");
+    expect(config).not.toContain("SERWIST_SUPPRESS_TURBOPACK_WARNING");
+    expect(config).not.toContain("swDest");
   });
 
-  it("precaches shell plus offline by source revision and favicon plus PWA assets", () => {
-    const config = read("next.config.ts");
-    expect(config).toContain("additionalPrecacheEntries");
-    expect(config).toContain("/~offline");
-    expect(config).toContain("revision");
-    // Shell ("/") precached alongside the offline fallback.
-    expect(config).toContain('"/"');
+  it("serves the worker from the Serwist route with the versioned public precache set", () => {
+    expect(exists(ROUTE_REL), ROUTE_REL).toBe(true);
+    const route = read(ROUTE_REL);
+    expect(route).toContain("createSerwistRoute");
+    expect(route).toContain("src/app/sw.ts");
+    expect(route).toContain("additionalPrecacheEntries");
+    expect(route).toContain("SW_PRECACHED_URLS");
     // Revision keyed by source (git HEAD with UUID fallback).
-    expect(config).toContain("rev-parse");
-    // Public-pattern precache for favicon plus PWA assets.
-    expect(config).toContain("globPublicPatterns");
-    expect(config).toContain("favicon.ico");
-    expect(config).toContain("pwa/");
+    expect(route).toContain("revision");
+    expect(route).toContain("rev-parse");
+  });
+
+  it("registers the worker at the route URL without wiping state on reconnect", () => {
+    const provider = read("src/components/pwa/sw-provider.tsx");
+    expect(provider).toContain("@serwist/turbopack/react");
+    expect(provider).toContain("/serwist/sw.js");
+    expect(provider).toContain("reloadOnOnline");
+    // No forced reload on reconnect: in-progress quiz/form state survives.
+    expect(provider).toContain("false");
+    // Production-only: disabled outside production to avoid dev cache hell.
+    expect(provider).toContain("disable");
+    expect(provider).toContain('NODE_ENV !== "production"');
+
+    const layout = read("src/app/layout.tsx");
+    expect(layout).toContain("/serwist/sw.js");
   });
 
   it("serves network-only for mutations and heavy media with document fallback to offline", () => {
@@ -53,6 +68,7 @@ describe("Migration 17 — Service worker plus cache rules", () => {
     expect(sw).toContain("clientsClaim");
     expect(sw).toContain("navigationPreload");
     expect(sw).toContain("defaultCache");
+    expect(sw).toContain("@serwist/turbopack/worker");
     expect(sw).toContain("NetworkOnly");
     // Mutations/POSTs never serve stale.
     expect(sw).toMatch(MUTATION_RE);
@@ -72,8 +88,11 @@ describe("Migration 17 — Service worker plus cache rules", () => {
     expect(sw).toMatch(DEFERRED_RE);
   });
 
-  it("ignores built worker output", () => {
+  it("emits no static worker output to public/", () => {
+    // The worker is served from the `/serwist/sw.js` route handler, so no
+    // build writes `public/sw.js` anymore and nothing ignores it.
     const gitignore = read(".gitignore");
-    expect(gitignore).toContain("public/sw");
+    expect(gitignore).not.toContain("public/sw");
+    expect(exists("public/sw.js"), "stale public/sw.js").toBe(false);
   });
 });
