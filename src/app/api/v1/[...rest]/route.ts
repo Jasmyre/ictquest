@@ -4,21 +4,46 @@ import { appRouter } from "@/server/api/root";
 import { createV1Context } from "@/server/api/v1-context";
 
 /**
- * Versioned REST catch-all (Migration 18, #41 / ADR 0005).
+ * Versioned REST catch-all (Migration 18, #41 / ADR 0005; lessons + stats in
+ * Migration 19, #42).
  *
  * Serves annotated `user.getUser` (`GET /v1/me`), `progress` list/create/
- * delete (`/v1/me/progress`), and `achievement` list/unlock/delete
- * (`/v1/me/achievements`, `POST /v1/me/achievements/unlock`) with
- * bearer-PAT-or-cookie auth. Force-dynamic so per-user responses are never
- * statically cached; every response carries `private, no-store`.
+ * delete (`/v1/me/progress`), `achievement` list/unlock/delete
+ * (`/v1/me/achievements`, `POST /v1/me/achievements/unlock`), public
+ * rate-limited `user.getUserStatsById` (`GET /v1/users/{id}/stats`), and
+ * public MDX-backed `lesson` list/get (`GET /v1/lessons`,
+ * `GET /v1/lessons/{lesson}/{subtopic}`) with bearer-PAT-or-cookie auth.
+ * Force-dynamic so per-user responses are never statically cached.
+ *
+ * Cache split (#42): lesson reads are public content and get a cacheable
+ * window (`public, s-maxage=3600`); every per-user operation keeps
+ * `private, no-store` so stats and personal data stay fresh.
  */
 export const dynamic = "force-dynamic";
 
 const NO_STORE = "private, no-store";
+const LESSON_LIST_CACHE = "public, s-maxage=3600, stale-while-revalidate=86400";
 
-function withNoStore(res: Response): Response {
+function cacheControlForPath(pathname: string): string {
+  if (
+    pathname === "/api/v1/lessons" ||
+    pathname.startsWith("/api/v1/lessons/")
+  ) {
+    return LESSON_LIST_CACHE;
+  }
+  return NO_STORE;
+}
+
+function withCacheControl(req: NextRequest, res: Response): Response {
   const headers = new Headers(res.headers);
-  headers.set("Cache-Control", NO_STORE);
+  try {
+    headers.set(
+      "Cache-Control",
+      cacheControlForPath(new URL(req.url).pathname)
+    );
+  } catch {
+    headers.set("Cache-Control", NO_STORE);
+  }
   return new Response(res.body, {
     status: res.status,
     statusText: res.statusText,
@@ -34,7 +59,7 @@ async function handle(req: NextRequest): Promise<Response> {
     req: req as unknown as Request,
     endpoint: "/api/v1",
   });
-  return withNoStore(res);
+  return withCacheControl(req, res);
 }
 
 export function GET(req: NextRequest): Promise<Response> {

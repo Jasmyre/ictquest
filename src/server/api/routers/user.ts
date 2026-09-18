@@ -3,7 +3,7 @@ import { z } from "zod";
 import {
   createTRPCRouter,
   privateProcedure,
-  publicProcedure,
+  publicRateLimitedProcedure,
 } from "@/server/api/trpc";
 import { meOutputSchema } from "@/server/schemas/user";
 import {
@@ -11,6 +11,15 @@ import {
   listAchievements,
   unlockAchievement,
 } from "@/server/services/achievement";
+import {
+  createProgressOutputSchema,
+  createProgressSchema,
+  deleteAllProgressOutputSchema,
+  listProgressOutputSchema,
+  listProgressSchema,
+  statsByIdSchema,
+  statsOutputSchema,
+} from "@/server/schemas/progress";
 import {
   createProgress,
   deleteAllProgress,
@@ -126,14 +135,21 @@ export const userRouter = createTRPCRouter({
       unlockAchievement(ctx.db, ctx.user.id as string, input)
     ),
 
-  getUserStatsById: publicProcedure
-    .input(
-      z.object({
-        id: z.string(),
-      })
-    )
+  getUserStatsById: publicRateLimitedProcedure
+    .meta({
+      openapi: {
+        method: "GET",
+        path: "/v1/users/{id}/stats",
+        tags: ["users"],
+        summary: "Get public user stats",
+      },
+    })
+    .input(statsByIdSchema)
+    .output(statsOutputSchema)
     .query(async ({ ctx, input }) =>
       // Backward-compatible alias fed by the canonical progress service (#35).
+      // Public and rate-limited (Redis in production); per-user responses stay
+      // `private, no-store` at the `/api/v1` catch-all (#42).
       getStatsById(ctx.db, input.id)
     ),
 });

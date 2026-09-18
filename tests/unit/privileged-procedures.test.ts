@@ -79,7 +79,10 @@ describe("Migration 08 — Privileged procedures", () => {
   it("leaves ordinary procedures on private/public procedures, not role gates", async () => {
     const src = read("src/server/api/routers/user.ts");
     expect(src).toContain("privateProcedure");
-    expect(src).toContain("publicProcedure");
+    // Ordinary public surface includes the rate-limited variant:
+    // `publicRateLimitedProcedure` is `publicProcedure` plus a Redis guard
+    // (public stats, #42) — still no role gate.
+    expect(src).toMatch(/public(RateLimited)?Procedure/);
     expect(src).not.toContain("adminProcedure");
     expect(src).not.toContain("moderatorProcedure");
 

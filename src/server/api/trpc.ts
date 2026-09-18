@@ -120,7 +120,10 @@ const WINDOW_SEC = 40; // 40 seconds
 const LIMIT = 10; // max 10 requests per window
 
 const publicRateLimiter = t.middleware(async ({ ctx, next, path }) => {
-  if (env.NODE_ENV === "development") {
+  // Rate limiting is a production guard (Redis-backed, 10 req / 40s per IP).
+  // Dev and test bypass so local runs and contract tests stay deterministic;
+  // production enforces TOO_MANY_REQUESTS via the Redis counter below.
+  if (env.NODE_ENV !== "production") {
     return next();
   }
 

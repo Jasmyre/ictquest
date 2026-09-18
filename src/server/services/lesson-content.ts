@@ -65,3 +65,28 @@ export function listLessonContent(
     });
   }
 }
+
+/**
+ * Single lesson read (Migration 19, #42).
+ *
+ * Looks up one MDX entry by its stable `(lesson, subtopic)` key — the same
+ * pair stored in ProgressData rows. Throws NOT_FOUND when the pair does not
+ * exist so the v1 REST seam returns 404 with a shaped error.
+ */
+export function getLessonContentEntry(
+  lesson: string,
+  subtopic: string,
+  contentDir = join(process.cwd(), "content", "lessons")
+) {
+  const entries = listLessonContentEntries(contentDir);
+  const found = entries.find(
+    (e) => e.lesson === lesson && e.subtopic === subtopic
+  );
+  if (!found) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "Lesson not found.",
+    });
+  }
+  return { success: true as const, data: found };
+}

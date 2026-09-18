@@ -45,3 +45,31 @@ export const createProgressOutputSchema = z.object({
 export const deleteAllProgressOutputSchema = z.object({
   success: z.literal(true),
 });
+
+/**
+ * Public stats output schema (Migration 19, #42 / ADR 0005).
+ *
+ * `GET /v1/users/{id}/stats` serves the same computed shape as the
+ * `getStatsById` service helper (`{ success: true, data }`). Per-user stats
+ * stay fresh (`private, no-store` at the catch-all) — never long-cached.
+ */
+export const statsDataSchema = z.object({
+  userName: z.string().nullable(),
+  id: z.string(),
+  image: z.string().nullable(),
+  totalAchievements: z.number(),
+  totalSubtopicsCompleted: z.number(),
+  level: z.string(),
+  totalProgress: z.number(),
+  progressData: z.array(
+    z.object({
+      topic: z.string(),
+      subtopics: z.array(z.string()),
+    })
+  ),
+});
+
+export const statsOutputSchema = z.object({
+  success: z.literal(true),
+  data: statsDataSchema,
+});

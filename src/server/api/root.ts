@@ -1,6 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { achievementRouter } from "./routers/achievement";
 import { adminRouter } from "./routers/admin";
+import { lessonRouter } from "./routers/lesson";
 import { progressRouter } from "./routers/progress";
 import { userRouter } from "./routers/user";
 
@@ -17,10 +18,13 @@ import { userRouter } from "./routers/user";
  * list/unlock/delete router. `user` keeps backward-compatible achievement
  * aliases fed by the same service helpers. The example `post` router is
  * deleted as a verified unused stub.
+ * Migration 19 (#42): `lesson` is the public MDX-backed read router
+ * (`GET /v1/lessons`, `GET /v1/lessons/{lesson}/{subtopic}`).
  */
 export const appRouter = createTRPCRouter({
   achievement: achievementRouter,
   admin: adminRouter,
+  lesson: lessonRouter,
   progress: progressRouter,
   user: userRouter,
 });

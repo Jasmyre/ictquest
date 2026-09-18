@@ -1,7 +1,7 @@
 import {
   createTRPCRouter,
   privateProcedure,
-  publicProcedure,
+  publicRateLimitedProcedure,
 } from "@/server/api/trpc";
 import {
   createProgressOutputSchema,
@@ -10,6 +10,7 @@ import {
   listProgressOutputSchema,
   listProgressSchema,
   statsByIdSchema,
+  statsOutputSchema,
 } from "@/server/schemas/progress";
 import {
   createProgress,
@@ -33,7 +34,9 @@ import {
  * Versioned REST (ADR 0005): `list` / `create` / `deleteAll` carry OpenAPI
  * method/path/protection annotations plus explicit output schemas and are
  * served through the force-dynamic `/api/v1` catch-all with bearer-PAT-or-
- * cookie auth. Stats endpoints land in Migration 19 (#42).
+ * cookie auth. Public stats (`getStatsById`, canonical REST path
+ * `GET /v1/users/{id}/stats` on `user.getUserStatsById`) are rate-limited in
+ * production and stay `private, no-store` (Migration 19, #42).
  */
 export const progressRouter = createTRPCRouter({
   list: privateProcedure
@@ -83,11 +86,12 @@ export const progressRouter = createTRPCRouter({
       deleteAllProgress(ctx.db, ctx.user.id as string)
     ),
 
-  getMyStats: privateProcedure.query(({ ctx }) =>
-    getStatsById(ctx.db, ctx.user.id as string)
-  ),
+  getMyStats: privateProcedure
+    .output(statsOutputSchema)
+    .query(({ ctx }) => getStatsById(ctx.db, ctx.user.id as string)),
 
-  getStatsById: publicProcedure
+  getStatsById: publicRateLimitedProcedure
     .input(statsByIdSchema)
+    .output(statsOutputSchema)
     .query(({ ctx, input }) => getStatsById(ctx.db, input.id)),
 });
