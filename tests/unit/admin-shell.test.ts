@@ -67,6 +67,15 @@ describe("Migration 11 — Admin shell plus guards", () => {
     expect(shell).toContain("auth()");
   });
 
+  it("propagates the role list into the edge session so the proxy guard sees it", () => {
+    // `src/proxy.ts` builds NextAuth from `auth.config` (no node callbacks),
+    // so the config itself must copy token.roles into session.user.roles —
+    // otherwise the ADMIN guard denies every admin path with a redirect.
+    const config = read("src/auth.config.ts");
+    expect(config).toContain("callbacks");
+    expect(config).toContain("session.user.roles");
+  });
+
   it("seeds moderator with zero routes", async () => {
     const routes = await import("@/routes");
     expect("moderatorRoutes" in routes).toBe(false);

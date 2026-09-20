@@ -7,6 +7,10 @@ import { db } from "@/lib/db";
 import type { RoleName } from "@/lib/roles";
 import { ensureDefaultRole } from "@/lib/roles";
 
+// Edge session propagation lives in `authConfig.callbacks` (used by the
+// proxy); the node callbacks below replace it with the full session shape.
+const { callbacks: _edgeCallbacks, ...baseAuthConfig } = authConfig;
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/auth",
@@ -59,5 +63,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
-  ...authConfig,
+  ...baseAuthConfig,
 });

@@ -5,6 +5,7 @@ import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import type * as z from "zod";
 import { getUserByEmail } from "@/data/user";
+import type { RoleName } from "@/lib/roles";
 import { LogInSchema } from "@/schemas";
 import { env } from "./env";
 
@@ -53,4 +54,23 @@ export default {
       },
     }),
   ],
+  callbacks: {
+    // Edge-safe propagation: the proxy (`src/proxy.ts`) builds its own
+    // NextAuth instance from this config, so its session must carry the
+    // Role list or the ADMIN guard denies every admin path. The Role list
+    // itself is stamped onto the token by the node `jwt` callback in
+    // `src/auth.ts`; this only copies token payload into the session shape
+    // (no database read, safe at the edge). `src/auth.ts` overrides
+    // `callbacks` for node use, so server behavior stays unchanged.
+    session({ session, token }) {
+      if (token.sub && session.user) {
+        session.user.id = token.sub;
+      }
+      if (session.user) {
+        const roles = (token as { roles?: unknown }).roles;
+        session.user.roles = Array.isArray(roles) ? (roles as RoleName[]) : [];
+      }
+      return session;
+    },
+  },
 } satisfies NextAuthConfig;
