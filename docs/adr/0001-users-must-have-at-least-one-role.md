@@ -12,3 +12,16 @@ OAuth/social sign-ups created users with no roles (the Prisma adapter never conn
 - `src/auth-events.ts` (extracted from `src/auth.ts`) assigns `USER` in the Auth.js `createUser` event, so adapter-created users match `registerUser`'s behavior.
 - The permission engine still denies role-less users (defense in depth) — that behavior is kept and tested even though the state should now be unreachable.
 - Existing role-less users are backfilled to `USER` by the migration `20260905000000_assign_default_role_to_roles_user`.
+
+## Supersede note (Slice 7, #64)
+
+Explicit `Role` + provenance-carrying assignment records (assignedBy/assignedAt)
+are superseded by the approved implicit many-to-many membership (`User.roles` /
+`Role.users`, table `_RoleToUser`; Slices 2–3, #59/#60). Provenance never
+surfaced anywhere (no UI column, no API field) and taxed every role write, so
+existing pairs were copied one-to-one with provenance intentionally dropped.
+Session stamping shape is unchanged (source switched to the membership
+include); the default-role guarantee is reimplemented as idempotent
+`ensureDefaultRole` connects at registration, social sign-up, and token heal.
+No behavior change except dropping unexposed provenance. (Ticket-text alias:
+map tickets calling this "0002 roles" mean this ADR, 0001.)

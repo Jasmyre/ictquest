@@ -5,28 +5,28 @@
 - Next.js 16 App Router is the application boundary; server-first patterns are preferred.
 - NextAuth v5 handles authentication via `src/auth.ts`; routes are exposed through `src/app/api/auth/[...nextauth]/route.ts`.
 - tRPC handles typed API endpoints; routers live under `src/server/api`, client/server helpers under `src/trpc`.
-- Prisma access is centralized in `src/server/db.ts`; PostgreSQL is the persistence target.
+- Prisma access is centralized in `src/lib/db.ts` (single shared client); PostgreSQL is the persistence target.
 - Environment validation is defined in `src/env.js`; do not document environment variables without checking that file and `.env.example`.
 - Shared UI primitives live under `src/components/ui` and use shadcn-style patterns with Tailwind CSS.
 - Authentication forms use Zod schemas and React Hook Form. The theme is managed with `next-themes`.
 - Authorization is enforced at the controller tier via the permissions module (`src/server/permissions.ts`) and the `permissionProcedure` tRPC guard; services stay focused on domain rules and never evaluate permissions.
 
-> Visibility-scoping exception (documented): for `post.list`, the coarse gate stays in the controller (`permissionProcedure("Post", "view")`), but the row-visibility decision (USER sees own; MODERATOR/ADMIN see all) lives in the service (`list(user)`), which inspects `user.roles` to choose `listAllPosts()` vs `listPostsByAuthor(user.id)`. This is a list-scope rule with no single row to test in `hasPermission`, so it's treated as a domain visibility rule rather than a row-level grant. The permission module's `view` action remains a role grant only.
+> Visibility-scoping exception (documented): for dashboard reads, the coarse gate stays in the controller (`permissionProcedure("Progress", "view")` for the private owner read; public rate-limited guard for the by-id share link), but the row-visibility decision (owner sees own derived summary; anyone with the link sees the share-safe by-id shape with no biography) lives in the progress/dashboard service. This is a list-scope rule with no single row to test in `hasPermission`, so it's treated as a domain visibility rule rather than a row-level grant. The permission module's `view` action remains a role grant only.
 >
-> Self-demotion exception (documented): on `admin.updateRoles` the coarse gate (`permissionProcedure("Admin", "manage")`) admits only ADMINS, but the rule that an ADMIN cannot remove their **own** ADMIN role is a business rule that lives in the service (`updateRoles`), which throws `FORBIDDEN` when `userId === callerId && callerRoles` holds `ADMIN` and `roleNames` omits it. It checks the caller's session roles, not a fresh DB read.
+> Self-demotion exception (documented): on the role-revocation path the coarse gate admits only ADMINS, but the rule that an ADMIN cannot remove their **own** ADMIN role is a business rule that lives in the service, which throws `FORBIDDEN` when `userId === callerId && callerRoles` holds `ADMIN` and `roleNames` omits it. It checks the caller's session roles, not a fresh DB read.
 
 ## Permissions (ABAC)
 
-Single reusable module `src/server/permissions.ts` (server-only), demonstrated on the `Post` resource.
+Single reusable module `src/server/permissions.ts` (server-only) over the ICTQuest resources (`Lesson`, `Topic`, `Quiz`, `Progress`, `Achievement`, `User`, `Admin`, `Token`).
 
 - **Roles persist as a many-to-many**: `Role` (implicit `_RoleToUser`) on `User`, name values `RoleName` enum `ADMIN` / `MODERATOR` / `USER`. The three rows are seeded by the migration SQL. A user's effective permissions are the **union** of their roles' grants.
 - **Engine**:
   - `hasPermission(user, resource, action, data?)` — row-level check. Each role/action rule is an unconditional boolean grant or an ownership predicate `(user, data) => boolean`. Predicate rules **deny when `data` is absent** (can't prove ownership).
   - `hasActionGrant(user, resource, action)` — coarse precheck used by the controller guard: predicate rules count as grants because the row check happens later.
-- **Post matrix** — `admin` full access; `moderator` views/creates/updates any, deletes own only; `user` views/creates any, updates/deletes own only.
+- **ICTQuest matrix** — Lesson/Topic/Quiz reads public; Progress writes owner-scoped; Achievement catalog `manage` ADMIN-only vs per-learner grants owner-scoped; User profile owner-scoped with biography redaction for private profiles; `dashboard.getMyDashboard` private owner read (tRPC-only) vs `dashboard.getDashboardById` public rate-limited share-safe read (no biography); `Admin.manage` ADMIN-only; token lifecycle owner-scoped, revoke idempotent.
 - **Admin matrix** — `Admin` resource with a single `manage` action granted only to `ADMIN`. The `permissionProcedure("Admin", "manage")` gate therefore admits ADMINS only. `Admin` has no row-level rules, so `ResourceData<"Admin">` resolves to `never`.
-- **Session threading**: `getUserById`/`getUserByEmail` include `roles`; the JWT callback stamps `token.roles`; the session callback exposes `session.user.roles: RoleName[]`. `src/types/next-auth.d.ts` declares `roles` (and `id: string`) so `Session["user"]` satisfies `PermissionUser`.
-- **Default role**: new users always receive the seeded `USER` role — `registerUser` connects it on credentials sign-up, and the `createUser` auth event (`src/auth-events.ts`, wired into `src/auth.ts`) assigns it for adapter (OAuth/social) sign-ups via `assignDefaultRole` in the user repository. **A role-less user is an invalid state**: `updateRolesSchema` rejects empty `roleNames` (`.min(1)`), `admin-service.updateRoles` throws `BAD_REQUEST` on an empty array, the manage-roles dialog disables toggling off the last remaining role, and the migration `20260905000000_assign_default_role_to_roles_user` backfilled existing role-less users to `USER`. The permission engine still denies a role-less user if one ever slips through (defense in depth — kept and tested).
+- **Session threading**: `getUserById`/`getUserByEmail` include `roles` via the implicit many-to-many join; the JWT callback stamps `token.roles`; the session callback exposes `session.user.roles: RoleName[]`. `src/types/next-auth.d.ts` declares `roles` (and `id: string`) so `Session["user"]` satisfies `PermissionUser`. Biography and `isPrivate` are never threaded into tokens.
+- **Default role**: new users always receive the seeded `USER` role — the credentials registration transaction connects it inline, and the `createUser`/`linkAccount` auth events plus the JWT-heal path assign it for adapter (OAuth/social) sign-ups via `ensureDefaultRole` in `src/lib/roles.ts`. **A role-less user is an invalid state**: `updateRolesSchema` rejects empty `roleNames` (`.min(1)`), `admin-service.updateRoles` throws `BAD_REQUEST` on an empty array, the manage-roles dialog disables toggling off the last remaining role, and the migration `20260905000000_assign_default_role_to_roles_user` backfilled existing role-less users to `USER`. The permission engine still denies a role-less user if one ever slips through (defense in depth — kept and tested).
 - **Controller-enforcement pattern** (do this in tRPC routers, not services):
   1. `permissionProcedure("Resource", "action")` guards the whole procedure (`UNAUTHORIZED` when signed out, `FORBIDDEN` when no held role grants the action).
   2. For row-level rules, the resolver fetches the record and re-checks `hasPermission(user, "Resource", "action", record)` — throwing `FORBIDDEN` when it fails — before delegating to the service.
@@ -40,16 +40,16 @@ The application follows a three-tier architecture mapped to MVC conventions. Kee
 |---|---|---|---|
 | **View** | Presentation | `src/app/**`, `src/components/**`, `src/hooks/**` | Rendering, user interaction, client state |
 | **Controller** | Presentation (request boundary) | `src/server/api/routers/**` (tRPC), `src/actions/**` (Server Actions), NextAuth callbacks | Input validation, auth/ownership checks, calling services, mapping results |
-| **Model (business)** | Business Logic | `src/services/**` | Domain rules, orchestration, hashing, result codes |
-| **Model (persistence)** | Data Access | `src/data/**` (repositories), `src/server/db.ts` (Prisma client) | Query/persistence operations only |
+| **Model (business)** | Business Logic | `src/server/services/**` | Domain rules, orchestration, hashing, result codes |
+| **Model (persistence)** | Data Access | `src/server/repositories/**` (repositories), `src/lib/db.ts` (Prisma client) | Query/persistence operations only |
 
 Conventions:
 
-- `src/services/**` and `src/data/**` are server-only (`import "server-only"`) and must not be imported by client components.
+- `src/server/services/**` and `src/server/repositories/**` are server-only (`import "server-only"`) and must not be imported by client components.
 - Services orchestrate business rules by calling repositories; they do not import the Prisma client directly.
 - Repositories own all Prisma access; they do not contain business rules.
-- The tRPC context exposes `headers` and `user` only — `db` is intentionally not injected so routers cannot bypass the service layer.
-- Zod schemas in `src/schemas/**` are the shared contract between controllers and the business layer.
+- The tRPC context exposes `headers` + `user` + single shared `db` so routers pass the client into services instead of issuing inline Prisma queries.
+- Zod schemas in `src/server/schemas/**` (one module per entity) are the shared contract between controllers and the business layer.
 
 ## Runtime flow
 
@@ -60,7 +60,7 @@ Conventions:
 5. Services apply business logic and delegate persistence to repositories.
 6. Repositories query Prisma against the shared client and database schema.
 
-Keep new features aligned with these boundaries: controllers stay thin, business rules live in `src/services`, and persisted data access lives in `src/data`.
+Keep new features aligned with these boundaries: controllers stay thin, business rules live in `src/server/services`, and persisted data access lives in `src/server/repositories`.
 
 ## Next.js App Router Patterns (v16)
 
@@ -137,13 +137,13 @@ Status in this codebase: `page.tsx` (7), `layout.tsx` (4, incl. route-group layo
 
 - URL-transparent route groups give each app area its own layout and access rules:
   - `(marketing)/` — `MarketingHeader` (logo → `/landing`, Sign In + Get Started → `/auth`); hosts `/landing` and `/maintenance`.
-  - `(app)/` — the shared sidebar shell (`AppShell`/`AppShellAsync` → `MainSidebar`) with session-aware items; hosts `/` (dashboard) and `/posts`.
+  - `(app)/` — the shared sidebar shell (`AppShell`/`AppShellAsync` → `MainSidebar`) with session-aware items; hosts `/` (dashboard) plus the authed lesson/progress/achievement/profile pages.
   - `(admin)/` — guarded shell; hosts `/admin`. The layout wraps children in `<Suspense fallback={<AdminShell …>…}><AdminGate/></Suspense>` (the fallback is the static admin shell, not `null` — a `null` fallback committed a blank frame on soft navigations while the gate resolved, caught by the `instant()` guard), where `AdminGate` (`src/components/admin-gate.tsx`) awaits `connection()` + `auth()` and calls `forbidden()` from `next/navigation` unless `session.user.roles` includes `ADMIN` — rendering the global 403. Inside the gate, the same `MainSidebar` shell renders (`AdminShell`/`AdminShellAsync`, `groupLabel="Admin"`). The role check uses the session's stamped roles, not a fresh DB read; signed-out visitors never reach the gate because the proxy redirects them off `/admin` first.
   - Root `layout.tsx` keeps only shared providers (`TRPCReactProvider`, `ThemeProvider`, fonts, metadata) — never route nav.
 - **A route group's root is the parent path**: `(app)/page.tsx` and `(admin)/page.tsx` both resolve to `/`. Two root-level groups can't each have a `page.tsx`; nest an extra segment (`(admin)/admin/page.tsx`) instead.
 - **Auth-aware nav must stay a PPR dynamic hole**: an `async` layout calling `auth()` makes the whole route dynamic, and with `cacheComponents` the build fails ("Uncached data was accessed outside of <Suspense>", surfaced at the root providers). Instead wrap the shell in `<Suspense>` and put `await connection()` + `await auth()` inside an async server component (`src/components/app-shell-async.tsx`; the admin group mirrors this with `admin-shell-async.tsx`). The static shell prerenders with the fallback (`<AppShell navItems={base}>` with a footer skeleton); the session-aware items, identity footer, and Admin nav entry stream in as the dynamic hole.
 - Both route groups wrap their layout in a `<div className="min-h-svh bg-background">`; pages own their `<main>`.
-- **Sidebar section highlighting is segment-aware**: `MainSidebar`/`NavMain` marks the current section active via shadcn's `data-active`. `/` matches exactly; any other route highlights the item whose `url` equals the pathname or is a path-prefix (`pathname === url || pathname.startsWith(url + "/")`), so `/posts/new` and `/posts/[id]/edit` keep "Posts" highlighted. Keep this behavior when touching `isCurrentPath` in `src/components/nav-main.tsx` — it was regressed once already and is guarded by `nav-main.test.tsx`.
+- **Sidebar section highlighting is segment-aware**: `MainSidebar`/`NavMain` marks the current section active via shadcn's `data-active`. `/` matches exactly; any other route highlights the item whose `url` equals the pathname or is a path-prefix (`pathname === url || pathname.startsWith(url + "/")`), so `/lessons/intro/basics` and `/lessons/intro/advanced` keep "Lessons" highlighted. Keep this behavior when touching `isCurrentPath` in `src/components/nav-main.tsx` — it was regressed once already and is guarded by `nav-main.test.tsx`.
 
 ### Next.js 16 Async APIs
 
@@ -184,11 +184,16 @@ Forgetting to `await` these returns a Promise instead of the value, causing subt
 - Combine with `revalidateTag()` in Route Handlers or Server Actions to invalidate specific cache entries when data changes.
 - Not used directly in this codebase (the server-side tRPC caller reads `headers()`, which is forbidden inside a `"use cache"` scope). Cross-request caching lives one tier down instead — see `unstable_cache` below.
 
-### `unstable_cache` for page-visit reads (in use)
+### Per-user reads stay fresh (no long cache)
 
-- Repository reads in `src/data/*` are wrapped with the shared `cached()` helper (`src/lib/db-cache.ts`) around `unstable_cache(fn, keyParts, { tags, revalidate: 10 })`, so repeat page visits share one cached result instead of issuing a fresh Prisma query per visit. Cache keys are `keyParts` plus the call arguments — user-scoped reads stay isolated per caller via their per-user argument (never share one wrapper across users without one).
-- Tag vocabulary lives in `src/lib/cache-tags.ts` and is intentionally coarse and static (`posts:list`, `posts:item`, `dashboard:stats`, `admin:users`, `users:by-id`): `unstable_cache` tags cannot vary per call argument, so any post write clears every post-list-shaped read and any role write clears the admin list plus the session user lookups. Writes are rare; page visits are not.
-- Wrapped reads: `listAllPosts`, `listPostsByAuthor`, `getPostByIdWithAuthor`, `getLatestPost`, `getDashboardStats`, `getUserById` (the `jwt()` hot path — role changes propagate within ~10s worst-case, immediate on `updateRoles` via tag invalidation below), `getAllUsers`. Deliberately uncached: `getUserByEmail` (credential checks must stay fresh), raw `getPostById` (row-level permission checks), all writes.
+- Lesson content is file-backed and versioned in git — no Prisma row, no cache tag.
+- Progress, dashboard, grant, and profile reads are always fresh: no
+  `unstable_cache` wrapper, no coarse tag, no `revalidateTag` fan-out. The
+  service worker sends all dashboard reads to the network and never precaches
+  them; the `/api/v1` catch-all answers per-user Operations with
+  `private, no-store`.
+- The static Document (`/api/v1/openapi.json`) is the only cacheable API
+  surface (`public, max-age=3600, s-maxage=3600`).
 - Cache-hit deserialization revives `Date` fields as strings — every consumer already tolerates `Date | string` (router `DateLike`, `formatDate`, opaque session threading).
 
 ### `cacheComponents` (Automatic component-level caching)
@@ -218,52 +223,49 @@ Forgetting to `await` these returns a Promise instead of the value, causing subt
 ### TanStack Query dehydration
 
 - Server-fetched queries are serialized with SuperJSON via `shouldDehydrateQuery` (including pending queries for Suspense compatibility).
-- The client hydrates from this serialized cache; `staleTime: 10s` (matching the server `unstable_cache` window) prevents immediate refetch after hydration.
+- The client hydrates from this serialized cache; `staleTime: 30s` for lesson reads prevents immediate refetch after hydration. Dashboard queries always use the network and never go stale.
 
-### On-demand revalidation (in use)
+### On-demand revalidation
 
-- `revalidateCacheTag(tag)` (`src/lib/db-cache.ts`) wraps `revalidateTag(tag, "max")` — the required Next 16.3 second argument pins stale-while-revalidate semantics (serve cached while refreshing in the background). Immediate `updateTag` is Server-Actions-only, so tRPC mutations (Route Handlers) use this. Prefer the wrapper over raw `revalidateTag` so the SWR profile stays pinned in one place.
-- Call sites: post `create` → `posts:list` + `dashboard:stats`; post `update`/`delete` → plus `posts:item`; admin `updateRoles` → `admin:users` + `users:by-id`; credentials sign-up (`registerUser`) and OAuth sign-up (`authEvents.createUser`) → `admin:users` + `dashboard:stats`. Invalidation runs only after the write succeeds — failed validation/permission rejections skip it (covered by unit tests).
-- Prefer `cacheTag` + `revalidateTag` over `revalidatePath` for granular invalidation.
+- Only the profile page uses path revalidation (`revalidatePath("/profile")` after owner updates). Lesson files redeploy with the bundle; per-user Operations are `private, no-store` and need no invalidation.
 
 ## tRPC Patterns (v11)
 
 ### Server setup (`src/server/api/trpc.ts`)
 
-- **Thin context**: exposes only `headers` and `user` (from NextAuth `auth()`). The `db` client is intentionally excluded — routers must go through the service layer, not Prisma directly.
+- **Thin context**: exposes `headers` + `user` (from NextAuth `auth()`) plus the single shared `db` client from `src/lib/db.ts`. Routers pass `db` into service calls — they never issue inline Prisma queries.
 - **SuperJSON transformer** + **Zod error formatter** flattens validation errors into the response.
 - **Procedure types**:
 
 | Procedure | Middleware chain | Use case |
 |---|---|---|
 | `publicProcedure` | `timingMiddleware` | Unauthenticated endpoints; logs timing, simulates latency in dev |
-| `publicRateLimitedProcedure` | `timingMiddleware` → `publicRateLimiter` | Rate-limited public endpoints (Redis, 5 req/40s/IP, skipped in dev) |
+| `publicRateLimitedProcedure` | `timingMiddleware` → `publicRateLimiter` | Rate-limited public endpoints (Redis, 10 req/40s/IP, production-only) |
 | `privateProcedure` | `isAuthed` | Authenticated endpoints; throws `UNAUTHORIZED` if no session, narrows `ctx.user` |
 | `permissionProcedure(resource, action)` | `isAuthed` → action grant check | Permission-guarded endpoints; throws `UNAUTHORIZED` if no session, `FORBIDDEN` if no held role grants the action (row-level checks happen in the resolver with the record) |
 
 ### Router definitions (`src/server/api/root.ts`, `src/server/api/routers/**`)
 
-- Routers delegate to `src/services/**` — never import Prisma directly.
-- Input validation via Zod schemas (`src/schemas/**`).
+- Routers delegate to `src/server/services/**` — never import Prisma directly.
+- Input validation via Zod schemas (`src/server/schemas/**`, one module per entity).
 - Export `AppRouter` type for end-to-end type safety.
 - `createCaller` exported for server-side direct calls (used by RSC path).
-- **Strict output contracts on externally exposed Procedures**: every Procedure that will be REST-mounted declares a `z.strictObject` `.output()` from `src/schemas/**` (unknown fields fail loudly, never strip-drift) plus `.meta({ openapi: { method, path, tags, summary, protect } })` for the `trpc-to-openapi` generator (tRPC instance is typed `initTRPC.meta<OpenApiMeta>()`). Date-bearing outputs pin `z.iso.datetime()` — the REST wire shape — and resolvers serialize `Date` → ISO at the controller tier so the contract already holds on tRPC itself. Paths carry the `/api/v1` version prefix; one Tag per Router (`posts`, `dashboard`); `protect: false` only on public reads. Surfaces that stay tRPC-only (e.g. `admin`) are left unannotated and are auto-excluded from the Document.
+- **Strict output contracts on externally exposed Procedures**: every Procedure that will be REST-mounted declares a `z.strictObject` `.output()` from `src/server/schemas/**` (unknown fields fail loudly, never strip-drift) plus `.meta({ openapi: { method, path, tags, summary } })` for the `trpc-to-openapi` generator (tRPC instance is typed `initTRPC.meta<OpenApiMeta>()`). Date-bearing outputs pin `z.iso.datetime()` — the REST wire shape — and resolvers serialize `Date` → ISO at the controller tier so the contract already holds on tRPC itself. Paths carry the `/v1` version prefix; tags are `me`, `lessons`, `dashboard`. Surfaces that stay tRPC-only (e.g. `admin`, token lifecycle, `dashboard.getMyDashboard`) are left unannotated and are auto-excluded from the Document.
 
-### REST mount — OpenAPI v1 (`#30`)
+### REST mount — OpenAPI v1
 
-- `src/server/api/openapi.ts` generates the versioned Document once at module load (build time for the static route, never per request): the 8 annotated post/dashboard Operations; the unannotated admin surface is auto-excluded. Security schemes are `bearer` (PAT) + `cookie` (session); every protected Operation requires either.
-- `src/app/api/v1/[...rest]/route.ts` serves the same routers as plain JSON (ISO datetimes, no superjson envelope) via `createOpenApiFetchHandler` (`endpoint: "/"`, `force-dynamic`). The tRPC mount at `/api/trpc` is untouched (batched, superjson, cookie-only).
-- Dual auth lives in `src/server/api/rest-auth.ts`: Bearer PAT first (`verifyToken` → session-shaped user so permission checks run unchanged), session-cookie fallback only when no Bearer is presented. A presented-but-invalid Bearer fails closed to `null` (401 on protected Operations) and never inherits the cookie session.
-- `src/app/api/openapi.json/route.ts` serves the static Document; `src/app/reference/route.ts` renders the Scalar Reference UI against it. `/api/openapi.json` and `/api/v1/*` bypass the proxy landing redirect (they answer 401/403/404 JSON themselves); `/reference` is public in `src/routes.ts`.
-- `post.getLatest` is registered before `post.getById` on purpose: the adapter matches paths in registration order and `/posts/latest` also matches the `/posts/{id}` template — the exact route must win. Keep this order when touching `postRouter`.
+- `src/server/api/openapi.ts` builds the versioned Document per request for the static JSON route: the 10 annotated Operations (3 achievement + 3 progress + 1 user + 2 lesson + 1 dashboard-by-id); the unannotated admin/token/private-dashboard surface is auto-excluded. Security schemes are `bearer` (PAT) + `cookie` (session); every protected Operation requires either.
+- `src/app/api/v1/[...rest]/route.ts` serves the same routers as plain JSON (ISO datetimes, no superjson envelope, per-user responses `private, no-store`). The tRPC mount at `/api/trpc` is untouched (batched, superjson, cookie-only).
+- Dual auth lives in `src/server/api/v1-context.ts`: Bearer PAT first (`verifyPersonalAccessToken` → session-shaped user so permission checks run unchanged), session-cookie fallback only when no Bearer is presented. A presented-but-invalid Bearer fails closed to `null` (401 on protected Operations) and never inherits the cookie session.
+- `src/app/api/v1/openapi.json/route.ts` serves the Document (`public, max-age=3600, s-maxage=3600`); the admin-only docs page at `/admin/api-docs` renders the Scalar Reference UI against it. `/api/v1/*` bypasses proxy session guards (it answers 401/403/404 JSON itself).
 
 ### Client-side (`src/trpc/react.tsx`)
 
 - `createTRPCReact<AppRouter>()` produces typed React hooks.
 - `TRPCReactProvider` wraps the app at root layout using `httpBatchStreamLink` (streaming batches, not plain `httpBatchLink`).
-- `useSuspenseQuery` for Suspense-compatible reads (destructure from tuple: `const [data] = api.post.getLatest.useSuspenseQuery()`).
+- `useSuspenseQuery` for Suspense-compatible reads (destructure from tuple: `const [data] = api.lesson.list.useSuspenseQuery()`).
 - `useMutation` for writes; use `onSuccess` to invalidate cache via `api.useUtils()`.
-- `api.useUtils()` for cache invalidation (e.g., `utils.post.invalidate()` invalidates all queries under a namespace).
+- `api.useUtils()` for cache invalidation (e.g., `utils.lesson.invalidate()` invalidates all queries under a namespace).
 - Singleton `QueryClient` on browser; fresh instance per render on server.
 
 ### Server-side (`src/trpc/server.tsx`)
@@ -300,10 +302,34 @@ Three-layer test suite: Vitest (jsdom) unit, Vitest (node) DB integration, and P
 - **Integration gates**: gate the whole DB-dependent block with `const describeDb = integrationEnabled ? describe : describe.skip`; keep pure-logic tests in a separate non-skipped `describe`. The boolean comes from `tests/integration/db.ts` and is re-exported (with a notice) from `tests/integration/setup.ts`.
 - **E2E**: Playwright `setup` project signs in and saves `storageState` for the authed project; logged-out flows target a separate project. WebServer boots `npm run dev`.
 - **E2E privileged-role (admin) setups**: to test role-gated flows, a dedicated setup (`setup/admin.setup.ts`) registers the user, promotes to the target role via a direct Prisma client against `DATABASE_URL_TEST` (loaded through Vite `loadEnv`, same as the integration-tests pattern), and **promotes before sign-in** — NextAuth stamps `token.roles` at token creation, so promoting after login would leave the old role in the session JWT. Saves a second storageState and is wired as its own project with `dependencies: ["setup"]`.
-- **E2E selectors**: query by placeholder/role-name string, not regex; use `exact: true` for table cells whose accessible name is a *prefix* of another cell (e.g. a post title cell vs its `Edit <title>` action cell). For PPR-streamed forms that briefly render a prerendered shell plus the hydrated form, use `.last()` on the input locator. Error-page home buttons (`SessionHomeLink` → `Button asChild`) are authored as `<a>`, so assert with `getByRole("link", …)`.
+- **E2E selectors**: query by placeholder/role-name string, not regex; use `exact: true` for table cells whose accessible name is a *prefix* of another cell (e.g. a lesson title cell vs its `Edit <title>` action cell). For PPR-streamed forms that briefly render a prerendered shell plus the hydrated form, use `.last()` on the input locator. Error-page home buttons (`SessionHomeLink` → `Button asChild`) are authored as `<a>`, so assert with `getByRole("link", …)`.
 - **Query by placeholder / role-name string, not regex**: the auth forms' inputs aren't label-associated and buttons have exact text, so use `getByPlaceholder` and `getByRole("button", { name: "..." })` string matchers (satisfies `useTopLevelRegex`).
 - **TDD**: don't test nonexistent behavior — e.g., once `NavUser`'s "Log out" was wired to the sign-out server action, the e2e asserts the real flow (click Log out → lands on `/landing`, session cookie and `/api/auth/session` are cleared); before the wiring existed, the test only asserted the menu/identity rendered.
 - **No speculative test helpers**: add shared helpers only once used; remove dead test infrastructure (`render-with-providers.tsx` was removed as unused).
+
+## Docs-correction provenance (Slice 7, #64)
+
+Per-file before/after entity map for the docs correction that brought these
+patterns to ICTQuest truth:
+
+| Area | Before (template-contaminated) | After (ICTQuest truth) |
+|---|---|---|
+| Permissions | Example-resource matrix + list-visibility exception | ICTQuest matrix + dashboard visibility-scoping exception |
+| Layering | `src/services`, `src/data`, `src/schemas`, `src/server/db.ts` | `src/server/services`, `src/server/repositories`, `src/server/schemas`, `src/lib/db.ts` |
+| Context | `headers` + `user` only | `headers` + `user` + shared `db` passed into services |
+| Caching | Coarse-tag cache lib, 10s window, write fan-out | Fresh per-user reads, file-backed lessons, dashboard network-only |
+| REST | 8 example-resource Operations, old dual-auth module, ordering gotcha | 10 Operations (`me`/`lessons`/`dashboard`), `v1-context.ts`, no gotcha |
+| Rate limits | 5 req/40s/IP | 10 req/40s/IP, production-only |
+
+## Deleted-example reference list
+
+This rewrite removes every example-resource entity claim from this file: the
+list-visibility exception, the example-demonstrated ABAC section, the matrix
+row, the item/list/latest read-cache claims, the write-invalidation sites, the
+REST-mount claims with the latest-before-byId ordering note, and the old
+route-catalog examples. The resource is deleted in code with no replacement.
+Role-join and dashboard-rename history lives in the ADR supersede notes
+(0001, 0002).
 
 ## Pattern Documentation Policy
 

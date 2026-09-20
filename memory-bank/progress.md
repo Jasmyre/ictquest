@@ -30,6 +30,10 @@ Status tracker. Execution spec: #23. Decisions: `docs/adr/0001–0005` (#24 base
 
 ## Current status
 
+Slice 7 (#64) done 2026-09-20: docs + system patterns match code truth, ADR
+0001/0002 supersede notes recorded, docs-truth spec gate green (check +
+typecheck + 151 unit).
+
 Current focus: #23 execution spec; latest completed: #26.
 Next: #27.
 Wayfinding map #44: research ticket #46 resolved 2026-09-19

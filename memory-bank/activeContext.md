@@ -13,6 +13,20 @@ focus.
 
 ## Recent changes
 
+- Slice 7 (#64, 2026-09-20): docs correction landed — `docs/architecture.md`,
+  `docs/database.md`, `docs/auth.md`, `docs/api.md` rewritten from the
+  template-contaminated world to ICTQuest truth (Lesson/Topic/Quiz/Progress/
+  Achievement/User, implicit `_RoleToUser`, biography/`isPrivate`,
+  `dashboard` router, 10 REST Operations over `me`/`lessons`/`dashboard`,
+  `GET /api/v1/dashboard/{id}`), each with a before/after map and a
+  deleted-example reference list; `systemPatterns.md` permissions/layering/
+  caching/REST sections corrected plus a provenance section; ADR 0001/0002
+  supersede notes (role-join provenance drop, dashboard rename, aspirational
+  profile fields); `tests/unit/docs-truth.test.ts` spec gate (check +
+  typecheck + 151 unit green). Out-of-scope leftovers per #52 stay untouched
+  (operations/deployment/troubleshooting/PWA docs, frozen research evidence,
+  ADR bodies).
+
 - #24 closed 2026-09-14: ADR shell + five ADRs (`docs/adr/0001–0005` + `README.md`)
   plus published research (`docs/research/lesson-content-store.md`,
   `pwa-rest-surface.md`, `tooling-cutover.md`).

@@ -19,3 +19,18 @@ External consumers (scripts, mobile clients, AI agents, plain `curl`) could only
 - Document pipeline: generated once at module load (build time for the static route, never per request), served from a static JSON route, rendered by a live Scalar Reference page that needs no token setup thanks to the cookie fallback. The generator's flat-input constraint is accepted; non-flat inputs are reshaped at the controller boundary.
 - Vocabulary follows the glossary: Procedure vs Operation, Document vs Reference UI vs REST mount, Bearer token vs session. Existing role-invariant decisions (every user holds at least one role; union-of-grants; defense-in-depth denial) are respected and unchanged.
 - Explicitly out of scope: migrating the typed transport, adopting the official generator, admin on REST, granular scopes, session-system changes, rate limiting beyond the existing middleware, a v2 surface, and client SDK generation beyond the Document itself.
+
+## Supersede note (Slice 7, #64)
+
+"No dashboard router; stats live under progress" is superseded by the approved
+dashboard rename (Slice 5, #62): same behavior, dashboard vocabulary — a
+`dashboard` router with `getMyDashboard` (private, tRPC-only owner read) and
+`getDashboardById` (public rate-limited `GET /api/v1/dashboard/{id}`,
+share-safe with no biography key). The legacy `GET /v1/users/{id}/stats` path
+is deleted with no shim. Freshness / no-long-cache rules stand unchanged.
+Scope stays rename-only: no new endpoints beyond the rename. Separately, the
+profile fields documented ahead of code (`biography` / `isPrivate`) landed as
+approved additions (additive migration `20260919000000_user_profile_fields`
+with NULL/false backfill; redact-not-404 read rules; never in tokens).
+(Ticket-text alias: map tickets calling this "0005 dashboard/REST" mean this
+ADR, 0002.)
