@@ -34,6 +34,13 @@ Slice 7 (#64) done 2026-09-20: docs + system patterns match code truth, ADR
 0001/0002 supersede notes recorded, docs-truth spec gate green (check +
 typecheck + 151 unit).
 
+Slice 8 (#65) done 2026-09-20: final green gate — check + typecheck clean,
+`test:all` 32 files / 168 tests green (unit + integration), Playwright 15/15
+green with `webServer` (`npm run start`) auto-boot, prod `build` green.
+Root causes fixed: missing Playwright `webServer` (all server specs
+`ERR_CONNECTION_REFUSED`) and REST `endpoint: "/api/v1"` stripping the
+`/v1` prefix trpc-to-openapi matches on (all `/api/v1/*` → 404 NOT_FOUND).
+
 Current focus: #23 execution spec; latest completed: #26.
 Next: #27.
 Wayfinding map #44: research ticket #46 resolved 2026-09-19

@@ -58,7 +58,10 @@ async function handle(req: NextRequest): Promise<Response> {
     createContext: () =>
       createV1Context({ headers: req.headers, req: req as unknown as Request }),
     req: req as unknown as Request,
-    endpoint: "/api/v1",
+    // Strip only `/api` so the remaining path keeps the `/v1/*` prefix
+    // that the OpenAPI annotations use (`/v1/me`, `/v1/me/progress`, ...).
+    // Served through the force-dynamic `/api/v1` catch-all.
+    endpoint: "/api",
   });
   return withCacheControl(req, res);
 }

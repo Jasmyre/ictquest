@@ -5,11 +5,13 @@ Decisions frozen in `docs/adr/0001–0005` (#24 baseline, closed).
 
 ## Current focus
 
-Migration 03 — Lint, scripts, and root baseline (#26, this ticket): the
-Biome/Ultracite preset chain is locked verbatim with the Vitest globals swap,
-`dev-lan` + provisional `pwa-assets` scripts are adopted, the dead `todo.ts`
-stub is deleted, and this file and `progress.md` point at #27 as the next
-focus.
+Slice 8 (#65, this ticket): final green gate — check + typecheck clean,
+unit 168 + integration 17 green via `test:all` (32 files), Playwright 15/15
+green (signed-out reads, owner writes fail-closed, admin gates, shared
+dashboard links), prod `build` green. Fixes: Playwright `webServer`
+(`npm run start`, port 3000) so `test:e2e` boots the app; REST catch-all
+`endpoint` `/api/v1` → `/api` so the `/v1/*` OpenAPI paths match
+(`trpc-to-openapi` strips only the endpoint prefix).
 
 ## Recent changes
 
