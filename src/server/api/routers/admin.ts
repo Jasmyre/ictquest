@@ -60,13 +60,16 @@ export const adminRouter = createTRPCRouter({
 
   grantRole: adminProcedure
     .input(grantRoleSchema)
-    .mutation(({ ctx, input }) =>
-      grantRole(ctx.db, input, ctx.user.id as string)
-    ),
+    .mutation(({ ctx, input }) => grantRole(ctx.db, input)),
 
   revokeRole: adminProcedure
     .input(revokeRoleSchema)
-    .mutation(({ ctx, input }) => revokeRole(ctx.db, input)),
+    .mutation(({ ctx, input }) =>
+      revokeRole(ctx.db, input, {
+        callerId: ctx.user.id as string,
+        callerRoles: (ctx.user.roles ?? []) as string[],
+      })
+    ),
 
   grantAchievement: adminProcedure
     .input(grantAchievementSchema)

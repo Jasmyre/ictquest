@@ -19,7 +19,6 @@ model User {
   accounts             Account[]
   progressData         ProgressData[]
   userAchievements     UserAchievement[]
-  roleAssignments      UserRoleAssignment[]
   roles                Role[]
   personalAccessTokens PersonalAccessToken[]
 }
@@ -79,24 +78,10 @@ model UserAchievement {
 }
 
 model Role {
-  id        String               @id @default(cuid())
-  name      String               @unique
-  createdAt DateTime             @default(now())
-  members   UserRoleAssignment[]
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
   users     User[]
-}
-
-model UserRoleAssignment {
-  userId     String
-  roleId     String
-  assignedAt DateTime @default(now())
-  assignedBy String?
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role       Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, roleId])
-  @@index([userId])
-  @@index([roleId])
 }
 
 model PersonalAccessToken {

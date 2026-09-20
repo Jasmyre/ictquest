@@ -2,7 +2,7 @@
  * Auth backfill (migration 07, #30 / ADR-0002; finalized in #43).
  *
  * Post-cutover guarantee pass: ensures every user holds the default learner
- * role via the explicit `UserRoleAssignment` join.
+ * role via the implicit `_RoleToUser` many-to-many join.
  *
  * Historical note: before Migration 20 this script mapped the legacy
  * `User.role` column (ADMIN -> ADMIN membership, USER -> USER membership).
@@ -36,58 +36,44 @@ async function main() {
       await tx.role.upsert({ where: { name }, update: {}, create: { name } });
     }
 
-    const [roles, users, assignments] = await Promise.all([
+    const [roles, usersWithRoles] = await Promise.all([
       tx.role.findMany(),
-      tx.user.findMany({ select: { id: true } }),
-      tx.userRoleAssignment.findMany({
-        include: { role: { select: { name: true } } },
+      tx.user.findMany({
+        select: { id: true, roles: { select: { name: true } } },
       }),
     ]);
 
     const roleIdByName = new Map(roles.map((r) => [r.name, r.id]));
     const existingByUser = new Map();
-    for (const a of assignments) {
-      if (!existingByUser.has(a.userId)) {
-        existingByUser.set(a.userId, new Set());
-      }
-      existingByUser.get(a.userId).add(a.role.name);
+    for (const u of usersWithRoles) {
+      existingByUser.set(u.id, new Set(u.roles.map((r) => r.name)));
     }
 
     let created = 0;
-    for (const user of users) {
+    for (const user of usersWithRoles) {
       const existing = existingByUser.get(user.id) ?? new Set();
       // Guarantee pass: every user must hold the default learner role.
       // (Legacy ADMIN->ADMIN / USER->USER mapping retired with the column
       // drop in Migration 20; existing memberships are left untouched.)
       if (!existing.has(DEFAULT_ROLE)) {
-        await tx.userRoleAssignment.upsert({
-          where: {
-            userId_roleId: {
-              userId: user.id,
-              roleId: roleIdByName.get(DEFAULT_ROLE),
-            },
-          },
-          update: {},
-          create: {
-            userId: user.id,
-            roleId: roleIdByName.get(DEFAULT_ROLE),
-            assignedBy: "backfill",
-          },
+        await tx.user.update({
+          where: { id: user.id },
+          data: { roles: { connect: { id: roleIdByName.get(DEFAULT_ROLE) } } },
         });
         existing.add(DEFAULT_ROLE);
         created += 1;
       }
     }
 
-    const memberships = await tx.userRoleAssignment.findMany({
-      include: { role: { select: { name: true } } },
+    const memberships = await tx.user.findMany({
+      select: { id: true, roles: { select: { name: true } } },
     });
     const rolesByUser = new Map();
     for (const m of memberships) {
-      if (!rolesByUser.has(m.userId)) {
-        rolesByUser.set(m.userId, []);
-      }
-      rolesByUser.get(m.userId).push(m.role.name);
+      rolesByUser.set(
+        m.id,
+        m.roles.map((r) => r.name)
+      );
     }
     const allUsers = await tx.user.findMany({ select: { id: true } });
     const withoutDefault = allUsers
@@ -101,8 +87,10 @@ async function main() {
     }
 
     const perRole = {};
-    for (const m of memberships) {
-      perRole[m.role.name] = (perRole[m.role.name] ?? 0) + 1;
+    for (const [, names] of rolesByUser) {
+      for (const name of names) {
+        perRole[name] = (perRole[name] ?? 0) + 1;
+      }
     }
 
     return { created, perRole };

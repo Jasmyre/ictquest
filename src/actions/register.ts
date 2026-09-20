@@ -42,14 +42,9 @@ export const register = async (values: z.infer<typeof registerSchema>) => {
       create: { name: "USER" },
     });
 
-    await tx.userRoleAssignment.upsert({
-      where: { userId_roleId: { userId: user.id, roleId: role.id } },
-      update: {},
-      create: {
-        userId: user.id,
-        roleId: role.id,
-        assignedBy: "registration",
-      },
+    await tx.user.update({
+      where: { id: user.id },
+      data: { roles: { connect: { id: role.id } } },
     });
   });
 

@@ -50,15 +50,20 @@ describe("Migration 05 — Auth expand (additive schema)", () => {
   it("adds a Role catalog with a unique name", () => {
     const schema = readFileSync(SCHEMA_PATH, "utf8");
     expect(schema).toContain("model Role {");
-    expect(schema).toContain("name      String               @unique");
+    expect(schema).toMatch(/name\s+String\s+@unique/);
   });
 
   it("adds an explicit join carrying provenance with user+role uniqueness", () => {
+    // Historical additive step (#59 expand): the explicit join lived in the
+    // additive migration SQL. Slice 3 (#60 contract) replaces it with the
+    // implicit many-to-many join, so the live schema must no longer carry
+    // the provenance table.
+    const sql = findAdditiveMigrationSql();
+    expect(sql).toContain('CREATE TABLE "UserRoleAssignment"');
     const schema = readFileSync(SCHEMA_PATH, "utf8");
-    expect(schema).toContain("model UserRoleAssignment {");
-    expect(schema).toContain("assignedAt DateTime");
-    expect(schema).toContain("assignedBy String?");
-    expect(schema).toContain("@@unique([userId, roleId])");
+    expect(schema).not.toContain("model UserRoleAssignment {");
+    expect(schema).toMatch(/roles\s+Role\[\]/);
+    expect(schema).toMatch(/users\s+User\[\]/);
   });
 
   it("adds a hash-only token store indexed by user", () => {

@@ -82,10 +82,12 @@ describe("role membership expand migration (#59)", () => {
     expect(entries.indexOf(DIR) > entries.indexOf(PROFILE_DIR)).toBe(true);
 
     const schema = readFileSync(join(ROOT, "prisma", "schema.prisma"), "utf8");
-    // Implicit join beside the explicit assignment table (both present).
+    // Implicit join beside the explicit assignment table at expand time
+    // (#59). Slice 3 (#60 contract) later deletes the explicit table, so
+    // pin the expand migration SQL (not the live schema) for the old table.
     expect(schema).toMatch(/model User[\s\S]*?roles\s+Role\[\]/);
     expect(schema).toMatch(/model Role[\s\S]*?users\s+User\[\]/);
-    expect(schema).toContain("UserRoleAssignment");
+    expect(migrationSql()).toContain("UserRoleAssignment");
   });
 
   it("copies every existing assignment pair one-to-one; zero-pair users stay zero until heal", () => {

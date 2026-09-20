@@ -31,12 +31,7 @@ import { unlockAchievement } from "@/server/services/achievement";
 
 type Db = Pick<
   PrismaClient,
-  | "user"
-  | "role"
-  | "userRoleAssignment"
-  | "progressData"
-  | "achievement"
-  | "userAchievement"
+  "user" | "role" | "progressData" | "achievement" | "userAchievement"
 >;
 
 type RoleInput = { userId: string; role: RoleName };
@@ -56,11 +51,11 @@ async function assertUserExists(db: Db, userId: string): Promise<void> {
 }
 
 async function currentRoles(db: Db, userId: string): Promise<string[]> {
-  const assignments = await db.userRoleAssignment.findMany({
-    where: { userId },
-    include: { role: true },
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    include: { roles: true },
   });
-  return assignments.map((a) => a.role.name);
+  return (user?.roles ?? []).map((r) => r.name);
 }
 
 export async function listUsersWithRoles(db: Db, input: ListUsersInput) {
@@ -73,7 +68,7 @@ export async function listUsersWithRoles(db: Db, input: ListUsersInput) {
         id: true,
         email: true,
         userName: true,
-        roleAssignments: { include: { role: true } },
+        roles: true,
       },
     });
     return {
@@ -82,7 +77,7 @@ export async function listUsersWithRoles(db: Db, input: ListUsersInput) {
         id: u.id,
         email: u.email,
         userName: u.userName,
-        roles: u.roleAssignments.map((a) => a.role.name),
+        roles: u.roles.map((r) => r.name),
       })),
     };
   } catch (error) {
@@ -94,7 +89,7 @@ export async function listUsersWithRoles(db: Db, input: ListUsersInput) {
   }
 }
 
-export async function grantRole(db: Db, input: RoleInput, assignedBy?: string) {
+export async function grantRole(db: Db, input: RoleInput) {
   try {
     await assertUserExists(db, input.userId);
     const role = await db.role.upsert({
@@ -102,15 +97,18 @@ export async function grantRole(db: Db, input: RoleInput, assignedBy?: string) {
       update: {},
       create: { name: input.role },
     });
-    await db.userRoleAssignment.upsert({
-      where: { userId_roleId: { userId: input.userId, roleId: role.id } },
-      update: {},
-      create: {
-        userId: input.userId,
-        roleId: role.id,
-        assignedBy: assignedBy ?? "admin",
-      },
-    });
+    // Idempotent connect on the implicit join: repeat grants resolve to the
+    // same success shape (unique-violation tolerant).
+    try {
+      await db.user.update({
+        where: { id: input.userId },
+        data: { roles: { connect: { id: role.id } } },
+      });
+    } catch (connectErr) {
+      if (!isUniqueViolation(connectErr)) {
+        throw connectErr;
+      }
+    }
     return {
       success: true as const,
       data: {
@@ -130,7 +128,11 @@ export async function grantRole(db: Db, input: RoleInput, assignedBy?: string) {
   }
 }
 
-export async function revokeRole(db: Db, input: RoleInput) {
+export async function revokeRole(
+  db: Db,
+  input: RoleInput,
+  opts?: { callerId?: string; callerRoles?: readonly string[] }
+) {
   try {
     await assertUserExists(db, input.userId);
     const role = await db.role.findUnique({ where: { name: input.role } });
@@ -138,6 +140,19 @@ export async function revokeRole(db: Db, input: RoleInput) {
       throw new TRPCError({ code: "NOT_FOUND", message: "Role not found." });
     }
     const roles = await currentRoles(db, input.userId);
+    // Self-demotion refusal (service business rule): an ADMIN cannot remove
+    // their own ADMIN role. Checked against the caller's session roles and
+    // evaluated before idempotency so it cannot be bypassed.
+    if (
+      opts?.callerId === input.userId &&
+      input.role === "ADMIN" &&
+      (opts?.callerRoles ?? []).includes("ADMIN")
+    ) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Admins cannot remove their own admin role.",
+      });
+    }
     if (!roles.includes(input.role)) {
       return {
         success: true as const,
@@ -154,27 +169,12 @@ export async function revokeRole(db: Db, input: RoleInput) {
         message: "Cannot revoke the user's only role.",
       });
     }
-    try {
-      await db.userRoleAssignment.delete({
-        where: { userId_roleId: { userId: input.userId, roleId: role.id } },
-      });
-    } catch (deleteErr) {
-      if (
-        typeof deleteErr === "object" &&
-        deleteErr !== null &&
-        (deleteErr as { code?: unknown }).code === "P2025"
-      ) {
-        return {
-          success: true as const,
-          data: {
-            userId: input.userId,
-            roles: await currentRoles(db, input.userId),
-            status: "already-removed" as const,
-          },
-        };
-      }
-      throw deleteErr;
-    }
+    // Prisma `disconnect` on a non-linked implicit join row is a no-op, so
+    // a concurrent delete still resolves idempotently below.
+    await db.user.update({
+      where: { id: input.userId },
+      data: { roles: { disconnect: { id: role.id } } },
+    });
     return {
       success: true as const,
       data: {

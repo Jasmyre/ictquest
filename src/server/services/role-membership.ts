@@ -4,13 +4,10 @@ import { TRPCError } from "@trpc/server";
 /**
  * Implicit role membership service (Slice 2, #59).
  *
- * Thin helpers over the new implicit many-to-many join (`User.roles` /
- * `Role.users`, table `_RoleToUser`) that sits beside the existing explicit
- * `UserRoleAssignment` table. Both helpers are idempotent: repeating a
+ * Thin helpers over the implicit many-to-many join (`User.roles` /
+ * `Role.users`, table `_RoleToUser`). Both helpers are idempotent: repeating a
  * connect (or disconnect) resolves to the same success shape instead of
  * throwing a unique-violation error.
- *
- * Old explicit-assignment paths are untouched - this slice only expands.
  */
 
 type Db = Pick<PrismaClient, "user">;

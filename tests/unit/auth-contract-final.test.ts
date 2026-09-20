@@ -38,9 +38,12 @@ describe("Migration 20 — Auth contract plus final green gate (#43)", () => {
     expect(schema).not.toContain("enum UserRole {");
     expect(schema).not.toMatch(/role\s+UserRole/);
     expect(schema).not.toContain("$Enums.UserRole");
-    // New contract survives the cutover.
+    // New contract survives the cutover (Slice 3, #60: implicit join,
+    // explicit provenance table deleted).
     expect(schema).toContain("model Role {");
-    expect(schema).toContain("model UserRoleAssignment {");
+    expect(schema).not.toContain("model UserRoleAssignment {");
+    expect(schema).toMatch(/roles\s+Role\[\]/);
+    expect(schema).toMatch(/users\s+User\[\]/);
     expect(schema).toContain("model PersonalAccessToken {");
   });
 

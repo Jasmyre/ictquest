@@ -7,7 +7,10 @@ export const DEFAULT_ROLE_NAME: RoleName = "USER";
 
 // Minimal structural surface over PrismaClient so unit tests can import this
 // module without pulling in `@/lib/db` (which validates env at import time).
-export type RoleStore = Pick<PrismaClient, "role" | "userRoleAssignment">;
+// Slice 3 (#60): roles persist on the implicit many-to-many join
+// (`User.roles` / `Role.users`, table `_RoleToUser`); the legacy explicit
+// provenance table is deleted.
+export type RoleStore = Pick<PrismaClient, "role" | "user">;
 
 async function defaultStore(): Promise<RoleStore> {
   const { db } = await import("@/lib/db");
@@ -29,11 +32,14 @@ export async function getUserRoleNames(
   client?: RoleStore
 ): Promise<RoleName[]> {
   const store = client ?? (await defaultStore());
-  const assignments = await store.userRoleAssignment.findMany({
-    where: { userId },
-    include: { role: true },
+  const user = await store.user.findUnique({
+    where: { id: userId },
+    include: { roles: true },
   });
-  return assignments.map((a) => a.role.name as RoleName);
+  if (!user) {
+    return [];
+  }
+  return user.roles.map((r) => r.name as RoleName);
 }
 
 export async function ensureDefaultRole(
@@ -50,11 +56,21 @@ export async function ensureDefaultRole(
     update: {},
     create: { name: DEFAULT_ROLE_NAME },
   });
-  await store.userRoleAssignment.upsert({
-    where: { userId_roleId: { userId, roleId: role.id } },
-    update: {},
-    create: { userId, roleId: role.id, assignedBy: "session-heal" },
-  });
+  try {
+    await store.user.update({
+      where: { id: userId },
+      data: { roles: { connect: { id: role.id } } },
+    });
+  } catch (error) {
+    // Concurrent heal already connected the join row: converge idempotently.
+    if (
+      typeof error !== "object" ||
+      error === null ||
+      (error as { code?: unknown }).code !== "P2002"
+    ) {
+      throw error;
+    }
+  }
   return [...existing, DEFAULT_ROLE_NAME];
 }
 

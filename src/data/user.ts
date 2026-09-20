@@ -52,7 +52,7 @@ export const getUserById = async (id: string | null) => {
  * Role-aware user fetch (Migration 08).
  *
  * Loads the user row plus its current `Role` membership names from the
- * explicit `UserRoleAssignment` join — the same source that backs session
+ * implicit many-to-many join — the same source that backs session
  * `roles[]`, `hasRole`, and the privileged tRPC procedures. Returns `null`
  * when the user does not exist or the lookup fails.
  */

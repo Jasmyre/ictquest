@@ -4,7 +4,6 @@ import { describe, expect, it } from "vitest";
 
 const ROOT = join(__dirname, "..", "..");
 
-const ASSIGNED_BY_RE = /assignedBy/;
 const HEAL_TO_DEFAULT_RE = /USER|DEFAULT_ROLE/;
 const ROLE_WIRING_RE = /roleAssignment|getUserRole|ensureDefaultRole/i;
 const ZERO_WITHOUT_DEFAULT_RE = /zero.*without|assert.*USER/i;
@@ -28,10 +27,10 @@ describe("Migration 07 — Auth backfill, session, registration", () => {
   it("registration creates the default membership in the same transaction", () => {
     const src = read("src/actions/register.ts");
     expect(src).toContain("$transaction");
-    expect(src).toContain("userRoleAssignment");
+    expect(src).not.toContain("userRoleAssignment");
     expect(src).toContain('"USER"');
-    // Atomic grant carries provenance, not a bare user row.
-    expect(src).toMatch(ASSIGNED_BY_RE);
+    // Atomic grant connects the implicit join, provenance dropped (#60).
+    expect(src).toMatch(/roles:\s*\{\s*connect/);
   });
 
   it("sign-in loads roles into session and heals empties to the default", () => {

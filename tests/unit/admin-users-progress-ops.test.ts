@@ -131,9 +131,18 @@ function createFakeDb() {
     },
   };
 
+  const rolesFor = (userId: string) =>
+    assignments
+      .filter((a) => a.userId === userId)
+      .map((a) => ({ id: a.roleId, name: roleNameById(a.roleId) }));
+
   const user = {
     findUnique(args: { where: { id: string } }) {
-      return Promise.resolve(users.find((u) => u.id === args.where.id) ?? null);
+      const found = users.find((u) => u.id === args.where.id) ?? null;
+      if (!found) {
+        return Promise.resolve(null);
+      }
+      return Promise.resolve({ ...found, roles: rolesFor(found.id) });
     },
     findMany(args: { skip?: number; take?: number } = {}) {
       const skip = args.skip ?? 0;
@@ -142,13 +151,42 @@ function createFakeDb() {
       return Promise.resolve(
         slice.map((u) => ({
           ...u,
-          roleAssignments: assignments
-            .filter((a) => a.userId === u.id)
-            .map((a) => ({
-              role: { id: a.roleId, name: roleNameById(a.roleId) },
-            })),
+          roles: rolesFor(u.id),
         }))
       );
+    },
+    update(args: {
+      where: { id: string };
+      data: {
+        roles?: { connect?: { id: string }; disconnect?: { id: string } };
+      };
+    }) {
+      const target = users.find((u) => u.id === args.where.id);
+      if (!target) {
+        throw Object.assign(new Error("Not found"), { code: "P2025" });
+      }
+      const connectId = args.data.roles?.connect?.id;
+      if (connectId) {
+        if (
+          !assignments.some(
+            (a) => a.userId === target.id && a.roleId === connectId
+          )
+        ) {
+          assignments.push({ userId: target.id, roleId: connectId });
+        }
+        return Promise.resolve({ ...target, roles: rolesFor(target.id) });
+      }
+      const disconnectId = args.data.roles?.disconnect?.id;
+      if (disconnectId) {
+        const idx = assignments.findIndex(
+          (a) => a.userId === target.id && a.roleId === disconnectId
+        );
+        if (idx !== -1) {
+          assignments.splice(idx, 1);
+        }
+        return Promise.resolve({ ...target, roles: rolesFor(target.id) });
+      }
+      return Promise.resolve({ ...target, roles: rolesFor(target.id) });
     },
   };
 
@@ -431,6 +469,19 @@ describe("Migration 14 — Admin users plus progress ops", () => {
     await expect(
       admin.admin.revokeRole({ userId: "ghost", role: "USER" })
     ).rejects.toMatchObject({ code: "NOT_FOUND" });
+
+    // Already-removed revoke stays idempotent with unchanged shape.
+    await expect(
+      admin.admin.revokeRole({ userId: "learner-a", role: "ADMIN" })
+    ).resolves.toMatchObject({
+      success: true,
+      data: { userId: "learner-a", status: "already-removed" },
+    });
+
+    // Self-demotion is forbidden even though the caller holds ADMIN.
+    await expect(
+      admin.admin.revokeRole({ userId: "admin-1", role: "ADMIN" })
+    ).rejects.toMatchObject({ code: "FORBIDDEN" });
   });
 
   it("runs progress support ops end to end under admin gating", async () => {
