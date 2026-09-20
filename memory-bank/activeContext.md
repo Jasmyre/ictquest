@@ -5,14 +5,16 @@ Decisions frozen in `docs/adr/0001–0005` (#24 baseline, closed).
 
 ## Current focus
 
-Gate fix (2026-09-20, `main`): `93b0e0b` had moved
-`src/app/(marketing)/lessons/page.tsx` → `src/app/(app)/lessons/page.tsx`
-(zero content change), breaking the exact-public `/lessons` contract in
-`src/routes.ts` (ADR 0003) and failing `route-guards` + `mdx-remaining`
-(2 tests). Restored the file to `(marketing)` — pure R100 rename, no
-content edits. Gates green: typecheck + typecheck:test + ultracite clean,
-`test:all` 33 files / 177 tests, Playwright 15/15, prod `build` green
-(`/lessons` static again).
+Lessons-index placement (2026-09-20, `main`): the index lives in the
+`(app)` group on purpose — the whole `/lessons` tree needs a session.
+Correction history: `93b0e0b` made that move; a first fix wrongly moved it
+back to `(marketing)` (commit `02661fe`); this change restores `(app)` and
+rewrites the rule in `src/routes.ts` + `src/proxy.ts`, the guard tests
+(`route-guards`, `mdx-remaining`, e2e `admin-shell`), and the docs
+(`architecture.md`, `auth.md`, `productContext.md`, `projectbrief.md`).
+Research evidence under `docs/research/` keeps the old wording (frozen).
+Gates green: typecheck + typecheck:test + ultracite clean, `test:all`
+33 files / 177 tests, Playwright 15/15, prod `build` green.
 
 Code-review follow-up (2026-09-20, uncommitted on `wip/ictquest-2.0`):
 Standards fixes — shared `src/server/pagination.ts` (`pickPagination` +

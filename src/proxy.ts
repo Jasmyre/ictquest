@@ -76,8 +76,8 @@ export default auth((req) => {
     return;
   }
 
-  // Exact-public marketing routes (incl. the `/lessons` exact-exception:
-  // `/lessons` is public, `/lessons/*` falls through to the auth check).
+  // Exact-public marketing routes; everything else needs a session
+  // (the `/lessons` tree lives in the `(app)` group on purpose).
   if (isPublicRoute(nextUrl.pathname)) {
     return;
   }

@@ -57,8 +57,8 @@ reference list" below).
   routes → versioned-REST bypass (`/api/v1/*` answers its own 401/403/404 via
   `createV1Context`) → public marketing/auth/admin rules → everything else
   requires login.
-- Vocabulary in `src/routes.ts`: `publicRoutes` (`/`, `/lessons` exact,
-  `/terms`, `/privacy`, `/~offline`), `authRoutes`, `apiAuthPrefix`,
+- Vocabulary in `src/routes.ts`: `publicRoutes` (`/`, `/terms`,
+  `/privacy`, `/~offline`), `authRoutes`, `apiAuthPrefix`,
   `publicDashboardPrefix` (`/dashboard` share links bypass the session guard),
   `adminRoutes`, `DEFAULT_LOGIN_REDIRECT=/`.
 - `config.matcher` stays an inline static string (Next parses it at build
@@ -67,8 +67,9 @@ reference list" below).
 
 ## Route groups & PPR
 
-- `(marketing)/`: `/`, `/lessons` (exact-public), `/terms`, `/privacy`.
-  `(app)/`: authed shell (progress, achievements, profile, settings, social).
+- `(marketing)/`: `/`, `/terms`, `/privacy`.
+  `(app)/`: authed shell (lessons index, lesson details, lesson subtopic,
+  progress, achievements, profile, settings, social).
   `(admin)/`: `/admin/*` guarded shell. Shell-less: `/auth/*`, `/maintenance`,
   `/~offline` fallback, `/dashboard/[id]` public share page.
 - `cacheComponents: true` + PPR: static shells prerender; session-aware

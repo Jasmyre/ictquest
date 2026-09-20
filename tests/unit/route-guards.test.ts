@@ -17,7 +17,6 @@ describe("Migration 10 — Public and app shells plus guards", () => {
     for (const rel of [
       "src/app/(marketing)/layout.tsx",
       "src/app/(marketing)/page.tsx",
-      "src/app/(marketing)/lessons/page.tsx",
       "src/app/(marketing)/terms/page.tsx",
       "src/app/(marketing)/privacy/page.tsx",
     ]) {
@@ -31,6 +30,7 @@ describe("Migration 10 — Public and app shells plus guards", () => {
   it("places learner pages under the full (app) shell, including moved settings", () => {
     for (const rel of [
       "src/app/(app)/layout.tsx",
+      "src/app/(app)/lessons/page.tsx",
       "src/app/(app)/lessons/[topic]/page.tsx",
       "src/app/(app)/lessons/subtopic/[subtopic]/page.tsx",
       "src/app/(app)/progress/page.tsx",
@@ -78,20 +78,22 @@ describe("Migration 10 — Public and app shells plus guards", () => {
     expect(proxySrc).not.toContain("/achivement");
   });
 
-  it("guards with prefix matching and one exact-exception for the lessons index", async () => {
+  it("guards with exact match; the whole lessons tree is authed", async () => {
     const routes = await import("@/routes");
 
     expect(typeof routes.isPublicRoute).toBe("function");
     expect(typeof routes.isAuthRoute).toBe("function");
     expect(typeof routes.isAdminRoute).toBe("function");
 
-    // Exact-public: root, lessons index, terms, privacy.
-    for (const path of ["/", "/lessons", "/terms", "/privacy"]) {
+    // Exact-public: root, terms, privacy. The lessons index lives in the
+    // (app) group on purpose, so it needs a session like the rest.
+    for (const path of ["/", "/terms", "/privacy"]) {
       expect(routes.isPublicRoute(path), path).toBe(true);
     }
 
-    // The single intentional exact-exception: lessons subtree is authed.
+    // The whole lessons tree is authed, index included.
     for (const path of [
+      "/lessons",
       "/lessons/html-basics",
       "/lessons/subtopic/html-structure",
       "/lessons/",
@@ -101,6 +103,7 @@ describe("Migration 10 — Public and app shells plus guards", () => {
 
     // App routes require auth (not public, not auth, not admin).
     for (const path of [
+      "/lessons",
       "/progress",
       "/profile",
       "/user/abc",

@@ -30,10 +30,10 @@ Status tracker. Execution spec: #23. Decisions: `docs/adr/0001–0005` (#24 base
 
 ## Current status
 
-Gate fix 2026-09-20: lessons index restored to the public `(marketing)`
-shell (reverting the `93b0e0b` move to `(app)` that broke the
-exact-public `/lessons` guard contract); `test:all` 177/177, e2e 15/15,
-build green.
+Lessons-index placement 2026-09-20: the index stays in the authed `(app)`
+shell on purpose (whole `/lessons` tree needs a session); rule rewritten
+in `routes.ts`/`proxy.ts`, guard tests, e2e spec, and docs;
+`test:all` 177/177, e2e 15/15, build green.
 
 Code-review follow-up done 2026-09-20 (uncommitted on `wip/ictquest-2.0`):
 prior Standards findings fixed (shared pagination/prisma-error/logger

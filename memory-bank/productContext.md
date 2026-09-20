@@ -31,10 +31,10 @@ domain language so agents stop drifting to synonyms (`Post`, `dashboard`).
 
 ## Route experience (shells + guards, ADR 0003)
 
-- `(marketing)` minimal SEO shell, no login: root `/`, lessons index `/lessons`
-  (exact only), `/terms`, `/privacy`.
-- `(app)` full nav-plus-footer shell, auth required: lesson details, lesson subtopic,
-  progress, profile, user pages, social (+ mock social-new), compliments, settings.
+- `(marketing)` minimal SEO shell, no login: root `/`, `/terms`, `/privacy`.
+- `(app)` full nav-plus-footer shell, auth required: lessons index, lesson
+  details, lesson subtopic, progress, profile, user pages, social (+ mock
+  social-new), compliments, settings.
 - Standalone shell-less: auth pages (redirect-if-logged-in), auth-error, maintenance
   (env-gated bypass).
 - `(admin)` separate sidebar shell, `ADMIN`-only: home, users, lessons, achievements,

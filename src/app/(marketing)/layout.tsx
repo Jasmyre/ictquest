@@ -4,9 +4,11 @@ import type { ReactNode } from "react";
 import { Footer } from "@/components/footer";
 
 /**
- * Minimal public shell for `(marketing)` (ADR 0003): root, lessons index
- * (exact only), terms, privacy. No login, no full nav — just brand links
- * plus the public footer so visitors can evaluate the app.
+ * Minimal public shell for `(marketing)` (ADR 0003): root, terms, privacy.
+ * No login, no full nav — just brand links plus the public footer so
+ * visitors can evaluate the app. The lessons tree lives in `(app)` on
+ * purpose, so the Lessons link below bounces guests to `/auth` via the
+ * guard in `src/proxy.ts`.
  */
 export default function MarketingLayout({
   children,

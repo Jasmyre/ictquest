@@ -41,8 +41,9 @@ ICTQuest admin replaces the posts example (spec #23, ADR 0002/0003):
   satisfied structurally; slugs stay stable; slug-parity check).
 - ADR 0002 — ABAC many-to-many roles (`Role` + `UserRole` join with provenance) plus
   personal access tokens; two-migration cutover; default-role guarantee.
-- ADR 0003 — Route-group shells plus prefix guards (`(marketing)` / `(app)` / `(admin)`
-  plus standalone auth/maintenance surfaces; one exact-exception for `/lessons`).
+- ADR 0003 — Route-group shells plus exact guards (`(marketing)` / `(app)` /
+  `(admin)` plus standalone auth/maintenance surfaces; the whole `/lessons`
+  tree is authed in `(app)` on purpose, no public exception).
 - ADR 0004 — Vitest plus Playwright over Jest (strict cutover order; green gate).
 - ADR 0005 — Interactive API docs dev/admin-only; OpenAPI JSON public; per-user stats
   network-only/short-lived, lessons list cacheable.

@@ -170,9 +170,10 @@ describe("MDX remaining lessons (migration 09, #32)", () => {
 
     // Lesson list page declares a cacheable hourly window via Cache Components
     // (`"use cache"` + `cacheLife("hours")`, matching the single source of
-    // truth LESSON_LIST_REVALIDATE = 3600).
+    // truth LESSON_LIST_REVALIDATE = 3600). The index lives in the (app)
+    // group on purpose, so the path below is the authed shell page.
     const listPage = fs.readFileSync(
-      path.join(ROOT, "src/app/(marketing)/lessons/page.tsx"),
+      path.join(ROOT, "src/app/(app)/lessons/page.tsx"),
       "utf8"
     );
     expect(listPage).toMatch(USE_CACHE_RE);

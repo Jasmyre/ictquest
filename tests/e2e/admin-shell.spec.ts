@@ -42,8 +42,7 @@ test("public shell still loads with no login", async ({ page }) => {
   ).toHaveCount(0);
 });
 
-test("lessons index stays exact-public", async ({ page }) => {
-  const response = await page.goto("/lessons");
-  expect(response?.status()).not.toBe(404);
-  await expect(page).toHaveURL("/lessons");
+test("lessons index needs a session", async ({ page }) => {
+  await page.goto("/lessons");
+  await expect(page).toHaveURL(AUTH_URL_RE);
 });

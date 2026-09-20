@@ -1,28 +1,22 @@
 /**
  * Route-group guard table (ADR 0003).
  *
- * - `(marketing)` public, minimal shell: `/`, `/lessons` (exact only),
- *   `/terms`, `/privacy`.
+ * - `(marketing)` public, minimal shell: `/`, `/terms`, `/privacy`.
  * - Shell-less public fallback: `/~offline` (exact only, precached offline
  *   page — reachable without a session so the worker fallback never bounces
  *   to `/auth`).
- * - `(app)` authenticated, full shell: everything else that renders a page
+ * - `(app)` authenticated, full shell: the whole `/lessons` tree (index
+ *   included, on purpose) plus everything else that renders a page
  *   except auth, maintenance, and admin prefixes.
  * - Standalone shell-less: `/auth/*` (redirect-if-logged-in), `/maintenance`
  *   (env-gated bypass of all guards).
  * - `(admin)` ADMIN-only (shell lands in #34): `/admin/*`.
  *
- * Matching is prefix-based with one intentional exact-exception: `/lessons`
- * is exact-public while `/lessons/*` is authed.
+ * Matching is exact: public shell owns only these paths, never their
+ * subtrees.
  */
 
-export const publicRoutes = [
-  "/",
-  "/lessons",
-  "/terms",
-  "/privacy",
-  "/~offline",
-];
+export const publicRoutes = ["/", "/terms", "/privacy", "/~offline"];
 
 export const authRoutes = ["/auth", "/auth/error", "/api/auth/callback/google"];
 
