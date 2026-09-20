@@ -1,7 +1,7 @@
 import {
-  adminProcedure,
   createTRPCRouter,
   moderatorProcedure,
+  permissionProcedure,
 } from "@/server/api/trpc";
 import {
   createAchievementDefinitionSchema,
@@ -33,10 +33,11 @@ import { listLessonContent } from "@/server/services/lesson-content";
  * Privileged procedures (Migration 08, extended in Migration 14, #37, and
  * Migration 15, #38).
  *
- * `pingAdmin` / `pingModerator` remain the minimal enforcement seam.
+ * `pingAdmin` / `pingModerator` remain the minimal enforcement seam
+ * (`permissionProcedure("Admin", "manage")` / `moderatorProcedure`).
  * User plus role management (`listUsers`, `grantRole`, `revokeRole`) and
  * progress support ops (`grantAchievement`, `revokeAchievement`,
- * `resetProgress`) all sit behind `adminProcedure`: callers need an
+ * `resetProgress`) all sit behind `permissionProcedure("Admin", "manage")`: callers need an
  * authenticated session whose `roles` include ADMIN, otherwise FORBIDDEN
  * (or UNAUTHORIZED when anonymous). Migration 15 adds `listLessonContent`
  * (read-only MDX store listing — curriculum stays dev-authored in git, no
@@ -44,7 +45,7 @@ import { listLessonContent } from "@/server/services/lesson-content";
  * (`list/create/update/deleteAchievementDefinition`).
  */
 export const adminRouter = createTRPCRouter({
-  pingAdmin: adminProcedure.query(() => ({
+  pingAdmin: permissionProcedure("Admin", "manage").query(() => ({
     success: true,
     data: { scope: "admin" },
   })),
@@ -54,15 +55,15 @@ export const adminRouter = createTRPCRouter({
     data: { scope: "moderator" },
   })),
 
-  listUsers: adminProcedure
+  listUsers: permissionProcedure("Admin", "manage")
     .input(listUsersSchema)
     .query(({ ctx, input }) => listUsersWithRoles(ctx.db, input)),
 
-  grantRole: adminProcedure
+  grantRole: permissionProcedure("Admin", "manage")
     .input(grantRoleSchema)
     .mutation(({ ctx, input }) => grantRole(ctx.db, input)),
 
-  revokeRole: adminProcedure
+  revokeRole: permissionProcedure("Admin", "manage")
     .input(revokeRoleSchema)
     .mutation(({ ctx, input }) =>
       revokeRole(ctx.db, input, {
@@ -71,33 +72,35 @@ export const adminRouter = createTRPCRouter({
       })
     ),
 
-  grantAchievement: adminProcedure
+  grantAchievement: permissionProcedure("Admin", "manage")
     .input(grantAchievementSchema)
     .mutation(({ ctx, input }) => grantAchievementForUser(ctx.db, input)),
 
-  revokeAchievement: adminProcedure
+  revokeAchievement: permissionProcedure("Admin", "manage")
     .input(revokeAchievementSchema)
     .mutation(({ ctx, input }) => revokeAchievementForUser(ctx.db, input)),
 
-  resetProgress: adminProcedure
+  resetProgress: permissionProcedure("Admin", "manage")
     .input(resetProgressSchema)
     .mutation(({ ctx, input }) => resetUserProgress(ctx.db, input)),
 
-  listLessonContent: adminProcedure.query(() => listLessonContent()),
+  listLessonContent: permissionProcedure("Admin", "manage").query(() =>
+    listLessonContent()
+  ),
 
-  listAchievementDefinitions: adminProcedure
+  listAchievementDefinitions: permissionProcedure("Admin", "manage")
     .input(listAchievementDefinitionsSchema)
     .query(({ ctx, input }) => listAchievementDefinitions(ctx.db, input)),
 
-  createAchievementDefinition: adminProcedure
+  createAchievementDefinition: permissionProcedure("Admin", "manage")
     .input(createAchievementDefinitionSchema)
     .mutation(({ ctx, input }) => createAchievementDefinition(ctx.db, input)),
 
-  updateAchievementDefinition: adminProcedure
+  updateAchievementDefinition: permissionProcedure("Admin", "manage")
     .input(updateAchievementDefinitionSchema)
     .mutation(({ ctx, input }) => updateAchievementDefinition(ctx.db, input)),
 
-  deleteAchievementDefinition: adminProcedure
+  deleteAchievementDefinition: permissionProcedure("Admin", "manage")
     .input(deleteAchievementDefinitionSchema)
     .mutation(({ ctx, input }) => deleteAchievementDefinition(ctx.db, input)),
 });

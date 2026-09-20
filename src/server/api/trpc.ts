@@ -17,6 +17,11 @@ import { env } from "@/env";
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
 import { hasRole, type RoleName } from "@/lib/roles";
+import {
+  hasActionGrant,
+  type PermissionAction,
+  type PermissionResource,
+} from "@/server/permissions";
 
 /**
  * 1. CONTEXT
@@ -177,6 +182,36 @@ export const privateProcedure = t.procedure.use(function isAuthed(opts) {
     },
   });
 });
+
+/**
+ * Behavior-identical permissions gate (Slice 4, #61).
+ *
+ * Coarse controller gate over the locked matrix in
+ * `src/server/permissions.ts`: UNAUTHORIZED when signed out, FORBIDDEN
+ * when no held role grants the action. Owner-predicate rules count as
+ * grants here; the resolver re-checks the row with `requirePermission`
+ * where a record exists (missing records answer FORBIDDEN, anti-probing).
+ */
+export const permissionProcedure = (
+  resource: PermissionResource,
+  action: PermissionAction
+) =>
+  privateProcedure.use(function isPermitted(opts) {
+    const { ctx } = opts;
+
+    if (!hasActionGrant(ctx.user, resource, action)) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "You do not have permission to perform this action.",
+      });
+    }
+
+    return opts.next({
+      ctx: {
+        user: ctx.user,
+      },
+    });
+  });
 
 /**
  * Shared privileged-role gate.

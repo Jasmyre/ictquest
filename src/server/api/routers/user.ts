@@ -2,9 +2,10 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import {
   createTRPCRouter,
-  privateProcedure,
+  permissionProcedure,
   publicRateLimitedProcedure,
 } from "@/server/api/trpc";
+import { requirePermission } from "@/server/permissions";
 import { statsByIdSchema, statsOutputSchema } from "@/server/schemas/progress";
 import { meOutputSchema } from "@/server/schemas/user";
 import {
@@ -20,7 +21,7 @@ import {
 } from "@/server/services/progress";
 
 export const userRouter = createTRPCRouter({
-  getUser: privateProcedure
+  getUser: permissionProcedure("User", "view")
     .meta({
       openapi: {
         method: "GET",
@@ -40,6 +41,10 @@ export const userRouter = createTRPCRouter({
           message: "User is not authenticated.",
         });
       }
+
+      requirePermission(user, "User", "view", {
+        data: { id: (user as { id: string }).id },
+      });
 
       const u = user as unknown as Record<string, unknown> & {
         id: string;
@@ -62,7 +67,7 @@ export const userRouter = createTRPCRouter({
       };
     }),
 
-  addProgress: privateProcedure
+  addProgress: permissionProcedure("Progress", "create")
     .input(
       z.object({
         topic: z.string().min(1),
@@ -80,7 +85,7 @@ export const userRouter = createTRPCRouter({
       return createProgress(ctx.db, ctx.user.id as string, input);
     }),
 
-  getUserProgress: privateProcedure
+  getUserProgress: permissionProcedure("Progress", "view")
     .input(
       z.object({
         skip: z.number().min(0).optional(),
@@ -92,7 +97,7 @@ export const userRouter = createTRPCRouter({
       listProgress(ctx.db, ctx.user.id as string, input)
     ),
 
-  getUserAchievements: privateProcedure
+  getUserAchievements: permissionProcedure("Achievement", "view")
     .input(
       z.object({
         skip: z.number().min(0).optional(),
@@ -104,17 +109,21 @@ export const userRouter = createTRPCRouter({
       listAchievements(ctx.db, ctx.user.id as string, input)
     ),
 
-  deleteAllUserProgress: privateProcedure.mutation(({ ctx }) =>
-    // Backward-compatible alias fed by the canonical progress service (#35).
-    deleteAllProgress(ctx.db, ctx.user.id as string)
+  deleteAllUserProgress: permissionProcedure("Progress", "delete").mutation(
+    ({ ctx }) =>
+      // Backward-compatible alias fed by the canonical progress service (#35).
+      deleteAllProgress(ctx.db, ctx.user.id as string)
   ),
 
-  deleteAllUserAchievements: privateProcedure.mutation(({ ctx }) =>
+  deleteAllUserAchievements: permissionProcedure(
+    "Achievement",
+    "delete"
+  ).mutation(({ ctx }) =>
     // Backward-compatible alias fed by the canonical achievement service (#36).
     deleteAllAchievements(ctx.db, ctx.user.id as string)
   ),
 
-  unlockUserAchievement: privateProcedure
+  unlockUserAchievement: permissionProcedure("Achievement", "create")
     .input(
       z.object({
         achievementName: z.string(),

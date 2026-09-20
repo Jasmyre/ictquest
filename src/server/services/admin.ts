@@ -21,7 +21,7 @@ import { unlockAchievement } from "@/server/services/achievement";
  * management, per-user progress support ops (grant/revoke achievements,
  * reset progress), and Achievement definition CRUD (list/create/update/
  * delete on the `Achievement` model). All procedures sit behind
- * `adminProcedure`, so learners are denied with FORBIDDEN and anonymous
+ * `permissionProcedure("Admin", "manage")`, so learners are denied with FORBIDDEN and anonymous
  * callers with UNAUTHORIZED before these helpers ever run.
  *
  * Lesson content has no helpers here by design: curriculum stays

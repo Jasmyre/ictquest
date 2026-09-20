@@ -160,7 +160,7 @@ describe("Migration 15 — Admin lessons plus achievements content", () => {
     }
 
     const src = read("src/server/api/routers/admin.ts");
-    expect(src).toContain("adminProcedure");
+    expect(src).toContain('permissionProcedure("Admin", "manage")');
     expect(src).toContain("listLessonContent");
     expect(src).toContain("listAchievementDefinitions");
     expect(src).toContain("createAchievementDefinition");

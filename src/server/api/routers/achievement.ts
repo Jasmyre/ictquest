@@ -1,4 +1,4 @@
-import { createTRPCRouter, privateProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, permissionProcedure } from "@/server/api/trpc";
 import {
   deleteAllAchievementsOutputSchema,
   listAchievementsOutputSchema,
@@ -26,7 +26,7 @@ import {
  * cookie auth.
  */
 export const achievementRouter = createTRPCRouter({
-  list: privateProcedure
+  list: permissionProcedure("Achievement", "view")
     .meta({
       openapi: {
         method: "GET",
@@ -42,7 +42,7 @@ export const achievementRouter = createTRPCRouter({
       listAchievements(ctx.db, ctx.user.id as string, input)
     ),
 
-  unlock: privateProcedure
+  unlock: permissionProcedure("Achievement", "create")
     .meta({
       openapi: {
         method: "POST",
@@ -58,7 +58,7 @@ export const achievementRouter = createTRPCRouter({
       unlockAchievement(ctx.db, ctx.user.id as string, input)
     ),
 
-  deleteAll: privateProcedure
+  deleteAll: permissionProcedure("Achievement", "delete")
     .meta({
       openapi: {
         method: "DELETE",

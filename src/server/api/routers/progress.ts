@@ -1,6 +1,6 @@
 import {
   createTRPCRouter,
-  privateProcedure,
+  permissionProcedure,
   publicRateLimitedProcedure,
 } from "@/server/api/trpc";
 import {
@@ -39,7 +39,7 @@ import {
  * production and stay `private, no-store` (Migration 19, #42).
  */
 export const progressRouter = createTRPCRouter({
-  list: privateProcedure
+  list: permissionProcedure("Progress", "view")
     .meta({
       openapi: {
         method: "GET",
@@ -55,7 +55,7 @@ export const progressRouter = createTRPCRouter({
       listProgress(ctx.db, ctx.user.id as string, input)
     ),
 
-  create: privateProcedure
+  create: permissionProcedure("Progress", "create")
     .meta({
       openapi: {
         method: "POST",
@@ -71,7 +71,7 @@ export const progressRouter = createTRPCRouter({
       createProgress(ctx.db, ctx.user.id as string, input)
     ),
 
-  deleteAll: privateProcedure
+  deleteAll: permissionProcedure("Progress", "delete")
     .meta({
       openapi: {
         method: "DELETE",
@@ -84,7 +84,7 @@ export const progressRouter = createTRPCRouter({
     .output(deleteAllProgressOutputSchema)
     .mutation(({ ctx }) => deleteAllProgress(ctx.db, ctx.user.id as string)),
 
-  getMyStats: privateProcedure
+  getMyStats: permissionProcedure("Progress", "view")
     .output(statsOutputSchema)
     .query(({ ctx }) => getStatsById(ctx.db, ctx.user.id as string)),
 

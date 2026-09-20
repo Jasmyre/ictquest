@@ -361,7 +361,7 @@ describe("Migration 14 — Admin users plus progress ops", () => {
     }
 
     const src = read("src/server/api/routers/admin.ts");
-    expect(src).toContain("adminProcedure");
+    expect(src).toContain('permissionProcedure("Admin", "manage")');
     expect(src).toContain("listUsers");
     expect(src).toContain("grantRole");
     expect(src).toContain("revokeRole");
