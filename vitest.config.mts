@@ -54,6 +54,13 @@ export default defineConfig({
             },
           },
           setupFiles: ["./tests/unit/setup.ts"],
+          // Test isolation: every test starts from a clean slate —
+          // mock call history cleared, stubbed env/globals restored, so
+          // files stay order-independent with workers reused.
+          clearMocks: true,
+          restoreMocks: true,
+          unstubEnvs: true,
+          unstubGlobals: true,
           // Keep worker isolation on: disabling it trades correctness for
           // speed. Startup is fixed at the source instead (light setupFiles
           // above, node-by-default here, zero vite plugins in this config

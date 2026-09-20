@@ -26,8 +26,18 @@ beforeAll(async () => {
   server.listen({ onUnhandledRequest: "error" });
 });
 
-afterEach(() => {
+afterEach(async () => {
   server?.resetHandlers();
+  vi.unstubAllEnvs();
+  vi.unstubAllGlobals();
+  // Component (.tsx) tests share one jsdom document per file: unmount
+  // after each test so `screen` queries never match a previous render.
+  // Lazy import keeps the node-default worker startup light — RTL only
+  // loads in the jsdom files that need it.
+  if (typeof document !== "undefined") {
+    const { cleanup } = await import("@testing-library/react");
+    cleanup();
+  }
 });
 
 afterAll(() => {

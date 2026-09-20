@@ -53,6 +53,29 @@ describe("Vitest harness — fast worker startup without dropping isolation", ()
     expect(setup).toContain("next/navigation");
   });
 
+  it("clears mocks plus stubs between tests so files stay order-independent", () => {
+    const config = read("vitest.config.mts");
+    expect(config).toContain("clearMocks: true");
+    expect(config).toContain("restoreMocks: true");
+    expect(config).toContain("unstubEnvs: true");
+    expect(config).toContain("unstubGlobals: true");
+    const integration = read("vitest.config.integration.mts");
+    expect(integration).toContain("clearMocks: true");
+    expect(integration).toContain("restoreMocks: true");
+    expect(integration).toContain("unstubEnvs: true");
+    expect(integration).toContain("unstubGlobals: true");
+  });
+
+  it("resets MSW handlers plus mocks/stubs plus RTL DOM after each test", () => {
+    const setup = read("tests/unit/setup.ts");
+    expect(setup).toContain("resetHandlers");
+    expect(setup).toContain("unstubAllEnvs");
+    expect(setup).toContain("unstubAllGlobals");
+    expect(setup).toContain("cleanup");
+    const integrationSetup = read("tests/integration/setup.ts");
+    expect(integrationSetup).toContain("unstubAllEnvs");
+    expect(integrationSetup).toContain("unstubAllGlobals");
+  });
   it("caps the Serwist precache at 12 MB", () => {
     const route = read("src/app/serwist/[path]/route.ts");
     expect(route).toContain("maximumFileSizeToCacheInBytes");

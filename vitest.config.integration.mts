@@ -19,6 +19,12 @@ export default defineConfig({
     globals: true,
     include: ["tests/integration/**/*.test.{ts,tsx}"],
     setupFiles: ["./tests/integration/setup.ts"],
+    // Same isolation contract as the unit project: fresh mocks/stubs per
+    // test so DB-shaped fakes never leak call history across cases.
+    clearMocks: true,
+    restoreMocks: true,
+    unstubEnvs: true,
+    unstubGlobals: true,
     fileParallelism: false,
     pool: "forks",
     globalSetup: ["./tests/integration/global-setup.ts"],
