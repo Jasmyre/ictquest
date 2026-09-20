@@ -32,6 +32,10 @@ Status tracker. Execution spec: #23. Decisions: `docs/adr/0001–0005` (#24 base
 
 Current focus: #23 execution spec; latest completed: #26.
 Next: #27.
+Wayfinding map #44: research ticket #46 resolved 2026-09-19
+(`docs/research/layer-violations.md`); decision tickets #45–#52 all resolved
+2026-09-19 (glossary, both inventories, permissions matrix, three b1 specs,
+docs-correction spec); map Decisions-so-far updated, no open tickets remain.
 
 ## Known issues / constraints
 
