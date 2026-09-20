@@ -88,17 +88,19 @@ describe("Migration 19 — REST lesson reads plus stats plus retire legacy (#42)
     }
   );
 
-  it("serves public rate-limited user stats with fresh per-user responses", async () => {
-    const userSrc = read("src/server/api/routers/user.ts");
-    expect(userSrc).toContain("publicRateLimitedProcedure");
-    expect(userSrc).toContain("/v1/users/{id}/stats");
-    expect(userSrc).toContain(".output(");
+  it("serves public rate-limited dashboard reads with fresh per-user responses", async () => {
+    const dashboardSrc = read("src/server/api/routers/dashboard.ts");
+    expect(dashboardSrc).toContain("publicRateLimitedProcedure");
+    expect(dashboardSrc).toContain("/v1/dashboard/{id}");
+    expect(dashboardSrc).toContain(".output(");
 
     const trpcSrc = read("src/server/api/trpc.ts");
     expect(trpcSrc).toContain("publicRateLimitedProcedure");
 
-    const progressSrc = read("src/server/api/routers/progress.ts");
-    expect(progressSrc).toContain("publicRateLimitedProcedure");
+    // Legacy stats path is unmounted with no shim (Slice 5, #62).
+    const userSrc = read("src/server/api/routers/user.ts");
+    expect(userSrc).not.toContain("/v1/users/{id}/stats");
+    expect(userSrc).not.toContain("getUserStatsById");
 
     const { appRouter } = await import("@/server/api/root");
     const anon = appRouter.createCaller({
@@ -116,7 +118,7 @@ describe("Migration 19 — REST lesson reads plus stats plus retire legacy (#42)
       headers: new Headers(),
       user: null as never,
     });
-    const stats = await anon.user.getUserStatsById({ id: "learner-a" });
+    const stats = await anon.dashboard.getDashboardById({ id: "learner-a" });
     expect(stats.success).toBe(true);
     expect(stats.data.id).toBe("learner-a");
 
@@ -126,7 +128,7 @@ describe("Migration 19 — REST lesson reads plus stats plus retire legacy (#42)
       user: null as never,
     });
     await expect(
-      missingDb.user.getUserStatsById({ id: "missing" })
+      missingDb.dashboard.getDashboardById({ id: "missing" })
     ).rejects.toMatchObject({ code: "NOT_FOUND" });
   });
 
@@ -152,10 +154,11 @@ describe("Migration 19 — REST lesson reads plus stats plus retire legacy (#42)
       "/v1/me/achievements",
       "/v1/lessons",
       "/v1/lessons/{lesson}/{subtopic}",
-      "/v1/users/{id}/stats",
+      "/v1/dashboard/{id}",
     ]) {
       expect(flat, path).toContain(path);
     }
+    expect(flat).not.toContain("/v1/users/{id}/stats");
   });
 
   it("retires legacy unversioned API routes after the v1 cutover", () => {

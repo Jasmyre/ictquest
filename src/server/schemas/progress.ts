@@ -47,11 +47,12 @@ export const deleteAllProgressOutputSchema = z.object({
 });
 
 /**
- * Public stats output schema (Migration 19, #42 / ADR 0005).
+ * Progress stats output schemas (Migration 19, #42 / ADR 0005).
  *
- * `GET /v1/users/{id}/stats` serves the same computed shape as the
- * `getStatsById` service helper (`{ success: true, data }`). Per-user stats
- * stay fresh (`private, no-store` at the catch-all) — never long-cached.
+ * Canonical shape for the computed per-user summary. Slice 5 (#62) renames
+ * the surface to the dashboard derived view: `src/server/schemas/dashboard.ts`
+ * owns the strict live contracts (`GET /v1/dashboard/{id}`); these shapes
+ * stay as the progress-owned reference and remain field-identical.
  */
 export const statsDataSchema = z.object({
   userName: z.string().nullable(),

@@ -120,16 +120,16 @@ const learnerA = { id: "learner-a", roles: ["USER"] };
 const learnerB = { id: "learner-b", roles: ["USER"] };
 
 describe("Migration 12 — Progress writes plus stats router", () => {
-  it("exposes a progress router and no dashboard router", async () => {
+  it("exposes list/create/delete-only progress plus the dashboard router", async () => {
     const { appRouter } = await import("@/server/api/root");
     const router = appRouter as unknown as Record<string, unknown>;
     expect(router.progress).toBeDefined();
-    expect(router.dashboard).toBeUndefined();
+    // Slice 5 (#62): stats moved to the dashboard derived view.
+    expect(router.dashboard).toBeDefined();
 
     const src = read("src/server/api/root.ts");
     expect(src).toContain("progressRouter");
-    expect(src).not.toContain("dashboardRouter");
-    expect(src).not.toContain("dashboard:");
+    expect(src).toContain("dashboardRouter");
   });
 
   it("persists list/create/delete per user and survives re-login", async () => {
@@ -230,7 +230,7 @@ describe("Migration 12 — Progress writes plus stats router", () => {
       subtopic: "html_introduction",
     });
 
-    const stats = await caller.progress.getMyStats();
+    const stats = await caller.dashboard.getMyDashboard();
     expect(stats.success).toBe(true);
     expect(stats.data.totalSubtopicsCompleted).toBe(1);
     expect(stats.data.totalAchievements).toBe(0);
@@ -246,13 +246,13 @@ describe("Migration 12 — Progress writes plus stats router", () => {
         user: null as never,
       })
     );
-    const byId = await pub.progress.getStatsById({ id: learnerA.id });
+    const byId = await pub.dashboard.getDashboardById({ id: learnerA.id });
     expect(byId.success).toBe(true);
     expect(byId.data.totalSubtopicsCompleted).toBe(1);
     expect(byId.data.level).toBe("Beginner");
 
     await expect(
-      pub.progress.getStatsById({ id: "missing" })
+      pub.dashboard.getDashboardById({ id: "missing" })
     ).rejects.toMatchObject({ code: "NOT_FOUND" });
   });
 
@@ -269,7 +269,7 @@ describe("Migration 12 — Progress writes plus stats router", () => {
     await expect(anon.progress.deleteAll()).rejects.toMatchObject({
       code: "UNAUTHORIZED",
     });
-    await expect(anon.progress.getMyStats()).rejects.toMatchObject({
+    await expect(anon.dashboard.getMyDashboard()).rejects.toMatchObject({
       code: "UNAUTHORIZED",
     });
   });
@@ -287,25 +287,25 @@ describe("Migration 12 — Progress writes plus stats router", () => {
     const viaProgress = await caller.progress.list({});
     expect(viaUser).toEqual(viaProgress);
 
-    const statsViaUser = await caller.user.getUserStatsById({
+    const statsViaDashboard = await caller.dashboard.getDashboardById({
       id: learnerA.id,
     });
-    const statsViaProgress = await caller.progress.getStatsById({
-      id: learnerA.id,
-    });
-    expect(statsViaUser).toEqual(statsViaProgress);
+    const statsViaOwner = await caller.dashboard.getMyDashboard();
+    expect(statsViaDashboard).toEqual(statsViaOwner);
 
     const userSrc = read("src/server/api/routers/user.ts");
     expect(userSrc).toContain("listProgress");
     expect(userSrc).toContain("createProgress");
     expect(userSrc).toContain("deleteAllProgress");
-    expect(userSrc).toContain("getStatsById");
+    // Slice 5 (#62): legacy stats alias deleted with the rename.
+    expect(userSrc).not.toContain("getStatsById");
+    expect(userSrc).not.toContain("getUserStatsById");
   });
 
-  it("feeds the progress dashboard from the progress router with fresh reads", () => {
+  it("feeds the progress dashboard from the dashboard router with fresh reads", () => {
     const page = read("src/app/(app)/progress/page.tsx");
     expect(page).toContain("api.progress.list");
-    expect(page).toContain("api.progress.getMyStats");
+    expect(page).toContain("api.dashboard.getMyDashboard");
     expect(page).toContain('data-testid="progress-stats"');
     expect(page).toContain('data-testid="stat-subtopics"');
     expect(page).toContain('data-testid="stat-total-progress"');

@@ -12,11 +12,11 @@ async function page() {
 }
 
 const Fetcher = async () => {
-  // Canonical progress slice (#35): list plus self stats from the progress
-  // router, fed by the same service as the legacy user aliases.
+  // Slice 5 (#62): owner dashboard is the derived view over progress —
+  // list plus self dashboard from the dashboard router.
   const [userProgress, userStats] = await Promise.all([
     api.progress.list({}),
-    api.progress.getMyStats(),
+    api.dashboard.getMyDashboard(),
   ]);
   return <Renderer userProgress={userProgress} userStats={userStats} />;
 };
@@ -26,7 +26,7 @@ const Renderer = async ({
   userStats,
 }: {
   userProgress: Awaited<ReturnType<typeof api.progress.list>>;
-  userStats: Awaited<ReturnType<typeof api.progress.getMyStats>>;
+  userStats: Awaited<ReturnType<typeof api.dashboard.getMyDashboard>>;
 }) => {
   // Per-user progress plus stats must always read fresh (ADR 0005): no cache
   // directive here. Static lesson metadata stays cached separately.

@@ -34,6 +34,16 @@ export const publicApiPrefix = "/api/public";
 
 export const v1ApiPrefix = "/api/v1";
 
+/**
+ * Public dashboard share prefix (Slice 5, #62).
+ *
+ * `/dashboard/{id}` share links stay anonymous-readable (public,
+ * rate-limited `dashboard.getDashboardById`): prefix match so every by-id
+ * link bypasses the session guard while `/progress` (owner view) stays
+ * authed.
+ */
+export const publicDashboardPrefix = "/dashboard";
+
 export const maintenanceRoute = "/maintenance";
 
 export const DEFAULT_LOGIN_REDIRECT = "/";
@@ -70,6 +80,11 @@ export function isMaintenanceBypass(pathname: string): boolean {
 /** Public API prefix bypasses session guards (rate-limited REST reads). */
 export function isPublicApiRoute(pathname: string): boolean {
   return matchesPrefix(pathname, publicApiPrefix);
+}
+
+/** Public dashboard share links bypass session guards (Slice 5, #62). */
+export function isPublicDashboardShare(pathname: string): boolean {
+  return matchesPrefix(pathname, publicDashboardPrefix);
 }
 
 /**

@@ -1,12 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import {
-  createTRPCRouter,
-  permissionProcedure,
-  publicRateLimitedProcedure,
-} from "@/server/api/trpc";
+import { createTRPCRouter, permissionProcedure } from "@/server/api/trpc";
 import { requirePermission } from "@/server/permissions";
-import { statsByIdSchema, statsOutputSchema } from "@/server/schemas/progress";
 import { meOutputSchema } from "@/server/schemas/user";
 import {
   deleteAllAchievements,
@@ -16,7 +11,6 @@ import {
 import {
   createProgress,
   deleteAllProgress,
-  getStatsById,
   listProgress,
 } from "@/server/services/progress";
 
@@ -132,23 +126,5 @@ export const userRouter = createTRPCRouter({
     .mutation(({ ctx, input }) =>
       // Backward-compatible alias fed by the canonical achievement service (#36).
       unlockAchievement(ctx.db, ctx.user.id as string, input)
-    ),
-
-  getUserStatsById: publicRateLimitedProcedure
-    .meta({
-      openapi: {
-        method: "GET",
-        path: "/v1/users/{id}/stats",
-        tags: ["users"],
-        summary: "Get public user stats",
-      },
-    })
-    .input(statsByIdSchema)
-    .output(statsOutputSchema)
-    .query(async ({ ctx, input }) =>
-      // Backward-compatible alias fed by the canonical progress service (#35).
-      // Public and rate-limited (Redis in production); per-user responses stay
-      // `private, no-store` at the `/api/v1` catch-all (#42).
-      getStatsById(ctx.db, input.id)
     ),
 });

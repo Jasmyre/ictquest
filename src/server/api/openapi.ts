@@ -36,10 +36,10 @@ export function buildOpenApiDocument(baseUrl: string) {
   return generateOpenApiDocument(appRouter, {
     title: "ICTQuest API",
     description:
-      "Versioned REST for me, progress, achievements, lessons, and public user stats. Bearer PAT or cookie auth; batch tRPC stays cookie-only.",
+      "Versioned REST for me, progress, achievements, lessons, and public dashboard. Bearer PAT or cookie auth; batch tRPC stays cookie-only.",
     version: "v1",
     baseUrl,
-    tags: ["me", "lessons", "users"],
+    tags: ["me", "lessons", "dashboard"],
     securitySchemes: {
       bearerAuth: {
         type: "http",

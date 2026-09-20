@@ -1,6 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { achievementRouter } from "./routers/achievement";
 import { adminRouter } from "./routers/admin";
+import { dashboardRouter } from "./routers/dashboard";
 import { lessonRouter } from "./routers/lesson";
 import { progressRouter } from "./routers/progress";
 import { userRouter } from "./routers/user";
@@ -10,9 +11,11 @@ import { userRouter } from "./routers/user";
  *
  * All routers added in /api/routers should be manually added here.
  *
- * Migration 12 (#35): `progress` is the canonical per-user progress plus
- * stats router. `user` keeps backward-compatible progress aliases fed by
- * the same service helpers. There is intentionally no `dashboard` router.
+ * Migration 12 (#35): `progress` is the canonical per-user progress
+ * list/create/delete router. Slice 5 (#62): `dashboard` is the derived
+ * summary view over progress (`getMyDashboard` private tRPC-only,
+ * `getDashboardById` public rate-limited over `GET /v1/dashboard/{id}`);
+ * legacy `GET /v1/users/{id}/stats` is deleted with no shim.
  *
  * Migration 13 (#36): `achievement` is the canonical per-user achievement
  * list/unlock/delete router. `user` keeps backward-compatible achievement
@@ -24,6 +27,7 @@ import { userRouter } from "./routers/user";
 export const appRouter = createTRPCRouter({
   achievement: achievementRouter,
   admin: adminRouter,
+  dashboard: dashboardRouter,
   lesson: lessonRouter,
   progress: progressRouter,
   user: userRouter,

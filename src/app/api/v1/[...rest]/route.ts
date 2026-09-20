@@ -10,9 +10,10 @@ import { createV1Context } from "@/server/api/v1-context";
  * Serves annotated `user.getUser` (`GET /v1/me`), `progress` list/create/
  * delete (`/v1/me/progress`), `achievement` list/unlock/delete
  * (`/v1/me/achievements`, `POST /v1/me/achievements/unlock`), public
- * rate-limited `user.getUserStatsById` (`GET /v1/users/{id}/stats`), and
+ * rate-limited `dashboard.getDashboardById` (`GET /v1/dashboard/{id}`), and
  * public MDX-backed `lesson` list/get (`GET /v1/lessons`,
  * `GET /v1/lessons/{lesson}/{subtopic}`) with bearer-PAT-or-cookie auth.
+ * Legacy `GET /v1/users/{id}/stats` is deleted with no shim (Slice 5, #62).
  * Dynamic by default under Cache Components (reads `req.headers`/`req.url`
  * per request), so per-user responses are never statically cached.
  *

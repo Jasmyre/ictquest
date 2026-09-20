@@ -17,7 +17,7 @@ const Renderer = async ({ params }: { params: Promise<{ id: string }> }) => {
   const isFollowing = userData.isFollowing;
   const { id } = await params;
 
-  const user = (await api.user.getUserStatsById({ id })).data;
+  const user = (await api.dashboard.getDashboardById({ id })).data;
 
   return (
     <div className="py-10">

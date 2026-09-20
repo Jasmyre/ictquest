@@ -7,7 +7,7 @@ import lessons from "@/db/lessons";
 import type { api } from "@/trpc/server";
 
 type UserStatsProps = {
-  user: Awaited<ReturnType<typeof api.user.getUserStatsById>>["data"];
+  user: Awaited<ReturnType<typeof api.dashboard.getDashboardById>>["data"];
   userData: UserData;
 };
 

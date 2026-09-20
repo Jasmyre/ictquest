@@ -9,6 +9,7 @@ import {
   isAuthRoute,
   isMaintenanceBypass,
   isPublicApiRoute,
+  isPublicDashboardShare,
   isPublicRoute,
   isV1ApiRoute,
 } from "./routes";
@@ -78,6 +79,11 @@ export default auth((req) => {
   // Exact-public marketing routes (incl. the `/lessons` exact-exception:
   // `/lessons` is public, `/lessons/*` falls through to the auth check).
   if (isPublicRoute(nextUrl.pathname)) {
+    return;
+  }
+
+  // Public dashboard share links stay anonymous-readable (Slice 5, #62).
+  if (isPublicDashboardShare(nextUrl.pathname)) {
     return;
   }
 

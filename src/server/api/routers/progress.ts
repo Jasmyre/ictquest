@@ -1,42 +1,30 @@
-import {
-  createTRPCRouter,
-  permissionProcedure,
-  publicRateLimitedProcedure,
-} from "@/server/api/trpc";
+import { createTRPCRouter, permissionProcedure } from "@/server/api/trpc";
 import {
   createProgressOutputSchema,
   createProgressSchema,
   deleteAllProgressOutputSchema,
   listProgressOutputSchema,
   listProgressSchema,
-  statsByIdSchema,
-  statsOutputSchema,
 } from "@/server/schemas/progress";
 import {
   createProgress,
   deleteAllProgress,
-  getStatsById,
   listProgress,
 } from "@/server/services/progress";
 
 /**
- * Progress router (Migration 12, #35; versioned REST in Migration 18, #41).
+ * Progress router (Migration 12, #35; versioned REST in Migration 18, #41;
+ * stats moved to the dashboard router in Slice 5, #62).
  *
- * Canonical per-user progress writes plus stats. Fed by the same service
- * helpers as the legacy `user` progress procedures so list/create/delete
- * persist per user and survive re-login, and the progress dashboard can
- * render stats plus completion counts end to end.
- *
- * There is intentionally no `dashboard` router: stats live here under
- * `getMyStats` / `getStatsById` per ADR 0005 (per-user stats stay fresh,
- * never long-cached).
+ * Canonical per-user progress writes: list/create/delete-only. The derived
+ * dashboard view lives in `dashboard.*` (`getMyDashboard` private tRPC-only,
+ * `getDashboardById` public rate-limited over `GET /v1/dashboard/{id}`).
  *
  * Versioned REST (ADR 0005): `list` / `create` / `deleteAll` carry OpenAPI
  * method/path/protection annotations plus explicit output schemas and are
  * served through the force-dynamic `/api/v1` catch-all with bearer-PAT-or-
- * cookie auth. Public stats (`getStatsById`, canonical REST path
- * `GET /v1/users/{id}/stats` on `user.getUserStatsById`) are rate-limited in
- * production and stay `private, no-store` (Migration 19, #42).
+ * cookie auth. Dashboard reads stay `private, no-store` (Migration 19, #42;
+ * Slice 5, #62).
  */
 export const progressRouter = createTRPCRouter({
   list: permissionProcedure("Progress", "view")
@@ -83,13 +71,4 @@ export const progressRouter = createTRPCRouter({
     })
     .output(deleteAllProgressOutputSchema)
     .mutation(({ ctx }) => deleteAllProgress(ctx.db, ctx.user.id as string)),
-
-  getMyStats: permissionProcedure("Progress", "view")
-    .output(statsOutputSchema)
-    .query(({ ctx }) => getStatsById(ctx.db, ctx.user.id as string)),
-
-  getStatsById: publicRateLimitedProcedure
-    .input(statsByIdSchema)
-    .output(statsOutputSchema)
-    .query(({ ctx, input }) => getStatsById(ctx.db, input.id)),
 });
