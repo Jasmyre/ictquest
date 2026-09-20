@@ -1,22 +1,12 @@
-# Architecture Decision Records (ADRs)
+# ADRs
 
-Load-bearing decisions for the ICTQuest structure migration (spec #23).
-Later migration tickets cite these ADRs as source of truth.
-
-## Index
+Architecture Decision Records. Format: lede + Considered / Rejected + Consequences. New decisions copy the latest `000n` file as template.
 
 | ADR | Title | Status |
-|-----|-------|--------|
-| [0001](0001-mdx-over-persistence-lessons.md) | MDX content collection over persistence-backed lessons | Accepted |
-| [0002](0002-abac-plus-pat-auth.md) | ABAC many-to-many roles plus personal access tokens | Accepted |
-| [0003](0003-route-group-guards.md) | Route-group shells plus prefix guards | Accepted |
-| [0004](0004-vitest-plus-playwright-over-jest.md) | Vitest plus Playwright over Jest | Accepted |
-| [0005](0005-interactive-docs-dev-only.md) | Interactive API docs dev/admin-only, OpenAPI JSON public | Accepted |
+|---|---|---|
+| [0001](0001-users-must-have-at-least-one-role.md) | Users must hold at least one role | Accepted |
+| [0002](0002-versioned-rest-openapi-and-bearer-tokens.md) | Versioned REST + OpenAPI + Bearer PATs | Accepted |
+| [0003](0003-locked-viewport-and-apple-metadata.md) | Locked viewport + Apple metadata | Accepted (revisit on a11y signal) |
+| [0004](0004-serwist-configurator-and-assets-only-policy.md) | Serwist configurator, assets-only worker | Accepted |
 
-## Process
-
-- Number: `NNNN-kebab-case-title.md`, sequential. Never reuse numbers.
-- Statuses: `Proposed` -> `Accepted` (or `Superseded` with a pointer to the replacement). These five start at `Accepted` because the wayfinder map (#16, tickets #17-#22) and execution spec (#23) froze them.
-- Template per ADR: Context, Decision, Alternatives considered, Trade-offs, Consequences (positive / negative / follow-ups), References.
-- Vocabulary: route group = URL-invisible layout bucket; shell = per-group layout chrome; guard = `proxy.ts` + `routes.ts` rule; Lesson / Topic / Subtopic-Step / Content-block per the lesson-store decision. Route groups, shells, and guards are distinct terms; do not conflate them.
-- Conflicts: if later work contradicts an ADR, surface it explicitly and supersede the ADR. Do not silently override.
+Missing (write when touched): T3 stack choice, Auth.js v5 beta, ABAC exceptions (`post.list` scoping, self-demotion), 10s cache window, sidebar-as-primary-nav, `proxy.ts` vs `middleware.ts`.

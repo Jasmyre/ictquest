@@ -14,6 +14,8 @@ model User {
   image                String?
   password             String?
   userName             String?
+  biography            String?
+  isPrivate            Boolean              @default(false)
   accounts             Account[]
   progressData         ProgressData[]
   userAchievements     UserAchievement[]

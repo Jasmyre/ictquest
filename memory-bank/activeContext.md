@@ -23,6 +23,23 @@ focus.
   with Vitest globals swap, `scripts/dev-lan.mjs` + provisional
   `scripts/pwa-assets.mjs` adopted, `todo.ts` stub deleted, stale tsconfig
   includes dropped, LF line endings normalized.
+- Wayfinder map #44: ticket "Inventory 3-tier/MVC violations and
+  route-schema-permissions seams" (#46, research) resolved 2026-09-19 —
+  resolution comment + close + Decisions-so-far pointer; asset
+  `docs/research/layer-violations.md` (branch `research/layer-violations`).
+- Wayfinder map #44: ticket "Specify dashboard rename from progress stats"
+  (#50, grilling) resolved 2026-09-19 — resolution comment + close +
+  Decisions-so-far pointer; decision: `dashboard.getMyDashboard` (private,
+  tRPC-only) + `dashboard.getDashboardById` (public rate-limited,
+  `GET /api/v1/dashboard/{id}`), legacy `/v1/users/{id}/stats` deleted,
+  ADR 0005 supersede note.
+- Wayfinder map #44: ticket "Specify docs correction for architecture,
+  database, auth, and system patterns" (#52, grilling) resolved 2026-09-19 —
+  resolution comment + close + Decisions-so-far pointer; per-file
+  before/after entity maps, deleted-Post reference list, ADR 0001/0002
+  supersede notes (ticket-text 0002/0005 numbering corrected), #23 alignment;
+  graduated fog: cache-tag vocabulary, REST finalization, admin shell/guard
+  detail, b1 test seams. Map has no open tickets remaining.
 
 ## Next steps
 
