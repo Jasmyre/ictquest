@@ -5,13 +5,18 @@ Decisions frozen in `docs/adr/0001–0005` (#24 baseline, closed).
 
 ## Current focus
 
-Slice 8 (#65, this ticket): final green gate — check + typecheck clean,
-unit 168 + integration 17 green via `test:all` (32 files), Playwright 15/15
-green (signed-out reads, owner writes fail-closed, admin gates, shared
-dashboard links), prod `build` green. Fixes: Playwright `webServer`
-(`npm run start`, port 3000) so `test:e2e` boots the app; REST catch-all
-`endpoint` `/api/v1` → `/api` so the `/v1/*` OpenAPI paths match
-(`trpc-to-openapi` strips only the endpoint prefix).
+Code-review follow-up (2026-09-20, uncommitted on `wip/ictquest-2.0`):
+Standards fixes — shared `src/server/pagination.ts` (`pickPagination` +
+`Pagination`), `src/server/prisma-errors.ts` (`isUniqueConstraintRace` +
+`isMissingRecord`), `src/server/logger.ts` (test-silent `logError`/`logInfo`);
+`requireUserId` narrowing in `trpc.ts` replacing all `ctx.user.id as string`;
+all `as Promise` casts dropped from the four repositories (tsc verifies
+shapes); new `src/server/repositories/token.ts` owning PAT persistence.
+Spec fix — tRPC-only `token` router (list/create/idempotent-revoke,
+owner-scoped, hash never leaves server) mounted in `root.ts`, backed by
+`schemas/token.ts` + `services/token.ts`, gated by
+`tests/unit/token-lifecycle.test.ts` (7 tests). Full unit green 158/158,
+typecheck + typecheck:test + ultracite clean.
 
 ## Recent changes
 

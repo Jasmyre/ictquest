@@ -1,5 +1,7 @@
 import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+import { logError } from "@/server/logger";
+import { pickPagination } from "@/server/pagination";
 import {
   createProgressRepository,
   type ProgressRow,
@@ -23,13 +25,6 @@ import { deriveDashboard } from "@/server/services/dashboard";
  */
 
 type Db = Pick<PrismaClient, "progressData" | "user">;
-
-function pickPagination(input: ListProgressInput): {
-  skip: number;
-  take: number;
-} {
-  return { skip: input.skip ?? 0, take: input.take ?? 20 };
-}
 
 /**
  * Progress visibility scoping (domain rule).
@@ -61,7 +56,7 @@ export async function listProgress(
       data: scopeProgressToOwner(progress, userId),
     };
   } catch (error) {
-    console.error("listProgress error:", error);
+    logError("listProgress error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message:
@@ -91,7 +86,7 @@ export async function createProgress(
     const created = await repository.createRow(userId, topic, [subtopic]);
     return { success: true as const, data: created };
   } catch (error) {
-    console.error("createProgress error:", error);
+    logError("createProgress error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to record progress right now. Try again later.",
@@ -105,7 +100,7 @@ export async function deleteAllProgress(db: Db, userId: string) {
     await repository.deleteByUser(userId);
     return { success: true as const };
   } catch (error) {
-    console.error("deleteAllProgress error:", error);
+    logError("deleteAllProgress error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message:
@@ -120,7 +115,7 @@ export async function getStatsById(db: Db, id: string) {
     const user = await repository.findStatsUser(id);
 
     if (!user) {
-      console.error("User not found with id: ", id);
+      logError("User not found with id: ", id);
       throw new TRPCError({ code: "NOT_FOUND", message: "User not found." });
     }
 
@@ -131,7 +126,7 @@ export async function getStatsById(db: Db, id: string) {
     if (error instanceof TRPCError) {
       throw error;
     }
-    console.error("getStatsById error: ", error);
+    logError("getStatsById error: ", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to fetch user stats right now. Please try again later.",

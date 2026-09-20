@@ -60,12 +60,12 @@ export function createAchievementRepository(
     findCatalogByName(name: string): Promise<CatalogAchievement | null> {
       return db.achievement.findUnique({
         where: { name },
-      }) as Promise<CatalogAchievement | null>;
+      });
     },
     findGrant(userId: string, achievementId: number): Promise<GrantRow | null> {
       return db.userAchievement.findUnique({
         where: { userId_achievementId: { userId, achievementId } },
-      }) as Promise<GrantRow | null>;
+      });
     },
     createGrant(
       userId: string,
@@ -80,7 +80,7 @@ export function createAchievementRepository(
           achievementName,
           achievementDescription,
         },
-      }) as Promise<GrantRow>;
+      });
     },
     listGrants(
       userId: string,
@@ -92,7 +92,7 @@ export function createAchievementRepository(
         include: { achievement: true },
         skip,
         take,
-      }) as Promise<GrantRow[]>;
+      });
     },
     deleteGrantsByUser(userId: string): Promise<{ count: number }> {
       return db.userAchievement.deleteMany({ where: { userId } });
@@ -102,7 +102,7 @@ export function createAchievementRepository(
         skip,
         take,
         orderBy: { id: "asc" },
-      }) as Promise<CatalogAchievement[]>;
+      });
     },
     createCatalogEntry(
       name: string,
@@ -110,7 +110,7 @@ export function createAchievementRepository(
     ): Promise<CatalogAchievement> {
       return db.achievement.create({
         data: { name, description },
-      }) as Promise<CatalogAchievement>;
+      });
     },
     updateCatalogEntry(
       id: number,
@@ -119,12 +119,10 @@ export function createAchievementRepository(
       return db.achievement.update({
         where: { id },
         data,
-      }) as Promise<CatalogAchievement>;
+      });
     },
     deleteCatalogEntry(id: number): Promise<{ id: number }> {
-      return db.achievement.delete({ where: { id } }) as Promise<{
-        id: number;
-      }>;
+      return db.achievement.delete({ where: { id } });
     },
     async deleteGrant(id: number): Promise<void> {
       await db.userAchievement.delete({ where: { id } });

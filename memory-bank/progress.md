@@ -30,6 +30,15 @@ Status tracker. Execution spec: #23. Decisions: `docs/adr/0001–0005` (#24 base
 
 ## Current status
 
+Code-review follow-up done 2026-09-20 (uncommitted on `wip/ictquest-2.0`):
+prior Standards findings fixed (shared pagination/prisma-error/logger
+helpers, `requireUserId` narrowing, zero `as Promise`/`as string` casts in
+the layered tier, `token` repository owning PAT persistence) and the Spec
+gap closed (tRPC-only `token` router: owner-scoped list/create/
+idempotent-revoke, hash never exposed, no OpenAPI annotations so it stays
+off the REST mount). Gates: typecheck + typecheck:test + ultracite clean,
+unit 158/158 green including new `tests/unit/token-lifecycle.test.ts` (7).
+
 Slice 7 (#64) done 2026-09-20: docs + system patterns match code truth, ADR
 0001/0002 supersede notes recorded, docs-truth spec gate green (check +
 typecheck + 151 unit).

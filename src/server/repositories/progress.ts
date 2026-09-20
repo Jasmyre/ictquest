@@ -56,7 +56,7 @@ export function createProgressRepository(db: ProgressDb): ProgressRepository {
         where: { userId },
         skip,
         take,
-      }) as Promise<ProgressRow[]>;
+      });
     },
     findByUserTopic(
       userId: string,
@@ -64,7 +64,7 @@ export function createProgressRepository(db: ProgressDb): ProgressRepository {
     ): Promise<ProgressRow | null> {
       return db.progressData.findFirst({
         where: { userId, topic },
-      }) as Promise<ProgressRow | null>;
+      });
     },
     createRow(
       userId: string,
@@ -73,13 +73,13 @@ export function createProgressRepository(db: ProgressDb): ProgressRepository {
     ): Promise<ProgressRow> {
       return db.progressData.create({
         data: { userId, topic, subtopics },
-      }) as Promise<ProgressRow>;
+      });
     },
     appendSubtopic(id: string, subtopic: string): Promise<ProgressRow> {
       return db.progressData.update({
         where: { id },
         data: { subtopics: { push: subtopic } },
-      }) as Promise<ProgressRow>;
+      });
     },
     deleteByUser(userId: string): Promise<{ count: number }> {
       return db.progressData.deleteMany({ where: { userId } });
@@ -94,7 +94,7 @@ export function createProgressRepository(db: ProgressDb): ProgressRepository {
           userAchievements: { select: { id: true } },
           progressData: { select: { subtopics: true, topic: true } },
         },
-      }) as Promise<StatsUserRow | null>;
+      });
     },
   };
 }

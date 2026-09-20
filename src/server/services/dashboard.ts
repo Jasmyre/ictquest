@@ -1,6 +1,7 @@
 import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { calculateAverageProgress } from "@/lib/progress";
+import { logError } from "@/server/logger";
 import {
   createDashboardRepository,
   type DashboardUserRow,
@@ -22,6 +23,9 @@ import {
 
 type Db = Pick<PrismaClient, "progressData" | "user">;
 
+const BEGINNER_MAX_AVERAGE = 33.33;
+const INTERMEDIATE_MAX_AVERAGE = 66.67;
+
 /**
  * Single derivation source for the dashboard/stats shape. The progress
  * `getStatsById` reference shape delegates here so the rename stays a
@@ -35,9 +39,9 @@ export function deriveDashboard(user: DashboardUserRow) {
   );
   const averageProgress = calculateAverageProgress({ user });
   let level = "Expert";
-  if (averageProgress < 33.33) {
+  if (averageProgress < BEGINNER_MAX_AVERAGE) {
     level = "Beginner";
-  } else if (averageProgress < 66.67) {
+  } else if (averageProgress < INTERMEDIATE_MAX_AVERAGE) {
     level = "Intermediate";
   }
   return {
@@ -67,7 +71,7 @@ export async function getMyDashboard(db: Db, userId: string) {
     if (error instanceof TRPCError) {
       throw error;
     }
-    console.error("getMyDashboard error:", error);
+    logError("getMyDashboard error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to fetch your dashboard right now. Try again later.",
@@ -87,7 +91,7 @@ export async function getDashboardById(db: Db, id: string) {
     if (error instanceof TRPCError) {
       throw error;
     }
-    console.error("getDashboardById error:", error);
+    logError("getDashboardById error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to fetch the dashboard right now. Try again later.",

@@ -1,6 +1,12 @@
 import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import type { RoleName } from "@/lib/roles";
+import { logError } from "@/server/logger";
+import { pickPagination } from "@/server/pagination";
+import {
+  isMissingRecord,
+  isUniqueConstraintRace,
+} from "@/server/prisma-errors";
 import {
   type AchievementDb,
   createAchievementRepository,
@@ -51,23 +57,18 @@ type Db = Pick<
 
 type RoleInput = { userId: string; role: RoleName };
 
-function pickPagination(input: ListUsersInput): {
-  skip: number;
-  take: number;
-} {
-  return { skip: input.skip ?? 0, take: input.take ?? 20 };
+function users(db: UserDb): ReturnType<typeof createUserRepository> {
+  return createUserRepository(db);
 }
 
-function users(db: Db): ReturnType<typeof createUserRepository> {
-  return createUserRepository(db as UserDb);
+function progress(db: ProgressDb): ReturnType<typeof createProgressRepository> {
+  return createProgressRepository(db);
 }
 
-function progress(db: Db): ReturnType<typeof createProgressRepository> {
-  return createProgressRepository(db as ProgressDb);
-}
-
-function achievements(db: Db): ReturnType<typeof createAchievementRepository> {
-  return createAchievementRepository(db as AchievementDb);
+function achievements(
+  db: AchievementDb
+): ReturnType<typeof createAchievementRepository> {
+  return createAchievementRepository(db);
 }
 
 async function assertUserExists(db: Db, userId: string): Promise<void> {
@@ -96,7 +97,7 @@ export async function listUsersWithRoles(db: Db, input: ListUsersInput) {
       })),
     };
   } catch (error) {
-    console.error("listUsersWithRoles error:", error);
+    logError("listUsersWithRoles error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to load users right now. Please try again later.",
@@ -114,7 +115,7 @@ export async function grantRole(db: Db, input: RoleInput) {
     try {
       await repository.connectRole(input.userId, role.id);
     } catch (connectErr) {
-      if (!isUniqueViolation(connectErr)) {
+      if (!isUniqueConstraintRace(connectErr)) {
         throw connectErr;
       }
     }
@@ -129,7 +130,7 @@ export async function grantRole(db: Db, input: RoleInput) {
     if (error instanceof TRPCError) {
       throw error;
     }
-    console.error("grantRole error:", error);
+    logError("grantRole error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to grant the role right now. Please try again later.",
@@ -194,7 +195,7 @@ export async function revokeRole(
     if (error instanceof TRPCError) {
       throw error;
     }
-    console.error("revokeRole error:", error);
+    logError("revokeRole error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to revoke the role right now. Please try again later.",
@@ -215,7 +216,7 @@ export async function grantAchievementForUser(
     if (error instanceof TRPCError) {
       throw error;
     }
-    console.error("grantAchievementForUser error:", error);
+    logError("grantAchievementForUser error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to grant the achievement right now. Try again later.",
@@ -255,7 +256,7 @@ export async function revokeAchievementForUser(
     if (error instanceof TRPCError) {
       throw error;
     }
-    console.error("revokeAchievementForUser error:", error);
+    logError("revokeAchievementForUser error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to revoke the achievement right now. Try again later.",
@@ -276,7 +277,7 @@ export async function resetUserProgress(db: Db, input: ResetProgressInput) {
     if (error instanceof TRPCError) {
       throw error;
     }
-    console.error("resetUserProgress error:", error);
+    logError("resetUserProgress error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to reset progress right now. Please try again later.",
@@ -284,34 +285,17 @@ export async function resetUserProgress(db: Db, input: ResetProgressInput) {
   }
 }
 
-function isUniqueViolation(error: unknown): boolean {
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    (error as { code?: unknown }).code === "P2002"
-  );
-}
-
-function isMissingRow(error: unknown): boolean {
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    (error as { code?: unknown }).code === "P2025"
-  );
-}
-
 export async function listAchievementDefinitions(
-  db: Pick<Db, "achievement">,
+  db: AchievementDb,
   input: ListAchievementDefinitionsInput
 ) {
-  const skip = input.skip ?? 0;
-  const take = input.take ?? 20;
-  const repository = achievements(db as Db);
+  const { skip, take } = pickPagination(input);
+  const repository = achievements(db);
   try {
     const data = await repository.findCatalog(skip, take);
     return { success: true as const, data };
   } catch (error) {
-    console.error("listAchievementDefinitions error:", error);
+    logError("listAchievementDefinitions error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to load achievement definitions. Try again later.",
@@ -320,10 +304,10 @@ export async function listAchievementDefinitions(
 }
 
 export async function createAchievementDefinition(
-  db: Pick<Db, "achievement">,
+  db: AchievementDb,
   input: CreateAchievementDefinitionInput
 ) {
-  const repository = achievements(db as Db);
+  const repository = achievements(db);
   try {
     const data = await repository.createCatalogEntry(
       input.name,
@@ -331,13 +315,13 @@ export async function createAchievementDefinition(
     );
     return { success: true as const, data };
   } catch (error) {
-    if (isUniqueViolation(error)) {
+    if (isUniqueConstraintRace(error)) {
       throw new TRPCError({
         code: "CONFLICT",
         message: "An achievement with this name already exists.",
       });
     }
-    console.error("createAchievementDefinition error:", error);
+    logError("createAchievementDefinition error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to create the achievement right now. Try again later.",
@@ -346,10 +330,10 @@ export async function createAchievementDefinition(
 }
 
 export async function updateAchievementDefinition(
-  db: Pick<Db, "achievement">,
+  db: AchievementDb,
   input: UpdateAchievementDefinitionInput
 ) {
-  const repository = achievements(db as Db);
+  const repository = achievements(db);
   try {
     const data = await repository.updateCatalogEntry(input.id, {
       ...(typeof input.name === "string" ? { name: input.name } : {}),
@@ -357,19 +341,19 @@ export async function updateAchievementDefinition(
     });
     return { success: true as const, data };
   } catch (error) {
-    if (isMissingRow(error)) {
+    if (isMissingRecord(error)) {
       throw new TRPCError({
         code: "NOT_FOUND",
         message: "Achievement definition not found.",
       });
     }
-    if (isUniqueViolation(error)) {
+    if (isUniqueConstraintRace(error)) {
       throw new TRPCError({
         code: "CONFLICT",
         message: "An achievement with this name already exists.",
       });
     }
-    console.error("updateAchievementDefinition error:", error);
+    logError("updateAchievementDefinition error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to update the achievement right now. Try again later.",
@@ -378,21 +362,21 @@ export async function updateAchievementDefinition(
 }
 
 export async function deleteAchievementDefinition(
-  db: Pick<Db, "achievement">,
+  db: AchievementDb,
   input: DeleteAchievementDefinitionInput
 ) {
-  const repository = achievements(db as Db);
+  const repository = achievements(db);
   try {
     const data = await repository.deleteCatalogEntry(input.id);
     return { success: true as const, data: { id: data.id } };
   } catch (error) {
-    if (isMissingRow(error)) {
+    if (isMissingRecord(error)) {
       throw new TRPCError({
         code: "NOT_FOUND",
         message: "Achievement definition not found.",
       });
     }
-    console.error("deleteAchievementDefinition error:", error);
+    logError("deleteAchievementDefinition error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to delete the achievement right now. Try again later.",

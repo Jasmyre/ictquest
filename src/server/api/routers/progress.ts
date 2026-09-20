@@ -1,4 +1,8 @@
-import { createTRPCRouter, permissionProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  permissionProcedure,
+  requireUserId,
+} from "@/server/api/trpc";
 import {
   createProgressOutputSchema,
   createProgressSchema,
@@ -40,7 +44,7 @@ export const progressRouter = createTRPCRouter({
     .input(listProgressSchema)
     .output(listProgressOutputSchema)
     .query(({ ctx, input }) =>
-      listProgress(ctx.db, ctx.user.id as string, input)
+      listProgress(ctx.db, requireUserId(ctx.user), input)
     ),
 
   create: permissionProcedure("Progress", "create")
@@ -56,7 +60,7 @@ export const progressRouter = createTRPCRouter({
     .input(createProgressSchema)
     .output(createProgressOutputSchema)
     .mutation(({ ctx, input }) =>
-      createProgress(ctx.db, ctx.user.id as string, input)
+      createProgress(ctx.db, requireUserId(ctx.user), input)
     ),
 
   deleteAll: permissionProcedure("Progress", "delete")
@@ -70,5 +74,5 @@ export const progressRouter = createTRPCRouter({
       },
     })
     .output(deleteAllProgressOutputSchema)
-    .mutation(({ ctx }) => deleteAllProgress(ctx.db, ctx.user.id as string)),
+    .mutation(({ ctx }) => deleteAllProgress(ctx.db, requireUserId(ctx.user))),
 });

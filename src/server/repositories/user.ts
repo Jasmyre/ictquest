@@ -29,6 +29,15 @@ export type UserWithRoles = {
  * touching `db.user` / `db.role` directly.
  */
 
+export type SessionOwnerRow = {
+  id: string;
+  name: string | null;
+  email: string | null;
+  image: string | null;
+  userName: string | null;
+  emailVerified: Date | null;
+};
+
 export type UserRepository = {
   findProfile(userId: string): Promise<ProfileRow | null>;
   updateProfile(
@@ -36,6 +45,7 @@ export type UserRepository = {
     data: { biography?: string | null; isPrivate?: boolean }
   ): Promise<ProfileRow>;
   findById(userId: string): Promise<{ id: string } | null>;
+  findSessionOwner(userId: string): Promise<SessionOwnerRow | null>;
   findWithRoles(userId: string): Promise<UserWithRoles | null>;
   listUsers(skip: number, take: number): Promise<UserListRow[]>;
   ensureRole(name: string): Promise<{ id: string; name: string }>;
@@ -51,7 +61,7 @@ export function createUserRepository(db: UserDb): UserRepository {
       return db.user.findUnique({
         where: { id: userId },
         select: { id: true, biography: true, isPrivate: true },
-      }) as Promise<ProfileRow | null>;
+      });
     },
     updateProfile(
       userId: string,
@@ -61,37 +71,50 @@ export function createUserRepository(db: UserDb): UserRepository {
         where: { id: userId },
         data,
         select: { id: true, biography: true, isPrivate: true },
-      }) as Promise<ProfileRow>;
+      });
     },
     findById(userId: string): Promise<{ id: string } | null> {
       return db.user.findUnique({
         where: { id: userId },
-      }) as Promise<{ id: string } | null>;
+      });
+    },
+    findSessionOwner(userId: string): Promise<SessionOwnerRow | null> {
+      return db.user.findUnique({
+        where: { id: userId },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          image: true,
+          userName: true,
+          emailVerified: true,
+        },
+      });
     },
     findWithRoles(userId: string): Promise<UserWithRoles | null> {
       return db.user.findUnique({
         where: { id: userId },
         include: { roles: true },
-      }) as Promise<UserWithRoles | null>;
+      });
     },
     listUsers(skip: number, take: number): Promise<UserListRow[]> {
       return db.user.findMany({
         skip,
         take,
         select: { id: true, email: true, userName: true, roles: true },
-      }) as Promise<UserListRow[]>;
+      });
     },
     ensureRole(name: string): Promise<{ id: string; name: string }> {
       return db.role.upsert({
         where: { name },
         update: {},
         create: { name },
-      }) as Promise<{ id: string; name: string }>;
+      });
     },
     findRole(name: string): Promise<{ id: string; name: string } | null> {
       return db.role.findUnique({
         where: { name },
-      }) as Promise<{ id: string; name: string } | null>;
+      });
     },
     async connectRole(userId: string, roleId: string): Promise<void> {
       await db.user.update({

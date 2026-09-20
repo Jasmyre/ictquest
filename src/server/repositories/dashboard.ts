@@ -39,7 +39,7 @@ export function createDashboardRepository(
           userAchievements: { select: { id: true } },
           progressData: { select: { subtopics: true, topic: true } },
         },
-      }) as Promise<DashboardUserRow | null>;
+      });
     },
   };
 }

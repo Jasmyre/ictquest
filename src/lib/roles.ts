@@ -1,4 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
+import { isUniqueConstraintRace } from "@/server/prisma-errors";
 
 export const ROLE_NAMES = ["ADMIN", "MODERATOR", "USER"] as const;
 export type RoleName = (typeof ROLE_NAMES)[number];
@@ -63,11 +64,7 @@ export async function ensureDefaultRole(
     });
   } catch (error) {
     // Concurrent heal already connected the join row: converge idempotently.
-    if (
-      typeof error !== "object" ||
-      error === null ||
-      (error as { code?: unknown }).code !== "P2002"
-    ) {
+    if (!isUniqueConstraintRace(error)) {
       throw error;
     }
   }

@@ -17,6 +17,7 @@ import { env } from "@/env";
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
 import { hasRole, type RoleName } from "@/lib/roles";
+import { logInfo } from "@/server/logger";
 import {
   hasActionGrant,
   type PermissionAction,
@@ -114,7 +115,7 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   // every caller-based unit test would otherwise spam `[TRPC] ...` lines.
   // Tests mock `@/env` with `NODE_ENV: "test"`, and vitest sets it for real.
   if (env.NODE_ENV !== "test") {
-    console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
+    logInfo(`[TRPC] ${path} took ${end - start}ms to execute`);
   }
 
   return result;
@@ -212,6 +213,24 @@ export const permissionProcedure = (
       },
     });
   });
+
+/**
+ * Narrow the session user to its id (code-review Standards fix).
+ *
+ * `Session["user"].id` is optional (`DefaultSession`), so resolvers
+ * previously wrote `ctx.user.id as string` after the auth gate. This
+ * helper narrows instead of asserting: a missing id answers UNAUTHORIZED,
+ * exactly as if the caller were signed out.
+ */
+export function requireUserId(user: { id?: string | null } | null): string {
+  if (!user || typeof user.id !== "string" || user.id.length === 0) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "User is not authenticated.",
+    });
+  }
+  return user.id;
+}
 
 /**
  * Shared privileged-role gate.

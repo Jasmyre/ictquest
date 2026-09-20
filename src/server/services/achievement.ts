@@ -1,5 +1,8 @@
 import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+import { logError } from "@/server/logger";
+import { pickPagination } from "@/server/pagination";
+import { isUniqueConstraintRace } from "@/server/prisma-errors";
 import {
   createAchievementRepository,
   type GrantRow,
@@ -25,21 +28,6 @@ import type {
 
 type Db = Pick<PrismaClient, "achievement" | "userAchievement">;
 
-function pickPagination(input: ListAchievementsInput): {
-  skip: number;
-  take: number;
-} {
-  return { skip: input.skip ?? 0, take: input.take ?? 20 };
-}
-
-function isUniqueConstraintRace(error: unknown): boolean {
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    (error as { code?: unknown }).code === "P2002"
-  );
-}
-
 export async function listAchievements(
   db: Db,
   userId: string,
@@ -51,7 +39,7 @@ export async function listAchievements(
     const achievements = await repository.listGrants(userId, skip, take);
     return { success: true as const, data: achievements };
   } catch (error) {
-    console.error("listAchievements error:", error);
+    logError("listAchievements error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message:
@@ -66,7 +54,7 @@ export async function deleteAllAchievements(db: Db, userId: string) {
     await repository.deleteGrantsByUser(userId);
     return { success: true as const };
   } catch (error) {
-    console.error("deleteAllAchievements error:", error);
+    logError("deleteAllAchievements error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message:
@@ -144,7 +132,7 @@ export async function unlockAchievement(
     if (error instanceof TRPCError) {
       throw error;
     }
-    console.error("unlockAchievement error: ", error);
+    logError("unlockAchievement error: ", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message:

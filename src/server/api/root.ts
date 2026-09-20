@@ -4,6 +4,7 @@ import { adminRouter } from "./routers/admin";
 import { dashboardRouter } from "./routers/dashboard";
 import { lessonRouter } from "./routers/lesson";
 import { progressRouter } from "./routers/progress";
+import { tokenRouter } from "./routers/token";
 import { userRouter } from "./routers/user";
 
 /**
@@ -23,6 +24,9 @@ import { userRouter } from "./routers/user";
  * deleted as a verified unused stub.
  * Migration 19 (#42): `lesson` is the public MDX-backed read router
  * (`GET /v1/lessons`, `GET /v1/lessons/{lesson}/{subtopic}`).
+ * Spec #57: `token` is the owner-scoped PAT lifecycle
+ * (list/create/idempotent-revoke), tRPC-only by construction — no OpenAPI
+ * annotations, so nothing here is served on the versioned REST mount.
  */
 export const appRouter = createTRPCRouter({
   achievement: achievementRouter,
@@ -30,6 +34,7 @@ export const appRouter = createTRPCRouter({
   dashboard: dashboardRouter,
   lesson: lessonRouter,
   progress: progressRouter,
+  token: tokenRouter,
   user: userRouter,
 });
 

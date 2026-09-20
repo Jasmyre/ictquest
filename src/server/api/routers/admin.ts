@@ -2,6 +2,7 @@ import {
   createTRPCRouter,
   moderatorProcedure,
   permissionProcedure,
+  requireUserId,
 } from "@/server/api/trpc";
 import {
   createAchievementDefinitionSchema,
@@ -67,8 +68,8 @@ export const adminRouter = createTRPCRouter({
     .input(revokeRoleSchema)
     .mutation(({ ctx, input }) =>
       revokeRole(ctx.db, input, {
-        callerId: ctx.user.id as string,
-        callerRoles: (ctx.user.roles ?? []) as string[],
+        callerId: requireUserId(ctx.user),
+        callerRoles: ctx.user?.roles ?? [],
       })
     ),
 

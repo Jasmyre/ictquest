@@ -1,4 +1,8 @@
-import { createTRPCRouter, permissionProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  permissionProcedure,
+  requireUserId,
+} from "@/server/api/trpc";
 import {
   deleteAllAchievementsOutputSchema,
   listAchievementsOutputSchema,
@@ -39,7 +43,7 @@ export const achievementRouter = createTRPCRouter({
     .input(listAchievementsSchema)
     .output(listAchievementsOutputSchema)
     .query(({ ctx, input }) =>
-      listAchievements(ctx.db, ctx.user.id as string, input)
+      listAchievements(ctx.db, requireUserId(ctx.user), input)
     ),
 
   unlock: permissionProcedure("Achievement", "create")
@@ -55,7 +59,7 @@ export const achievementRouter = createTRPCRouter({
     .input(unlockAchievementSchema)
     .output(unlockAchievementOutputSchema)
     .mutation(({ ctx, input }) =>
-      unlockAchievement(ctx.db, ctx.user.id as string, input)
+      unlockAchievement(ctx.db, requireUserId(ctx.user), input)
     ),
 
   deleteAll: permissionProcedure("Achievement", "delete")
@@ -70,6 +74,6 @@ export const achievementRouter = createTRPCRouter({
     })
     .output(deleteAllAchievementsOutputSchema)
     .mutation(({ ctx }) =>
-      deleteAllAchievements(ctx.db, ctx.user.id as string)
+      deleteAllAchievements(ctx.db, requireUserId(ctx.user))
     ),
 });

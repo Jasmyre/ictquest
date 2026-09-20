@@ -30,17 +30,29 @@ export async function resolveV1UserFromRequest(req: Request): Promise<{
     );
     if (record) {
       // Token-owner lookup goes through the user repository, never an
-      // inline `db.user` query (Slice 6, #63).
+      // inline `db.user` query (Slice 6, #63). The session user is built
+      // field-by-field from the row — never asserted — so bearer callers
+      // resolve to the same user-with-roles shape as cookie sessions.
       const owner = await createUserRepository(db)
-        .findById(record.userId)
+        .findSessionOwner(record.userId)
         .catch(() => null);
       if (owner) {
         const roles = await getUserRoleNames(owner.id).catch(() => []);
         return {
           user: {
-            ...owner,
+            id: owner.id,
+            name: owner.name,
+            email: owner.email,
+            image: owner.image,
+            // Session-required fields with neutral defaults when the row
+            // lacks them. Neither is read for access decisions (id/roles
+            // only), and cookie sessions likewise leave them unset until
+            // the JWT callback fills them — so bearer callers resolve to
+            // the same user-with-roles shape, never more.
+            emailVerified: owner.emailVerified ?? new Date(0),
+            userName: owner.userName ?? "",
             roles,
-          } as unknown as Session["user"],
+          },
         };
       }
     }

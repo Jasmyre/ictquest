@@ -2,6 +2,7 @@ import {
   createTRPCRouter,
   permissionProcedure,
   publicRateLimitedProcedure,
+  requireUserId,
 } from "@/server/api/trpc";
 import {
   dashboardByIdSchema,
@@ -25,7 +26,7 @@ import { getDashboardById, getMyDashboard } from "@/server/services/dashboard";
 export const dashboardRouter = createTRPCRouter({
   getMyDashboard: permissionProcedure("Progress", "view")
     .output(dashboardOutputSchema)
-    .query(({ ctx }) => getMyDashboard(ctx.db, ctx.user.id as string)),
+    .query(({ ctx }) => getMyDashboard(ctx.db, requireUserId(ctx.user))),
 
   getDashboardById: publicRateLimitedProcedure
     .meta({

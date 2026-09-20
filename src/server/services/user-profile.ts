@@ -1,6 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
-import { createUserRepository, type UserDb } from "@/server/repositories/user";
+import { createUserRepository } from "@/server/repositories/user";
 
 /**
  * User profile service (Slice 1, #58; repository tier in Slice 6, #63).
@@ -14,7 +14,7 @@ import { createUserRepository, type UserDb } from "@/server/repositories/user";
 
 export const BIOGRAPHY_MAX_LENGTH = 500;
 
-type Db = Pick<PrismaClient, "user">;
+type Db = Pick<PrismaClient, "user" | "role">;
 
 export type ProfileRow = import("@/server/repositories/user").ProfileRow;
 
@@ -61,9 +61,9 @@ export async function getOwnProfile(
   db: Db,
   userId: string
 ): Promise<{ success: true; data: ProfileRow }> {
-  // Profile reads never touch role membership: the injected `db` handle
-  // only carries the `user` delegate here, widened for the repository seam.
-  const repository = createUserRepository(db as UserDb);
+  // Profile reads never touch role membership, but the repository seam
+  // takes the shared user store handle.
+  const repository = createUserRepository(db);
   try {
     const row = await repository.findProfile(userId);
     if (!row) {
@@ -102,9 +102,9 @@ export async function updateOwnProfile(
   if (isPrivate !== undefined) {
     data.isPrivate = isPrivate;
   }
-  // Profile writes never touch role membership: the injected `db` handle
-  // only carries the `user` delegate here, widened for the repository seam.
-  const repository = createUserRepository(db as UserDb);
+  // Profile writes never touch role membership, but the repository seam
+  // takes the shared user store handle.
+  const repository = createUserRepository(db);
   try {
     const row = await repository.updateProfile(userId, data);
     return {

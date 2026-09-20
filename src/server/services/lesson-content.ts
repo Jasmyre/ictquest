@@ -1,5 +1,6 @@
 import { join } from "node:path";
 import { TRPCError } from "@trpc/server";
+import { logError } from "@/server/logger";
 import { createLessonRepository } from "@/server/repositories/lesson";
 
 export type LessonEntry = import("@/server/repositories/lesson").LessonEntry;
@@ -34,7 +35,7 @@ export function listLessonContent(
       data: listLessonContentEntries(contentDir),
     };
   } catch (error) {
-    console.error("listLessonContent error:", error);
+    logError("listLessonContent error:", error);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to load lesson content right now. Try again later.",

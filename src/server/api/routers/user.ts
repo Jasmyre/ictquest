@@ -1,6 +1,9 @@
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, permissionProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  permissionProcedure,
+  requireUserId,
+} from "@/server/api/trpc";
 import { requirePermission } from "@/server/permissions";
 import { meOutputSchema } from "@/server/schemas/user";
 import {
@@ -28,35 +31,21 @@ export const userRouter = createTRPCRouter({
     .output(meOutputSchema)
     .query(({ ctx }) => {
       const { user } = ctx;
+      const userId = requireUserId(user);
 
-      if (!user || typeof (user as { id?: unknown }).id !== "string") {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "User is not authenticated.",
-        });
-      }
-
-      requirePermission(user, "User", "view", {
-        data: { id: (user as { id: string }).id },
+      requirePermission({ id: userId, roles: user?.roles }, "User", "view", {
+        data: { id: userId },
       });
 
-      const u = user as unknown as Record<string, unknown> & {
-        id: string;
-        name?: string | null;
-        email?: string | null;
-        image?: string | null;
-        userName?: string | null;
-        roles?: string[];
-      };
       return {
         success: true as const,
         data: {
-          id: u.id,
-          name: u.name ?? null,
-          email: u.email ?? null,
-          image: u.image ?? null,
-          userName: u.userName ?? null,
-          roles: Array.isArray(u.roles) ? u.roles : undefined,
+          id: userId,
+          name: user?.name ?? null,
+          email: user?.email ?? null,
+          image: user?.image ?? null,
+          userName: user?.userName ?? null,
+          roles: Array.isArray(user?.roles) ? [...user.roles] : undefined,
         },
       };
     }),
@@ -68,16 +57,10 @@ export const userRouter = createTRPCRouter({
         subtopic: z.string().min(1),
       })
     )
-    .mutation(({ ctx, input }) => {
-      if (!ctx.user?.id) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "Not authenticated",
-        });
-      }
+    .mutation(({ ctx, input }) =>
       // Backward-compatible alias fed by the canonical progress service (#35).
-      return createProgress(ctx.db, ctx.user.id as string, input);
-    }),
+      createProgress(ctx.db, requireUserId(ctx.user), input)
+    ),
 
   getUserProgress: permissionProcedure("Progress", "view")
     .input(
@@ -88,7 +71,7 @@ export const userRouter = createTRPCRouter({
     )
     .query(({ ctx, input }) =>
       // Backward-compatible alias fed by the canonical progress service (#35).
-      listProgress(ctx.db, ctx.user.id as string, input)
+      listProgress(ctx.db, requireUserId(ctx.user), input)
     ),
 
   getUserAchievements: permissionProcedure("Achievement", "view")
@@ -100,13 +83,13 @@ export const userRouter = createTRPCRouter({
     )
     .query(({ ctx, input }) =>
       // Backward-compatible alias fed by the canonical achievement service (#36).
-      listAchievements(ctx.db, ctx.user.id as string, input)
+      listAchievements(ctx.db, requireUserId(ctx.user), input)
     ),
 
   deleteAllUserProgress: permissionProcedure("Progress", "delete").mutation(
     ({ ctx }) =>
       // Backward-compatible alias fed by the canonical progress service (#35).
-      deleteAllProgress(ctx.db, ctx.user.id as string)
+      deleteAllProgress(ctx.db, requireUserId(ctx.user))
   ),
 
   deleteAllUserAchievements: permissionProcedure(
@@ -114,7 +97,7 @@ export const userRouter = createTRPCRouter({
     "delete"
   ).mutation(({ ctx }) =>
     // Backward-compatible alias fed by the canonical achievement service (#36).
-    deleteAllAchievements(ctx.db, ctx.user.id as string)
+    deleteAllAchievements(ctx.db, requireUserId(ctx.user))
   ),
 
   unlockUserAchievement: permissionProcedure("Achievement", "create")
@@ -125,6 +108,6 @@ export const userRouter = createTRPCRouter({
     )
     .mutation(({ ctx, input }) =>
       // Backward-compatible alias fed by the canonical achievement service (#36).
-      unlockAchievement(ctx.db, ctx.user.id as string, input)
+      unlockAchievement(ctx.db, requireUserId(ctx.user), input)
     ),
 });
