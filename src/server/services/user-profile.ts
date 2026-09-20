@@ -1,24 +1,22 @@
 import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+import { createUserRepository, type UserDb } from "@/server/repositories/user";
 
 /**
- * User profile service (Slice 1, #58).
+ * User profile service (Slice 1, #58; repository tier in Slice 6, #63).
  *
- * Owns biography/isPrivate domain rules; persistence stays on the injected
- * `db.user` delegate so unit tests can mock the repository seam. Biography
- * and privacy never enter session tokens; public redaction lives in a later
- * slice — this one covers normalization, defaults, and owner round-trip.
+ * Owns biography/isPrivate domain rules; persistence lives in
+ * `src/server/repositories/user.ts` so unit tests can mock the
+ * repository seam. Biography and privacy never enter session tokens;
+ * public redaction lives in a later slice — this one covers
+ * normalization, defaults, and owner round-trip.
  */
 
 export const BIOGRAPHY_MAX_LENGTH = 500;
 
 type Db = Pick<PrismaClient, "user">;
 
-export type ProfileRow = {
-  id: string;
-  biography: string | null;
-  isPrivate: boolean;
-};
+export type ProfileRow = import("@/server/repositories/user").ProfileRow;
 
 export type UpdateOwnProfileInput = {
   biography?: string | null;
@@ -63,11 +61,11 @@ export async function getOwnProfile(
   db: Db,
   userId: string
 ): Promise<{ success: true; data: ProfileRow }> {
+  // Profile reads never touch role membership: the injected `db` handle
+  // only carries the `user` delegate here, widened for the repository seam.
+  const repository = createUserRepository(db as UserDb);
   try {
-    const row = (await db.user.findUnique({
-      where: { id: userId },
-      select: { id: true, biography: true, isPrivate: true },
-    })) as ProfileRow | null;
+    const row = await repository.findProfile(userId);
     if (!row) {
       throw new TRPCError({ code: "NOT_FOUND", message: "User not found." });
     }
@@ -104,12 +102,11 @@ export async function updateOwnProfile(
   if (isPrivate !== undefined) {
     data.isPrivate = isPrivate;
   }
+  // Profile writes never touch role membership: the injected `db` handle
+  // only carries the `user` delegate here, widened for the repository seam.
+  const repository = createUserRepository(db as UserDb);
   try {
-    const row = (await db.user.update({
-      where: { id: userId },
-      data,
-      select: { id: true, biography: true, isPrivate: true },
-    })) as ProfileRow;
+    const row = await repository.updateProfile(userId, data);
     return {
       success: true as const,
       data: {

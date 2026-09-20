@@ -1,17 +1,26 @@
 import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+import {
+  createAchievementRepository,
+  type GrantRow,
+} from "@/server/repositories/achievement";
 import type {
   ListAchievementsInput,
   UnlockAchievementInput,
 } from "@/server/schemas/achievement";
 
 /**
- * Shared achievement service (Migration 13, #36).
+ * Shared achievement service (Migration 13, #36; repository tier in
+ * Slice 6, #63).
  *
  * Canonical per-user achievement list/unlock/delete logic. Both the new
  * `achievement` router and the legacy `user` achievement procedures are fed
  * by these helpers so the unlock-to-inventory journey stays consistent
  * across seams.
+ *
+ * Persistence lives in `src/server/repositories/achievement.ts` — this
+ * module owns domain rules only (idempotent unlock, unique-race
+ * tolerance, grant scoping) and never touches Prisma directly.
  */
 
 type Db = Pick<PrismaClient, "achievement" | "userAchievement">;
@@ -37,13 +46,9 @@ export async function listAchievements(
   input: ListAchievementsInput
 ) {
   const { skip, take } = pickPagination(input);
+  const repository = createAchievementRepository(db);
   try {
-    const achievements = await db.userAchievement.findMany({
-      where: { userId },
-      include: { achievement: true },
-      skip,
-      take,
-    });
+    const achievements = await repository.listGrants(userId, skip, take);
     return { success: true as const, data: achievements };
   } catch (error) {
     console.error("listAchievements error:", error);
@@ -56,8 +61,9 @@ export async function listAchievements(
 }
 
 export async function deleteAllAchievements(db: Db, userId: string) {
+  const repository = createAchievementRepository(db);
   try {
-    await db.userAchievement.deleteMany({ where: { userId } });
+    await repository.deleteGrantsByUser(userId);
     return { success: true as const };
   } catch (error) {
     console.error("deleteAllAchievements error:", error);
@@ -75,10 +81,9 @@ export async function unlockAchievement(
   input: UnlockAchievementInput
 ) {
   const { achievementName } = input;
+  const repository = createAchievementRepository(db);
   try {
-    const achievement = await db.achievement.findUnique({
-      where: { name: achievementName },
-    });
+    const achievement = await repository.findCatalogByName(achievementName);
 
     if (!achievement) {
       throw new TRPCError({
@@ -87,11 +92,10 @@ export async function unlockAchievement(
       });
     }
 
-    const existingUnlock = await db.userAchievement.findUnique({
-      where: {
-        userId_achievementId: { userId, achievementId: achievement.id },
-      },
-    });
+    const existingUnlock: GrantRow | null = await repository.findGrant(
+      userId,
+      achievement.id
+    );
 
     if (existingUnlock) {
       return {
@@ -105,14 +109,12 @@ export async function unlockAchievement(
     }
 
     try {
-      const newUnlock = await db.userAchievement.create({
-        data: {
-          userId,
-          achievementId: achievement.id,
-          achievementName: achievement.name,
-          achievementDescription: achievement.description ?? "No description",
-        },
-      });
+      const newUnlock = await repository.createGrant(
+        userId,
+        achievement.id,
+        achievement.name,
+        achievement.description ?? "No description"
+      );
 
       return {
         success: true as const,
@@ -125,11 +127,7 @@ export async function unlockAchievement(
     } catch (createErr) {
       // A concurrent request may have won the unique constraint race.
       if (isUniqueConstraintRace(createErr)) {
-        const already = await db.userAchievement.findUnique({
-          where: {
-            userId_achievementId: { userId, achievementId: achievement.id },
-          },
-        });
+        const already = await repository.findGrant(userId, achievement.id);
 
         return {
           success: true as const,

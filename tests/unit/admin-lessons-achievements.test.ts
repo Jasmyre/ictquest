@@ -334,8 +334,14 @@ describe("Migration 15 — Admin lessons plus achievements content", () => {
     expect(achievementsPage).toContain('data-testid="admin-achievements"');
     expect(achievementsPage).toContain('data-testid="admin-achievement-row"');
 
+    // Slice 6 (#63): catalog persistence lives in the lesson
+    // repository; the service only delegates plus maps NOT_FOUND.
     const service = read("src/server/services/lesson-content.ts");
-    expect(service).toContain("parseLessonFrontmatter");
-    expect(service).toContain("content/lessons");
+    expect(service).toContain("createLessonRepository");
+    expect(service).not.toContain("parseLessonFrontmatter");
+    expect(service).not.toContain("readdirSync");
+    const repository = read("src/server/repositories/lesson.ts");
+    expect(repository).toContain("parseLessonFrontmatter");
+    expect(repository).toContain("content/lessons");
   });
 });

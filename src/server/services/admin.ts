@@ -1,6 +1,15 @@
 import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import type { RoleName } from "@/lib/roles";
+import {
+  type AchievementDb,
+  createAchievementRepository,
+} from "@/server/repositories/achievement";
+import {
+  createProgressRepository,
+  type ProgressDb,
+} from "@/server/repositories/progress";
+import { createUserRepository, type UserDb } from "@/server/repositories/user";
 import type {
   CreateAchievementDefinitionInput,
   DeleteAchievementDefinitionInput,
@@ -15,7 +24,8 @@ import { unlockAchievement } from "@/server/services/achievement";
 
 /**
  * Admin user plus progress-op service (Migration 14, #37; extended in
- * Migration 15, #38 with Achievement-definition management).
+ * Migration 15, #38 with Achievement-definition management; repository
+ * tier in Slice 6, #63).
  *
  * Backs the ADMIN-gated `admin` router procedures: user/role assignment
  * management, per-user progress support ops (grant/revoke achievements,
@@ -27,6 +37,11 @@ import { unlockAchievement } from "@/server/services/achievement";
  * Lesson content has no helpers here by design: curriculum stays
  * dev-authored MDX in git and is served read-only through
  * `src/server/services/lesson-content.ts`.
+ *
+ * Persistence lives in `src/server/repositories/{user,progress,
+ * achievement}.ts` — this module owns business rules only (idempotent
+ * grant, only-role refusal, self-demotion refusal) and never touches
+ * Prisma directly.
  */
 
 type Db = Pick<
@@ -43,37 +58,37 @@ function pickPagination(input: ListUsersInput): {
   return { skip: input.skip ?? 0, take: input.take ?? 20 };
 }
 
+function users(db: Db): ReturnType<typeof createUserRepository> {
+  return createUserRepository(db as UserDb);
+}
+
+function progress(db: Db): ReturnType<typeof createProgressRepository> {
+  return createProgressRepository(db as ProgressDb);
+}
+
+function achievements(db: Db): ReturnType<typeof createAchievementRepository> {
+  return createAchievementRepository(db as AchievementDb);
+}
+
 async function assertUserExists(db: Db, userId: string): Promise<void> {
-  const user = await db.user.findUnique({ where: { id: userId } });
+  const user = await users(db).findById(userId);
   if (!user) {
     throw new TRPCError({ code: "NOT_FOUND", message: "User not found." });
   }
 }
 
 async function currentRoles(db: Db, userId: string): Promise<string[]> {
-  const user = await db.user.findUnique({
-    where: { id: userId },
-    include: { roles: true },
-  });
+  const user = await users(db).findWithRoles(userId);
   return (user?.roles ?? []).map((r) => r.name);
 }
 
 export async function listUsersWithRoles(db: Db, input: ListUsersInput) {
   const { skip, take } = pickPagination(input);
   try {
-    const users = await db.user.findMany({
-      skip,
-      take,
-      select: {
-        id: true,
-        email: true,
-        userName: true,
-        roles: true,
-      },
-    });
+    const rows = await users(db).listUsers(skip, take);
     return {
       success: true as const,
-      data: users.map((u) => ({
+      data: rows.map((u) => ({
         id: u.id,
         email: u.email,
         userName: u.userName,
@@ -90,20 +105,14 @@ export async function listUsersWithRoles(db: Db, input: ListUsersInput) {
 }
 
 export async function grantRole(db: Db, input: RoleInput) {
+  const repository = users(db);
   try {
     await assertUserExists(db, input.userId);
-    const role = await db.role.upsert({
-      where: { name: input.role },
-      update: {},
-      create: { name: input.role },
-    });
+    const role = await repository.ensureRole(input.role);
     // Idempotent connect on the implicit join: repeat grants resolve to the
     // same success shape (unique-violation tolerant).
     try {
-      await db.user.update({
-        where: { id: input.userId },
-        data: { roles: { connect: { id: role.id } } },
-      });
+      await repository.connectRole(input.userId, role.id);
     } catch (connectErr) {
       if (!isUniqueViolation(connectErr)) {
         throw connectErr;
@@ -133,9 +142,10 @@ export async function revokeRole(
   input: RoleInput,
   opts?: { callerId?: string; callerRoles?: readonly string[] }
 ) {
+  const repository = users(db);
   try {
     await assertUserExists(db, input.userId);
-    const role = await db.role.findUnique({ where: { name: input.role } });
+    const role = await repository.findRole(input.role);
     if (!role) {
       throw new TRPCError({ code: "NOT_FOUND", message: "Role not found." });
     }
@@ -171,10 +181,7 @@ export async function revokeRole(
     }
     // Prisma `disconnect` on a non-linked implicit join row is a no-op, so
     // a concurrent delete still resolves idempotently below.
-    await db.user.update({
-      where: { id: input.userId },
-      data: { roles: { disconnect: { id: role.id } } },
-    });
+    await repository.disconnectRole(input.userId, role.id);
     return {
       success: true as const,
       data: {
@@ -220,32 +227,26 @@ export async function revokeAchievementForUser(
   db: Db,
   input: RevokeAchievementInput
 ) {
+  const repository = achievements(db);
   try {
     await assertUserExists(db, input.userId);
-    const achievement = await db.achievement.findUnique({
-      where: { name: input.achievementName },
-    });
+    const achievement = await repository.findCatalogByName(
+      input.achievementName
+    );
     if (!achievement) {
       throw new TRPCError({
         code: "NOT_FOUND",
         message: "The achievement is unavailable or may have been removed.",
       });
     }
-    const existing = await db.userAchievement.findUnique({
-      where: {
-        userId_achievementId: {
-          userId: input.userId,
-          achievementId: achievement.id,
-        },
-      },
-    });
+    const existing = await repository.findGrant(input.userId, achievement.id);
     if (!existing) {
       return {
         success: true as const,
         data: { userId: input.userId, status: "already-removed" as const },
       };
     }
-    await db.userAchievement.delete({ where: { id: existing.id } });
+    await repository.deleteGrant(existing.id);
     return {
       success: true as const,
       data: { userId: input.userId, status: "removed" as const },
@@ -263,11 +264,10 @@ export async function revokeAchievementForUser(
 }
 
 export async function resetUserProgress(db: Db, input: ResetProgressInput) {
+  const repository = progress(db);
   try {
     await assertUserExists(db, input.userId);
-    const result = await db.progressData.deleteMany({
-      where: { userId: input.userId },
-    });
+    const result = await repository.deleteByUser(input.userId);
     return {
       success: true as const,
       data: { userId: input.userId, deleted: result.count },
@@ -306,12 +306,9 @@ export async function listAchievementDefinitions(
 ) {
   const skip = input.skip ?? 0;
   const take = input.take ?? 20;
+  const repository = achievements(db as Db);
   try {
-    const data = await db.achievement.findMany({
-      skip,
-      take,
-      orderBy: { id: "asc" },
-    });
+    const data = await repository.findCatalog(skip, take);
     return { success: true as const, data };
   } catch (error) {
     console.error("listAchievementDefinitions error:", error);
@@ -326,13 +323,12 @@ export async function createAchievementDefinition(
   db: Pick<Db, "achievement">,
   input: CreateAchievementDefinitionInput
 ) {
+  const repository = achievements(db as Db);
   try {
-    const data = await db.achievement.create({
-      data: {
-        name: input.name,
-        description: input.description ?? null,
-      },
-    });
+    const data = await repository.createCatalogEntry(
+      input.name,
+      input.description ?? null
+    );
     return { success: true as const, data };
   } catch (error) {
     if (isUniqueViolation(error)) {
@@ -353,13 +349,11 @@ export async function updateAchievementDefinition(
   db: Pick<Db, "achievement">,
   input: UpdateAchievementDefinitionInput
 ) {
+  const repository = achievements(db as Db);
   try {
-    const data = await db.achievement.update({
-      where: { id: input.id },
-      data: {
-        ...(typeof input.name === "string" ? { name: input.name } : {}),
-        ...("description" in input ? { description: input.description } : {}),
-      },
+    const data = await repository.updateCatalogEntry(input.id, {
+      ...(typeof input.name === "string" ? { name: input.name } : {}),
+      ...("description" in input ? { description: input.description } : {}),
     });
     return { success: true as const, data };
   } catch (error) {
@@ -387,8 +381,9 @@ export async function deleteAchievementDefinition(
   db: Pick<Db, "achievement">,
   input: DeleteAchievementDefinitionInput
 ) {
+  const repository = achievements(db as Db);
   try {
-    const data = await db.achievement.delete({ where: { id: input.id } });
+    const data = await repository.deleteCatalogEntry(input.id);
     return { success: true as const, data: { id: data.id } };
   } catch (error) {
     if (isMissingRow(error)) {

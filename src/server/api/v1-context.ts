@@ -6,6 +6,7 @@ import {
   extractBearerToken,
   verifyPersonalAccessToken,
 } from "@/server/auth/personal-access-tokens";
+import { createUserRepository } from "@/server/repositories/user";
 
 /**
  * Versioned REST context (Migration 18, #41 / ADR 0002 + ADR 0005).
@@ -28,8 +29,10 @@ export async function resolveV1UserFromRequest(req: Request): Promise<{
       () => null
     );
     if (record) {
-      const owner = await db.user
-        .findUnique({ where: { id: record.userId } })
+      // Token-owner lookup goes through the user repository, never an
+      // inline `db.user` query (Slice 6, #63).
+      const owner = await createUserRepository(db)
+        .findById(record.userId)
         .catch(() => null);
       if (owner) {
         const roles = await getUserRoleNames(owner.id).catch(() => []);
