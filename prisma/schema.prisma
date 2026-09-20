@@ -20,6 +20,7 @@ model User {
   progressData         ProgressData[]
   userAchievements     UserAchievement[]
   roleAssignments      UserRoleAssignment[]
+  roles                Role[]
   personalAccessTokens PersonalAccessToken[]
 }
 
@@ -82,6 +83,7 @@ model Role {
   name      String               @unique
   createdAt DateTime             @default(now())
   members   UserRoleAssignment[]
+  users     User[]
 }
 
 model UserRoleAssignment {
