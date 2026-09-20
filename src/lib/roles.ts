@@ -25,7 +25,8 @@ export function hasRole(
   if (!roles) {
     return false;
   }
-  return roles.includes(role);
+  const wanted = role.toUpperCase();
+  return roles.some((r) => typeof r === "string" && r.toUpperCase() === wanted);
 }
 
 export async function getUserRoleNames(
@@ -40,7 +41,7 @@ export async function getUserRoleNames(
   if (!user) {
     return [];
   }
-  return user.roles.map((r) => r.name as RoleName);
+  return user.roles.map((r) => String(r.name).toUpperCase() as RoleName);
 }
 
 export async function ensureDefaultRole(
@@ -49,7 +50,7 @@ export async function ensureDefaultRole(
 ): Promise<RoleName[]> {
   const store = client ?? (await defaultStore());
   const existing = await getUserRoleNames(userId, store);
-  if (existing.includes(DEFAULT_ROLE_NAME)) {
+  if (existing.some((r) => r.toUpperCase() === DEFAULT_ROLE_NAME)) {
     return existing;
   }
   const role = await store.role.upsert({
@@ -122,7 +123,12 @@ export function assertZeroWithoutDefault(
   users: { id: string; roles: readonly string[] }[]
 ): void {
   const missing = users
-    .filter((u) => !u.roles.includes(DEFAULT_ROLE_NAME))
+    .filter(
+      (u) =>
+        !u.roles.some(
+          (r) => typeof r === "string" && r.toUpperCase() === DEFAULT_ROLE_NAME
+        )
+    )
     .map((u) => u.id);
   if (missing.length > 0) {
     throw new Error(

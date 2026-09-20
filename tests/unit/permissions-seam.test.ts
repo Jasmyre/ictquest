@@ -99,4 +99,22 @@ describe("permissions seam matrix (#61)", () => {
     expect(hasPermission(learner, "Achievement", "manage")).toBe(false);
     expect(hasPermission(admin, "Achievement", "manage")).toBe(true);
   });
+
+  it("grants multi-role sessions regardless of role-name casing", async () => {
+    const { hasPermission, hasActionGrant } = await import(
+      "@/server/permissions"
+    );
+    const { hasRole } = await import("@/lib/roles");
+    const lowerAdmin = { id: "admin-1", roles: ["user", "admin"] };
+    expect(hasActionGrant(lowerAdmin, "Admin", "manage")).toBe(true);
+    expect(hasPermission(lowerAdmin, "Achievement", "manage")).toBe(true);
+    expect(
+      hasPermission(lowerAdmin, "Progress", "view", { userId: "admin-1" })
+    ).toBe(true);
+    expect(hasRole(["user", "admin"], "ADMIN")).toBe(true);
+    expect(hasRole(["admin", "user"], "USER")).toBe(true);
+    await expect(
+      (await callerFor(lowerAdmin)).admin.pingAdmin()
+    ).resolves.toMatchObject({ success: true });
+  });
 });

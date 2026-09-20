@@ -157,14 +157,16 @@ export async function revokeRole(
     if (
       opts?.callerId === input.userId &&
       input.role === "ADMIN" &&
-      (opts?.callerRoles ?? []).includes("ADMIN")
+      (opts?.callerRoles ?? []).some(
+        (r) => typeof r === "string" && r.toUpperCase() === "ADMIN"
+      )
     ) {
       throw new TRPCError({
         code: "FORBIDDEN",
         message: "Admins cannot remove their own admin role.",
       });
     }
-    if (!roles.includes(input.role)) {
+    if (!roles.some((r) => r.toUpperCase() === input.role)) {
       return {
         success: true as const,
         data: {

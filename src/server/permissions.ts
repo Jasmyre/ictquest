@@ -122,7 +122,10 @@ function heldRoles(user: PermissionUser | null | undefined): RoleName[] {
   if (!user?.roles) {
     return [];
   }
-  return user.roles.filter(
+  const normalized = user.roles.map((r) =>
+    typeof r === "string" ? r.toUpperCase() : r
+  );
+  return normalized.filter(
     (r): r is RoleName => r === "ADMIN" || r === "MODERATOR" || r === "USER"
   );
 }
