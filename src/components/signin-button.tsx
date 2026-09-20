@@ -2,6 +2,7 @@ import Link from "next/link";
 import { auth, signOut } from "@/auth";
 import { getUserById } from "@/data/user";
 import { db } from "@/lib/db";
+import { createUserRepository } from "@/server/repositories/user";
 import { Button } from "./ui/button";
 
 const SigninButton = async () => {
@@ -11,13 +12,10 @@ const SigninButton = async () => {
     const user = await getUserById(session?.user.id as string);
     const id = user?.id;
 
-    if (!user?.userName) {
-      await db.user.update({
-        where: { id },
-        data: {
-          userName: user?.name,
-        },
-      });
+    // Presentation tier never touches persistence directly: the
+    // display-name backfill goes through the user repository (Slice 6, #63).
+    if (!user?.userName && id && user?.name) {
+      await createUserRepository(db).updateUserName(id, user.name);
     }
   }
 

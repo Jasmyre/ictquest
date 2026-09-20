@@ -7,7 +7,7 @@ import type { api } from "@/trpc/server";
 
 type UserHeaderProps = {
   isFollowing: boolean;
-  user: Awaited<ReturnType<typeof api.user.getUserStatsById>>["data"];
+  user: Awaited<ReturnType<typeof api.dashboard.getDashboardById>>["data"];
 };
 
 const UserHeader = ({ isFollowing, user }: UserHeaderProps) => (

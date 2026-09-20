@@ -1,13 +1,12 @@
-import type { $Enums } from "@prisma/client";
 import lessons from "@/db/lessons";
 import { db } from "@/lib/db";
+import { getUserRoleNames, type RoleName } from "@/lib/roles";
 
 type GetUserByEmail = {
   name: string;
   id: string;
   image: string | null;
   email: string | null;
-  role: $Enums.UserRole;
   userName: string | null;
   emailVerified: Date | null;
   password: string | null;
@@ -43,6 +42,38 @@ export const getUserById = async (id: string | null) => {
     });
 
     return user;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+/**
+ * Role-aware user fetch (Migration 08).
+ *
+ * Loads the user row plus its current `Role` membership names from the
+ * implicit many-to-many join — the same source that backs session
+ * `roles[]`, `hasRole`, and the privileged tRPC procedures. Returns `null`
+ * when the user does not exist or the lookup fails.
+ */
+export const getUserWithRoles = async (
+  id: string | null
+): Promise<
+  | ({ roles: RoleName[] } & NonNullable<
+      Awaited<ReturnType<typeof getUserById>>
+    >)
+  | null
+> => {
+  try {
+    const user = await getUserById(id);
+
+    if (!user) {
+      return null;
+    }
+
+    const roles = await getUserRoleNames(user.id);
+
+    return { ...user, roles };
   } catch (error) {
     console.error(error);
     return null;

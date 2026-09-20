@@ -1,0 +1,107 @@
+---
+lesson: advanced-html
+subtopic: html_advanced_elements
+slug: html_advanced_elements
+title: "HTML Advanced Elements"
+order: 1
+---
+
+{/* Migration 09 (#32). One file per Subtopic; slugs stay stable so existing
+    ProgressData keys ({ topic, subtopic }) still match.
+    Legacy source: src/db/html_advanced_elements/html-advanced-elements.tsx.
+    Presentation lives here plus the central component map
+    (src/components/lessons/mdx-components.tsx) — never in row data. */}
+
+<Step submit="Continue">
+
+Beyond paragraphs and images live interactive elements: dropdowns, collapsible
+sections, dialogs, and labeled controls. Let's build each one.
+
+</Step>
+
+<Step submit="Continue">
+
+A <CodeHighlight>{"<select>"}</CodeHighlight> dropdown offers a compact list of
+<CodeHighlight>{"<option>"}</CodeHighlight> choices.
+
+<CodeBlock code={'<select>\n  <option value="apple">Apple</option>\n  <option value="banana">Banana</option>\n</select>'} language="HTML" />
+
+<Browser content={`<select><option>Apple</option><option>Banana</option><option>Cherry</option></select>`} title="Dropdown" />
+
+</Step>
+
+<Step submit="Continue">
+
+Arrange the dropdown menu code correctly.
+
+<PracticeQuiz
+  answer={'<select>\n  <option value="apple">Apple</option>\n  <option value="banana">Banana</option>\n  <option value="cherry">Cherry</option>\n</select>'}
+  options={[
+    { label: "<select>\n", priority: 0 },
+    { label: '  <option value="apple">Apple</option>\n', priority: 1 },
+    { label: '  <option value="banana">Banana</option>\n', priority: 1 },
+    { label: '  <option value="cherry">Cherry</option>\n', priority: 1 },
+    { label: "</select>", priority: 2 },
+  ]}
+  response={{
+    positive: "Great job!",
+    negative: "That's not quite right. Try again!",
+  }}
+  title={["Arrange the dropdown menu code correctly"]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+A <CodeHighlight>{"<details>"}</CodeHighlight> block hides extra content behind a
+<CodeHighlight>{"<summary>"}</CodeHighlight> label — perfect for FAQs.
+
+<CodeBlock code={"<details>\n  <summary>More Info</summary>\n  <p>This is the hidden content.</p>\n</details>"} language="HTML" />
+
+<Browser content="<details><summary>More Info</summary><p>This is the hidden content.</p></details>" title="Collapsible" />
+
+</Step>
+
+<Step submit="Continue">
+
+Arrange the collapsible section code correctly.
+
+<PracticeQuiz
+  answer={"<details>\n  <summary>More Info</summary>\n  <p>This is the hidden content.</p>\n</details>"}
+  options={[
+    { label: "<details>\n", priority: 0 },
+    { label: "  <summary>More Info</summary>\n", priority: 1 },
+    { label: "  <p>This is the hidden content.</p>\n", priority: 2 },
+    { label: "</details>", priority: 3 },
+  ]}
+  response={{
+    positive: "Great job!",
+    negative: "Try again!",
+  }}
+  title={["Arrange the collapsible section code correctly"]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+Dialogs, fieldsets, and labels round out the advanced set. A
+<CodeHighlight>{"<dialog>"}</CodeHighlight> pops a modal,
+<CodeHighlight>{"<fieldset>"}</CodeHighlight> groups related controls under a
+<CodeHighlight>{"<legend>"}</CodeHighlight>, and
+<CodeHighlight>{"<label>"}</CodeHighlight> names an input for everyone —
+including screen readers.
+
+<CodeBlock code={'<fieldset>\n  <legend>Contact</legend>\n  <label>Name: <input type="text" /></label>\n</fieldset>'} language="HTML" />
+
+<Browser content={`<fieldset><legend>Contact</legend><label>Name: <input type="text" /></label></fieldset>`} title="Fieldset and Legend" />
+
+</Step>
+
+<Step submit="Finish">
+
+Dropdowns, collapsibles, dialogs, and labeled groups are now in your toolbox.
+Advanced elements turn static pages into real interfaces.
+
+</Step>

@@ -4,7 +4,7 @@ import type { api } from "@/trpc/server";
 
 type UserStatSummaryProps = {
   user: Pick<
-    Awaited<ReturnType<typeof api.user.getUserStatsById>>["data"],
+    Awaited<ReturnType<typeof api.dashboard.getDashboardById>>["data"],
     "totalSubtopicsCompleted" | "totalAchievements"
   >;
 };

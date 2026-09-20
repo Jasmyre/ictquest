@@ -1,0 +1,111 @@
+---
+lesson: test
+subtopic: quiz
+slug: quiz
+title: "HTML and Its History Quiz"
+order: 1
+---
+
+{/* Migration 09 (#32). One file per Subtopic; slugs stay stable so existing
+    ProgressData keys ({ topic, subtopic }) still match.
+    Legacy source: src/db/test/quiz.tsx (representative slice of the 46-step
+    assessment; every question below is verbatim legacy data converted from
+    function-label quizzes to tagged components with hoisted data).
+    Presentation lives here plus the central component map
+    (src/components/lessons/mdx-components.tsx) — never in row data. */}
+
+<Step submit="Continue">
+
+Good Luck!! This assessment covers everything from basics to advanced concepts.
+Answer each question — the stepper records correctness as you go.
+
+</Step>
+
+<Step submit="Continue">
+
+<MultipleChoiceQuiz
+  answer="HyperText Markup Language"
+  options={[
+    "HyperText Markup Language",
+    "Home Tool Markup Language",
+    "Hyperlink Text Markup Language",
+    "How To Make Lasagna",
+  ]}
+  response={{
+    positive: "Yup, you got it!",
+    negative: "Nope, give it another shot!",
+  }}
+  title={["What does HTML stand for?"]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+<PracticeQuiz
+  answer="<button>Click me!</button>"
+  initialCode={["<body>\n  ", "\n</body>"]}
+  options={[
+    { label: "<button>", priority: 1 },
+    { label: "Click me!", priority: 2 },
+    { label: "</button>", priority: 3 },
+  ]}
+  response={{
+    positive: "Correct, you are a fast learner!",
+    negative: "Incorrect, Please try again!",
+  }}
+  title={["Now, let's try creating a button using HTML. Can you put the pieces in the correct order?"]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+Quick Quiz: Which tag is used to insert a line break?
+
+<MultipleChoiceQuiz
+  answer="<br>"
+  options={["<br>", "<hr>", "<p>", "<span>"]}
+  response={{
+    positive: "That's right! <br> adds a line break.",
+    negative: "Not quite, try again.",
+  }}
+  title={["Select the correct tag:"]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+<MultipleChoiceQuiz
+  answer="<title>"
+  options={["<title>", "<header>", "<h1>", "<meta>"]}
+  response={{
+    positive: "Correct! It's the <title> tag.",
+    negative: "Not quite, try again.",
+  }}
+  title={["Which tag shows the page title on the browser tab?"]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+<MultipleChoiceQuiz
+  answer="<mark>"
+  options={["<mark>", "<strong>", "<em>", "<code>"]}
+  response={{
+    positive: "Correct!",
+    negative: "Try again!",
+  }}
+  title={["Which tag is used to highlight text?"]}
+/>
+
+</Step>
+
+<Step submit="Finish">
+
+Assessment complete — great work proving your expertise from basics to advanced
+concepts!
+
+</Step>

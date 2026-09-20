@@ -60,7 +60,15 @@
     }
   },
   "javascript": {
-    "globals": ["jest", "describe", "it", "beforeAll", "afterAll", "afterEach"],
+    "globals": [
+      "describe",
+      "it",
+      "expect",
+      "vi",
+      "beforeAll",
+      "afterAll",
+      "afterEach"
+    ],
     "assist": {
       "enabled": true
     },
@@ -86,5 +94,17 @@
       "tailwindDirectives": true
     }
   },
-  "extends": ["ultracite/core", "ultracite/react", "ultracite/next"]
+  "extends": ["ultracite/core", "ultracite/react", "ultracite/next"],
+  "overrides": [
+    {
+      "includes": ["tests/**/*.test.{ts,tsx}", "tests/**/*.spec.{ts,tsx}"],
+      "linter": {
+        "rules": {
+          "performance": {
+            "useTopLevelRegex": "off"
+          }
+        }
+      }
+    }
+  ]
 }

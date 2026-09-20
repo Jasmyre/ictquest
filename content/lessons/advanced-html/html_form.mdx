@@ -1,0 +1,98 @@
+---
+lesson: advanced-html
+subtopic: html_form
+slug: html_form
+title: "HTML Forms"
+order: 2
+---
+
+{/* Migration 09 (#32). One file per Subtopic; slugs stay stable so existing
+    ProgressData keys ({ topic, subtopic }) still match.
+    Legacy source: src/db/html_advanced_elements/html-form.tsx.
+    Presentation lives here plus the central component map
+    (src/components/lessons/mdx-components.tsx) — never in row data. */}
+
+<Step submit="Continue">
+
+Forms collect input: names, emails, passwords, choices, and long answers. Every
+form starts with a <CodeHighlight>{"<form>"}</CodeHighlight> shell that says where
+the data goes.
+
+<CodeBlock code={'<form action="/submit">\n  ...\n</form>'} language="HTML" />
+
+</Step>
+
+<Step submit="Continue">
+
+Which attribute of the <CodeHighlight>{"<form>"}</CodeHighlight> element specifies
+where to send form data?
+
+<MultipleChoiceQuiz
+  answer="action"
+  options={["action", "method", "enctype", "target"]}
+  response={{
+    positive: "Correct! The 'action' attribute sets the destination.",
+    negative: "Oops, try again!",
+  }}
+  title={["Which attribute of the <form> element specifies where to send form data?"]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+Text inputs come in flavors: <CodeHighlight>{"text"}</CodeHighlight>,
+<CodeHighlight>{"email"}</CodeHighlight>, <CodeHighlight>{"password"}</CodeHighlight>,
+and <CodeHighlight>{"number"}</CodeHighlight>. The browser validates each one for
+you.
+
+<CodeBlock code={'<label>Email: <input type="email" /></label>\n<label>Password: <input type="password" /></label>'} language="HTML" />
+
+<Browser content={`<form><label>Email: <input type="email" /></label><br /><label>Password: <input type="password" /></label></form>`} title="Browser" />
+
+</Step>
+
+<Step submit="Continue">
+
+Checkboxes pick many, radios pick one, and a
+<CodeHighlight>{"<textarea>"}</CodeHighlight> holds long answers.
+
+<CodeBlock code={'<label><input type="checkbox" /> Subscribe</label>\n<label><input type="radio" name="plan" /> Free</label>\n<textarea rows="3"></textarea>'} language="HTML" />
+
+<Browser content={`<form><label><input type="checkbox" /> Subscribe</label><br /><label><input type="radio" name="plan" /> Free</label><br /><textarea rows="3"></textarea></form>`} title="Browser" />
+
+</Step>
+
+<Step submit="Continue">
+
+Every form needs a way out. What should the type attribute be for a submit
+button?
+
+<MultipleChoiceQuiz
+  answer="submit"
+  options={["button", "submit", "reset", "text"]}
+  response={{
+    positive: "Correct! type='submit' sends the form.",
+    negative: "Not quite, try again.",
+  }}
+  title={["What should the type attribute be for a submit button?"]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+Wire the button up and preview the whole form working together.
+
+<CodeBlock code={'<form action="/submit">\n  <input type="text" />\n  <button type="submit">Send</button>\n</form>'} language="HTML" />
+
+<Browser content={`<form><input type="text" /><button type="submit">Send</button></form>`} title="Browser" />
+
+</Step>
+
+<Step submit="Finish">
+
+Forms are how the web listens. Shell, inputs, choices, and a submit button —
+you now have the full pattern for collecting anything.
+
+</Step>

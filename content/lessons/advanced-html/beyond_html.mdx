@@ -1,0 +1,59 @@
+---
+lesson: advanced-html
+subtopic: beyond_html
+slug: beyond_html
+title: "Beyond HTML"
+order: 3
+---
+
+{/* Migration 09 (#32). One file per Subtopic; slugs stay stable so existing
+    ProgressData keys ({ topic, subtopic }) still match.
+    Legacy source: src/db/html_advanced_elements/beyond-html.tsx.
+    Presentation lives here plus the central component map
+    (src/components/lessons/mdx-components.tsx) — never in row data. */}
+
+<Step submit="Continue">
+
+HTML gives structure, but pages truly shine when style and behavior join in.
+CSS paints the page; JavaScript makes it respond. Same HTML — two new powers.
+
+</Step>
+
+<Step submit="Continue">
+
+CSS lives in a <CodeHighlight>{"<style>"}</CodeHighlight> block and targets your
+elements. One rule can recolor every heading at once.
+
+<CodeBlock code={"<style>\n  h1 { color: blue; }\n</style>\n<h1>Hello, styled world!</h1>"} language="HTML" />
+
+<Browser content="<h1>Hello, styled world!</h1>" title="CSS Integration Preview" />
+
+</Step>
+
+<Step submit="Continue">
+
+JavaScript lives in a <CodeHighlight>{"<script>"}</CodeHighlight> block and reacts
+to the learner. A tiny function can rewrite the page on every click.
+
+<CodeBlock code={'<button onclick="changeText()">Click me</button>\n<p id="demo">Hello</p>\n<script>\n  function changeText() {\n    document.getElementById("demo").textContent = "You clicked!";\n  }\n</script>'} language="HTML" />
+
+<Browser content={`<button>Click me</button><p>Hello</p>`} title="JavaScript Integration Preview" />
+
+</Step>
+
+<Step submit="Continue">
+
+The pattern is always the same: HTML for structure, CSS for presentation,
+JavaScript for interaction. Three languages, one page, each doing what it does
+best.
+
+<CodeBlock code={"<!-- Structure -->\n<h1 id=\"title\">Hello</h1>\n<!-- Presentation -->\n<style>h1 { color: blue; }</style>"} language="HTML" />
+
+</Step>
+
+<Step submit="Finish">
+
+You've gone beyond HTML: structure plus style plus behavior. That's the full
+front-end trio — and even more dynamic, styled web pages are now within reach.
+
+</Step>

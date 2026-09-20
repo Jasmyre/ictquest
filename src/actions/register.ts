@@ -27,12 +27,25 @@ export const register = async (values: z.infer<typeof registerSchema>) => {
     return { error: "User already exist!" };
   }
 
-  await db.user.create({
-    data: {
-      name,
-      email,
-      password: hashedPassword,
-    },
+  await db.$transaction(async (tx) => {
+    const user = await tx.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+      },
+    });
+
+    const role = await tx.role.upsert({
+      where: { name: "USER" },
+      update: {},
+      create: { name: "USER" },
+    });
+
+    await tx.user.update({
+      where: { id: user.id },
+      data: { roles: { connect: { id: role.id } } },
+    });
   });
 
   // TODO: Send verification email

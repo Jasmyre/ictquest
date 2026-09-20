@@ -7,19 +7,24 @@ import { CustomProgress } from "@/components/custom-progress";
 import { CustomTooltip } from "@/components/custom-tooltip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import lessons from "@/db/lessons";
-import type { api } from "@/trpc/server";
 
 /**
  * Props for ProgressCard component.
  *
- * @property userProgress - The response from `api.user.getUserProgress`.
- *   This is a discriminated union: a success shape containing `data`
- *   or an error shape containing `message` and `status`.
+ * Progress list response from either the canonical `api.progress.list`
+ * (#35) or its backward-compatible alias `api.user.getUserProgress`. Both
+ * share the `{ success, data }` shape fed by the same progress service.
+ * Typed structurally so either router output is assignable.
  */
+type ProgressListInput = {
+  success: boolean;
+  data?: Array<{ topic: string; subtopics: string[] }>;
+};
+
 export const ProgressCard = ({
   userProgress,
 }: {
-  userProgress: Awaited<ReturnType<typeof api.user.getUserProgress>>;
+  userProgress: ProgressListInput;
 }) => {
   /**
    * The progress data array returned from the API.

@@ -6,6 +6,17 @@ type AchievementsProps = {
 };
 
 async function main(): Promise<void> {
+  const roleNames = ["ADMIN", "MODERATOR", "USER"] as const;
+
+  for (const name of roleNames) {
+    await db.role.upsert({
+      where: { name },
+      update: {},
+      create: { name },
+    });
+    console.log(`Seeded role: ${name}`);
+  }
+
   const achievementsData: AchievementsProps[] = [
     // { name: "Clicktastic", description: "Click 1000 times." },
     // { name: "First Steps", description: "Complete your first task." },

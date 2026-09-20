@@ -1,0 +1,107 @@
+---
+lesson: html-elements
+subtopic: html_media_elements
+slug: html_media_elements
+title: "HTML Media Elements"
+order: 3
+---
+
+{/* Migration 09 (#32). One file per Subtopic; slugs stay stable so existing
+    ProgressData keys ({ topic, subtopic }) still match.
+    Legacy source: src/db/html_elements/html-media-elements.tsx.
+    Presentation lives here plus the central component map
+    (src/components/lessons/mdx-components.tsx) — never in row data. */}
+
+<Step submit="Continue">
+
+Text is only half the web. Audio, video, and images bring pages to life — and
+each has its own HTML element with built-in browser controls.
+
+</Step>
+
+<Step submit="Continue">
+
+The <CodeHighlight>{"<audio>"}</CodeHighlight> element plays sound. List one or more
+<CodeHighlight>{"<source>"}</CodeHighlight> files so the browser can pick a format
+it supports.
+
+<CodeBlock code={'<audio controls>\n  <source src="/audio.mp3" type="audio/mpeg">\n</audio>'} language="HTML" />
+
+<Browser content={`<audio controls><source src="/audio.mp3" type="audio/mpeg"></audio>`} title="Audio Element" />
+
+</Step>
+
+<Step submit="Continue">
+
+Arrange the full <CodeHighlight>{"<audio>"}</CodeHighlight> element with fallback
+sources so every browser hears something.
+
+<PracticeQuiz
+  answer={'<audio controls>\n  <source src="/audio.mp3" type="audio/mpeg">\n  <source src="/audio.ogg" type="audio/ogg">\n  Your browser does not support the audio element.\n</audio>'}
+  options={[
+    { label: "<audio controls>\n", priority: 0 },
+    { label: '  <source src="/audio.mp3" type="audio/mpeg">\n', priority: 1 },
+    { label: '  <source src="/audio.ogg" type="audio/ogg">\n', priority: 1 },
+    { label: "  Your browser does not support the audio element.\n", priority: 2 },
+    { label: "</audio>", priority: 3 },
+  ]}
+  response={{
+    positive: "Great job!",
+    negative: "That's not quite right. Try again!",
+  }}
+  title={["Arrange the <audio> element code correctly"]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+The <CodeHighlight>{"<video>"}</CodeHighlight> element works the same way for moving
+pictures, plus sizing attributes and subtitle tracks.
+
+<CodeBlock code={'<video controls width="320" height="240">\n  <source src="/video.mp4" type="video/mp4">\n</video>'} language="HTML" />
+
+<Browser content={`<video controls width="320"><source src="/video.mp4" type="video/mp4"></video>`} title="Video Element" />
+
+</Step>
+
+<Step submit="Continue">
+
+Arrange the <CodeHighlight>{"<video>"}</CodeHighlight> element so it plays with a
+graceful fallback message.
+
+<PracticeQuiz
+  answer={'<video controls width="320" height="240">\n  <source src="/video.mp4" type="video/mp4">\n  Your browser does not support the video tag.\n</video>'}
+  options={[
+    { label: '<video controls width="320" height="240">\n', priority: 0 },
+    { label: '  <source src="/video.mp4" type="video/mp4">\n', priority: 1 },
+    { label: "  Your browser does not support the video tag.\n", priority: 2 },
+    { label: "</video>", priority: 3 },
+  ]}
+  response={{
+    positive: "Great job!",
+    negative: "That's not quite right. Try again!",
+  }}
+  title={["Arrange the <video> element code correctly"]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+Multiple <CodeHighlight>{"<source>"}</CodeHighlight> tags let you ship several
+formats, and a <CodeHighlight>{"<track>"}</CodeHighlight> tag adds subtitles for
+accessibility.
+
+<CodeBlock code={'<video controls>\n  <source src="/video.mp4" type="video/mp4">\n  <track src="/subs.vtt" kind="subtitles">\n</video>'} language="HTML" />
+
+<Browser content={`<video controls><source src="/video.mp4" type="video/mp4"></video>`} title="Video with Subtitles" />
+
+</Step>
+
+<Step submit="Finish">
+
+You can now embed audio and video with fallbacks and subtitles. Media makes
+lessons memorable — use it with care for every learner's bandwidth.
+
+</Step>

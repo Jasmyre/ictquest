@@ -10,11 +10,19 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import type { Session } from "next-auth";
 import superjson from "superjson";
+import type { OpenApiMeta } from "trpc-to-openapi";
 import { ZodError } from "zod";
 import { auth } from "@/auth";
 import { env } from "@/env";
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
+import { hasRole, type RoleName } from "@/lib/roles";
+import { logInfo } from "@/server/logger";
+import {
+  hasActionGrant,
+  type PermissionAction,
+  type PermissionResource,
+} from "@/server/permissions";
 
 /**
  * 1. CONTEXT
@@ -47,19 +55,22 @@ export const createTRPCContext = async (opts: {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
-const t = initTRPC.context<typeof createTRPCContext>().create({
-  transformer: superjson,
-  errorFormatter({ shape, error }) {
-    return {
-      ...shape,
-      data: {
-        ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
-      },
-    };
-  },
-});
+const t = initTRPC
+  .context<typeof createTRPCContext>()
+  .meta<OpenApiMeta>()
+  .create({
+    transformer: superjson,
+    errorFormatter({ shape, error }) {
+      return {
+        ...shape,
+        data: {
+          ...shape.data,
+          zodError:
+            error.cause instanceof ZodError ? error.cause.flatten() : null,
+        },
+      };
+    },
+  });
 
 /**
  * Create a server-side caller.
@@ -100,7 +111,12 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   const result = await next();
 
   const end = Date.now();
-  console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
+  // Keep test output quiet: procedure timing is a dev/prod diagnostic and
+  // every caller-based unit test would otherwise spam `[TRPC] ...` lines.
+  // Tests mock `@/env` with `NODE_ENV: "test"`, and vitest sets it for real.
+  if (env.NODE_ENV !== "test") {
+    logInfo(`[TRPC] ${path} took ${end - start}ms to execute`);
+  }
 
   return result;
 });
@@ -118,7 +134,10 @@ const WINDOW_SEC = 40; // 40 seconds
 const LIMIT = 10; // max 10 requests per window
 
 const publicRateLimiter = t.middleware(async ({ ctx, next, path }) => {
-  if (env.NODE_ENV === "development") {
+  // Rate limiting is a production guard (Redis-backed, 10 req / 40s per IP).
+  // Dev and test bypass so local runs and contract tests stay deterministic;
+  // production enforces TOO_MANY_REQUESTS via the Redis counter below.
+  if (env.NODE_ENV !== "production") {
     return next();
   }
 
@@ -164,3 +183,112 @@ export const privateProcedure = t.procedure.use(function isAuthed(opts) {
     },
   });
 });
+
+/**
+ * Behavior-identical permissions gate (Slice 4, #61).
+ *
+ * Coarse controller gate over the locked matrix in
+ * `src/server/permissions.ts`: UNAUTHORIZED when signed out, FORBIDDEN
+ * when no held role grants the action. Owner-predicate rules count as
+ * grants here; the resolver re-checks the row with `requirePermission`
+ * where a record exists (missing records answer FORBIDDEN, anti-probing).
+ */
+export const permissionProcedure = (
+  resource: PermissionResource,
+  action: PermissionAction
+) =>
+  privateProcedure.use(function isPermitted(opts) {
+    const { ctx } = opts;
+
+    if (!hasActionGrant(ctx.user, resource, action)) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "You do not have permission to perform this action.",
+      });
+    }
+
+    return opts.next({
+      ctx: {
+        user: ctx.user,
+      },
+    });
+  });
+
+/**
+ * Narrow the session user to its id (code-review Standards fix).
+ *
+ * `Session["user"].id` is optional (`DefaultSession`), so resolvers
+ * previously wrote `ctx.user.id as string` after the auth gate. This
+ * helper narrows instead of asserting: a missing id answers UNAUTHORIZED,
+ * exactly as if the caller were signed out.
+ */
+export function requireUserId(user: { id?: string | null } | null): string {
+  if (!user || typeof user.id !== "string" || user.id.length === 0) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "User is not authenticated.",
+    });
+  }
+  return user.id;
+}
+
+/**
+ * Shared privileged-role gate.
+ *
+ * Throws FORBIDDEN unless the caller's session `roles` include at least one
+ * of the allowed roles. Unauthenticated callers never reach here — the
+ * underlying privateProcedure rejects them with UNAUTHORIZED first.
+ */
+function requireAnyRole(
+  roles: readonly string[] | undefined | null,
+  allowed: readonly RoleName[],
+  message: string
+): void {
+  if (!allowed.some((role) => hasRole(roles, role))) {
+    throw new TRPCError({ code: "FORBIDDEN", message });
+  }
+}
+
+/**
+ * Admin-only procedure.
+ *
+ * Requires an authenticated session whose `roles` include ADMIN.
+ * Non-admin callers receive FORBIDDEN; unauthenticated callers receive
+ * UNAUTHORIZED via the underlying privateProcedure.
+ */
+export const adminProcedure = privateProcedure.use(function isAdmin(opts) {
+  const { ctx } = opts;
+
+  requireAnyRole(ctx.user.roles, ["ADMIN"], "Admin role is required.");
+
+  return opts.next({
+    ctx: {
+      user: ctx.user,
+    },
+  });
+});
+
+/**
+ * Moderator-or-admin procedure.
+ *
+ * MODERATOR is seeded with zero assignments (reserved for future UGC work),
+ * so this seam exists ahead of its first consumer. ADMIN inherits moderator
+ * access; callers holding neither role receive FORBIDDEN.
+ */
+export const moderatorProcedure = privateProcedure.use(
+  function isModerator(opts) {
+    const { ctx } = opts;
+
+    requireAnyRole(
+      ctx.user.roles,
+      ["MODERATOR", "ADMIN"],
+      "Moderator role is required."
+    );
+
+    return opts.next({
+      ctx: {
+        user: ctx.user,
+      },
+    });
+  }
+);

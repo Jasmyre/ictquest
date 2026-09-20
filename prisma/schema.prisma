@@ -6,27 +6,21 @@ datasource db {
   provider = "postgresql"
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([name])
-}
-
 model User {
-  id               String            @id @default(cuid())
-  name             String
-  email            String?           @unique
-  emailVerified    DateTime?
-  image            String?
-  password         String?
-  role             UserRole          @default(USER)
-  userName         String?
-  accounts         Account[]
-  progressData     ProgressData[]
-  userAchievements UserAchievement[]
+  id                   String                @id @default(cuid())
+  name                 String
+  email                String?               @unique
+  emailVerified        DateTime?
+  image                String?
+  password             String?
+  userName             String?
+  biography            String?
+  isPrivate            Boolean              @default(false)
+  accounts             Account[]
+  progressData         ProgressData[]
+  userAchievements     UserAchievement[]
+  roles                Role[]
+  personalAccessTokens PersonalAccessToken[]
 }
 
 model ProgressData {
@@ -35,6 +29,9 @@ model ProgressData {
   topic     String
   subtopics String[]
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, topic])
 }
 
 model Account {
@@ -53,6 +50,7 @@ model Account {
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Achievement {
@@ -75,9 +73,28 @@ model UserAchievement {
   user                   User        @relation(fields: [userId], references: [id])
 
   @@unique([userId, achievementId])
+  @@index([userId])
+  @@index([achievementId])
 }
 
-enum UserRole {
-  ADMIN
-  USER
+model Role {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  users     User[]
+}
+
+model PersonalAccessToken {
+  id         String    @id @default(cuid())
+  userId     String
+  name       String
+  tokenHash  String    @unique
+  scopes     String[]  @default([])
+  expiresAt  DateTime?
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+  revokedAt  DateTime?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }

@@ -1,0 +1,170 @@
+---
+lesson: introduction-to-html
+subtopic: html_brief_examples
+slug: html_brief_examples
+title: "HTML Brief Examples"
+order: 2
+---
+
+{/* Migration 09 (#32). One file per Subtopic; slugs stay stable so existing
+    ProgressData keys ({ topic, subtopic }) still match.
+    Legacy source: src/db/introduction_to_html/html-brief-example.tsx.
+    Presentation lives here plus the central component map
+    (src/components/lessons/mdx-components.tsx) — never in row data. */}
+
+<Step submit="Continue">
+
+Hey there! Welcome to HTML Brief Examples. In this lesson we're gonna build a
+simple static webpage step by step using basic HTML elements. We'll add each
+element one by one so you can see how everything connects.
+
+</Step>
+
+<Step submit="Continue">
+
+Here's a sneak peek of the final webpage we'll be building. Notice the heading,
+paragraph, image, link, and a navigation list all together.
+
+<Browser
+  content={`<body>
+  <h1>Welcome to My Website</h1>
+  <p>This is my first webpage.</p>
+  <img src="/img.png" alt="A beautiful scene" />
+  <hr />
+  <a href="https://example.com">Visit Example</a>
+  <ul>
+    <li>Home</li>
+    <li>About</li>
+    <li>Contact</li>
+  </ul>
+</body>`}
+  title="Final Webpage Preview"
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+Let's start by adding a main heading. We will use the <CodeHighlight>{"<h1>"}</CodeHighlight> tag
+to display the title. Arrange the following code to form your heading.
+
+<PracticeQuiz
+  answer="<h1>Welcome to My Website</h1>"
+  initialCode={["<body>\n  ", "\n</body>"]}
+  options={[
+    { label: "<h1>", priority: 1 },
+    { label: "Welcome to My Website", priority: 2 },
+    { label: "</h1>", priority: 3 },
+  ]}
+  title={["Arrange the heading code in the correct order."]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+Now, add a paragraph below your heading using the <CodeHighlight>{"<p>"}</CodeHighlight> tag.
+This paragraph will give a brief introduction.
+
+<PracticeQuiz
+  answer="<p>This is my first webpage.</p>"
+  initialCode={["<body>\n  <h1>Welcome to My Website</h1>\n  ", "\n</body>"]}
+  options={[
+    { label: "<p>", priority: 1 },
+    { label: "This is my first webpage.", priority: 2 },
+    { label: "</p>", priority: 3 },
+  ]}
+  title={["Arrange the paragraph code in the correct order."]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+Next, add an image using the <CodeHighlight>{"<img>"}</CodeHighlight> tag. Remember, the
+<CodeHighlight>{"src"}</CodeHighlight> attribute holds the image path and the
+<CodeHighlight>{"alt"}</CodeHighlight> attribute gives a description.
+
+<PracticeQuiz
+  answer={`<img src="/img.png" alt="A beautiful scene" />`}
+  initialCode={["<body>\n  <h1>Welcome to My Website</h1>\n  <p>This is my first webpage.</p>\n  ", "\n</body>"]}
+  options={[
+    { label: `<img src="/img.png"`, priority: 1 },
+    { label: ` alt="A beautiful scene"`, priority: 2 },
+    { label: " />", priority: 3 },
+  ]}
+  title={["Arrange the image code in the correct order."]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+Now, add a link using the <CodeHighlight>{"<a>"}</CodeHighlight> tag. Use the
+<CodeHighlight>{"href"}</CodeHighlight> attribute to specify the URL.
+
+<PracticeQuiz
+  answer={`<a href="https://example.com">Visit Example</a>`}
+  initialCode={['<body>\n  <h1>Welcome to My Website</h1>\n  <p>This is my first webpage.</p>\n  <img src="/img.png" alt="A beautiful scene" />\n  ', "\n</body>"]}
+  options={[
+    { label: `<a href="https://example.com">`, priority: 1 },
+    { label: "Visit Example", priority: 2 },
+    { label: "</a>", priority: 3 },
+  ]}
+  title={["Arrange the link code in the correct order."]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+Finally, add a navigation menu using an unordered list. You will use the
+<CodeHighlight>{"<ul>"}</CodeHighlight> tag to wrap list items, each in a
+<CodeHighlight>{"<li>"}</CodeHighlight> tag.
+
+<PracticeQuiz
+  answer={"<ul>\n  <li>Home</li>\n  <li>About</li>\n  <li>Contact</li>\n</ul>"}
+  initialCode={['<body>\n  <h1>Welcome to My Website</h1>\n  <p>This is my first webpage.</p>\n  <img src="/img.png" alt="A beautiful scene" />\n  <a href="https://example.com">Visit Example</a>\n  ', "\n</body>"]}
+  options={[
+    { label: "<ul>\n  ", priority: 1 },
+    { label: "<li>Home</li>\n  ", priority: 2 },
+    { label: "<li>About</li>\n  ", priority: 3 },
+    { label: "<li>Contact</li>\n", priority: 4 },
+    { label: "</ul>", priority: 5 },
+  ]}
+  title={["Arrange the navigation list in the correct order."]}
+/>
+
+</Step>
+
+<Step submit="Continue">
+
+Awesome! Here is your webpage with all the elements you've added so far:
+
+<Browser
+  content={`<body>
+  <h1>Welcome to My Website</h1>
+  <p>This is my first webpage.</p>
+  <img src="/img.png" alt="A beautiful scene" />
+  <hr />
+  <a href="https://example.com">Visit Example</a>
+  <ul>
+    <li>Home</li>
+    <li>About</li>
+    <li>Contact</li>
+  </ul>
+</body>`}
+  title="Assembled Webpage Preview"
+/>
+
+</Step>
+
+<Step submit="Finish">
+
+Fantastic! You've built a simple static webpage step by step and learned how
+each basic HTML element works.
+
+Keep practicing, and soon you'll be able to build more complex websites on your
+own. Great job and happy coding!
+
+</Step>

@@ -1,0 +1,80 @@
+---
+lesson: html-elements
+subtopic: html_containers
+slug: html_containers
+title: "HTML Containers and Groups"
+order: 2
+---
+
+{/* Migration 09 (#32). One file per Subtopic; slugs stay stable so existing
+    ProgressData keys ({ topic, subtopic }) still match.
+    Legacy source: src/db/html_elements/html-containers.tsx.
+    Presentation lives here plus the central component map
+    (src/components/lessons/mdx-components.tsx) — never in row data. */}
+
+<Step submit="Continue">
+
+Pages are built from groups. Containers like <CodeHighlight>{"<div>"}</CodeHighlight>
+and <CodeHighlight>{"<span>"}</CodeHighlight> bundle related elements so you can
+lay out and style whole sections at once.
+
+</Step>
+
+<Step submit="Continue">
+
+An ungrouped pile of elements is hard to manage. Wrap related siblings in a
+<CodeHighlight>{"<div>"}</CodeHighlight> to give them one shared box.
+
+<CodeBlock code={"<div>\n  <h1>Welcome</h1>\n  <p>Grouped together.</p>\n</div>"} language="HTML" />
+
+<Browser content="<div><h1>Welcome</h1><p>Grouped together.</p></div>" title="Browser Preview" />
+
+</Step>
+
+<Step submit="Continue">
+
+Give each group its own container when sections differ — one for the intro, one
+for the details.
+
+<CodeBlock code={"<div>\n  <h2>Group One</h2>\n</div>\n<div>\n  <h2>Group Two</h2>\n</div>"} language="HTML" />
+
+</Step>
+
+<Step submit="Continue">
+
+Media loves containers too. Pair an image with its caption so they always travel
+together.
+
+<CodeBlock code={`<div>\n  <img src="/img.png" alt="A beautiful scene" />\n  <p>A beautiful scene</p>\n</div>`} language="HTML" />
+
+<Browser content={`<div><img src="/img.png" alt="A beautiful scene" /><p>A beautiful scene</p></div>`} title="Preview Image Container" />
+
+</Step>
+
+<Step submit="Continue">
+
+Real pages nest containers: a page box holds a header, a main area, and a
+footer. Nesting is how layouts stay organized.
+
+<CodeBlock code={"<div class=\"page\">\n  <div class=\"header\">Header</div>\n  <div class=\"main\">Main</div>\n  <div class=\"footer\">Footer</div>\n</div>"} language="HTML" />
+
+<Browser content={`<div><h1>Page</h1><p>Header, main, and footer inside one box.</p></div>`} title="Preview Page Layout" />
+
+</Step>
+
+<Step submit="Continue">
+
+For styling or grouping inline elements, use the <CodeHighlight>{"<span>"}</CodeHighlight>
+tag inside a block — same grouping idea, but without starting a new line.
+
+<CodeBlock code="<p>Inline <span>grouped</span> text.</p>" language="HTML" />
+
+</Step>
+
+<Step submit="Finish">
+
+You now think in boxes: group with <CodeHighlight>{"<div>"}</CodeHighlight>, style
+inline runs with <CodeHighlight>{"<span>"}</CodeHighlight>, and nest containers to
+build full page layouts.
+
+</Step>
