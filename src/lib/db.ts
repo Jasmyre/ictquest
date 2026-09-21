@@ -3,8 +3,20 @@ import { PrismaClient } from "@prisma/client";
 import type { DefaultArgs } from "@prisma/client/runtime/client";
 import { env } from "@/env";
 
+export function resolveDatabaseUrl(
+  nodeEnv: string | undefined = process.env.NODE_ENV
+): string | undefined {
+  if (nodeEnv === "test") {
+    return process.env.DATABASE_URL_TEST ?? process.env.DATABASE_URL;
+  }
+  if (nodeEnv === "production") {
+    return process.env.DATABASE_URL;
+  }
+  return process.env.DATABASE_URL_DEV ?? process.env.DATABASE_URL;
+}
+
 const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: resolveDatabaseUrl(),
 });
 
 const createPrismaClient = (): PrismaClient<

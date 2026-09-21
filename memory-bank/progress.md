@@ -66,6 +66,13 @@ docs-correction spec); map Decisions-so-far updated, no open tickets remain.
 
 - Memory-bank API/UI usage notes (`.clinerules/api-patterns.md`,
   `.clinerules/ui-usage.md`) are intentionally kept until ADR equivalents land.
+- DB split landed 2026-09-21 (uncommitted): `DATABASE_URL` = prod only,
+  `DATABASE_URL_DEV` / `DATABASE_URL_TEST` optional with fallback;
+  `scripts/db-with-url.mjs` + target-scoped `db:*` scripts; `.github/workflows/
+  database.yml` (PR validate on ephemeral Postgres, prod deploy on merge to
+  main); ADR 0006; `CONTEXT.md` DB glossary; `docs/database.md` secrets table.
+  Gates: typecheck + ultracite clean, unit 162/162. Still to do: set the
+  `DATABASE_URL` secret + `production` environment in GitHub before merging.
 - Remaining fog carried into execution (not new tickets): per-entity
   service/repository/schema mapping (Zod contracts, router split), cache-tags and
   `unstable-cache` policy for MDX reads vs progress writes, MDX migration order

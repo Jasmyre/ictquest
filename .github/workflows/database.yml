@@ -1,0 +1,84 @@
+# Database CI/CD — keeps prod from falling behind dev after a PR.
+#
+# PR (validate): spins up ephemeral Postgres, applies ALL committed migrations
+# with `db:migrate:test`, then runs integration + unit suites. A PR that
+# forgets to commit its migration, or commits broken SQL, fails here.
+#
+# Merge to main (deploy): applies the same committed migrations to production
+# with `db:migrate:prod`. Prod URL comes ONLY from the `DATABASE_URL` secret —
+# never from `.env` files.
+#
+# Required GitHub secrets (repo Settings → Secrets and variables → Actions):
+#   DATABASE_URL        production Postgres URL (deploy job only).
+# Optional:
+#   DATABASE_URL_DEV    shared dev DB (local use; CI does not need it).
+#   DATABASE_URL_TEST   hosted test DB; when unset, CI builds one from the
+#                       postgres service below.
+
+name: database
+
+on:
+  pull_request:
+    paths:
+      - "prisma/**"
+      - "src/lib/db.ts"
+      - "src/env.js"
+      - "scripts/db-with-url.mjs"
+      - "tests/integration/**"
+      - ".github/workflows/database.yml"
+  push:
+    branches: [main]
+    paths:
+      - "prisma/**"
+
+jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ictquest_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL_TEST: postgresql://postgres:postgres@localhost:5432/ictquest_test
+      SKIP_ENV_VALIDATION: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Validate prisma schema
+        run: npm run db:validate
+      - name: Apply migrations to ephemeral test DB
+        run: npm run db:migrate:test
+      - name: Drift check — DB must match migrations after deploy
+        run: node scripts/db-with-url.mjs test -- npx prisma migrate status
+      - name: Integration tests (live test DB)
+        run: npm run test:integration
+      - name: Unit tests (mocked, DB-free)
+        run: npm run test -- --project unit
+
+  deploy-prod:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Apply committed migrations to production (deploy only, never dev/push)
+        run: npm run db:migrate:prod
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}

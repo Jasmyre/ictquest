@@ -92,6 +92,8 @@ typecheck + typecheck:test + ultracite clean.
 
 ## Open questions
 
-None for this ticket — remaining fog (per-entity service/repository/schema mapping,
-cache tags, MDX migration order) is carried into execution per #23, not new
-tickets.
+DB split (2026-09-21): prod/dev/test URLs + target-scoped scripts + CI gates
+landed per grilling Q1–Q4 (all confirmed). Open: create the `DATABASE_URL`
+secret and `production` environment in GitHub repo settings before the first
+merge to `main` triggers `deploy-prod`; decide whether to also set a shared
+`DATABASE_URL_DEV` for the team.

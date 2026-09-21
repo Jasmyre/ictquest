@@ -16,6 +16,24 @@ _Avoid_: Standard role, base role
 A user who holds no roles. This is an invalid state that must not exist: they can sign in but are denied every permission check, so the system prevents creating or saving one.
 _Avoid_: Disabled user, suspended user, "user with no role"
 
+## Database language
+
+**Production database**:
+The live user-data database, addressed by `DATABASE_URL`. `migrate deploy` only — never `migrate dev`, never `db push`.
+_Avoid_: Main db, primary db
+
+**Development database**:
+The scratch database for schema authoring, addressed by `DATABASE_URL_DEV` (falls back to `DATABASE_URL` when unset). The only target `migrate dev` may run against.
+_Avoid_: Main db, local db (unless truly local-only)
+
+**Test database**:
+The ephemeral database for CI/integration runs, addressed by `DATABASE_URL_TEST` (falls back to `DATABASE_URL` when unset; CI constructs it from its Postgres service). Migrated per run, then discarded.
+_Avoid_: Dev db, staging db
+
+**Deploy script target**:
+One of `prod` / `dev` / `test` passed to `scripts/db-with-url.mjs`, selecting which URL a `db:*` command runs against. The helper re-exports the selection as `DATABASE_URL` and refuses empty values.
+_Avoid_: Db package (there is no `packages/db`; scripts only)
+
 ## REST and OpenAPI language
 
 **Procedure vs Operation**:

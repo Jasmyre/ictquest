@@ -8,6 +8,8 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string(),
+    DATABASE_URL_DEV: z.string().optional(),
+    DATABASE_URL_TEST: z.string().optional(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -39,6 +41,8 @@ export const env = createEnv({
    */
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
+    DATABASE_URL_DEV: process.env.DATABASE_URL_DEV,
+    DATABASE_URL_TEST: process.env.DATABASE_URL_TEST,
     NODE_ENV: process.env.NODE_ENV,
     BASE_URL: process.env.BASE_URL,
     GOOGLE_SITE_VERIFICATION: process.env.GOOGLE_SITE_VERIFICATION,
