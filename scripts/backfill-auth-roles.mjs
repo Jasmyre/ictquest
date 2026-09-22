@@ -15,14 +15,26 @@
  * unchanged.
  *
  * Run: `node scripts/backfill-auth-roles.mjs` (also `npm run db:backfill:auth`).
+ * Dry run: `node scripts/backfill-auth-roles.mjs --dry-run` reports the
+ * count of users without "USER" and per-role counts without writing.
  * Requires DATABASE_URL. Safe to re-run (upserts + skip-duplicates).
  */
 
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 
 const DEFAULT_ROLE = "USER";
 
-const prisma = new PrismaClient();
+const DRY_RUN = process.argv.includes("--dry-run");
+
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+  console.error("Refusing: DATABASE_URL is empty.");
+  process.exit(1);
+}
+
+const adapter = new PrismaPg({ connectionString });
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   const before = {
@@ -31,7 +43,30 @@ async function main() {
     Account: await prisma.account.count(),
   };
 
-  const result = await prisma.$transaction(async (tx) => {
+  if (DRY_RUN) {
+    const usersWithRoles = await prisma.user.findMany({
+      select: { id: true, roles: { select: { name: true } } },
+    });
+    const withoutDefault = usersWithRoles.filter(
+      (u) => !u.roles.map((r) => r.name).includes(DEFAULT_ROLE)
+    );
+    const perRole = {};
+    for (const u of usersWithRoles) {
+      if (u.roles.length === 0) {
+        perRole["<none>"] = (perRole["<none>"] ?? 0) + 1;
+      }
+      for (const r of u.roles) {
+        perRole[r.name] = (perRole[r.name] ?? 0) + 1;
+      }
+    }
+    console.log(
+      `Auth backfill dry run: ${withoutDefault.length} user(s) without "${DEFAULT_ROLE}" out of ${usersWithRoles.length}. Per-role counts: ${JSON.stringify(perRole)}. Row counts: ${JSON.stringify(before)}. No writes performed.`
+    );
+    return;
+  }
+
+  const result = await prisma.$transaction(
+    async (tx) => {
     for (const name of ["ADMIN", "MODERATOR", "USER"]) {
       await tx.role.upsert({ where: { name }, update: {}, create: { name } });
     }
@@ -94,7 +129,9 @@ async function main() {
     }
 
     return { created, perRole };
-  });
+    },
+    { maxWait: 15000, timeout: 60000 }
+  );
 
   const after = {
     ProgressData: await prisma.progressData.count(),
