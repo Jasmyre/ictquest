@@ -105,6 +105,17 @@ docs-correction spec); map Decisions-so-far updated, no open tickets remain.
 
 ## Known issues / constraints
 
+- ABAC refactor (2026-09-22, uncommitted): `src/server/permissions.ts`
+  rewritten to the predicate-per-role pattern (`PermissionRule`
+  boolean|predicate, `PermissionDefinition`, per-resource `PERMISSIONS`
+  matrix, role-union `hasPermission`/`hasActionGrant` loops) keeping the
+  codebase entities (Lesson/Topic/Quiz/Progress/Achievement/User/Admin/
+  Token); public lesson reads live in a `PUBLIC_GRANTS` side-table so
+  anonymous `view` still passes; `PermissionUser` stays optional-fielded
+  for null/role-less callers; import moved to client-safe
+  `@/lib/role-names`. Gates: typecheck + typecheck:test + ultracite
+  clean, `test:all` 37 files / 195 tests green.
+
 - Memory-bank API/UI usage notes (`.clinerules/api-patterns.md`,
   `.clinerules/ui-usage.md`) are intentionally kept until ADR equivalents land.
 - DB split landed 2026-09-21 (uncommitted): `DATABASE_URL` = prod only,
