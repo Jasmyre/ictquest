@@ -136,3 +136,8 @@ browser bundle via `"use client"` `admin-role-toggles.tsx` → `@/lib/roles`
 (dynamic `await import("@/lib/db")`); pure vocabulary split to client-safe
 `src/lib/role-names.ts`, server entry re-exports, client imports the leaf.
 Typecheck + build + role tests green, ultracite clean.
+CI build fix (2026-09-22, uncommitted): prerender crashed on `new URL()`
+because CI sets `SKIP_ENV_VALIDATION=1` with no `BASE_URL`, hitting the
+`err:...` fallback in `src/app/layout.tsx`; fallback is now
+`http://localhost:3000` (matches `docs/env.md`) and `test.yml` exports
+`BASE_URL`/`NEXTAUTH_URL`. Upstash warnings in CI are non-fatal.

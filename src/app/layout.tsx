@@ -20,8 +20,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const BASE_URL =
-  process.env.BASE_URL ?? "err:Environment_'BASE_URL'_Variable_Is_Not_Defined";
+const BASE_URL = process.env.BASE_URL ?? "http://localhost:3000";
 
 const GOOGLE_SITE_VERIFICATION =
   process.env.GOOGLE_SITE_VERIFICATION ??
