@@ -47,13 +47,14 @@ jobs:
           --health-cmd "pg_isready -U postgres"
           --health-interval 5s --health-timeout 5s --health-retries 10
     env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ictquest_test
       DATABASE_URL_TEST: postgresql://postgres:postgres@localhost:5432/ictquest_test
       SKIP_ENV_VALIDATION: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
       - name: Validate prisma schema
@@ -67,13 +68,17 @@ jobs:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     environment: production
+    env:
+      SKIP_ENV_VALIDATION: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ictquest_test
       - name: Apply committed migrations to production (deploy only, never dev/push)
         run: npm run db:migrate:prod
         env:

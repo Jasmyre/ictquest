@@ -28,11 +28,14 @@ on:
 jobs:
   slug-parity:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ictquest_test
+      SKIP_ENV_VALIDATION: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
       - name: Slug-parity check (fails the build on drift)
