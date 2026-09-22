@@ -91,6 +91,13 @@ suspended bearer REST owners resolve to null; `/admin/users` gains
 glossary term added to `CONTEXT.md`; gates: `tests/unit/suspension.test.ts`
 (5 tests), suite 37 files / 195 tests green, typecheck + typecheck:test
 clean, ultracite clean.
+
+#73 done 2026-09-22 (docs only, no behavior change): `Session-freshness
+rule` glossary term in `CONTEXT.md`; ADR 0007
+(`0007-suspended-capability-and-admin-only-fresh-reads.md`) records the
+suspend-vs-strip decision and the admin-only fresh-read tradeoff as
+shipped in #70–#72; `docs/adr/README.md` index updated; typecheck clean,
+`test:all` 37 files / 195 tests green.
 Wayfinding map #44: research ticket #46 resolved 2026-09-19
 (`docs/research/layer-violations.md`); decision tickets #45–#52 all resolved
 2026-09-19 (glossary, both inventories, permissions matrix, three b1 specs,

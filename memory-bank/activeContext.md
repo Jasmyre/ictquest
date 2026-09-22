@@ -117,3 +117,10 @@ in `jwt` + Credentials `authorize` + proxy, roles preserved for unsuspend.
 fallback), `(admin)` guard, `proxy.ts`, bearer REST; `AdminSuspendToggle`
 on `/admin/users`; `Suspended user` glossary term in `CONTEXT.md`; suite
 37 files / 195 tests green, typechecks + ultracite clean.
+
+#73 done 2026-09-22 (docs only, no behavior change): `Session-freshness
+rule` glossary term in `CONTEXT.md` (session copy everywhere, fresh
+per-request read on privileged paths with session fallback); ADR 0007
+records the suspend-vs-strip decision and the admin-only fresh-read
+tradeoff as shipped in #70–#72; `docs/adr/README.md` index updated.
+Gates: typecheck clean, `test:all` 37 files / 195 tests green.

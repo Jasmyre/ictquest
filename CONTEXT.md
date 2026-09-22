@@ -20,6 +20,10 @@ _Avoid_: Disabled user, suspended user, "user with no role"
 A user whose `suspendedAt` timestamp is set by an admin. Suspension blocks credential sign-in and denies existing sessions on privileged and admin paths, while every role membership underneath is preserved untouched — unsuspend clears the timestamp and restores exactly what the user had. It is the approved disable mechanism; stripping roles is never suspension.
 _Avoid_: Role-less user, deleted user, banned (no separate ban state exists)
 
+**Session-freshness rule**:
+Session roles are the JWT-stamped copy used everywhere by default, so non-privileged paths issue no extra membership lookup. Privileged paths — the `(admin)` shell guard, `adminProcedure` / `moderatorProcedure`, and `permissionProcedure("Admin", *)` — re-read current memberships and the suspension flag per request and fall back to the session copy when the lookup fails.
+_Avoid_: Per-request reads on learner paths; trusting the session copy on privileged paths; reading the database at the edge proxy
+
 ## Database language
 
 **Production database**:
