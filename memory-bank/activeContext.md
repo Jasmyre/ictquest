@@ -31,6 +31,13 @@ typecheck + typecheck:test + ultracite clean.
 
 ## Recent changes
 
+- ABAC predicate-matrix refactor (2026-09-22, uncommitted):
+  `src/server/permissions.ts` is now the predicate-per-role source of
+  truth (`PermissionRule`, `PermissionDefinition`, `PERMISSIONS`,
+  role-union `hasPermission`/`hasActionGrant`) over the real entities
+  (Lesson/Topic/Quiz/Progress/Achievement/User/Admin/Token); public
+  reads via `PUBLIC_GRANTS`; `typecheck` + `test:all` 195/195 green.
+
 - Slice 7 (#64, 2026-09-20): docs correction landed — `docs/architecture.md`,
   `docs/database.md`, `docs/auth.md`, `docs/api.md` rewritten from the
   template-contaminated world to ICTQuest truth (Lesson/Topic/Quiz/Progress/
