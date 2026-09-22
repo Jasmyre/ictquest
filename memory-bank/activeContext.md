@@ -141,3 +141,7 @@ because CI sets `SKIP_ENV_VALIDATION=1` with no `BASE_URL`, hitting the
 `err:...` fallback in `src/app/layout.tsx`; fallback is now
 `http://localhost:3000` (matches `docs/env.md`) and `test.yml` exports
 `BASE_URL`/`NEXTAUTH_URL`. Upstash warnings in CI are non-fatal.
+Biome scope fix (2026-09-22, uncommitted): release-please rewrites
+`.release-please-manifest.json` without a trailing newline, failing
+`npm run check`; bot-managed `release-please-*.json` now excluded in
+`biome.json` (`check` green, 256 files).

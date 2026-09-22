@@ -1,6 +1,11 @@
 {
   "files": {
-    "includes": ["**", "!**/ui"]
+    "includes": [
+      "**",
+      "!**/ui",
+      "!release-please-config.json",
+      "!.release-please-manifest.json"
+    ]
   },
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "root": true,
