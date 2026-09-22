@@ -64,6 +64,17 @@ non-privileged paths do no extra lookup); gate:
 `tests/unit/instant-admin-revocation.test.ts` (4 tests); suite 34 files /
 183 tests green, typecheck + typecheck:test clean, ultracite clean on touched
 files (pre-existing `scripts/backfill-auth-roles.mjs` findings untouched).
+
+#71 done 2026-09-22: Default role floor hardening — `revokeRole` rejects
+revoking USER with BAD_REQUEST even for multi-role holders (irrevocable
+floor; last-role guard kept), `/admin/users` gains `AdminRoleToggles`
+(USER toggle always disabled, sole-membership toggle disabled, optimistic
+update with revert), creation/heal convergence unchanged (register
+transaction, `createUser` event, JWT heal); gates:
+`tests/unit/default-role-floor.test.ts` (3 tests) +
+`tests/unit/admin-role-toggles.test.tsx` (4 tests) fail-closed denial
+pinned; suite 36 files / 190 tests green, typecheck + typecheck:test +
+ultracite clean.
 Wayfinding map #44: research ticket #46 resolved 2026-09-19
 (`docs/research/layer-violations.md`); decision tickets #45–#52 all resolved
 2026-09-19 (glossary, both inventories, permissions matrix, three b1 specs,

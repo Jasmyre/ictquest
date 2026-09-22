@@ -1,14 +1,19 @@
 import { Suspense } from "react";
+import { AdminRoleToggles } from "@/components/admin-role-toggles";
 import { api } from "@/trpc/server";
 
 /**
- * Admin users (`/admin/users`, Migration 14, #37).
+ * Admin users (`/admin/users`, Migration 14, #37; floor hardening #71).
  *
  * User plus role-assignment management end to end under admin gating:
  * lists every user with its current roles via `api.admin.listUsers`, while
- * grant/revoke of ADMIN, MODERATOR, and USER flows through
+ * grant/revoke of ADMIN and MODERATOR flows through
  * `api.admin.grantRole` / `api.admin.revokeRole` (ADMIN-only procedures —
- * learners get FORBIDDEN, anonymous callers get UNAUTHORIZED). Requires
+ * learners get FORBIDDEN, anonymous callers get UNAUTHORIZED). The USER
+ * membership is an irrevocable floor: its toggle is always disabled, and a
+ * toggle that would remove the user's last membership is disabled too, so
+ * the Role-less state cannot be recreated from this UI (the service rejects
+ * both cases with BAD_REQUEST as defense in depth). Requires
  * ADMIN via the `(admin)` layout plus the `proxy.ts` guard.
  *
  * Cache Components: static shell prerenders; the per-request user list
@@ -21,8 +26,8 @@ export default function AdminUsersPage() {
         User Management
       </h1>
       <p className="text-gray-600 text-sm dark:text-gray-300">
-        Grant or revoke ADMIN, MODERATOR, and USER assignments. Every action
-        runs through ADMIN-gated procedures.
+        Grant or revoke ADMIN and MODERATOR assignments. Every user always
+        holds USER — it cannot be revoked.
       </p>
       <Suspense fallback={<p>Loading users…</p>}>
         <AdminUserList />
@@ -54,6 +59,7 @@ async function AdminUserList() {
               <p className="shrink-0 text-gray-600 text-xs dark:text-gray-300">
                 {user.roles.join(", ") || "No roles"}
               </p>
+              <AdminRoleToggles userId={user.id} initialRoles={user.roles} />
             </li>
           ))
         : null}

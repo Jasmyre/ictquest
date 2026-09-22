@@ -1,6 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
-import type { RoleName } from "@/lib/roles";
+import { DEFAULT_ROLE_NAME, type RoleName } from "@/lib/roles";
 import { logError } from "@/server/logger";
 import { pickPagination } from "@/server/pagination";
 import {
@@ -151,6 +151,17 @@ export async function revokeRole(
       throw new TRPCError({ code: "NOT_FOUND", message: "Role not found." });
     }
     const roles = await currentRoles(db, input.userId);
+    // Default-role floor (#71): the USER membership is irrevocable. Every
+    // user always holds it (registration transaction, social sign-up event,
+    // JWT heal, backfill guarantee), so revoking it can only recreate the
+    // invalid Role-less-adjacent state. Rejected before idempotency so the
+    // floor holds even for multi-role holders.
+    if (input.role.toUpperCase() === DEFAULT_ROLE_NAME) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: `Cannot revoke the ${DEFAULT_ROLE_NAME} role: every user always holds it.`,
+      });
+    }
     // Self-demotion refusal (service business rule): an ADMIN cannot remove
     // their own ADMIN role. Checked against the caller's session roles and
     // evaluated before idempotency so it cannot be bypassed.
