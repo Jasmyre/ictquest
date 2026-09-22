@@ -97,3 +97,12 @@ landed per grilling Q1–Q4 (all confirmed). Open: create the `DATABASE_URL`
 secret and `production` environment in GitHub repo settings before the first
 merge to `main` triggers `deploy-prod`; decide whether to also set a shared
 `DATABASE_URL_DEV` for the team.
+
+Role freshness (2026-09-22, grilling Q1–Q8 confirmed): role-less repair = run
+`scripts/backfill-auth-roles.mjs` via `db-with-url.mjs prod` (dry-run count
+first), `seed.ts` stays role-rows only; non-admin paths keep JWT-stamped
+`roles[]` (re-signin/refresh to pick up changes); admin paths
+(`(admin)` layout guard + `adminProcedure`/`moderatorProcedure`) re-read
+`getUserRoleNames` per request with session fallback. USER is an irrevocable
+floor. Suspended split to follow-up ticket: `suspendedAt DateTime?` checked
+in `jwt` + Credentials `authorize` + proxy, roles preserved for unsuspend.

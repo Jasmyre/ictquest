@@ -11,7 +11,7 @@ import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { Suspense } from "react";
 import { auth } from "@/auth";
-import { hasRole } from "@/lib/roles";
+import { getUserRoleNames, hasRole } from "@/lib/roles";
 
 const ADMIN_NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -93,7 +93,20 @@ async function AdminGuard({ children }: Readonly<{ children: ReactNode }>) {
     redirect("/auth");
   }
 
-  if (!hasRole(session.user.roles, "ADMIN")) {
+  // Authoritative per-request check: session `roles[]` is JWT-stamped at
+  // sign-in/refresh and goes stale after a grant/revoke, so admin paths
+  // re-read memberships from the DB. Non-admin paths keep the JWT copy
+  // to avoid a DB read on every request.
+  let roles = session.user.roles;
+  if (session.user.id) {
+    try {
+      roles = await getUserRoleNames(session.user.id);
+    } catch {
+      roles = session.user.roles;
+    }
+  }
+
+  if (!hasRole(roles, "ADMIN")) {
     redirect("/");
   }
 

@@ -16,7 +16,7 @@ import { auth } from "@/auth";
 import { env } from "@/env";
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
-import { hasRole, type RoleName } from "@/lib/roles";
+import { getUserRoleNames, hasRole, type RoleName } from "@/lib/roles";
 import { logInfo } from "@/server/logger";
 import {
   hasActionGrant,
@@ -252,21 +252,35 @@ function requireAnyRole(
 /**
  * Admin-only procedure.
  *
- * Requires an authenticated session whose `roles` include ADMIN.
+ * Authoritative per-request check: re-reads role memberships from the DB
+ * so a grant/revoke takes effect without re-signin. Non-privileged
+ * procedures keep the JWT-stamped `ctx.user.roles` to avoid a DB read.
+ * Falls back to the session copy if the lookup fails.
  * Non-admin callers receive FORBIDDEN; unauthenticated callers receive
  * UNAUTHORIZED via the underlying privateProcedure.
  */
-export const adminProcedure = privateProcedure.use(function isAdmin(opts) {
-  const { ctx } = opts;
+export const adminProcedure = privateProcedure.use(
+  async function isAdmin(opts) {
+    const { ctx } = opts;
 
-  requireAnyRole(ctx.user.roles, ["ADMIN"], "Admin role is required.");
+    let roles: readonly string[] | undefined | null = ctx.user.roles;
+    if (typeof ctx.user.id === "string" && ctx.user.id.length > 0) {
+      try {
+        roles = await getUserRoleNames(ctx.user.id);
+      } catch {
+        roles = ctx.user.roles;
+      }
+    }
 
-  return opts.next({
-    ctx: {
-      user: ctx.user,
-    },
-  });
-});
+    requireAnyRole(roles, ["ADMIN"], "Admin role is required.");
+
+    return opts.next({
+      ctx: {
+        user: ctx.user,
+      },
+    });
+  }
+);
 
 /**
  * Moderator-or-admin procedure.
@@ -276,11 +290,20 @@ export const adminProcedure = privateProcedure.use(function isAdmin(opts) {
  * access; callers holding neither role receive FORBIDDEN.
  */
 export const moderatorProcedure = privateProcedure.use(
-  function isModerator(opts) {
+  async function isModerator(opts) {
     const { ctx } = opts;
 
+    let roles: readonly string[] | undefined | null = ctx.user.roles;
+    if (typeof ctx.user.id === "string" && ctx.user.id.length > 0) {
+      try {
+        roles = await getUserRoleNames(ctx.user.id);
+      } catch {
+        roles = ctx.user.roles;
+      }
+    }
+
     requireAnyRole(
-      ctx.user.roles,
+      roles,
       ["MODERATOR", "ADMIN"],
       "Moderator role is required."
     );
