@@ -131,3 +131,8 @@ new `test.yml` (typecheck + check + test:all on Postgres 16 + build),
 `pr-title.yml`, `release.yml` + configs seeded at `2.1.0`;
 `database.yml` trimmed to migration validity; `standard-version` removed;
 `docs/versioning.md` corrected to post-1.0 strict semver; ADR-0008.
+Build fix (2026-09-22, uncommitted): `pg` node builtins leaked into the
+browser bundle via `"use client"` `admin-role-toggles.tsx` → `@/lib/roles`
+(dynamic `await import("@/lib/db")`); pure vocabulary split to client-safe
+`src/lib/role-names.ts`, server entry re-exports, client imports the leaf.
+Typecheck + build + role tests green, ultracite clean.

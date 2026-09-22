@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DEFAULT_ROLE_NAME, type RoleName } from "@/lib/roles";
+import { DEFAULT_ROLE_NAME, type RoleName } from "@/lib/role-names";
 import { api } from "@/trpc/react";
 
 const TOGGLABLE_ROLES: readonly RoleName[] = ["ADMIN", "MODERATOR", "USER"];

@@ -1,10 +1,10 @@
 import type { PrismaClient } from "@prisma/client";
+import { DEFAULT_ROLE_NAME, type RoleName } from "@/lib/role-names";
 import { isUniqueConstraintRace } from "@/server/prisma-errors";
 
-export const ROLE_NAMES = ["ADMIN", "MODERATOR", "USER"] as const;
-export type RoleName = (typeof ROLE_NAMES)[number];
-
-export const DEFAULT_ROLE_NAME: RoleName = "USER";
+export type { RoleName } from "@/lib/role-names";
+// biome-ignore lint/performance/noBarrelFile: server entry re-exports the client-safe leaf so existing `@/lib/roles` imports keep working while client code imports `@/lib/role-names` directly
+export { DEFAULT_ROLE_NAME, hasRole, ROLE_NAMES } from "@/lib/role-names";
 
 // Minimal structural surface over PrismaClient so unit tests can import this
 // module without pulling in `@/lib/db` (which validates env at import time).
@@ -16,17 +16,6 @@ export type RoleStore = Pick<PrismaClient, "role" | "user">;
 async function defaultStore(): Promise<RoleStore> {
   const { db } = await import("@/lib/db");
   return db as RoleStore;
-}
-
-export function hasRole(
-  roles: readonly string[] | undefined | null,
-  role: RoleName
-): boolean {
-  if (!roles) {
-    return false;
-  }
-  const wanted = role.toUpperCase();
-  return roles.some((r) => typeof r === "string" && r.toUpperCase() === wanted);
 }
 
 export async function getUserRoleNames(
