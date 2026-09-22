@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 2.2.1 (2026-09-22)
+
+## What's Changed
+* refactor: predicate-per-role ABAC matrix with real entities by @Jasmyre in https://github.com/Jasmyre/ictquest/pull/75
+
+
+**Full Changelog**: https://github.com/Jasmyre/ictquest/compare/v2.2.0...v2.2.1
+
 ## 2.2.0 (2026-09-22)
 
 ## What's Changed
