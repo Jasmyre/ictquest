@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { AuthProviderButton } from "@/components/auth-provider-button";
 import { LogInForm } from "@/components/login-form";
@@ -42,7 +43,11 @@ export default function AuthPage() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="signin">
-              <LogInForm />
+              {/* useSearchParams in LogInForm requires a Suspense boundary
+                  or the /auth prerender fails ("page could not load"). */}
+              <Suspense>
+                <LogInForm />
+              </Suspense>
               <Button
                 className="mt-2 cursor-pointer p-0 text-indigo-400 hover:text-indigo-300"
                 disabled

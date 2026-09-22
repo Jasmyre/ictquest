@@ -59,28 +59,35 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return token;
       }
 
-      const existingUser = await getUserWithRoles(token.sub);
+      // A DB fault here must degrade to the existing token, never throw:
+      // an uncaught throw surfaces as `error=Configuration` on every
+      // sign-in and breaks session refresh on every page.
+      try {
+        const existingUser = await getUserWithRoles(token.sub);
 
-      if (!existingUser) {
+        if (!existingUser) {
+          return token;
+        }
+
+        token.emailVerified = existingUser?.emailVerified;
+        token.userName = existingUser?.userName;
+
+        // Suspended users keep their roles but lose access (#72): stamp the
+        // flag so gates and the admin shell deny the existing session without
+        // waiting for token expiry. The default-role heal still runs first —
+        // suspension never touches memberships, and the USER floor holds even
+        // for rows suspended before the #69 backfill converged.
+        const roleNames = await ensureDefaultRole(token.sub);
+        const suspendedAt = (existingUser as { suspendedAt?: Date | null })
+          .suspendedAt;
+        const suspended = suspendedAt !== null && suspendedAt !== undefined;
+        token.suspended = suspended;
+        token.roles = [...roleNames];
+
+        return token;
+      } catch {
         return token;
       }
-
-      token.emailVerified = existingUser?.emailVerified;
-      token.userName = existingUser?.userName;
-
-      // Suspended users keep their roles but lose access (#72): stamp the
-      // flag so gates and the admin shell deny the existing session without
-      // waiting for token expiry. The default-role heal still runs first —
-      // suspension never touches memberships, and the USER floor holds even
-      // for rows suspended before the #69 backfill converged.
-      const roleNames = await ensureDefaultRole(token.sub);
-      const suspendedAt = (existingUser as { suspendedAt?: Date | null })
-        .suspendedAt;
-      const suspended = suspendedAt !== null && suspendedAt !== undefined;
-      token.suspended = suspended;
-      token.roles = [...roleNames];
-
-      return token;
     },
   },
   adapter: PrismaAdapter(db),

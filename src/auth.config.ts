@@ -30,33 +30,43 @@ export default {
     }),
     Credentials({
       async authorize(credentials) {
-        const validatedFields = LogInSchema.safeParse(credentials);
+        // Any unexpected fault (DB, bcrypt) must answer `null`
+        // (CredentialsSignin → "Invalid credentials!"), never throw:
+        // a throw surfaces as `error=Configuration` on the error page.
+        try {
+          const validatedFields = LogInSchema.safeParse(credentials);
 
-        if (validatedFields.success) {
-          const { email, password } = validatedFields.data as z.infer<
-            typeof LogInSchema
-          >;
+          if (validatedFields.success) {
+            const { email, password } = validatedFields.data as z.infer<
+              typeof LogInSchema
+            >;
 
-          const user = await getUserByEmail(email);
+            const user = await getUserByEmail(email);
 
-          if (!user?.password) {
-            return null;
+            if (!user?.password) {
+              return null;
+            }
+
+            // Suspended users are blocked at sign-in (#72): roles underneath
+            // are preserved, so unsuspend restores access with no re-grant.
+            if (user.suspendedAt !== null) {
+              return null;
+            }
+
+            const passwordsMatch = await bcrypt.compare(
+              password,
+              user.password
+            );
+
+            if (passwordsMatch) {
+              return user;
+            }
           }
 
-          // Suspended users are blocked at sign-in (#72): roles underneath
-          // are preserved, so unsuspend restores access with no re-grant.
-          if (user.suspendedAt !== null) {
-            return null;
-          }
-
-          const passwordsMatch = await bcrypt.compare(password, user.password);
-
-          if (passwordsMatch) {
-            return user;
-          }
+          return null;
+        } catch {
+          return null;
         }
-
-        return null;
       },
     }),
   ],

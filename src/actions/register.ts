@@ -19,34 +19,40 @@ export const register = async (values: z.infer<typeof registerSchema>) => {
     typeof registerSchema
   >;
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  // A DB fault must answer an error payload, never throw: an uncaught
+  // throw in this server action surfaces as "page could not load".
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  const existingUser = await getUserByEmail(email);
+    const existingUser = await getUserByEmail(email);
 
-  if (existingUser) {
-    return { error: "User already exist!" };
+    if (existingUser) {
+      return { error: "User already exist!" };
+    }
+
+    await db.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          name,
+          email,
+          password: hashedPassword,
+        },
+      });
+
+      const role = await tx.role.upsert({
+        where: { name: "USER" },
+        update: {},
+        create: { name: "USER" },
+      });
+
+      await tx.user.update({
+        where: { id: user.id },
+        data: { roles: { connect: { id: role.id } } },
+      });
+    });
+  } catch {
+    return { error: "Something went wrong!" };
   }
-
-  await db.$transaction(async (tx) => {
-    const user = await tx.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-      },
-    });
-
-    const role = await tx.role.upsert({
-      where: { name: "USER" },
-      update: {},
-      create: { name: "USER" },
-    });
-
-    await tx.user.update({
-      where: { id: user.id },
-      data: { roles: { connect: { id: role.id } } },
-    });
-  });
 
   // TODO: Send verification email
 
