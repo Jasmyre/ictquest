@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 2.2.0 (2026-09-22)
+
+## What's Changed
+* Upgrade/nextjs-16 by @Jasmyre in https://github.com/Jasmyre/ictquest/pull/13
+* chore:Update dependencies and improve code quality with Ultracite by @Jasmyre in https://github.com/Jasmyre/ictquest/pull/15
+* Research/layer violations by @Jasmyre in https://github.com/Jasmyre/ictquest/pull/66
+* Wip/ictquest 2.0 by @Jasmyre in https://github.com/Jasmyre/ictquest/pull/67
+
+
+**Full Changelog**: https://github.com/Jasmyre/ictquest/compare/v2.1.0...v2.2.0
+
 ## 2.1.0 (2025-11-10)
 
 
