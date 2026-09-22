@@ -124,3 +124,10 @@ per-request read on privileged paths with session fallback); ADR 0007
 records the suspend-vs-strip decision and the admin-only fresh-read
 tradeoff as shipped in #70–#72; `docs/adr/README.md` index updated.
 Gates: typecheck clean, `test:all` 37 files / 195 tests green.
+
+Release-please migration (2026-09-22, grilling Q1–Q8, uncommitted):
+qoomon-strict commits in `docs/commits.md` (`ops:` for pipelines, no `ci:`);
+new `test.yml` (typecheck + check + test:all on Postgres 16 + build),
+`pr-title.yml`, `release.yml` + configs seeded at `2.1.0`;
+`database.yml` trimmed to migration validity; `standard-version` removed;
+`docs/versioning.md` corrected to post-1.0 strict semver; ADR-0008.

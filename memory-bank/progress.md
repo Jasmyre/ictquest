@@ -131,3 +131,8 @@ docs-correction spec); map Decisions-so-far updated, no open tickets remain.
   globals, `dev-lan` + provisional `pwa-assets` scripts, `todo.ts` stub
   deleted, stale tsconfig includes dropped, LF normalization); Jest harness
   failure is pre-existing and owned by #27.
+- Release-please migration (2026-09-22, uncommitted): `docs/commits.md`,
+  `test.yml` / `pr-title.yml` / `release.yml`, configs at `2.1.0`,
+  `standard-version` removed, ADR-0008. Still to do: `git tag v2.1.0` +
+  `gh release create` baseline, `npm install` to drop lock entry, delete
+  obsolete `## [Unreleased]` CHANGELOG section on first release PR.

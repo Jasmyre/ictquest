@@ -67,70 +67,72 @@ async function main() {
 
   const result = await prisma.$transaction(
     async (tx) => {
-    for (const name of ["ADMIN", "MODERATOR", "USER"]) {
-      await tx.role.upsert({ where: { name }, update: {}, create: { name } });
-    }
+      for (const name of ["ADMIN", "MODERATOR", "USER"]) {
+        await tx.role.upsert({ where: { name }, update: {}, create: { name } });
+      }
 
-    const [roles, usersWithRoles] = await Promise.all([
-      tx.role.findMany(),
-      tx.user.findMany({
+      const [roles, usersWithRoles] = await Promise.all([
+        tx.role.findMany(),
+        tx.user.findMany({
+          select: { id: true, roles: { select: { name: true } } },
+        }),
+      ]);
+
+      const roleIdByName = new Map(roles.map((r) => [r.name, r.id]));
+      const existingByUser = new Map();
+      for (const u of usersWithRoles) {
+        existingByUser.set(u.id, new Set(u.roles.map((r) => r.name)));
+      }
+
+      let created = 0;
+      for (const user of usersWithRoles) {
+        const existing = existingByUser.get(user.id) ?? new Set();
+        // Guarantee pass: every user must hold the default learner role.
+        // (Legacy ADMIN->ADMIN / USER->USER mapping retired with the column
+        // drop in Migration 20; existing memberships are left untouched.)
+        if (!existing.has(DEFAULT_ROLE)) {
+          await tx.user.update({
+            where: { id: user.id },
+            data: {
+              roles: { connect: { id: roleIdByName.get(DEFAULT_ROLE) } },
+            },
+          });
+          existing.add(DEFAULT_ROLE);
+          created += 1;
+        }
+      }
+
+      const memberships = await tx.user.findMany({
         select: { id: true, roles: { select: { name: true } } },
-      }),
-    ]);
-
-    const roleIdByName = new Map(roles.map((r) => [r.name, r.id]));
-    const existingByUser = new Map();
-    for (const u of usersWithRoles) {
-      existingByUser.set(u.id, new Set(u.roles.map((r) => r.name)));
-    }
-
-    let created = 0;
-    for (const user of usersWithRoles) {
-      const existing = existingByUser.get(user.id) ?? new Set();
-      // Guarantee pass: every user must hold the default learner role.
-      // (Legacy ADMIN->ADMIN / USER->USER mapping retired with the column
-      // drop in Migration 20; existing memberships are left untouched.)
-      if (!existing.has(DEFAULT_ROLE)) {
-        await tx.user.update({
-          where: { id: user.id },
-          data: { roles: { connect: { id: roleIdByName.get(DEFAULT_ROLE) } } },
-        });
-        existing.add(DEFAULT_ROLE);
-        created += 1;
+      });
+      const rolesByUser = new Map();
+      for (const m of memberships) {
+        rolesByUser.set(
+          m.id,
+          m.roles.map((r) => r.name)
+        );
       }
-    }
-
-    const memberships = await tx.user.findMany({
-      select: { id: true, roles: { select: { name: true } } },
-    });
-    const rolesByUser = new Map();
-    for (const m of memberships) {
-      rolesByUser.set(
-        m.id,
-        m.roles.map((r) => r.name)
-      );
-    }
-    const allUsers = await tx.user.findMany({ select: { id: true } });
-    const withoutDefault = allUsers
-      .filter((u) => !(rolesByUser.get(u.id) ?? []).includes(DEFAULT_ROLE))
-      .map((u) => u.id);
-    // Assert zero users without the default role.
-    if (withoutDefault.length > 0) {
-      throw new Error(
-        `Backfill invariant violated: ${withoutDefault.length} user(s) without "${DEFAULT_ROLE}": ${withoutDefault.join(", ")}`
-      );
-    }
-
-    const perRole = {};
-    for (const [, names] of rolesByUser) {
-      for (const name of names) {
-        perRole[name] = (perRole[name] ?? 0) + 1;
+      const allUsers = await tx.user.findMany({ select: { id: true } });
+      const withoutDefault = allUsers
+        .filter((u) => !(rolesByUser.get(u.id) ?? []).includes(DEFAULT_ROLE))
+        .map((u) => u.id);
+      // Assert zero users without the default role.
+      if (withoutDefault.length > 0) {
+        throw new Error(
+          `Backfill invariant violated: ${withoutDefault.length} user(s) without "${DEFAULT_ROLE}": ${withoutDefault.join(", ")}`
+        );
       }
-    }
 
-    return { created, perRole };
+      const perRole = {};
+      for (const [, names] of rolesByUser) {
+        for (const name of names) {
+          perRole[name] = (perRole[name] ?? 0) + 1;
+        }
+      }
+
+      return { created, perRole };
     },
-    { maxWait: 15000, timeout: 60000 }
+    { maxWait: 15_000, timeout: 60_000 }
   );
 
   const after = {

@@ -1,0 +1,43 @@
+# Test CI gate — typecheck + lint + unit/integration + build.
+#
+# Runs on PRs and pushes to main. Integration tests use the ephemeral
+# Postgres service below (DATABASE_URL_TEST); `database.yml` owns
+# migration validity, this workflow owns code correctness.
+
+name: test
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ictquest_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL_TEST: postgresql://postgres:postgres@localhost:5432/ictquest_test
+      SKIP_ENV_VALIDATION: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Apply migrations to ephemeral test DB
+        run: npm run db:migrate:test
+      - run: npm run typecheck
+      - run: npm run check
+      - run: npm run test:all
+      - run: npm run build

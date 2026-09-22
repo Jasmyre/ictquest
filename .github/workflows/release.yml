@@ -1,0 +1,29 @@
+# Release — release-please cutter (node strategy, `v`-prefixed tags).
+#
+# On every push to main, scans conventional commits since the manifest
+# version and opens/updates a single release PR (`chore(main): release x.y.z`).
+# Merging it creates the tag + GitHub Release. `workflow_dispatch` re-runs
+# the scan on demand (e.g. after fixing a commit message).
+#
+# Auth uses GITHUB_TOKEN (zero setup): bot pushes do not re-trigger CI.
+# Baseline: tag v2.1.0 must exist once (see docs/versioning.md).
+
+name: release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v5
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json

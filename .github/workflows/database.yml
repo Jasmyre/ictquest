@@ -1,8 +1,8 @@
 # Database CI/CD — keeps prod from falling behind dev after a PR.
 #
 # PR (validate): spins up ephemeral Postgres, applies ALL committed migrations
-# with `db:migrate:test`, then runs integration + unit suites. A PR that
-# forgets to commit its migration, or commits broken SQL, fails here.
+# with `db:migrate:test`, then checks drift. Code correctness (unit/integration)
+# lives in `test.yml` — this workflow owns migration validity only.
 #
 # Merge to main (deploy): applies the same committed migrations to production
 # with `db:migrate:prod`. Prod URL comes ONLY from the `DATABASE_URL` secret —
@@ -62,10 +62,6 @@ jobs:
         run: npm run db:migrate:test
       - name: Drift check — DB must match migrations after deploy
         run: node scripts/db-with-url.mjs test -- npx prisma migrate status
-      - name: Integration tests (live test DB)
-        run: npm run test:integration
-      - name: Unit tests (mocked, DB-free)
-        run: npm run test -- --project unit
 
   deploy-prod:
     if: github.event_name == 'push'

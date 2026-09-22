@@ -60,6 +60,20 @@ _Avoid_: Document, Reference UI (the mount is the callable surface, not its desc
 A Bearer token is a named, expiring, revocable credential for external callers — presented per request and granting exactly the holder's own access, never more. A session is the browser's cookie-based sign-in. Both resolve to the same user-with-roles, so permission checks behave identically on either.
 _Avoid_: Sharing a session cookie with scripts; treating a token as elevated access
 
+## Release language
+
+**Commit**:
+The code-side record of one change — one qoomon type (`feat, fix, perf, refactor, style, test, docs, build, ops, chore`), optional free-form scope, imperative lowercase description. Pipeline changes are `ops:`, never `ci:`.
+_Avoid_: Using issue IDs as scopes; past-tense or capitalized descriptions
+
+**PR title**:
+The squash-merge source of truth for releases — linted to the same Commit format, so the merged commit stays parseable even when branch commits are not.
+_Avoid_: Free-form titles; relying on branch commit history after a squash
+
+**Release**:
+The automated cutter (release-please) that turns conventional PR titles on `main` into a version bump, tag (`vX.Y.Z`), and GitHub Release. Developers never hand-edit versions.
+_Avoid_: Manual tags outside the baseline bootstrap; hand-editing generated bumps
+
 ## Overlay language
 
 **Dialog**:
