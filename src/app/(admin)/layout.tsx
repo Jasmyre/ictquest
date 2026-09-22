@@ -11,7 +11,7 @@ import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { Suspense } from "react";
 import { auth } from "@/auth";
-import { getUserRoleNames, hasRole } from "@/lib/roles";
+import { getUserRoleNames, hasRole, isUserSuspended } from "@/lib/roles";
 
 const ADMIN_NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -97,6 +97,23 @@ async function AdminGuard({ children }: Readonly<{ children: ReactNode }>) {
   // sign-in/refresh and goes stale after a grant/revoke, so admin paths
   // re-read memberships from the DB. Non-admin paths keep the JWT copy
   // to avoid a DB read on every request.
+  // Suspended users (#72) are redirected away even when their stamped copy
+  // still lists ADMIN: suspension is checked fresh per request with session
+  // fallback, and roles underneath stay preserved for unsuspend.
+  if (session.user.id) {
+    try {
+      if (await isUserSuspended(session.user.id)) {
+        redirect("/");
+      }
+    } catch {
+      if (session.user.suspended === true) {
+        redirect("/");
+      }
+    }
+  } else if (session.user.suspended === true) {
+    redirect("/");
+  }
+
   let roles = session.user.roles;
   if (session.user.id) {
     try {

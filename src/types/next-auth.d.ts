@@ -9,6 +9,7 @@ declare module "next-auth" {
   interface Session {
     user: {
       roles: RoleName[];
+      suspended?: boolean;
       emailVerified: Date;
       userName: string;
       progressData?: {
@@ -25,6 +26,7 @@ declare module "@auth/core" {
   // biome-ignore lint/style/useConsistentTypeDefinitions: interface appropriate to extent Session type
   interface JWT {
     roles?: RoleName[];
+    suspended?: boolean;
     emailVerified?: Date;
     userName?: string;
     progressData?: {

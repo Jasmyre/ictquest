@@ -14,6 +14,8 @@ import {
   resetProgressSchema,
   revokeAchievementSchema,
   revokeRoleSchema,
+  suspendUserSchema,
+  unsuspendUserSchema,
   updateAchievementDefinitionSchema,
 } from "@/server/schemas/admin";
 import {
@@ -26,6 +28,8 @@ import {
   resetUserProgress,
   revokeAchievementForUser,
   revokeRole,
+  suspendUser,
+  unsuspendUser,
   updateAchievementDefinition,
 } from "@/server/services/admin";
 import { listLessonContent } from "@/server/services/lesson-content";
@@ -41,7 +45,11 @@ import { listLessonContent } from "@/server/services/lesson-content";
  * `resetProgress`) all sit behind `permissionProcedure("Admin", "manage")`: callers need an
  * authenticated session whose current DB memberships include ADMIN (fresh
  * per-request read, #70), otherwise FORBIDDEN
- * (or UNAUTHORIZED when anonymous). Migration 15 adds `listLessonContent`
+ * (or UNAUTHORIZED when anonymous). Suspended callers are denied with
+ * FORBIDDEN even when their stamped copy still lists ADMIN (#72).
+ * `suspendUser` / `unsuspendUser` stamp or clear `suspendedAt` without
+ * touching roles, so unsuspend restores exactly what the user had.
+ * Migration 15 adds `listLessonContent`
  * (read-only MDX store listing — curriculum stays dev-authored in git, no
  * runtime lesson writes) plus Achievement-definition CRUD
  * (`list/create/update/deleteAchievementDefinition`).
@@ -85,6 +93,16 @@ export const adminRouter = createTRPCRouter({
   resetProgress: permissionProcedure("Admin", "manage")
     .input(resetProgressSchema)
     .mutation(({ ctx, input }) => resetUserProgress(ctx.db, input)),
+
+  suspendUser: permissionProcedure("Admin", "manage")
+    .input(suspendUserSchema)
+    .mutation(({ ctx, input }) =>
+      suspendUser(ctx.db, input, { callerId: requireUserId(ctx.user) })
+    ),
+
+  unsuspendUser: permissionProcedure("Admin", "manage")
+    .input(unsuspendUserSchema)
+    .mutation(({ ctx, input }) => unsuspendUser(ctx.db, input)),
 
   listLessonContent: permissionProcedure("Admin", "manage").query(() =>
     listLessonContent()

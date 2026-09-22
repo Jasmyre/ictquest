@@ -28,6 +28,17 @@ function isAdminSession(session: unknown): boolean {
   return Array.isArray(roles) && hasRole(roles, "ADMIN");
 }
 
+function isSuspendedSession(session: unknown): boolean {
+  if (typeof session !== "object" || session === null) {
+    return false;
+  }
+  const user = (session as { user?: unknown }).user;
+  if (typeof user !== "object" || user === null) {
+    return false;
+  }
+  return (user as { suspended?: unknown }).suspended === true;
+}
+
 export default auth((req) => {
   const { nextUrl } = req;
 
@@ -66,11 +77,14 @@ export default auth((req) => {
   }
 
   // Admin prefix requires session plus the ADMIN role (shell lands in #34).
+  // Suspended sessions (#72) are redirected away on the JWT-stamped flag —
+  // coarse edge redirect only; the authoritative fresh check lives in the
+  // admin shell guard and the privileged procedures.
   if (isAdminRoute(nextUrl.pathname)) {
     if (!isLoggedIn) {
       return Response.redirect(new URL("/auth", nextUrl), 302);
     }
-    if (!isAdminSession(req.auth)) {
+    if (isSuspendedSession(req.auth) || !isAdminSession(req.auth)) {
       return Response.redirect(new URL("/", nextUrl), 302);
     }
     return;

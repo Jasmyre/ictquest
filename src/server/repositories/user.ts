@@ -13,11 +13,18 @@ export type UserListRow = {
   id: string;
   email: string | null;
   userName: string | null;
+  suspendedAt: Date | null;
   roles: Array<{ name: string }>;
 };
 
 export type UserWithRoles = {
   id: string;
+  roles: Array<{ name: string }>;
+};
+
+export type UserSuspensionRow = {
+  id: string;
+  suspendedAt: Date | null;
   roles: Array<{ name: string }>;
 };
 
@@ -36,6 +43,7 @@ export type SessionOwnerRow = {
   image: string | null;
   userName: string | null;
   emailVerified: Date | null;
+  suspendedAt: Date | null;
 };
 
 export type UserRepository = {
@@ -53,6 +61,9 @@ export type UserRepository = {
   connectRole(userId: string, roleId: string): Promise<void>;
   disconnectRole(userId: string, roleId: string): Promise<void>;
   updateUserName(userId: string, userName: string): Promise<void>;
+  findSuspension(userId: string): Promise<UserSuspensionRow | null>;
+  setSuspendedAt(userId: string, at: Date): Promise<UserSuspensionRow>;
+  clearSuspendedAt(userId: string): Promise<UserSuspensionRow>;
 };
 
 export function createUserRepository(db: UserDb): UserRepository {
@@ -88,6 +99,7 @@ export function createUserRepository(db: UserDb): UserRepository {
           image: true,
           userName: true,
           emailVerified: true,
+          suspendedAt: true,
         },
       });
     },
@@ -101,7 +113,13 @@ export function createUserRepository(db: UserDb): UserRepository {
       return db.user.findMany({
         skip,
         take,
-        select: { id: true, email: true, userName: true, roles: true },
+        select: {
+          id: true,
+          email: true,
+          userName: true,
+          suspendedAt: true,
+          roles: true,
+        },
       });
     },
     ensureRole(name: string): Promise<{ id: string; name: string }> {
@@ -130,6 +148,26 @@ export function createUserRepository(db: UserDb): UserRepository {
     },
     async updateUserName(userId: string, userName: string): Promise<void> {
       await db.user.update({ where: { id: userId }, data: { userName } });
+    },
+    findSuspension(userId: string): Promise<UserSuspensionRow | null> {
+      return db.user.findUnique({
+        where: { id: userId },
+        select: { id: true, suspendedAt: true, roles: true },
+      });
+    },
+    setSuspendedAt(userId: string, at: Date): Promise<UserSuspensionRow> {
+      return db.user.update({
+        where: { id: userId },
+        data: { suspendedAt: at },
+        select: { id: true, suspendedAt: true, roles: true },
+      });
+    },
+    clearSuspendedAt(userId: string): Promise<UserSuspensionRow> {
+      return db.user.update({
+        where: { id: userId },
+        data: { suspendedAt: null },
+        select: { id: true, suspendedAt: true, roles: true },
+      });
     },
   };
 }

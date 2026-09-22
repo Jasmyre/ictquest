@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { AdminRoleToggles } from "@/components/admin-role-toggles";
+import { AdminSuspendToggle } from "@/components/admin-suspend-toggle";
 import { api } from "@/trpc/server";
 
 /**
@@ -13,7 +14,9 @@ import { api } from "@/trpc/server";
  * membership is an irrevocable floor: its toggle is always disabled, and a
  * toggle that would remove the user's last membership is disabled too, so
  * the Role-less state cannot be recreated from this UI (the service rejects
- * both cases with BAD_REQUEST as defense in depth). Requires
+ * both cases with BAD_REQUEST as defense in depth). Suspension (#72) sits
+ * beside the toggles: suspending stamps `suspendedAt` without touching
+ * roles, so unsuspend restores exactly what the user had. Requires
  * ADMIN via the `(admin)` layout plus the `proxy.ts` guard.
  *
  * Cache Components: static shell prerenders; the per-request user list
@@ -26,8 +29,8 @@ export default function AdminUsersPage() {
         User Management
       </h1>
       <p className="text-gray-600 text-sm dark:text-gray-300">
-        Grant or revoke ADMIN and MODERATOR assignments. Every user always
-        holds USER — it cannot be revoked.
+        Grant or revoke ADMIN and MODERATOR assignments. Every user always holds
+        USER — it cannot be revoked.
       </p>
       <Suspense fallback={<p>Loading users…</p>}>
         <AdminUserList />
@@ -58,8 +61,17 @@ async function AdminUserList() {
               </div>
               <p className="shrink-0 text-gray-600 text-xs dark:text-gray-300">
                 {user.roles.join(", ") || "No roles"}
+                {user.suspendedAt !== null ? " (suspended)" : ""}
               </p>
-              <AdminRoleToggles userId={user.id} initialRoles={user.roles} />
+              <AdminRoleToggles initialRoles={user.roles} userId={user.id} />
+              <AdminSuspendToggle
+                initialSuspendedAt={
+                  user.suspendedAt === null
+                    ? null
+                    : new Date(user.suspendedAt).toISOString()
+                }
+                userId={user.id}
+              />
             </li>
           ))
         : null}

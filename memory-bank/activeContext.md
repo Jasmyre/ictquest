@@ -108,3 +108,12 @@ first), `seed.ts` stays role-rows only; non-admin paths keep JWT-stamped
 `tests/unit/instant-admin-revocation.test.ts`, 4 tests). USER is an irrevocable
 floor. Suspended split to follow-up ticket: `suspendedAt DateTime?` checked
 in `jwt` + Credentials `authorize` + proxy, roles preserved for unsuspend.
+
+#72 done 2026-09-22 (this ticket): `User.suspendedAt` + migration
+`20260922000000_user_suspended_at`; admin-only `suspendUser`/`unsuspendUser`
+(idempotent, self-suspend refused, roles untouched); enforcement in
+`authorize`, OAuth `signIn` callback, `jwt`/`session` flag,
+`privateProcedure` (flag-only) + privileged gates (fresh read + session
+fallback), `(admin)` guard, `proxy.ts`, bearer REST; `AdminSuspendToggle`
+on `/admin/users`; `Suspended user` glossary term in `CONTEXT.md`; suite
+37 files / 195 tests green, typechecks + ultracite clean.

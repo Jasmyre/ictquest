@@ -37,6 +37,11 @@ export async function resolveV1UserFromRequest(req: Request): Promise<{
         .findSessionOwner(record.userId)
         .catch(() => null);
       if (owner) {
+        // Suspended owners (#72) resolve to no user on the REST mount, so
+        // bearer calls deny exactly like suspended sessions do.
+        if (owner.suspendedAt !== null) {
+          return { user: null };
+        }
         const roles = await getUserRoleNames(owner.id).catch(() => []);
         return {
           user: {

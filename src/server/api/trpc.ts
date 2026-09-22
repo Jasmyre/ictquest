@@ -16,7 +16,13 @@ import { auth } from "@/auth";
 import { env } from "@/env";
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
-import { getUserRoleNames, hasRole, type RoleName } from "@/lib/roles";
+import {
+  getUserRoleNames,
+  hasRole,
+  isUserSuspended,
+  type RoleName,
+  type SuspensionStore,
+} from "@/lib/roles";
 import { logInfo } from "@/server/logger";
 import {
   hasActionGrant,
@@ -177,6 +183,17 @@ export const privateProcedure = t.procedure.use(function isAuthed(opts) {
     });
   }
 
+  // Suspension denial (#72) on the JWT-stamped flag: no extra lookup, so
+  // non-privileged paths stay fast while a known-suspended session is
+  // denied everywhere. Privileged gates add a fresh per-request read on
+  // top, so suspension takes effect even before the token refreshes.
+  if (ctx.user.suspended === true) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "Account is suspended.",
+    });
+  }
+
   return opts.next({
     ctx: {
       user: ctx.user,
@@ -216,6 +233,7 @@ export const permissionProcedure = (
           user = ctx.user;
         }
       }
+      assertNotSuspended(await isSuspendedCaller(ctx.db, ctx.user));
     }
 
     if (!hasActionGrant(user, resource, action)) {
@@ -231,6 +249,39 @@ export const permissionProcedure = (
       },
     });
   });
+
+/**
+ * Suspension denial (#72).
+ *
+ * Reads the nullable `suspendedAt` timestamp per request from the
+ * procedure database handle (the same fresh-read seam as the #70 role
+ * lookup). Falls back to the JWT-stamped session flag when the lookup
+ * fails, so a degraded database still denies a known-suspended session.
+ * Throws FORBIDDEN when the caller is suspended; otherwise resolves false.
+ */
+async function isSuspendedCaller(
+  store: SuspensionStore,
+  user: { id?: string | null; suspended?: boolean | null }
+): Promise<boolean> {
+  const id = user.id;
+  if (typeof id === "string" && id.length > 0) {
+    try {
+      return await isUserSuspended(id, store);
+    } catch {
+      // Fall through to the session flag below.
+    }
+  }
+  return user.suspended === true;
+}
+
+function assertNotSuspended(suspended: boolean): void {
+  if (suspended) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "Account is suspended.",
+    });
+  }
+}
 
 /**
  * Narrow the session user to its id (code-review Standards fix).
@@ -281,6 +332,7 @@ export const adminProcedure = privateProcedure.use(
   async function isAdmin(opts) {
     const { ctx } = opts;
 
+    assertNotSuspended(await isSuspendedCaller(ctx.db, ctx.user));
     let roles: readonly string[] | undefined | null = ctx.user.roles;
     if (typeof ctx.user.id === "string" && ctx.user.id.length > 0) {
       try {
@@ -311,6 +363,7 @@ export const moderatorProcedure = privateProcedure.use(
   async function isModerator(opts) {
     const { ctx } = opts;
 
+    assertNotSuspended(await isSuspendedCaller(ctx.db, ctx.user));
     let roles: readonly string[] | undefined | null = ctx.user.roles;
     if (typeof ctx.user.id === "string" && ctx.user.id.length > 0) {
       try {

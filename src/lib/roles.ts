@@ -72,6 +72,22 @@ export async function ensureDefaultRole(
   return [...existing, DEFAULT_ROLE_NAME];
 }
 
+export type SuspensionStore = Pick<PrismaClient, "user">;
+
+export async function isUserSuspended(
+  userId: string,
+  client?: SuspensionStore
+): Promise<boolean> {
+  const store = client ?? (await defaultStore());
+  const user = await store.user.findUnique({
+    where: { id: userId },
+    select: { suspendedAt: true },
+  });
+  const suspendedAt = (user as { suspendedAt?: Date | null } | null)
+    ?.suspendedAt;
+  return suspendedAt !== null && suspendedAt !== undefined;
+}
+
 export type BackfillUserInput = {
   id: string;
   legacyRole: RoleName;

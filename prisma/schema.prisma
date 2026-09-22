@@ -16,6 +16,7 @@ model User {
   userName             String?
   biography            String?
   isPrivate            Boolean              @default(false)
+  suspendedAt          DateTime?
   accounts             Account[]
   progressData         ProgressData[]
   userAchievements     UserAchievement[]

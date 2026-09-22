@@ -32,6 +32,14 @@ export const resetProgressSchema = z.object({
   userId: z.string().min(1),
 });
 
+export const suspendUserSchema = z.object({
+  userId: z.string().min(1),
+});
+
+export const unsuspendUserSchema = z.object({
+  userId: z.string().min(1),
+});
+
 export const listAchievementDefinitionsSchema = z.object({
   skip: z.number().min(0).optional(),
   take: z.number().min(1).max(100).optional(),
@@ -58,6 +66,8 @@ export type RevokeRoleInput = z.infer<typeof revokeRoleSchema>;
 export type GrantAchievementInput = z.infer<typeof grantAchievementSchema>;
 export type RevokeAchievementInput = z.infer<typeof revokeAchievementSchema>;
 export type ResetProgressInput = z.infer<typeof resetProgressSchema>;
+export type SuspendUserInput = z.infer<typeof suspendUserSchema>;
+export type UnsuspendUserInput = z.infer<typeof unsuspendUserSchema>;
 export type ListAchievementDefinitionsInput = z.infer<
   typeof listAchievementDefinitionsSchema
 >;

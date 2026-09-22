@@ -10,6 +10,7 @@ type GetUserByEmail = {
   userName: string | null;
   emailVerified: Date | null;
   password: string | null;
+  suspendedAt: Date | null;
 };
 
 export const getUserByEmail = async (

@@ -24,6 +24,8 @@ import type {
   ListUsersInput,
   ResetProgressInput,
   RevokeAchievementInput,
+  SuspendUserInput,
+  UnsuspendUserInput,
   UpdateAchievementDefinitionInput,
 } from "@/server/schemas/admin";
 import { unlockAchievement } from "@/server/services/achievement";
@@ -93,6 +95,7 @@ export async function listUsersWithRoles(db: Db, input: ListUsersInput) {
         id: u.id,
         email: u.email,
         userName: u.userName,
+        suspendedAt: u.suspendedAt,
         roles: u.roles.map((r) => r.name),
       })),
     };
@@ -212,6 +215,88 @@ export async function revokeRole(
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Unable to revoke the role right now. Please try again later.",
+    });
+  }
+}
+
+/**
+ * Suspended capability (#72).
+ *
+ * Suspension is a nullable timestamp on the user row, set and cleared only
+ * through these admin-gated helpers. Role memberships underneath are never
+ * touched, so unsuspend restores exactly what the user had with no manual
+ * re-grant, and suspension can never recreate the invalid Role-less state
+ * (the USER floor stays connected throughout).
+ */
+export async function suspendUser(
+  db: Db,
+  input: SuspendUserInput,
+  opts?: { callerId?: string }
+) {
+  const repository = users(db);
+  try {
+    const row = await repository.findSuspension(input.userId);
+    if (!row) {
+      throw new TRPCError({ code: "NOT_FOUND", message: "User not found." });
+    }
+    // Self-suspension guard: an admin cannot lock their own account out.
+    if (opts?.callerId === input.userId) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Admins cannot suspend their own account.",
+      });
+    }
+    const updated =
+      row.suspendedAt === null
+        ? await repository.setSuspendedAt(input.userId, new Date())
+        : row;
+    return {
+      success: true as const,
+      data: {
+        userId: updated.id,
+        suspendedAt: updated.suspendedAt,
+        roles: updated.roles.map((r) => r.name),
+      },
+    };
+  } catch (error) {
+    if (error instanceof TRPCError) {
+      throw error;
+    }
+    logError("suspendUser error:", error);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Unable to suspend the user right now. Please try again later.",
+    });
+  }
+}
+
+export async function unsuspendUser(db: Db, input: UnsuspendUserInput) {
+  const repository = users(db);
+  try {
+    const row = await repository.findSuspension(input.userId);
+    if (!row) {
+      throw new TRPCError({ code: "NOT_FOUND", message: "User not found." });
+    }
+    const updated =
+      row.suspendedAt === null
+        ? row
+        : await repository.clearSuspendedAt(input.userId);
+    return {
+      success: true as const,
+      data: {
+        userId: updated.id,
+        suspendedAt: updated.suspendedAt,
+        roles: updated.roles.map((r) => r.name),
+      },
+    };
+  } catch (error) {
+    if (error instanceof TRPCError) {
+      throw error;
+    }
+    logError("unsuspendUser error:", error);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Unable to unsuspend the user right now. Try again later.",
     });
   }
 }

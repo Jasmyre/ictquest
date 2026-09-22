@@ -75,6 +75,22 @@ transaction, `createUser` event, JWT heal); gates:
 `tests/unit/admin-role-toggles.test.tsx` (4 tests) fail-closed denial
 pinned; suite 36 files / 190 tests green, typecheck + typecheck:test +
 ultracite clean.
+
+#72 done 2026-09-22: Suspended capability with preserved roles —
+`User.suspendedAt DateTime?` (migration `20260922000000_user_suspended_at`),
+stamped/cleared only via admin-gated `suspendUser`/`unsuspendUser`
+(idempotent, self-suspend refused FORBIDDEN, roles never touched so
+unsuspend restores exactly); enforcement: Credentials `authorize` returns
+null, `jwt` stamps `token.suspended` (default-role heal skipped while
+suspended), privileged gates (`permissionProcedure("Admin", *)`,
+`adminProcedure`, `moderatorProcedure`) deny FORBIDDEN "Account is
+suspended." on a fresh per-request read with session fallback, `(admin)`
+guard + `proxy.ts` redirect suspended sessions away from admin paths,
+suspended bearer REST owners resolve to null; `/admin/users` gains
+`AdminSuspendToggle` (optimistic flip with revert); `Suspended user`
+glossary term added to `CONTEXT.md`; gates: `tests/unit/suspension.test.ts`
+(5 tests), suite 37 files / 195 tests green, typecheck + typecheck:test
+clean, ultracite clean.
 Wayfinding map #44: research ticket #46 resolved 2026-09-19
 (`docs/research/layer-violations.md`); decision tickets #45–#52 all resolved
 2026-09-19 (glossary, both inventories, permissions matrix, three b1 specs,

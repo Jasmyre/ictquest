@@ -16,6 +16,10 @@ _Avoid_: Standard role, base role
 A user who holds no roles. This is an invalid state that must not exist: they can sign in but are denied every permission check, so the system prevents creating or saving one.
 _Avoid_: Disabled user, suspended user, "user with no role"
 
+**Suspended user**:
+A user whose `suspendedAt` timestamp is set by an admin. Suspension blocks credential sign-in and denies existing sessions on privileged and admin paths, while every role membership underneath is preserved untouched — unsuspend clears the timestamp and restores exactly what the user had. It is the approved disable mechanism; stripping roles is never suspension.
+_Avoid_: Role-less user, deleted user, banned (no separate ban state exists)
+
 ## Database language
 
 **Production database**:

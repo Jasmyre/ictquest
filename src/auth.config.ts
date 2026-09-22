@@ -43,6 +43,12 @@ export default {
             return null;
           }
 
+          // Suspended users are blocked at sign-in (#72): roles underneath
+          // are preserved, so unsuspend restores access with no re-grant.
+          if (user.suspendedAt !== null) {
+            return null;
+          }
+
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
           if (passwordsMatch) {
@@ -69,6 +75,8 @@ export default {
       if (session.user) {
         const roles = (token as { roles?: unknown }).roles;
         session.user.roles = Array.isArray(roles) ? (roles as RoleName[]) : [];
+        session.user.suspended =
+          (token as { suspended?: unknown }).suspended === true;
       }
       return session;
     },
