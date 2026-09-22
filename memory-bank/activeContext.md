@@ -102,7 +102,9 @@ Role freshness (2026-09-22, grilling Q1–Q8 confirmed): role-less repair = run
 `scripts/backfill-auth-roles.mjs` via `db-with-url.mjs prod` (dry-run count
 first), `seed.ts` stays role-rows only; non-admin paths keep JWT-stamped
 `roles[]` (re-signin/refresh to pick up changes); admin paths
-(`(admin)` layout guard + `adminProcedure`/`moderatorProcedure`) re-read
-`getUserRoleNames` per request with session fallback. USER is an irrevocable
+(`(admin)` layout guard + `adminProcedure`/`moderatorProcedure` +
+`permissionProcedure("Admin", *)`) re-read
+`getUserRoleNames` per request with session fallback (#70 closed 2026-09-22:
+`tests/unit/instant-admin-revocation.test.ts`, 4 tests). USER is an irrevocable
 floor. Suspended split to follow-up ticket: `suspendedAt DateTime?` checked
 in `jwt` + Credentials `authorize` + proxy, roles preserved for unsuspend.

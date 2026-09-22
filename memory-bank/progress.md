@@ -57,6 +57,13 @@ Root causes fixed: missing Playwright `webServer` (all server specs
 
 Current focus: #23 execution spec; latest completed: #26.
 Next: #27.
+
+#70 closed 2026-09-22: `permissionProcedure("Admin", *)` re-reads
+`getUserRoleNames` per request with session fallback (proxy stays coarse,
+non-privileged paths do no extra lookup); gate:
+`tests/unit/instant-admin-revocation.test.ts` (4 tests); suite 34 files /
+183 tests green, typecheck + typecheck:test clean, ultracite clean on touched
+files (pre-existing `scripts/backfill-auth-roles.mjs` findings untouched).
 Wayfinding map #44: research ticket #46 resolved 2026-09-19
 (`docs/research/layer-violations.md`); decision tickets #45–#52 all resolved
 2026-09-19 (glossary, both inventories, permissions matrix, three b1 specs,

@@ -185,22 +185,40 @@ export const privateProcedure = t.procedure.use(function isAuthed(opts) {
 });
 
 /**
- * Behavior-identical permissions gate (Slice 4, #61).
+ * Behavior-identical permissions gate (Slice 4, #61; freshness #70).
  *
  * Coarse controller gate over the locked matrix in
  * `src/server/permissions.ts`: UNAUTHORIZED when signed out, FORBIDDEN
  * when no held role grants the action. Owner-predicate rules count as
  * grants here; the resolver re-checks the row with `requirePermission`
  * where a record exists (missing records answer FORBIDDEN, anti-probing).
+ *
+ * Freshness (#70): the privileged `Admin` gate re-reads memberships from
+ * the DB per request so a grant/revoke takes effect without re-signin
+ * (fallback to the session copy on lookup failure). Non-privileged paths
+ * keep the JWT-stamped `ctx.user.roles` with no extra lookup.
  */
 export const permissionProcedure = (
   resource: PermissionResource,
   action: PermissionAction
 ) =>
-  privateProcedure.use(function isPermitted(opts) {
+  privateProcedure.use(async function isPermitted(opts) {
     const { ctx } = opts;
 
-    if (!hasActionGrant(ctx.user, resource, action)) {
+    let user = ctx.user;
+    if (resource === "Admin") {
+      const id = ctx.user.id;
+      if (typeof id === "string" && id.length > 0) {
+        try {
+          const roles = await getUserRoleNames(id);
+          user = { ...ctx.user, roles };
+        } catch {
+          user = ctx.user;
+        }
+      }
+    }
+
+    if (!hasActionGrant(user, resource, action)) {
       throw new TRPCError({
         code: "FORBIDDEN",
         message: "You do not have permission to perform this action.",

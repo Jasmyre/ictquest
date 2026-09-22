@@ -39,7 +39,8 @@ import { listLessonContent } from "@/server/services/lesson-content";
  * User plus role management (`listUsers`, `grantRole`, `revokeRole`) and
  * progress support ops (`grantAchievement`, `revokeAchievement`,
  * `resetProgress`) all sit behind `permissionProcedure("Admin", "manage")`: callers need an
- * authenticated session whose `roles` include ADMIN, otherwise FORBIDDEN
+ * authenticated session whose current DB memberships include ADMIN (fresh
+ * per-request read, #70), otherwise FORBIDDEN
  * (or UNAUTHORIZED when anonymous). Migration 15 adds `listLessonContent`
  * (read-only MDX store listing — curriculum stays dev-authored in git, no
  * runtime lesson writes) plus Achievement-definition CRUD
