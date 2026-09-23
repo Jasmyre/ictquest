@@ -75,6 +75,16 @@ reference list" below).
 - `cacheComponents: true` + PPR: static shells prerender; session-aware
   subtrees sit in `<Suspense>` after `await connection()` + `await auth()`.
   Never call `auth()` in a layout directly.
+- Shared site header: `(marketing)` and `(app)` render the same
+  `SiteHeader` (`src/components/site-header-async.tsx`) over `NavigationBar`.
+  Nav visibility by session state is presentation filtering only (guests see
+  Home + Lessons, signed-in users see the full nav; search and privileged
+  palette entries follow the same rule) — real authorization stays in
+  `proxy.ts` + `permissionProcedure`. Identity resolves from the
+  JWT-stamped session user (name/image/initials); no placeholder identity
+  ships in committed UI. This project is released: every merged surface
+  resolves real session/data state plus loading/empty states (production
+  standard, no prototype placeholders).
 - Fallbacks are real shells (never `null` — blank-frame on soft-nav), and
   dashboard share links always read from the network, never from cache.
 

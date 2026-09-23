@@ -78,18 +78,38 @@ export interface NavItem {
 	children?: NavItem[];
 }
 
+export interface HeaderUser {
+  name?: string | null;
+  image?: string | null;
+}
+
 interface AdaptiveNavProps {
-	navItems: NavItem[];
-	pageItems?: NavItem[];
-	title?: string;
-	enableBlock?: boolean;
+  navItems: NavItem[];
+  pageItems?: NavItem[];
+  title?: string;
+  enableBlock?: boolean;
+  showSearch?: boolean;
+  user?: HeaderUser | null;
+}
+
+function getInitials(name?: string | null): string {
+  if (!name) {
+    return "?";
+  }
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) {
+    return (parts[0]?.slice(0, 2) ?? "?").toUpperCase();
+  }
+  return `${parts[0]?.[0] ?? ""}${parts[parts.length - 1]?.[0] ?? ""}`.toUpperCase();
 }
 
 export function NavigationBar({
-	navItems,
-	pageItems,
-	title = "Logo",
-	enableBlock = true,
+  navItems,
+  pageItems,
+  title = "Logo",
+  enableBlock = true,
+  showSearch = true,
+  user = null,
 }: AdaptiveNavProps) {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -203,25 +223,33 @@ export function NavigationBar({
 									</CommandGroup>
 								</>
 							)}
-							<CommandSeparator />
-							<CommandGroup heading="Settings">
-								<CommandItem
-									className="cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
-									onSelect={() => setIsSearchOpen(false)}
-								>
-									<User className="mr-2 h-4 w-4" />
-									<span>Profile</span>
-									<CommandShortcut>⌘P</CommandShortcut>
-								</CommandItem>
-								<CommandItem
-									className="cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
-									onSelect={() => setIsSearchOpen(false)}
-								>
-									<Settings className="mr-2 h-4 w-4" />
-									<span>Settings</span>
-									<CommandShortcut>⌘S</CommandShortcut>
-								</CommandItem>
-							</CommandGroup>
+              <CommandSeparator />
+              {user && (
+                <CommandGroup heading="Settings">
+                  <CommandItem
+                    className="cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
+                    onSelect={() => {
+                      router.push("/profile");
+                      setIsSearchOpen(false);
+                    }}
+                  >
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                    <CommandShortcut>⌘P</CommandShortcut>
+                  </CommandItem>
+                  <CommandItem
+                    className="cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
+                    onSelect={() => {
+                      router.push("/settings");
+                      setIsSearchOpen(false);
+                    }}
+                  >
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                    <CommandShortcut>⌘S</CommandShortcut>
+                  </CommandItem>
+                </CommandGroup>
+              )}
 						</CommandList>
 					</Command>
 				</DialogContent>
@@ -321,17 +349,19 @@ export function NavigationBar({
 
 						{/* Right side - Quick Actions */}
 						<div className="flex items-center space-x-1">
-							{/* Search Button */}
-							<Button
-								aria-label="Search"
-								className="relative cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
-								onClick={() => setIsSearchOpen(true)}
-								size="icon"
-								variant="ghost"
-							>
-								<Search className="h-4 w-4 transition-transform duration-200" />
-								<span className="sr-only">Search</span>
-							</Button>
+            {/* Search Button */}
+            {showSearch && (
+              <Button
+                aria-label="Search"
+                className="relative cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
+                onClick={() => setIsSearchOpen(true)}
+                size="icon"
+                variant="ghost"
+              >
+                <Search className="h-4 w-4 transition-transform duration-200" />
+                <span className="sr-only">Search</span>
+              </Button>
+            )}
 
 							{/* Theme Toggle */}
 							<Button
@@ -357,8 +387,9 @@ export function NavigationBar({
 								<span className="sr-only">Toggle theme</span>
 							</Button>
 
-							{/* User Menu */}
-							<DropdownMenu>
+            {/* User Menu */}
+            {user ? (
+              <DropdownMenu>
 								<DropdownMenuTrigger asChild>
 									<Button
 										aria-label="User menu"
@@ -386,8 +417,13 @@ export function NavigationBar({
 										<LogOut className="mr-2 h-4 w-4 transition-transform duration-200" />
 										<span>Log out</span>
 									</DropdownMenuItem>
-								</DropdownMenuContent>
-							</DropdownMenu>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button asChild variant="outline">
+                <Link href="/auth">Sign in</Link>
+              </Button>
+            )}
 						</div>
 					</div>
 				</div>
@@ -452,18 +488,20 @@ export function NavigationBar({
 						{title}
 					</Link>
 
-					{/* Mobile Quick Actions */}
-					<div className="flex items-center space-x-2">
-						<Button
-							aria-label="Search"
-							className="cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
-							onClick={() => setIsSearchOpen(true)}
-							size="icon"
-							variant="ghost"
-						>
-							<Search className="h-4 w-4 transition-transform duration-200" />
-							<span className="sr-only">Search</span>
-						</Button>
+          {/* Mobile Quick Actions */}
+          <div className="flex items-center space-x-2">
+            {showSearch && (
+              <Button
+                aria-label="Search"
+                className="cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
+                onClick={() => setIsSearchOpen(true)}
+                size="icon"
+                variant="ghost"
+              >
+                <Search className="h-4 w-4 transition-transform duration-200" />
+                <span className="sr-only">Search</span>
+              </Button>
+            )}
 
 						{/* Mobile Theme Toggle */}
 						<Button
@@ -508,12 +546,13 @@ export function NavigationBar({
 								<VisuallyHidden>
 									<SheetTitle>Navigation Menu</SheetTitle>
 								</VisuallyHidden>
-								<MobileSidebar
-									navItems={navItems}
-									onNavigate={() => setIsMobileMenuOpen(false)}
-									pathname={pathname}
-									title={title}
-								/>
+                <MobileSidebar
+                  navItems={navItems}
+                  onNavigate={() => setIsMobileMenuOpen(false)}
+                  pathname={pathname}
+                  title={title}
+                  user={user}
+                />
 							</SheetContent>
 						</Sheet>
 					</div>
@@ -617,15 +656,17 @@ const ListItem = React.forwardRef<
 ListItem.displayName = "ListItem";
 
 function MobileSidebar({
-	navItems,
-	onNavigate,
-	title,
-	pathname,
+  navItems,
+  onNavigate,
+  title,
+  pathname,
+  user = null,
 }: {
-	navItems: NavItem[];
-	onNavigate: () => void;
-	title: string;
-	pathname: string;
+  navItems: NavItem[];
+  onNavigate: () => void;
+  title: string;
+  pathname: string;
+  user?: HeaderUser | null;
 }) {
 	const { theme, setTheme } = useTheme();
 	const [mounted, setMounted] = useState(false);
@@ -700,77 +741,99 @@ function MobileSidebar({
 									)}
 								</>
 							)}
-							Toggle Theme
-						</Button>
-						<Button
-							aria-label="Open settings"
-							className="h-9 cursor-pointer justify-start px-3 opacity-80 transition-all duration-200 hover:opacity-100"
-							onClick={onNavigate}
-							variant="ghost"
-						>
-							<Settings className="mr-2 h-4 w-4 transition-transform duration-200" />
-							Settings
-						</Button>
+            Toggle Theme
+            </Button>
+            {user && (
+              <Button
+                aria-label="Open settings"
+                className="h-9 cursor-pointer justify-start px-3 opacity-80 transition-all duration-200 hover:opacity-100"
+                onClick={onNavigate}
+                variant="ghost"
+              >
+                <Settings className="mr-2 h-4 w-4 transition-transform duration-200" />
+                Settings
+              </Button>
+            )}
 					</div>
 				</div>
 			</div>
 
-			{/* Sidebar Footer */}
-			<div className="border-sidebar-border border-t p-3">
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<Button
-							aria-label="User account menu"
-							className="h-10 w-full cursor-pointer justify-start px-3 opacity-90 transition-all duration-200 hover:opacity-100"
-							variant="ghost"
-						>
-							<div className="flex flex-1 items-center gap-2">
-								<div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs transition-all duration-200">
-									JD
-								</div>
-								<div className="grid flex-1 text-left text-sm leading-tight">
-									<span className="truncate font-medium">John Doe</span>
-									<span className="truncate text-sidebar-foreground/70 text-xs">
-										Account
-									</span>
-								</div>
-							</div>
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="start" className="w-56" side="top">
-						<DropdownMenuLabel className="relative pl-8">
-							<div className="absolute top-0 bottom-0 left-2 w-px bg-sidebar-border" />
-							My Account
-						</DropdownMenuLabel>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem
-							className="relative cursor-pointer pl-8 opacity-80 transition-all duration-200 hover:opacity-100"
-							onClick={onNavigate}
-						>
-							<div className="absolute top-0 bottom-0 left-2 w-px bg-sidebar-border" />
-							<User className="mr-2 h-4 w-4 transition-transform duration-200" />
-							<span>Profile</span>
-						</DropdownMenuItem>
-						<DropdownMenuItem
-							className="relative cursor-pointer pl-8 opacity-80 transition-all duration-200 hover:opacity-100"
-							onClick={onNavigate}
-						>
-							<div className="absolute top-0 bottom-0 left-2 w-px bg-sidebar-border" />
-							<Settings className="mr-2 h-4 w-4 transition-transform duration-200" />
-							<span>Settings</span>
-						</DropdownMenuItem>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem
-							className="relative cursor-pointer pl-8 opacity-80 transition-all duration-200 hover:opacity-100"
-							onClick={onNavigate}
-						>
-							<div className="absolute top-0 bottom-0 left-2 w-px bg-sidebar-border" />
-							<LogOut className="mr-2 h-4 w-4 transition-transform duration-200" />
-							<span>Log out</span>
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
-			</div>
+      {/* Sidebar Footer */}
+      <div className="border-sidebar-border border-t p-3">
+        {user ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                aria-label="User account menu"
+                className="h-10 w-full cursor-pointer justify-start px-3 opacity-90 transition-all duration-200 hover:opacity-100"
+                variant="ghost"
+              >
+                <div className="flex flex-1 items-center gap-2">
+                  <div className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full bg-primary text-primary-foreground text-xs transition-all duration-200">
+                    {user.image ? (
+                      <Image
+                        alt={user.name ?? "Account"}
+                        className="h-6 w-6 object-cover"
+                        height={24}
+                        src={user.image}
+                        width={24}
+                      />
+                    ) : (
+                      getInitials(user.name ?? "Account")
+                    )}
+                  </div>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-medium">
+                      {user.name ?? "Account"}
+                    </span>
+                    <span className="truncate text-sidebar-foreground/70 text-xs">
+                      Account
+                    </span>
+                  </div>
+                </div>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-56" side="top">
+              <DropdownMenuLabel className="relative pl-8">
+                <div className="absolute top-0 bottom-0 left-2 w-px bg-sidebar-border" />
+                My Account
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="relative cursor-pointer pl-8 opacity-80 transition-all duration-200 hover:opacity-100"
+                onClick={onNavigate}
+              >
+                <div className="absolute top-0 bottom-0 left-2 w-px bg-sidebar-border" />
+                <User className="mr-2 h-4 w-4 transition-transform duration-200" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="relative cursor-pointer pl-8 opacity-80 transition-all duration-200 hover:opacity-100"
+                onClick={onNavigate}
+              >
+                <div className="absolute top-0 bottom-0 left-2 w-px bg-sidebar-border" />
+                <Settings className="mr-2 h-4 w-4 transition-transform duration-200" />
+                <span>Settings</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="relative cursor-pointer pl-8 opacity-80 transition-all duration-200 hover:opacity-100"
+                onClick={onNavigate}
+              >
+                <div className="absolute top-0 bottom-0 left-2 w-px bg-sidebar-border" />
+                <LogOut className="mr-2 h-4 w-4 transition-transform duration-200" />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <Button asChild className="w-full" variant="outline">
+            <Link href="/auth" onClick={onNavigate}>
+              Sign in
+            </Link>
+          </Button>
+        )}
+      </div>
 		</div>
 	);
 }

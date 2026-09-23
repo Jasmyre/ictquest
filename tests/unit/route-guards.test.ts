@@ -24,7 +24,8 @@ describe("Migration 10 — Public and app shells plus guards", () => {
     }
 
     const shell = read("src/app/(marketing)/layout.tsx");
-    expect(shell).not.toContain("NavigationBar");
+    expect(shell).toContain("SiteHeader");
+    expect(shell).not.toContain("<header");
   });
 
   it("places learner pages under the full (app) shell, including moved settings", () => {
@@ -45,7 +46,7 @@ describe("Migration 10 — Public and app shells plus guards", () => {
     }
 
     const shell = read("src/app/(app)/layout.tsx");
-    expect(shell).toContain("NavigationBar");
+    expect(shell).toContain("SiteHeader");
     expect(shell).toContain("Footer");
   });
 

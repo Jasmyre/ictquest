@@ -5,6 +5,16 @@ Decisions frozen in `docs/adr/0001–0005` (#24 baseline, closed).
 
 ## Current focus
 
+Shared session-aware site header (2026-09-23, uncommitted): `(marketing)`
+and `(app)` render the same `SiteHeader` over `NavigationBar`
+(`src/components/site-header-async.tsx` PPR dynamic hole +
+`src/components/site-header.ts` `getHeaderNav`); guests see Home +
+Lessons only, signed-in users see the full nav; hardcoded John Doe/JD
+identity replaced with real session user; production-standard note in
+`AGENTS.md` + `docs/architecture.md`, `Nav visibility by session state`
+glossary term in `CONTEXT.md`. Gates green: typecheck + typecheck:test +
+ultracite clean, `test:all` 39 files / 201 tests.
+
 Lessons-index placement (2026-09-20, `main`): the index lives in the
 `(app)` group on purpose — the whole `/lessons` tree needs a session.
 Correction history: `93b0e0b` made that move; a first fix wrongly moved it
