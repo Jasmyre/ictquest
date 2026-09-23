@@ -1,0 +1,310 @@
+"use client";
+
+import { ChevronRightIcon, MoonIcon, SunIcon } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
+import { type ReactNode, Suspense, useEffect, useRef, useState } from "react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandShortcut,
+} from "@/components/ui/command";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Kbd } from "@/components/ui/kbd";
+import {
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarInput,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+} from "@/components/ui/sidebar";
+import { useCloseOnBack } from "@/hooks/use-close-on-back";
+
+export type NavMainSubItem = {
+  icon?: ReactNode;
+  title: string;
+  url: string;
+};
+
+export type NavMainItem = {
+  icon?: ReactNode;
+  isActive?: boolean;
+  items?: NavMainSubItem[];
+  title: string;
+  url: string;
+};
+
+const getCommandItems = (items: NavMainItem[]) =>
+  items.flatMap((item) => {
+    const parentItem = {
+      icon: item.icon,
+      title: item.title,
+      url: item.url,
+    };
+
+    if (!item.items?.length) {
+      return [parentItem];
+    }
+
+    return [
+      parentItem,
+      ...item.items.map((subItem) => ({
+        icon: subItem.icon,
+        title: subItem.title,
+        url: subItem.url,
+      })),
+    ];
+  });
+
+export function NavMain({
+  groupLabel = "Navigation",
+  items,
+}: {
+  groupLabel?: string;
+  items: NavMainItem[];
+}) {
+  const [isCommandOpen, setIsCommandOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const router = useRouter();
+  const commandItems = getCommandItems(items);
+  const skipHistoryOnCloseRef = useRef<boolean | null>(null);
+
+  useCloseOnBack(isCommandOpen, () => setIsCommandOpen(false), {
+    skipHistoryOnCloseRef,
+  });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "k" && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        setIsCommandOpen((open) => !open);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  const handleCommandSelect = (url: string) => {
+    // router.push updates location.href asynchronously; without the skip flag
+    // the useCloseOnBack cleanup would see an unchanged href and call
+    // history.back(), cancelling the navigation.
+    skipHistoryOnCloseRef.current = true;
+    setIsCommandOpen(false);
+    router.push(url);
+  };
+
+  return (
+    <>
+      <Dialog onOpenChange={setIsCommandOpen} open={isCommandOpen}>
+        <DialogContent className="overflow-hidden p-0">
+          <DialogTitle className="sr-only">Search Commands</DialogTitle>
+          <DialogDescription className="sr-only">
+            Search navigation commands and run them.
+          </DialogDescription>
+          <Command>
+            <CommandInput placeholder="Type a command or search..." />
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup heading="Navigation">
+                {commandItems.map((item) => (
+                  <CommandItem
+                    className="cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
+                    key={`${item.title}-${item.url}`}
+                    onSelect={() => {
+                      handleCommandSelect(item.url);
+                    }}
+                    value={`${item.title} ${item.url}`}
+                  >
+                    {item.icon ? (
+                      <span className="mr-2">{item.icon}</span>
+                    ) : null}
+                    <span>{item.title}</span>
+                    <CommandShortcut>Go</CommandShortcut>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </DialogContent>
+      </Dialog>
+
+      <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+        <div className="relative">
+          <SidebarInput
+            aria-describedby="command-search-shortcut"
+            aria-label="Open command search"
+            className="pr-18"
+            onClick={() => setIsCommandOpen(true)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                setIsCommandOpen(true);
+              }
+            }}
+            placeholder="Search commands..."
+            readOnly
+            value=""
+          />
+          <div
+            className="-translate-y-1/2 pointer-events-none absolute top-1/2 right-1.5 flex items-center gap-1"
+            id="command-search-shortcut"
+          >
+            <span className="sr-only">Shortcut: Control or Command plus K</span>
+            <Kbd aria-hidden="true">Ctrl</Kbd>
+            <Kbd aria-hidden="true">K</Kbd>
+          </div>
+        </div>
+      </SidebarGroup>
+
+      <SidebarGroup>
+        <SidebarGroupLabel className="text-muted-foreground">
+          {groupLabel}
+        </SidebarGroupLabel>
+        <Suspense
+          fallback={<NavMenu isCurrentPath={() => false} items={items} />}
+        >
+          <NavMenuWithPathname items={items} />
+        </Suspense>
+      </SidebarGroup>
+
+      <SidebarGroup>
+        <SidebarGroupLabel className="text-muted-foreground">
+          Quick Actions
+        </SidebarGroupLabel>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              className="hover:bg-muted"
+              onClick={toggleTheme}
+              tooltip="Toggle theme"
+            >
+              {mounted ? (
+                theme === "light" ? (
+                  <MoonIcon />
+                ) : (
+                  <SunIcon />
+                )
+              ) : (
+                <SunIcon />
+              )}
+              <span>Toggle Theme</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroup>
+    </>
+  );
+}
+
+function NavMenuWithPathname({ items }: { items: NavMainItem[] }) {
+  const pathname = usePathname();
+
+  const isCurrentPath = (url: string) =>
+    url === "/"
+      ? pathname === url
+      : pathname === url || pathname.startsWith(`${url}/`);
+
+  return <NavMenu isCurrentPath={isCurrentPath} items={items} />;
+}
+
+function NavMenu({
+  isCurrentPath,
+  items,
+}: {
+  isCurrentPath: (url: string) => boolean;
+  items: NavMainItem[];
+}) {
+  return (
+    <SidebarMenu>
+      {items.map((item) => {
+        if (!item.items?.length) {
+          return (
+            <SidebarMenuItem key={item.title}>
+              <SidebarMenuButton
+                asChild
+                className="hover:bg-muted data-[active=true]:bg-accent"
+                isActive={isCurrentPath(item.url)}
+                tooltip={item.title}
+              >
+                <Link href={item.url}>
+                  {item.icon}
+                  <span>{item.title}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          );
+        }
+
+        return (
+          <Collapsible
+            asChild
+            className="group/collapsible"
+            defaultOpen={item.isActive}
+            key={item.title}
+          >
+            <SidebarMenuItem>
+              <CollapsibleTrigger asChild>
+                <SidebarMenuButton
+                  className="hover:bg-muted data-[active=true]:bg-accent"
+                  isActive={isCurrentPath(item.url)}
+                  tooltip={item.title}
+                >
+                  {item.icon}
+                  <span>{item.title}</span>
+                  <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                </SidebarMenuButton>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <SidebarMenuSub>
+                  {item.items.map((subItem) => (
+                    <SidebarMenuSubItem key={subItem.title}>
+                      <SidebarMenuSubButton
+                        asChild
+                        className="hover:bg-muted"
+                        isActive={isCurrentPath(subItem.url)}
+                      >
+                        <Link href={subItem.url}>
+                          {subItem.icon}
+                          <span>{subItem.title}</span>
+                        </Link>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              </CollapsibleContent>
+            </SidebarMenuItem>
+          </Collapsible>
+        );
+      })}
+    </SidebarMenu>
+  );
+}

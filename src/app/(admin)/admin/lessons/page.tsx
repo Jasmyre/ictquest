@@ -18,7 +18,10 @@ import { api } from "@/trpc/server";
  */
 export default function AdminLessonsPage() {
   return (
-    <div className="space-y-4" data-testid="admin-lessons">
+    <div
+      className="w-full min-w-0 flex-1 p-4 lg:px-8"
+      data-testid="admin-lessons"
+    >
       <h1 className="font-bold text-2xl text-gray-900 dark:text-white">
         Lesson Content
       </h1>

@@ -61,10 +61,19 @@ describe("Migration 11 — Admin shell plus guards", () => {
     expect(proxySrc).toContain("ADMIN");
     expect(proxySrc).toContain("hasRole");
 
+    // Guard lives in `AdminGuard` (fresh per-request role/suspension read
+    // with session fallback); the layout composes it with the sidebar shell.
+    const guard = read("src/components/admin-guard.tsx");
+    expect(guard).toContain("hasRole");
+    expect(guard).toContain("ADMIN");
+    expect(guard).toContain("auth()");
+    expect(guard).toContain("isUserSuspended");
+    expect(guard).toContain("getUserRoleNames");
+
     const shell = read("src/app/(admin)/layout.tsx");
-    expect(shell).toContain("hasRole");
-    expect(shell).toContain("ADMIN");
-    expect(shell).toContain("auth()");
+    expect(shell).toContain("AdminGuard");
+    expect(shell).toContain("AdminShell");
+    expect(shell).toContain('data-testid="admin-shell"');
   });
 
   it("propagates the role list into the edge session so the proxy guard sees it", () => {

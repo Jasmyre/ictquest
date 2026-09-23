@@ -7,7 +7,7 @@
  */
 export default function AdminHomePage() {
   return (
-    <div className="space-y-4">
+    <div className="w-full min-w-0 flex-1 p-4 lg:px-8">
       <h1 className="font-bold text-2xl text-gray-900 dark:text-white">
         Admin Dashboard
       </h1>

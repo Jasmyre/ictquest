@@ -44,8 +44,8 @@ service) and the admin self-demotion guard (role-revocation service refuses an
 `src/proxy.ts` + `src/routes.ts`: exact-public `/`, `/terms`,
 `/privacy`, `/~offline`; the whole `/lessons` tree (index included) needs a
 session by design; public share prefix `/dashboard` (by-id links bypass
-the session guard, rate-limited); `/admin/*` via layout gate (`forbidden()` →
-root `forbidden.tsx`); `/auth/*` redirect-if-logged-in; everything else
+the session guard, rate-limited); `/admin/*` via `AdminGuard` (signed-out →
+`/auth`, suspended/non-ADMIN → `/`, fresh role read per request); `/auth/*` redirect-if-logged-in; everything else
 requires login. Maintenance flag redirects everything to `/maintenance`.
 
 ## Personal access tokens (Bearer)

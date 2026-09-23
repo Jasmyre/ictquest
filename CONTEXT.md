@@ -28,6 +28,14 @@ _Avoid_: Per-request reads on learner paths; trusting the session copy on privil
 Presentation filtering deciding which header links the shared site header renders — guests see Home + Lessons only, signed-in users see the full nav (search and privileged palette entries follow the same rule). It grants nothing; real authorization stays in the proxy guards and `permissionProcedure`.
 _Avoid_: Calling it ABAC or a permission check; hiding a link as a substitute for guarding its route
 
+**Admin guard**:
+The per-request access check wrapping every `(admin)` route (`AdminGuard`): signed-out callers redirect to `/auth`, suspended or non-ADMIN callers redirect to `/`. It re-reads memberships and the suspension flag fresh per request with session fallback, per the session-freshness rule — never the stamped copy alone.
+_Avoid_: Calling it a gate; trusting the session copy on admin paths; returning 403 instead of redirecting
+
+**Admin shell**:
+The per-group layout chrome for `(admin)` routes (`AdminShell`/`AdminShellAsync` over `MainSidebar`, `groupLabel="Admin"`): static sidebar prerenders, session-aware identity streams inside Suspense. It renders nothing until the admin guard passes.
+_Avoid_: The learner app shell; the public minimal shell
+
 ## Database language
 
 **Production database**:
