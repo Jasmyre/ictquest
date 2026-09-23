@@ -24,6 +24,10 @@ _Avoid_: Role-less user, deleted user, banned (no separate ban state exists)
 Session roles are the JWT-stamped copy used everywhere by default, so non-privileged paths issue no extra membership lookup. Privileged paths — the `(admin)` shell guard, `adminProcedure` / `moderatorProcedure`, and `permissionProcedure("Admin", *)` — re-read current memberships and the suspension flag per request and fall back to the session copy when the lookup fails.
 _Avoid_: Per-request reads on learner paths; trusting the session copy on privileged paths; reading the database at the edge proxy
 
+**Nav visibility by session state**:
+Presentation filtering deciding which header links the shared site header renders — guests see Home + Lessons only, signed-in users see the full nav (search and privileged palette entries follow the same rule). It grants nothing; real authorization stays in the proxy guards and `permissionProcedure`.
+_Avoid_: Calling it ABAC or a permission check; hiding a link as a substitute for guarding its route
+
 ## Database language
 
 **Production database**:

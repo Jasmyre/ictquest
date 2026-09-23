@@ -90,7 +90,7 @@ describe("Migration 11 — Admin shell plus guards", () => {
 
   it("leaves the learner app shell unchanged", () => {
     const shell = read("src/app/(app)/layout.tsx");
-    expect(shell).toContain("NavigationBar");
+    expect(shell).toContain("SiteHeader");
     expect(shell).not.toContain("/admin");
   });
 });

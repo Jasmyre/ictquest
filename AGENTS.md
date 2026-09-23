@@ -16,6 +16,8 @@ Biome (the underlying engine) provides robust linting and formatting. Most issue
 
 Write code that is **accessible, performant, type-safe, and maintainable**. Focus on clarity and explicit intent over brevity.
 
+This project is released: write production-ready logic and design only — no placeholder identity, data, or dead UI in committed code. Every merged surface resolves real session/data state plus loading/empty states.
+
 ### Type Safety & Explicitness
 
 - Use explicit types for function parameters and return values when they enhance clarity
