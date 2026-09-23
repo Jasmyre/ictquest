@@ -76,7 +76,9 @@ reference list" below).
   subtrees sit in `<Suspense>` after `await connection()` + `await auth()`.
   Never call `auth()` in a layout directly.
 - Shared site header: `(marketing)` and `(app)` render the same
-  `SiteHeader` (`src/components/site-header-async.tsx`) over `NavigationBar`.
+  `SiteHeader` (`src/components/site-header-async.tsx` PPR dynamic hole
+  over the server `HeaderShell` + narrow client islands
+  `HeaderNavLinks`/`HeaderActions`/`MobileMenu`).
   Nav visibility by session state is presentation filtering only (guests see
   Home + Lessons, signed-in users see the full nav; search and privileged
   palette entries follow the same rule) — real authorization stays in

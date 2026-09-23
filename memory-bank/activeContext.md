@@ -15,6 +15,16 @@ identity replaced with real session user; production-standard note in
 glossary term in `CONTEXT.md`. Gates green: typecheck + typecheck:test +
 ultracite clean, `test:all` 39 files / 201 tests.
 
+Server-first header rework (2026-09-23, uncommitted): 903-line client
+`NavigationBar` + breadcrumbs + hide-on-scroll deleted; server
+`HeaderShell` (`header-shell.tsx`, tokens in `header-tokens.ts`) owns the
+one layout with narrow client islands (`HeaderNavLinks`,
+`HeaderActions`, `MobileMenu`); nav model carries serializable
+`HeaderIconName`s; prerender fallback renders the same shell in `static`
+mode (zero header shift by construction). Gates green: typecheck +
+typecheck:test + ultracite clean, `test:all` 39 files / 202 tests,
+prod `build` 33/33 routes.
+
 Lessons-index placement (2026-09-20, `main`): the index lives in the
 `(app)` group on purpose — the whole `/lessons` tree needs a session.
 Correction history: `93b0e0b` made that move; a first fix wrongly moved it

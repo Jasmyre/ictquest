@@ -18,4 +18,23 @@ describe("site header nav visibility by session state", () => {
     ]);
     expect(nav.showSearch).toBe(true);
   });
+
+  it("attaches serializable icon names shared by server shell and islands", () => {
+    const guest = getHeaderNav(false);
+    expect(guest.navItems.map((item) => item.icon)).toEqual([
+      "home",
+      "lessons",
+    ]);
+    const authed = getHeaderNav(true);
+    expect(authed.navItems.map((item) => item.icon)).toEqual([
+      "home",
+      "lessons",
+      "profile",
+      "people",
+    ]);
+    expect(authed.pageItems.map((item) => item.icon)).toEqual([
+      "terms",
+      "privacy",
+    ]);
+  });
 });
