@@ -147,3 +147,11 @@ docs-correction spec); map Decisions-so-far updated, no open tickets remain.
   `standard-version` removed, ADR-0008. Still to do: `git tag v2.1.0` +
   `gh release create` baseline, `npm install` to drop lock entry, delete
   obsolete `## [Unreleased]` CHANGELOG section on first release PR.
+- Admin sidebar rework (2026-09-23, `ref/admin-sidebar`): `(admin)` layout
+  rebuilt on the shadcn sidebar system (`MainSidebar`/`NavMain`/`NavUser`/
+  `NavLogoHeader`, `ui/sidebar` + `ui/kbd`, `use-close-on-back`) with
+  `AdminGuard` (fresh role/suspension re-read, redirect semantics) +
+  `AdminShell`/`AdminShellAsync` PPR dynamic hole; `src/lib/shell.ts`
+  (`getSectionTitle`, `mapSessionToNavUser`); `Admin guard`/`Admin shell`
+  glossary terms in `CONTEXT.md`. Gates: typecheck + typecheck:test +
+  ultracite clean, `test:all` 40 files / 206 tests, prod `build` green.

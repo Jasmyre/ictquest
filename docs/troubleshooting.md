@@ -15,7 +15,7 @@
 
 - Review `src/proxy.ts` + `src/routes.ts`: signed-in on `/auth/*` → `/`; signed-in on `/landing` → `/`; signed-out on protected → `/landing` (302).
 - Maintenance flag `NEXT_PUBLIC_IS_IN_MAINTENANCE=true` captures everything to `/maintenance`.
-- `forbidden()` needs `experimental.authInterrupts: true`; `/admin` non-admins render root `forbidden.tsx`.
+- `/admin` non-admins redirect to `/` and signed-out callers to `/auth` (no `forbidden()` on admin paths).
 
 ## Prisma / DB errors
 
