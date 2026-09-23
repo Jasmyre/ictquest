@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 2.3.0 (2026-09-23)
+
+## What's Changed
+* feat: share session-aware site header across marketing and app shells by @Jasmyre in https://github.com/Jasmyre/ictquest/pull/77
+* refactor: Rebuild admin sidebar with fresh-read guard by @Jasmyre in https://github.com/Jasmyre/ictquest/pull/79
+
+
+**Full Changelog**: https://github.com/Jasmyre/ictquest/compare/v2.2.1...v2.3.0
+
 ## 2.2.1 (2026-09-22)
 
 ## What's Changed
