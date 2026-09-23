@@ -1,4 +1,5 @@
 import { Book, FileText, Home, Shield, User, Users } from "lucide-react";
+import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { auth } from "@/auth";
@@ -26,16 +27,42 @@ function withIcons(items: HeaderNavItem[]) {
   });
 }
 
+/**
+ * Static prerender-safe fallback: plain server markup with no client hooks
+ * (`usePathname` inside `NavigationBar` would block prerendering with
+ * `cacheComponents`). Reserves the fixed-header space so the streamed
+ * session-aware bar swaps in without layout shift.
+ */
 function GuestHeaderFallback() {
-  const nav = getHeaderNav(false);
   return (
-    <NavigationBar
-      navItems={withIcons(nav.navItems)}
-      pageItems={withIcons(nav.pageItems)}
-      showSearch={false}
-      title="ICTQuest"
-      user={null}
-    />
+    <>
+      <header className="fixed top-0 right-0 left-0 z-50 hidden border-gray-300 border-b bg-card lg:block">
+        <div className="container mx-auto max-w-7xl">
+          <div className="flex h-14 items-center justify-between px-4">
+            <Link
+              className="font-bold text-xl opacity-90"
+              href="/"
+              prefetch={false}
+            >
+              ICTQuest
+            </Link>
+            <nav className="flex items-center gap-6 text-sm">
+              <Link className="font-medium opacity-80" href="/">
+                Home
+              </Link>
+              <Link
+                className="font-medium opacity-80"
+                href="/lessons"
+                prefetch={false}
+              >
+                Lessons
+              </Link>
+            </nav>
+          </div>
+        </div>
+      </header>
+      <div className="h-14" />
+    </>
   );
 }
 

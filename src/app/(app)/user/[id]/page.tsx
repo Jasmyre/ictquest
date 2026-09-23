@@ -1,4 +1,5 @@
 import { Sparkles, Star, Trophy } from "lucide-react";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import UserHeader from "@/components/pages/user/[id]/user-header";
 import UserStatSummary from "@/components/pages/user/[id]/user-stat-summary";
@@ -17,7 +18,12 @@ const Renderer = async ({ params }: { params: Promise<{ id: string }> }) => {
   const isFollowing = userData.isFollowing;
   const { id } = await params;
 
-  const user = (await api.dashboard.getDashboardById({ id })).data;
+  let user: Awaited<ReturnType<typeof api.dashboard.getDashboardById>>["data"];
+  try {
+    user = (await api.dashboard.getDashboardById({ id })).data;
+  } catch {
+    notFound();
+  }
 
   return (
     <div className="py-10">
