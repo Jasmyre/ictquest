@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { signout } from "@/actions/sign-out";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -31,7 +32,6 @@ import { DESKTOP_ACTIONS, MOBILE_ACTIONS } from "./header-tokens";
 import type { HeaderUser } from "./header-user";
 import { MobileMenu } from "./mobile-menu";
 import type { HeaderNavItem } from "./site-header";
-import { signout } from "@/actions/sign-out";
 
 export type HeaderActionsProps = {
   navItems: HeaderNavItem[];
@@ -82,8 +82,8 @@ export function HeaderActions({
   };
 
   const handleSignout = async () => {
-      await signout();
-    };
+    await signout();
+  };
 
   const themeIcon = mounted ? (
     theme === "dark" ? (
@@ -224,10 +224,12 @@ export function HeaderActions({
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer opacity-80 transition-all duration-200 hover:opacity-100">
-                <User className="mr-2 h-4 w-4 transition-transform duration-200" />
-                <span>Profile</span>
-              </DropdownMenuItem>
+              <Link href="/profile">
+                <DropdownMenuItem className="cursor-pointer opacity-80 transition-all duration-200 hover:opacity-100">
+                  <User className="mr-2 h-4 w-4 transition-transform duration-200" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuItem className="cursor-pointer opacity-80 transition-all duration-200 hover:opacity-100">
                 <Settings className="mr-2 h-4 w-4 transition-transform duration-200" />
                 <span>Settings</span>
