@@ -5,6 +5,22 @@ Decisions frozen in `docs/adr/0001–0005` (#24 baseline, closed).
 
 ## Current focus
 
+ABAC Admin header entry (2026-10-03, uncommitted): shared `SiteHeader`
+gates an `Admin → /admin` nav item on `hasPermission(user, "Admin",
+"manage")` over fresh memberships with session fallback (suspended
+users excluded); `getHeaderNav(isAuthenticated, canManageAdmin)` stays
+pure/client-safe, `header-icon` adds the `admin` (`ShieldCheck`) name.
+Gates green: typecheck + `site-header` unit clean, ultracite clean.
+
+Admin sidebar visual-state fix (2026-10-03, uncommitted): `NavMain`
+drops the `hover:bg-muted` / `data-[active=true]:bg-accent` overrides
+so hover/active resolve to the sidebar theme tokens
+(`hover:bg-sidebar-accent`, `data-[active=true]:bg-sidebar-accent` +
+foreground); active matching is exclusive deepest-prefix so `/admin`
+no longer stays lit under `/admin/users`; collapsible groups derive
+`defaultOpen` from the active sub-path. Gates green: typecheck +
+`admin-shell`/`site-header` units clean, ultracite clean.
+
 Shared session-aware site header (2026-09-23, uncommitted): `(marketing)`
 and `(app)` render the same `SiteHeader` over `NavigationBar`
 (`src/components/site-header-async.tsx` PPR dynamic hole +

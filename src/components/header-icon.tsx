@@ -1,4 +1,12 @@
-import { Book, FileText, Home, Shield, User, Users } from "lucide-react";
+import {
+  Book,
+  FileText,
+  Home,
+  Shield,
+  ShieldCheck,
+  User,
+  Users,
+} from "lucide-react";
 import type { HeaderIconName } from "./site-header";
 
 const ICONS = {
@@ -6,6 +14,7 @@ const ICONS = {
   lessons: Book,
   profile: User,
   people: Users,
+  admin: ShieldCheck,
   terms: FileText,
   privacy: Shield,
 } as const;

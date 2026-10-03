@@ -202,11 +202,7 @@ export function NavMain({
         </SidebarGroupLabel>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              className="hover:bg-muted"
-              onClick={toggleTheme}
-              tooltip="Toggle theme"
-            >
+            <SidebarMenuButton onClick={toggleTheme} tooltip="Toggle theme">
               {mounted ? (
                 theme === "light" ? (
                   <MoonIcon />
@@ -228,10 +224,28 @@ export function NavMain({
 function NavMenuWithPathname({ items }: { items: NavMainItem[] }) {
   const pathname = usePathname();
 
-  const isCurrentPath = (url: string) =>
-    url === "/"
-      ? pathname === url
-      : pathname === url || pathname.startsWith(`${url}/`);
+  // Exclusive deepest-prefix match: `/admin` must not stay active under
+  // `/admin/users` (or any deeper page). A url is active on exact match,
+  // or on prefix match only when no sibling url claims a longer prefix
+  // of the same pathname (so `/admin/users/123` lights up Users alone).
+  const urls = items.flatMap((item) => [
+    item.url,
+    ...(item.items?.map((subItem) => subItem.url) ?? []),
+  ]);
+  const isCurrentPath = (url: string) => {
+    if (pathname === url) {
+      return true;
+    }
+    if (!pathname.startsWith(`${url}/`)) {
+      return false;
+    }
+    return !urls.some(
+      (other) =>
+        other !== url &&
+        other.length > url.length &&
+        (pathname === other || pathname.startsWith(`${other}/`))
+    );
+  };
 
   return <NavMenu isCurrentPath={isCurrentPath} items={items} />;
 }
@@ -251,7 +265,6 @@ function NavMenu({
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 asChild
-                className="hover:bg-muted data-[active=true]:bg-accent"
                 isActive={isCurrentPath(item.url)}
                 tooltip={item.title}
               >
@@ -268,13 +281,15 @@ function NavMenu({
           <Collapsible
             asChild
             className="group/collapsible"
-            defaultOpen={item.isActive}
+            defaultOpen={
+              item.isActive ??
+              item.items.some((subItem) => isCurrentPath(subItem.url))
+            }
             key={item.title}
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton
-                  className="hover:bg-muted data-[active=true]:bg-accent"
                   isActive={isCurrentPath(item.url)}
                   tooltip={item.title}
                 >
@@ -289,7 +304,6 @@ function NavMenu({
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton
                         asChild
-                        className="hover:bg-muted"
                         isActive={isCurrentPath(subItem.url)}
                       >
                         <Link href={subItem.url}>

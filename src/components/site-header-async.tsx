@@ -1,6 +1,8 @@
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { auth } from "@/auth";
+import { getUserRoleNames, isUserSuspended } from "@/lib/roles";
+import { hasPermission } from "@/server/permissions";
 import { HeaderShell } from "./header-shell";
 import { getHeaderNav } from "./site-header";
 
@@ -28,7 +30,36 @@ async function SiteHeaderInner() {
   await connection();
   const session = await auth().catch(() => null);
   const isAuthenticated = session !== null;
-  const nav = getHeaderNav(isAuthenticated);
+
+  // ABAC gate for the Admin nav entry: `hasPermission(user, "Admin",
+  // "manage")` over fresh memberships (session-freshness rule) with
+  // session fallback. Suspended users never see it. Presentation only —
+  // `AdminGuard` + `permissionProcedure` still enforce the route.
+  let canManageAdmin = false;
+  if (session?.user) {
+    const userId = session.user.id;
+    let suspended = session.user.suspended === true;
+    if (userId) {
+      try {
+        suspended = await isUserSuspended(userId);
+      } catch {
+        suspended = session.user.suspended === true;
+      }
+    }
+    if (!suspended) {
+      let roles = session.user.roles;
+      if (userId) {
+        try {
+          roles = await getUserRoleNames(userId);
+        } catch {
+          roles = session.user.roles;
+        }
+      }
+      canManageAdmin = hasPermission({ id: userId, roles }, "Admin", "manage");
+    }
+  }
+
+  const nav = getHeaderNav(isAuthenticated, canManageAdmin);
 
   return (
     <HeaderShell
