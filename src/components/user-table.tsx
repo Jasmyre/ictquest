@@ -140,12 +140,12 @@ export function UserTable({ initial }: { initial: UserTableInitialUser[] }) {
       {editingUser !== null ? (
         <ManageRolesDialog
           key={editingUser.id}
-          onOpenChange={(open) => {
+          onOpenChangeAction={(open) => {
             if (!open) {
               setEditingUser(null);
             }
           }}
-          onSave={handleSave}
+          onSaveAction={handleSave}
           open={Boolean(editingUser)}
           user={editingUser}
         />
