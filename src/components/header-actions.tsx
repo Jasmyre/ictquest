@@ -31,6 +31,7 @@ import { DESKTOP_ACTIONS, MOBILE_ACTIONS } from "./header-tokens";
 import type { HeaderUser } from "./header-user";
 import { MobileMenu } from "./mobile-menu";
 import type { HeaderNavItem } from "./site-header";
+import { signout } from "@/actions/sign-out";
 
 export type HeaderActionsProps = {
   navItems: HeaderNavItem[];
@@ -79,6 +80,10 @@ export function HeaderActions({
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
+
+  const handleSignout = async () => {
+      await signout();
+    };
 
   const themeIcon = mounted ? (
     theme === "dark" ? (
@@ -228,7 +233,10 @@ export function HeaderActions({
                 <span>Settings</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer opacity-80 transition-all duration-200 hover:opacity-100">
+              <DropdownMenuItem
+                className="cursor-pointer opacity-80 transition-all duration-200 hover:opacity-100"
+                onClick={handleSignout}
+              >
                 <LogOut className="mr-2 h-4 w-4 transition-transform duration-200" />
                 <span>Log out</span>
               </DropdownMenuItem>

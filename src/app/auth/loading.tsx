@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const loading = () => (
-  <div className="flex min-h-[80vh] items-center justify-center max-sm:px-4">
+  <div className="flex min-h-screen items-center justify-center max-sm:px-4">
     <Card className="w-full max-w-md border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-800">
       <CardHeader>
         <CardTitle className="font-bold text-2xl text-gray-900 dark:text-white">
