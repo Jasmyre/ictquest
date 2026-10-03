@@ -27,19 +27,19 @@ function holds(roles: readonly string[], role: RoleName): boolean {
 export function ManageRolesDialog({
   user,
   open,
-  onOpenChange,
-  onSave,
+  onOpenChangeAction,
+  onSaveAction,
 }: {
   user: AdminUser;
   open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSave: (userId: string, roleNames: RoleName[]) => Promise<void>;
+  onOpenChangeAction: (open: boolean) => void;
+  onSaveAction: (userId: string, roleNames: RoleName[]) => Promise<void>;
 }) {
   const [selected, setSelected] = useState<RoleName[]>([...user.roles]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useCloseOnBack(open, () => onOpenChange(false));
+  useCloseOnBack(open, () => onOpenChangeAction(false));
 
   const display = user.userName ?? user.name ?? user.email ?? user.id;
 
@@ -53,8 +53,8 @@ export function ManageRolesDialog({
     setSaving(true);
     setError(null);
     try {
-      await onSave(user.id, selected);
-      onOpenChange(false);
+      await onSaveAction(user.id, selected);
+      onOpenChangeAction(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to update roles.");
     } finally {
@@ -63,7 +63,7 @@ export function ManageRolesDialog({
   };
 
   return (
-    <Dialog onOpenChange={onOpenChange} open={open}>
+    <Dialog onOpenChange={onOpenChangeAction} open={open}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Manage roles</DialogTitle>
@@ -118,7 +118,7 @@ export function ManageRolesDialog({
           <Button
             className="cursor-pointer"
             disabled={saving}
-            onClick={() => onOpenChange(false)}
+            onClick={() => onOpenChangeAction(false)}
             variant="outline"
           >
             Cancel
