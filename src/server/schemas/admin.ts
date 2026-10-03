@@ -18,6 +18,11 @@ export const revokeRoleSchema = z.object({
   role: roleNameSchema,
 });
 
+export const updateRolesSchema = z.object({
+  userId: z.string().min(1),
+  roleNames: z.array(roleNameSchema).min(1),
+});
+
 export const grantAchievementSchema = z.object({
   userId: z.string().min(1),
   achievementName: z.string().min(1),
@@ -63,6 +68,7 @@ export const deleteAchievementDefinitionSchema = z.object({
 export type ListUsersInput = z.infer<typeof listUsersSchema>;
 export type GrantRoleInput = z.infer<typeof grantRoleSchema>;
 export type RevokeRoleInput = z.infer<typeof revokeRoleSchema>;
+export type UpdateRolesInput = z.infer<typeof updateRolesSchema>;
 export type GrantAchievementInput = z.infer<typeof grantAchievementSchema>;
 export type RevokeAchievementInput = z.infer<typeof revokeAchievementSchema>;
 export type ResetProgressInput = z.infer<typeof resetProgressSchema>;

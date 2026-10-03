@@ -27,6 +27,7 @@ import type {
   SuspendUserInput,
   UnsuspendUserInput,
   UpdateAchievementDefinitionInput,
+  UpdateRolesInput,
 } from "@/server/schemas/admin";
 import { unlockAchievement } from "@/server/services/achievement";
 
@@ -93,6 +94,7 @@ export async function listUsersWithRoles(db: Db, input: ListUsersInput) {
       success: true as const,
       data: rows.map((u) => ({
         id: u.id,
+        name: (u as { name?: string | null }).name ?? null,
         email: u.email,
         userName: u.userName,
         suspendedAt: u.suspendedAt,
@@ -299,6 +301,55 @@ export async function unsuspendUser(db: Db, input: UnsuspendUserInput) {
       message: "Unable to unsuspend the user right now. Try again later.",
     });
   }
+}
+
+/**
+ * Bulk role setter behind the ManageRolesDialog.
+ *
+ * Diffs the desired set against current memberships and reuses the
+ * grant/revoke rules: USER floor is irrevocable (re-added when missing),
+ * the last-membership removal is refused, and self-demotion of the
+ * caller's own ADMIN is refused.
+ */
+export async function updateRoles(
+  db: Db,
+  input: UpdateRolesInput,
+  opts?: { callerId?: string; callerRoles?: readonly string[] }
+) {
+  const normalized = [...new Set(input.roleNames.map((r) => r.toUpperCase()))];
+  if (!normalized.includes(DEFAULT_ROLE_NAME)) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: `Role set must include ${DEFAULT_ROLE_NAME}: every user always holds it.`,
+    });
+  }
+  await assertUserExists(db, input.userId);
+  const current = await currentRoles(db, input.userId);
+  const currentUpper = new Set(current.map((r) => r.toUpperCase()));
+
+  const toGrant = normalized.filter((r) => !currentUpper.has(r));
+  const toRevoke = current.filter((r) => !normalized.includes(r.toUpperCase()));
+
+  for (const role of toGrant) {
+    await grantRole(db, {
+      userId: input.userId,
+      role: role as RoleName,
+    });
+  }
+  for (const role of toRevoke) {
+    await revokeRole(
+      db,
+      { userId: input.userId, role: role.toUpperCase() as RoleName },
+      opts
+    );
+  }
+  return {
+    success: true as const,
+    data: {
+      userId: input.userId,
+      roles: await currentRoles(db, input.userId),
+    },
+  };
 }
 
 export async function grantAchievementForUser(

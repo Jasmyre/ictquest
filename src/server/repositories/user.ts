@@ -11,6 +11,7 @@ export type ProfileRow = {
 
 export type UserListRow = {
   id: string;
+  name: string | null;
   email: string | null;
   userName: string | null;
   suspendedAt: Date | null;
@@ -115,6 +116,7 @@ export function createUserRepository(db: UserDb): UserRepository {
         take,
         select: {
           id: true,
+          name: true,
           email: true,
           userName: true,
           suspendedAt: true,

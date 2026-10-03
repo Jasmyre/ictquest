@@ -17,6 +17,7 @@ import {
   suspendUserSchema,
   unsuspendUserSchema,
   updateAchievementDefinitionSchema,
+  updateRolesSchema,
 } from "@/server/schemas/admin";
 import {
   createAchievementDefinition,
@@ -31,6 +32,7 @@ import {
   suspendUser,
   unsuspendUser,
   updateAchievementDefinition,
+  updateRoles,
 } from "@/server/services/admin";
 import { listLessonContent } from "@/server/services/lesson-content";
 
@@ -77,6 +79,15 @@ export const adminRouter = createTRPCRouter({
     .input(revokeRoleSchema)
     .mutation(({ ctx, input }) =>
       revokeRole(ctx.db, input, {
+        callerId: requireUserId(ctx.user),
+        callerRoles: ctx.user?.roles ?? [],
+      })
+    ),
+
+  updateRoles: permissionProcedure("Admin", "manage")
+    .input(updateRolesSchema)
+    .mutation(({ ctx, input }) =>
+      updateRoles(ctx.db, input, {
         callerId: requireUserId(ctx.user),
         callerRoles: ctx.user?.roles ?? [],
       })
