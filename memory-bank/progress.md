@@ -155,3 +155,8 @@ docs-correction spec); map Decisions-so-far updated, no open tickets remain.
   (`getSectionTitle`, `mapSessionToNavUser`); `Admin guard`/`Admin shell`
   glossary terms in `CONTEXT.md`. Gates: typecheck + typecheck:test +
   ultracite clean, `test:all` 40 files / 206 tests, prod `build` green.
+- Dashboard home redesign (2026-10-03, uncommitted): `(app)/page.tsx` rebuilt
+  production-ready — stats grid, continue-learning hero, per-lesson path with
+  progress bars, quick-links + assessment cards; `loading.tsx` + Suspense
+  `DashboardSkeleton` for streaming; keeps `dashboard-stats` testids.
+  Gates: typecheck + ultracite clean, progress-stats unit 8/8.
