@@ -69,6 +69,15 @@ export default auth((req) => {
     return;
   }
 
+  // Marketing/app split: guests hitting the dashboard home land on the
+  // public landing page; signed-in visitors hitting landing go home.
+  if (nextUrl.pathname === "/" && !isLoggedIn) {
+    return Response.redirect(new URL("/landing", nextUrl), 302);
+  }
+  if (nextUrl.pathname === "/landing" && isLoggedIn) {
+    return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl), 302);
+  }
+
   if (isAuthRoute(nextUrl.pathname)) {
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));

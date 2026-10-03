@@ -1,7 +1,7 @@
 /**
  * Route-group guard table (ADR 0003).
  *
- * - `(marketing)` public, minimal shell: `/`, `/terms`, `/privacy`.
+ * - `(marketing)` public, minimal shell: `/landing`, `/terms`, `/privacy`.
  * - Shell-less public fallback: `/~offline` (exact only, precached offline
  *   page — reachable without a session so the worker fallback never bounces
  *   to `/auth`).
@@ -16,7 +16,9 @@
  * subtrees.
  */
 
-export const publicRoutes = ["/", "/terms", "/privacy", "/~offline"];
+export const LANDING_PATH = "/landing";
+
+export const publicRoutes = [LANDING_PATH, "/terms", "/privacy", "/~offline"];
 
 export const authRoutes = ["/auth", "/auth/error", "/api/auth/callback/google"];
 

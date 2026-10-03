@@ -16,7 +16,7 @@ describe("Migration 10 — Public and app shells plus guards", () => {
   it("places public pages under the minimal (marketing) shell", () => {
     for (const rel of [
       "src/app/(marketing)/layout.tsx",
-      "src/app/(marketing)/page.tsx",
+      "src/app/(marketing)/landing/page.tsx",
       "src/app/(marketing)/terms/page.tsx",
       "src/app/(marketing)/privacy/page.tsx",
     ]) {
@@ -31,6 +31,7 @@ describe("Migration 10 — Public and app shells plus guards", () => {
   it("places learner pages under the full (app) shell, including moved settings", () => {
     for (const rel of [
       "src/app/(app)/layout.tsx",
+      "src/app/(app)/page.tsx",
       "src/app/(app)/lessons/page.tsx",
       "src/app/(app)/lessons/[topic]/page.tsx",
       "src/app/(app)/lessons/subtopic/[subtopic]/page.tsx",
@@ -86,11 +87,14 @@ describe("Migration 10 — Public and app shells plus guards", () => {
     expect(typeof routes.isAuthRoute).toBe("function");
     expect(typeof routes.isAdminRoute).toBe("function");
 
-    // Exact-public: root, terms, privacy. The lessons index lives in the
-    // (app) group on purpose, so it needs a session like the rest.
-    for (const path of ["/", "/terms", "/privacy"]) {
+    // Exact-public: landing, terms, privacy. The dashboard home (`/`) and
+    // the lessons index live in the (app) group on purpose, so they need a
+    // session like the rest.
+    for (const path of ["/landing", "/terms", "/privacy"]) {
       expect(routes.isPublicRoute(path), path).toBe(true);
     }
+    expect(routes.isPublicRoute("/"), "/").toBe(false);
+    expect(routes.LANDING_PATH).toBe("/landing");
 
     // The whole lessons tree is authed, index included.
     for (const path of [
@@ -104,6 +108,7 @@ describe("Migration 10 — Public and app shells plus guards", () => {
 
     // App routes require auth (not public, not auth, not admin).
     for (const path of [
+      "/",
       "/lessons",
       "/progress",
       "/profile",
@@ -149,5 +154,11 @@ describe("Migration 10 — Public and app shells plus guards", () => {
     expect(proxySrc).toContain("NEXT_PUBLIC_IS_IN_MAINTENANCE");
     expect(proxySrc).toContain("/maintenance");
     expect(proxySrc).toContain("ADMIN");
+  });
+
+  it("splits the marketing/app home: guests on / see landing, members on /landing go home", () => {
+    const proxySrc = read("src/proxy.ts");
+    expect(proxySrc).toContain('"/landing"');
+    expect(proxySrc).toContain("DEFAULT_LOGIN_REDIRECT");
   });
 });

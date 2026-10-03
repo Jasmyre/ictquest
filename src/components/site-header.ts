@@ -19,12 +19,13 @@ export type HeaderNav = {
 };
 
 const GUEST_NAV: HeaderNavItem[] = [
-  { name: "Home", href: "/", icon: "home" },
+  { name: "Home", href: "/landing", icon: "home" },
   { name: "Lessons", href: "/lessons", icon: "lessons" },
 ];
 
 const AUTHED_NAV: HeaderNavItem[] = [
-  ...GUEST_NAV,
+  { name: "Home", href: "/", icon: "home" },
+  { name: "Lessons", href: "/lessons", icon: "lessons" },
   { name: "Profile", href: "/profile", icon: "profile" },
   { name: "People", href: "/social/new", icon: "people" },
 ];

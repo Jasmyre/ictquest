@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer";
 import { SiteHeader } from "@/components/site-header-async";
 
 /**
- * Minimal public shell for `(marketing)` (ADR 0003): root, terms, privacy.
+ * Minimal public shell for `(marketing)` (ADR 0003): landing, terms, privacy.
  * Renders the same shared session-aware site header as `(app)` — guests
  * see Home + Lessons only, signed-in visitors see the full nav. The
  * lessons tree lives in `(app)` on purpose, so the Lessons link bounces

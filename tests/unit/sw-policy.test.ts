@@ -62,6 +62,9 @@ describe("Service-worker routing policy — pure offline decision", () => {
     expect(decideSwRequest(snapshot("https://ictquest.test/"))).toBe(
       "network-only"
     );
+    expect(decideSwRequest(snapshot("https://ictquest.test/landing"))).toBe(
+      "network-only"
+    );
     expect(decideSwRequest(snapshot("https://ictquest.test/lessons"))).toBe(
       "network-only"
     );

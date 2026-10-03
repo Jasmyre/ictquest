@@ -21,8 +21,8 @@
  *   `/admin/api-docs`), so it is excluded from precache.
  * - The static contract is served at `/api/v1/openapi.json`, not
  *   `/api/openapi.json`.
- * - `/landing` does not exist; the redirect-sensitive exclusion is
- *   documented on `/` instead (see below).
+ * - `/landing` is redirect-sensitive (signed-in traffic bounces to `/`),
+ *   so the exclusion below covers it alongside the authed dashboard `/`.
  */
 
 export const SW_URL = "/serwist/sw.js";
@@ -38,9 +38,10 @@ export const OFFLINE_FALLBACK_URL = "/~offline";
  * generic fallback, the redirect-free maintenance page, the served manifest,
  * and the static contract document.
  *
- * `/` is excluded on purpose even though it is public: the marketing landing
- * renders session-aware chrome, so its bytes are not deployment-constant and
- * precaching it would store a signed-in response under a public key.
+ * `/landing` and `/` stay network-only on purpose: the landing page
+ * renders session-aware chrome and `/` is the per-user dashboard, so
+ * neither body is deployment-constant and precaching either would store a
+ * signed-in response under a public key.
  */
 export const SW_PRECACHED_URLS: readonly string[] = [
   OFFLINE_FALLBACK_URL,

@@ -3,10 +3,10 @@ import { Footer } from "@/components/footer";
 import { SiteHeader } from "@/components/site-header-async";
 
 /**
- * Full authenticated shell for `(app)` (ADR 0003): lesson details, lesson
- * subtopic, progress, profile, user pages, social (+ mock social-new),
- * compliments, settings. Requires auth via `proxy.ts`; renders the shared
- * session-aware site header plus footer.
+ * Full authenticated shell for `(app)` (ADR 0003): dashboard home (`/`),
+ * lesson details, lesson subtopic, progress, profile, user pages, social
+ * (+ mock social-new), compliments, settings. Requires auth via `proxy.ts`;
+ * renders the shared session-aware site header plus footer.
  */
 export default function AppLayout({
   children,

@@ -5,6 +5,7 @@ describe("site header nav visibility by session state", () => {
   it("shows only Home and Lessons for guests", () => {
     const nav = getHeaderNav(false);
     expect(nav.navItems.map((item) => item.name)).toEqual(["Home", "Lessons"]);
+    expect(nav.navItems[0]?.href).toBe("/landing");
     expect(nav.showSearch).toBe(false);
   });
 
@@ -16,6 +17,7 @@ describe("site header nav visibility by session state", () => {
       "Profile",
       "People",
     ]);
+    expect(nav.navItems[0]?.href).toBe("/");
     expect(nav.showSearch).toBe(true);
   });
 
