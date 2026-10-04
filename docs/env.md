@@ -30,6 +30,7 @@ Keep `.env.example`, `src/env.js`, and this file in sync.
 |---|---|---|
 | `NEXT_PUBLIC_IS_IN_MAINTENANCE` | yes (`"true"`/`"false"`) | `"true"` redirects all traffic to `/maintenance` in `src/proxy.ts`. |
 | `NEXT_PUBLIC_SW_IN_DEV` | no | Set `1` (via `dev:https:lan:sw`) to register the worker in dev. Never set in production. |
+| `NEXT_PUBLIC_SW_ALLOW_LAN` | no | Set `1` to allow dev registration on a LAN host. Set automatically by `dev-lan.mjs` when a LAN cert exists; only correct with a trusted SAN-covering cert (see `docs/setup.md`). |
 
 ## Test / build-only (not in `src/env.js`)
 

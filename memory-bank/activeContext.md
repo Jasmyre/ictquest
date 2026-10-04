@@ -20,6 +20,11 @@ gitignored) via openssl; `dev-lan.mjs` auto-serves the pair with
 registers on the LAN host once the cert is trusted on the phone
 (`docs/pwa.md` + `docs/troubleshooting.md` updated; `pwa:lan-cert` script).
 
+Fresh-clone setup doc (2026-10-04): `docs/setup.md` covers install, `.env`,
+DB, everyday dev/LAN commands, the per-machine LAN-cert + per-phone trust
+flow, and the never-committed file list; linked from `docs/index.md`,
+`NEXT_PUBLIC_SW_ALLOW_LAN` row added to `docs/env.md`.
+
 LAN dev redirect fix (2026-10-04, uncommitted): phones on the LAN bounced
 to localhost because `NEXTAUTH_URL`/`BASE_URL` stayed localhost and
 `src/auth.ts` `redirect` always returned `baseUrl`. `scripts/dev-lan.mjs`

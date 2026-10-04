@@ -4,6 +4,7 @@ Start here. Internal design notes live in `memory-bank/`; domain vocabulary in `
 
 | Doc | Use when… |
 |---|---|
+| [setup](setup.md) | Fresh clone — installing, `.env`, DB, LAN certs, phone testing |
 | [env](env.md) | Setting up `.env`, adding a variable, debugging validation |
 | [deployment](deployment.md) | Shipping to Vercel / self-host / Docker |
 | [architecture](architecture.md) | Adding a feature and need tier boundaries, proxy, caching, tRPC rules |
