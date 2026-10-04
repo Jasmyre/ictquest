@@ -13,6 +13,13 @@ cert fails on LAN IPs like static `192.168.1.67`); default remains plain HTTP
 `npm run dev:lan` for LAN. Gates green: typecheck + ultracite clean,
 unit 35 files / 191 tests.
 
+Phone SW testing (2026-10-04, user confirmed YES): `scripts/gen-lan-cert.mjs`
+generates a SAN-covering cert (`certificates/lan-cert.pem` + `lan-key.pem`,
+gitignored) via openssl; `dev-lan.mjs` auto-serves the pair with
+`--experimental-https` and sets `NEXT_PUBLIC_SW_ALLOW_LAN=1` so the worker
+registers on the LAN host once the cert is trusted on the phone
+(`docs/pwa.md` + `docs/troubleshooting.md` updated; `pwa:lan-cert` script).
+
 LAN dev redirect fix (2026-10-04, uncommitted): phones on the LAN bounced
 to localhost because `NEXTAUTH_URL`/`BASE_URL` stayed localhost and
 `src/auth.ts` `redirect` always returned `baseUrl`. `scripts/dev-lan.mjs`

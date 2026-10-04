@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
 /**
  * Run the Next.js dev server bound to the LAN.
  *
@@ -11,14 +12,17 @@ import { spawn } from "node:child_process";
  *   npm run dev:lan -- --turbo
  *   node scripts/dev-lan.mjs --sw [--experimental-https ...]
  *
- * NOTE: `--sw` with `--experimental-https` on a LAN IP (e.g. static
- * 192.168.1.67) cannot register a worker: the default Next.js dev cert
- * covers `localhost` only, so the browser rejects `/serwist/sw.js` with
- * `SecurityError: ... SSL certificate error ...`. The client guard in
- * `SwProvider` skips registration there with a warning. Prefer plain HTTP
- * `npm run dev:lan` for LAN testing; use localhost HTTPS for PWA tests.
+ * Phone SW testing: generate once with
+ *   node scripts/gen-lan-cert.mjs 192.168.1.67
+ * trust `certificates/lan-cert.pem` on the phone, then run
+ * `npm run dev:https:lan:sw`. When the LAN pair exists, this script serves
+ * it automatically and sets `NEXT_PUBLIC_SW_ALLOW_LAN=1` so `SwProvider`
+ * registers the worker on the LAN host. Without the pair, LAN registration
+ * stays disabled (localhost-only dev cert → SSL certificate error); plain
+ * `npm run dev:lan` remains the default for non-PWA LAN testing.
  */
 import { networkInterfaces } from "node:os";
+import { join } from "node:path";
 
 const port = process.env.PORT ?? "3000";
 const host = process.env.HOSTNAME ?? "0.0.0.0";
@@ -66,12 +70,46 @@ if (lanHost) {
 }
 
 console.log(`Starting Next.js dev server on ${host}:${port} ...`);
+const lanKeyPath = join(
+  import.meta.dirname,
+  "..",
+  "certificates",
+  "lan-key.pem"
+);
+const lanCertPath = join(
+  import.meta.dirname,
+  "..",
+  "certificates",
+  "lan-cert.pem"
+);
+const hasLanCert = existsSync(lanKeyPath) && existsSync(lanCertPath);
+const hasExplicitCert = extraArgs.some(
+  (arg) =>
+    arg === "--experimental-https-key" ||
+    arg === "--experimental-https-cert" ||
+    arg.startsWith("--experimental-https-key=") ||
+    arg.startsWith("--experimental-https-cert=")
+);
+if (useHttps && hasLanCert && !hasExplicitCert) {
+  extraArgs.push(`--experimental-https-key=${lanKeyPath}`);
+  extraArgs.push(`--experimental-https-cert=${lanCertPath}`);
+}
 if (enableSw && useHttps) {
-  console.warn(
-    "[serwist] --sw + --experimental-https on a LAN IP will skip worker registration: " +
-      "the default dev cert is localhost-only (SSL certificate error on LAN). " +
-      "Use plain HTTP `npm run dev:lan` for LAN testing."
-  );
+  if (hasLanCert || hasExplicitCert) {
+    // SAN-covering cert is served, so the phone can register the worker once
+    // the cert is trusted on the device.
+    process.env.NEXT_PUBLIC_SW_ALLOW_LAN ||= "1";
+    console.log(
+      "  SW on LAN: enabled (serving LAN cert — trust it on the phone)."
+    );
+  } else {
+    console.warn(
+      "[serwist] --sw + --experimental-https without a LAN cert will skip worker registration: " +
+        "the default dev cert is localhost-only (SSL certificate error on LAN). " +
+        "Run node scripts/gen-lan-cert.mjs <LAN_IP>, trust certificates/lan-cert.pem " +
+        "on the phone, and restart — or use plain HTTP `npm run dev:lan`."
+    );
+  }
 }
 if (addrs.length > 0) {
   for (const addr of addrs) {

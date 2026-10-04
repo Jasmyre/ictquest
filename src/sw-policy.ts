@@ -156,6 +156,7 @@ export function isLoopbackHostname(hostname: string): boolean {
 }
 
 export type SwRegistrationSnapshot = {
+  allowLan?: string | undefined;
   hostname: string;
   isSecureContext: boolean;
   nodeEnv: string | undefined;
@@ -164,11 +165,13 @@ export type SwRegistrationSnapshot = {
 
 /**
  * Decides whether SW registration must stay disabled. Production registers
- * only in a secure context; dev registers only on a loopback host with an
- * explicit opt-in (`NEXT_PUBLIC_SW_IN_DEV=1`). LAN IPs (e.g. static
- * `192.168.1.67`) with the default localhost-only self-signed cert would
- * otherwise throw `SecurityError: An SSL certificate error occurred when
- * fetching the script`.
+ * only in a secure context; dev registers only with an explicit opt-in
+ * (`NEXT_PUBLIC_SW_IN_DEV=1`) on a loopback host — or on a LAN host when
+ * the trusted-LAN escape hatch is set (`NEXT_PUBLIC_SW_ALLOW_LAN=1`,
+ * meaning a SAN-covering cert like `certificates/lan-cert.pem` is served
+ * and trusted by the phone). Without a covering cert, LAN registration
+ * throws `SecurityError: An SSL certificate error occurred when fetching
+ * the script`.
  */
 export function shouldDisableSwRegistration(
   snapshot: SwRegistrationSnapshot
@@ -181,6 +184,9 @@ export function shouldDisableSwRegistration(
   }
   if (snapshot.swInDev !== "1") {
     return true;
+  }
+  if (snapshot.allowLan === "1") {
+    return false;
   }
   return !isLoopbackHostname(snapshot.hostname);
 }
