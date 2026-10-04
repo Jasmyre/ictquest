@@ -33,7 +33,7 @@
 ## PWA / worker
 
 - Worker absent under plain `npm run dev` is by design — verify against `build + start` or `dev:https:lan:sw`.
-- Phone `SecurityError ... when fetching the script`: LAN cert SANs mismatch or untrusted cert — stop other servers, run `node scripts/gen-lan-cert.mjs <LAN_IP>` to regenerate `certificates/lan-cert.pem`, install it as trusted on the phone, then rerun `dev:https:lan:sw`.
+- Phone `SecurityError ... when fetching the script`: LAN cert SANs mismatch or untrusted cert — re-run with the machine's current IP (`npm run dev:https:lan:sw -- --ip=<LAN_IP>`; the cert auto-regenerates when stale), install the new `certificates/lan-cert.pem` as trusted on the phone, then reload.
 - Route flipped fully dynamic: check for `auth()`/`headers()` outside `<Suspense>`; keep dynamic holes narrow (`connection()` + `auth()` inside the async component).
 
 ## E2E flakes

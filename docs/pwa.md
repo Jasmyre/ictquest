@@ -33,13 +33,13 @@ Lighthouse has no PWA category since v12 — no score gate; legacy ≤11 audits 
 
 ```bash
 npm run dev:https          # local HTTPS only (localhost SANs)
-npm run dev:https:lan      # phone testing: LAN IP + BASE_URL/NEXTAUTH_URL pointed at it
-npm run dev:https:lan:sw   # + worker enabled (install testing)
+npm run dev:https:lan -- --ip=<lan-ip>      # phone testing: LAN IP + BASE_URL/NEXTAUTH_URL pointed at it
+npm run dev:https:lan:sw -- --ip=<lan-ip>   # + worker enabled (install testing; cert auto-generated)
 ```
 
 `scripts/dev-lan.mjs` auto-points `NEXTAUTH_URL`/`BASE_URL` at the detected LAN IP (and sets `AUTH_TRUST_HOST=true`) for the spawned server only — explicit env still wins, `.env` stays `localhost` for plain `npm run dev`. OAuth logins still need a registered LAN callback URL at the provider; credentials login is the supported phone path.
 
-First run may prompt for password (mkcert CA install). `certificates/` is per-machine, gitignored — each dev regenerates. For phone worker testing, generate a SAN-covering cert with `node scripts/gen-lan-cert.mjs 192.168.1.67` (requires `openssl`; writes `certificates/lan-cert.pem` + `lan-key.pem`), which `dev-lan.mjs` serves automatically and which sets `NEXT_PUBLIC_SW_ALLOW_LAN=1` so the worker registers on the LAN host. On the phone: same Wi-Fi → install `lan-cert.pem` as a trusted certificate → open `https://192.168.1.67:3000` → credentials login (OAuth needs a registered LAN callback) → Add to Home Screen. Without the LAN pair, LAN registration stays disabled with a warning (localhost-only dev cert → `SecurityError ... SSL certificate error`). Only one dev server per directory at a time.
+First run may prompt for password (mkcert CA install). `certificates/` is per-machine, gitignored — each dev regenerates. For phone worker testing, pass `--ip=<lan-ip>` (your machine's current IPv4): `dev-lan.mjs` auto-generates a SAN-covering cert if missing or stale for that IP (`certificates/lan-cert.pem` + `lan-key.pem`, via `openssl`), serves it, and sets `NEXT_PUBLIC_SW_ALLOW_LAN=1` so the worker registers on the LAN host. On the phone: same Wi-Fi → install `lan-cert.pem` as a trusted certificate (again after each regeneration) → open `https://<lan-ip>:3000` → credentials login (OAuth needs a registered LAN callback) → Add to Home Screen. Without a covering trusted cert, LAN registration stays disabled with a warning (localhost-only dev cert → `SecurityError ... SSL certificate error`). Only one dev server per directory at a time. Full flow in `docs/setup.md`.
 
 ## Decisions
 

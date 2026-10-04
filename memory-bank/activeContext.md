@@ -25,6 +25,15 @@ DB, everyday dev/LAN commands, the per-machine LAN-cert + per-phone trust
 flow, and the never-committed file list; linked from `docs/index.md`,
 `NEXT_PUBLIC_SW_ALLOW_LAN` row added to `docs/env.md`.
 
+LAN IP as input (2026-10-04): `dev-lan.mjs` accepts `--ip=`/`--lan-ip=`
+(DHCP-safe; warns only if the value isn't a local address), points
+`NEXTAUTH_URL`/`BASE_URL` at it, and auto-regenerates the SAN cert when
+missing/stale for that IP. Local cert currently minted for the live
+`192.168.100.74` (was `.1.67`). Usage:
+`npm run dev:https:lan:sw -- --ip=<lan-ip>`; re-trust cert on phone after
+each regeneration. `docs/setup.md`, `docs/pwa.md`, `docs/troubleshooting.md`
+updated.
+
 LAN dev redirect fix (2026-10-04, uncommitted): phones on the LAN bounced
 to localhost because `NEXTAUTH_URL`/`BASE_URL` stayed localhost and
 `src/auth.ts` `redirect` always returned `baseUrl`. `scripts/dev-lan.mjs`

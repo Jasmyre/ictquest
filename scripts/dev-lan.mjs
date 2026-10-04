@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { spawn } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 /**
  * Run the Next.js dev server bound to the LAN.
@@ -10,16 +10,16 @@ import { existsSync } from "node:fs";
  *
  * Usage:
  *   npm run dev:lan -- --turbo
- *   node scripts/dev-lan.mjs --sw [--experimental-https ...]
+ *   node scripts/dev-lan.mjs --sw [--experimental-https ...] [--ip=192.168.1.67]
  *
- * Phone SW testing: generate once with
- *   node scripts/gen-lan-cert.mjs 192.168.1.67
- * trust `certificates/lan-cert.pem` on the phone, then run
- * `npm run dev:https:lan:sw`. When the LAN pair exists, this script serves
- * it automatically and sets `NEXT_PUBLIC_SW_ALLOW_LAN=1` so `SwProvider`
- * registers the worker on the LAN host. Without the pair, LAN registration
- * stays disabled (localhost-only dev cert → SSL certificate error); plain
- * `npm run dev:lan` remains the default for non-PWA LAN testing.
+ * The LAN IP is an input (`--ip=` / `--lan-ip=`): DHCP leases change, so
+ * pass the machine's current IPv4 each run and this script points
+ * NEXTAUTH_URL/BASE_URL at it. When `--experimental-https` is passed, a
+ * SAN-covering cert for that IP is auto-generated if missing or stale
+ * (requires `openssl`), served automatically, and
+ * `NEXT_PUBLIC_SW_ALLOW_LAN=1` is set so `SwProvider` registers the worker.
+ * Trust `certificates/lan-cert.pem` on the phone once per cert.
+ * Without `--experimental-https`, plain `npm run dev:lan` stays cert-free.
  */
 import { networkInterfaces } from "node:os";
 import { join } from "node:path";
@@ -29,12 +29,39 @@ const host = process.env.HOSTNAME ?? "0.0.0.0";
 const rawArgs = process.argv.slice(2);
 
 // `--sw` is a dev-lan flag (enable the worker in dev via
-// NEXT_PUBLIC_SW_IN_DEV=1), not a `next dev` option. Strip it before
-// forwarding the rest to `next dev`.
+// NEXT_PUBLIC_SW_IN_DEV=1), not a `next dev` option. `--ip=` / `--lan-ip=`
+// pins the LAN IP for this run (DHCP leases change); also stripped before
+// forwarding. Supports `--ip=1.2.3.4` and `--ip 1.2.3.4` forms.
 const enableSw = rawArgs.includes("--sw");
-const extraArgs = rawArgs.filter((arg) => arg !== "--sw");
+let lanIpFlag;
+const forwardedArgs = [];
+for (let i = 0; i < rawArgs.length; i += 1) {
+  const arg = rawArgs[i];
+  if (arg === "--sw") {
+    continue;
+  }
+  const eqMatch = arg.match(/^--(?:lan-)?ip=(.+)$/);
+  if (eqMatch) {
+    lanIpFlag = eqMatch[1].trim();
+    continue;
+  }
+  if (arg === "--ip" || arg === "--lan-ip") {
+    lanIpFlag = (rawArgs[i + 1] ?? "").trim();
+    i += 1;
+    continue;
+  }
+  forwardedArgs.push(arg);
+}
+const extraArgs = forwardedArgs;
 if (enableSw) {
   process.env.NEXT_PUBLIC_SW_IN_DEV ||= "1";
+}
+const IPV4_PATTERN = /^\d{1,3}(\.\d{1,3}){3}$/;
+if (lanIpFlag !== undefined && !IPV4_PATTERN.test(lanIpFlag)) {
+  console.error(
+    `Invalid --ip value "${lanIpFlag}": expected an IPv4 address (e.g. --ip=192.168.1.67).`
+  );
+  process.exit(1);
 }
 
 function lanAddresses() {
@@ -61,7 +88,13 @@ const useHttps = extraArgs.some((arg) =>
   arg.startsWith("--experimental-https")
 );
 const scheme = useHttps ? "https" : "http";
-const lanHost = addrs[0];
+const detectedHost = addrs[0];
+const lanHost = lanIpFlag ?? detectedHost;
+if (lanIpFlag && !addrs.includes(lanIpFlag)) {
+  console.warn(
+    `  --ip=${lanIpFlag} is not among this machine's addresses (${addrs.join(", ") || "none detected"}); using the flag value anyway.`
+  );
+}
 if (lanHost) {
   const lanUrl = `${scheme}://${lanHost}:${port}`;
   process.env.NEXTAUTH_URL ||= lanUrl;
@@ -82,7 +115,63 @@ const lanCertPath = join(
   "certificates",
   "lan-cert.pem"
 );
-const hasLanCert = existsSync(lanKeyPath) && existsSync(lanCertPath);
+
+function lanCertCoversIp(certPath, ip) {
+  try {
+    const out = execFileSync(
+      "openssl",
+      ["x509", "-in", certPath, "-noout", "-ext", "subjectAltName"],
+      { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }
+    );
+    return out.includes(ip);
+  } catch {
+    return false;
+  }
+}
+
+function generateLanCert(ip) {
+  execFileSync(
+    "openssl",
+    [
+      "req",
+      "-x509",
+      "-newkey",
+      "rsa:2048",
+      "-sha256",
+      "-days",
+      "825",
+      "-nodes",
+      "-keyout",
+      lanKeyPath,
+      "-out",
+      lanCertPath,
+      "-subj",
+      `/CN=${ip}`,
+      "-addext",
+      `subjectAltName=DNS:localhost,DNS:*.localhost,IP:127.0.0.1,IP:${ip},DNS:${ip}`,
+    ],
+    { stdio: "inherit" }
+  );
+}
+
+let hasLanCert = existsSync(lanKeyPath) && existsSync(lanCertPath);
+if (useHttps && lanHost && !lanCertCoversIp(lanCertPath, lanHost)) {
+  // Missing or stale (IP changed) cert: regenerate so the phone stops
+  // failing with `SecurityError ... SSL certificate error`. Re-trust the
+  // new cert on the phone afterwards.
+  try {
+    console.log(`  LAN cert missing/stale for ${lanHost}; generating ...`);
+    generateLanCert(lanHost);
+    hasLanCert = existsSync(lanKeyPath) && existsSync(lanCertPath);
+    console.warn(
+      "  New LAN cert generated — re-install certificates/lan-cert.pem as trusted on the phone."
+    );
+  } catch {
+    console.error(
+      "  Failed to generate LAN cert (openssl required). Continuing without it; worker registration will be skipped."
+    );
+  }
+}
 const hasExplicitCert = extraArgs.some(
   (arg) =>
     arg === "--experimental-https-key" ||
