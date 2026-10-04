@@ -39,7 +39,6 @@ describe("Migration 10 — Public and app shells plus guards", () => {
       "src/app/(app)/profile/page.tsx",
       "src/app/(app)/user/[id]/page.tsx",
       "src/app/(app)/social/page.tsx",
-      "src/app/(app)/social/new/page.tsx",
       "src/app/(app)/compliments/page.tsx",
       "src/app/(app)/settings/page.tsx",
     ]) {
@@ -114,7 +113,6 @@ describe("Migration 10 — Public and app shells plus guards", () => {
       "/profile",
       "/user/abc",
       "/social",
-      "/social/new",
       "/compliments",
       "/settings",
     ]) {

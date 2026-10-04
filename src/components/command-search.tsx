@@ -92,7 +92,7 @@ export function CommandSearch({
         { icon: Home, name: "Home", action: () => "/" },
         { icon: User, name: "Profile", action: () => "/profile" },
         { icon: Book, name: "Lessons", action: () => "/lessons" },
-        { icon: Globe, name: "People", action: () => "/social/new" },
+        { icon: Globe, name: "People", action: () => "/social" },
       ],
     },
     ...lessonGroups,

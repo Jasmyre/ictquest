@@ -90,6 +90,20 @@ reference list" below).
 - Fallbacks are real shells (never `null` — blank-frame on soft-nav), and
   dashboard share links always read from the network, never from cache.
 
+## Presentation conventions
+
+- Keep mobile spacing compact: base (unprefixed) utilities target phones —
+  e.g. People page uses `py-4` / `px-3` / `mb-3`, cards use `p-3` / `gap-2`
+  and step up with `sm:py-10` / `sm:px-6` / `sm:p-5` / `sm:gap-4` /
+  `sm:mb-8`. Never ship desktop-first padding on mobile.
+- All clickables use `cursor-pointer`: card buttons (Follow, View profile),
+  the card overflow trigger, and dropdown items. Disabled future placeholders
+  keep the pointer class so the affordance reads clickable when enabled.
+- People (`/social`) cards show the level once as minimal muted text
+  (`text-xs`), not a filled badge — the badge stole focus from the Follow /
+  View profile actions. Stats stay as badge/lesson counts with no
+  average-progress text.
+
 ## Caching
 
 - Lesson content is file-backed and versioned in git; per-user reads

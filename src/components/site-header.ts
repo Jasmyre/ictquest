@@ -28,7 +28,7 @@ const AUTHED_NAV: HeaderNavItem[] = [
   { name: "Home", href: "/", icon: "home" },
   { name: "Lessons", href: "/lessons", icon: "lessons" },
   { name: "Profile", href: "/profile", icon: "profile" },
-  { name: "People", href: "/social/new", icon: "people" },
+  { name: "People", href: "/social", icon: "people" },
 ];
 
 const ADMIN_NAV_ITEM: HeaderNavItem = {
