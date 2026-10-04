@@ -10,6 +10,13 @@ import { spawn } from "node:child_process";
  * Usage:
  *   npm run dev:lan -- --turbo
  *   node scripts/dev-lan.mjs --sw [--experimental-https ...]
+ *
+ * NOTE: `--sw` with `--experimental-https` on a LAN IP (e.g. static
+ * 192.168.1.67) cannot register a worker: the default Next.js dev cert
+ * covers `localhost` only, so the browser rejects `/serwist/sw.js` with
+ * `SecurityError: ... SSL certificate error ...`. The client guard in
+ * `SwProvider` skips registration there with a warning. Prefer plain HTTP
+ * `npm run dev:lan` for LAN testing; use localhost HTTPS for PWA tests.
  */
 import { networkInterfaces } from "node:os";
 
@@ -59,6 +66,13 @@ if (lanHost) {
 }
 
 console.log(`Starting Next.js dev server on ${host}:${port} ...`);
+if (enableSw && useHttps) {
+  console.warn(
+    "[serwist] --sw + --experimental-https on a LAN IP will skip worker registration: " +
+      "the default dev cert is localhost-only (SSL certificate error on LAN). " +
+      "Use plain HTTP `npm run dev:lan` for LAN testing."
+  );
+}
 if (addrs.length > 0) {
   for (const addr of addrs) {
     console.log(`  LAN: ${scheme}://${addr}:${port}`);

@@ -5,6 +5,14 @@ Decisions frozen in `docs/adr/0001–0005` (#24 baseline, closed).
 
 ## Current focus
 
+SW LAN guard (2026-10-04): `SwProvider` skips registration on non-loopback
+dev hosts / insecure contexts with a `console.warn` (pure decision
+`shouldDisableSwRegistration` + `isLoopbackHostname` in `src/sw-policy.ts`);
+`scripts/dev-lan.mjs` warns on `--sw` + `--experimental-https` (localhost-only
+cert fails on LAN IPs like static `192.168.1.67`); default remains plain HTTP
+`npm run dev:lan` for LAN. Gates green: typecheck + ultracite clean,
+unit 35 files / 191 tests.
+
 LAN dev redirect fix (2026-10-04, uncommitted): phones on the LAN bounced
 to localhost because `NEXTAUTH_URL`/`BASE_URL` stayed localhost and
 `src/auth.ts` `redirect` always returned `baseUrl`. `scripts/dev-lan.mjs`

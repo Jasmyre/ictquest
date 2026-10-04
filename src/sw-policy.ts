@@ -140,3 +140,47 @@ export function shouldServeOfflineFallback(request: {
 }): boolean {
   return request.destination === "document";
 }
+
+const TRAILING_DOT = /\.$/;
+
+/** Hostnames where dev SW registration is safe (localhost-only cert). */
+export function isLoopbackHostname(hostname: string): boolean {
+  const normalized = hostname.trim().toLowerCase().replace(TRAILING_DOT, "");
+  return (
+    normalized === "localhost" ||
+    normalized === "127.0.0.1" ||
+    normalized === "::1" ||
+    normalized === "[::1]" ||
+    normalized.startsWith("127.")
+  );
+}
+
+export type SwRegistrationSnapshot = {
+  hostname: string;
+  isSecureContext: boolean;
+  nodeEnv: string | undefined;
+  swInDev: string | undefined;
+};
+
+/**
+ * Decides whether SW registration must stay disabled. Production registers
+ * only in a secure context; dev registers only on a loopback host with an
+ * explicit opt-in (`NEXT_PUBLIC_SW_IN_DEV=1`). LAN IPs (e.g. static
+ * `192.168.1.67`) with the default localhost-only self-signed cert would
+ * otherwise throw `SecurityError: An SSL certificate error occurred when
+ * fetching the script`.
+ */
+export function shouldDisableSwRegistration(
+  snapshot: SwRegistrationSnapshot
+): boolean {
+  if (!snapshot.isSecureContext) {
+    return true;
+  }
+  if (snapshot.nodeEnv === "production") {
+    return false;
+  }
+  if (snapshot.swInDev !== "1") {
+    return true;
+  }
+  return !isLoopbackHostname(snapshot.hostname);
+}
