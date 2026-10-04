@@ -5,6 +5,17 @@ Decisions frozen in `docs/adr/0001–0005` (#24 baseline, closed).
 
 ## Current focus
 
+LAN dev redirect fix (2026-10-04, uncommitted): phones on the LAN bounced
+to localhost because `NEXTAUTH_URL`/`BASE_URL` stayed localhost and
+`src/auth.ts` `redirect` always returned `baseUrl`. `scripts/dev-lan.mjs`
+now auto-points both at the detected LAN IP (scheme follows
+`--experimental-https`, explicit env wins via `||=`, `.env` untouched) +
+`AUTH_TRUST_HOST=true`; the callback honors relative/same-origin URLs
+(open-redirect guard kept); `dev:https:lan*` scripts actually pass
+`--experimental-https`; `--sw` is a dev-lan flag (sets
+`NEXT_PUBLIC_SW_IN_DEV=1`, honored by `SwProvider`). Gates green:
+typecheck + ultracite clean, `test:all` 40 files / 208 tests.
+
 ABAC Admin header entry (2026-10-03, uncommitted): shared `SiteHeader`
 gates an `Admin → /admin` nav item on `hasPermission(user, "Admin",
 "manage")` over fresh memberships with session fallback (suspended

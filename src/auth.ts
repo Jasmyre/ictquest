@@ -18,7 +18,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   events: authEvents,
   callbacks: {
-    redirect({ baseUrl }) {
+    // Honor same-origin callback URLs (LAN IP, callbackUrl) instead of
+    // always returning baseUrl: a forced baseUrl bounces phone sign-ins
+    // to localhost when NEXTAUTH_URL is localhost. Unknown origins still
+    // fall back to baseUrl (open-redirect protection).
+    redirect({ url, baseUrl }) {
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+      try {
+        if (new URL(url).origin === new URL(baseUrl).origin) {
+          return url;
+        }
+      } catch {
+        // Malformed url: fall through to baseUrl.
+      }
       return baseUrl;
     },
     // Suspended users are blocked at sign-in for every provider (#72):

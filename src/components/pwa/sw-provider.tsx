@@ -11,19 +11,20 @@ import type { ReactNode } from "react";
  * touches `window`/`navigator` on the client and no-ops on the server.
  * `reloadOnOnline` stays `false` so a reconnect never wipes in-progress
  * quiz/form state; registration itself is disabled outside production to
- * avoid dev cache hell. The worker is built by the Serwist route handler
+ * avoid dev cache hell, except when explicitly opted in for LAN install
+ * testing (`NEXT_PUBLIC_SW_IN_DEV=1` via `dev:https:lan:sw`). The worker
+ * is built by the Serwist route handler
  * (`src/app/serwist/[path]/route.ts`) and served at `/serwist/sw.js`.
  */
 export function SwProvider({
   children,
   swUrl = "/serwist/sw.js",
 }: Readonly<{ children: ReactNode; swUrl?: string }>) {
+  const disable =
+    process.env.NODE_ENV !== "production" &&
+    process.env.NEXT_PUBLIC_SW_IN_DEV !== "1";
   return (
-    <SerwistProvider
-      disable={process.env.NODE_ENV !== "production"}
-      reloadOnOnline={false}
-      swUrl={swUrl}
-    >
+    <SerwistProvider disable={disable} reloadOnOnline={false} swUrl={swUrl}>
       {children}
     </SerwistProvider>
   );

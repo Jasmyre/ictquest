@@ -160,3 +160,10 @@ docs-correction spec); map Decisions-so-far updated, no open tickets remain.
   progress bars, quick-links + assessment cards; `loading.tsx` + Suspense
   `DashboardSkeleton` for streaming; keeps `dashboard-stats` testids.
   Gates: typecheck + ultracite clean, progress-stats unit 8/8.
+- LAN dev redirect fix (2026-10-04, uncommitted): `dev-lan.mjs` LAN-points
+  `NEXTAUTH_URL`/`BASE_URL` + `AUTH_TRUST_HOST=true` (child env only),
+  `auth.ts` redirect honors same-origin callback URLs, `--sw` stripped
+  before forwarding to `next dev`, `dev:https:lan*` pass
+  `--experimental-https`, `SwProvider` opts in via
+  `NEXT_PUBLIC_SW_IN_DEV=1`, `/certificates/` gitignored. Gates:
+  typecheck + ultracite clean, `test:all` 40 files / 208 tests.

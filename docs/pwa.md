@@ -37,6 +37,8 @@ npm run dev:https:lan      # phone testing: LAN IP + BASE_URL/NEXTAUTH_URL point
 npm run dev:https:lan:sw   # + worker enabled (install testing)
 ```
 
+`scripts/dev-lan.mjs` auto-points `NEXTAUTH_URL`/`BASE_URL` at the detected LAN IP (and sets `AUTH_TRUST_HOST=true`) for the spawned server only — explicit env still wins, `.env` stays `localhost` for plain `npm run dev`. OAuth logins still need a registered LAN callback URL at the provider; credentials login is the supported phone path.
+
 First run may prompt for password (mkcert CA install). `certificates/` is per-machine, gitignored — each dev regenerates. LAN certs (`lan.pem`) carry the machine IP in SANs; they auto-regenerate when the IP changes. On the phone: same Wi-Fi → open the printed Network URL → accept the cert warning (testing only) → credentials login (OAuth needs a registered LAN callback) → Add to Home Screen. For install prompts, also install the machine `rootCA.pem` on the phone as a CA certificate. Only one dev server per directory at a time.
 
 ## Decisions
