@@ -53,7 +53,7 @@ export function SocialList({ users }: { users: GetUsersStats[] }) {
 
   return (
     <div>
-      <div className="mb-3 flex flex-col gap-2 sm:mb-6 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-muted-foreground text-sm">
           {filtered.length} {filtered.length === 1 ? "learner" : "learners"}
           {query ? ` matching “${query.trim()}”` : " in the community"}
@@ -81,11 +81,11 @@ export function SocialList({ users }: { users: GetUsersStats[] }) {
           </p>
         </div>
       ) : (
-        <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((user) => (
-            <li key={user.id}>
-              <Card className="hover:-translate-y-0.5 h-full transition-[border-color,box-shadow,transform] duration-200 ease-out hover:shadow-md">
-                <CardContent className="flex h-full flex-col gap-2 p-3 sm:gap-4 sm:p-5">
+            <li className="h-full" key={user.id}>
+              <Card className="hover:-translate-y-0.5 flex h-full flex-col transition-[border-color,box-shadow,transform] duration-200 ease-out hover:shadow-md">
+                <CardContent className="flex flex-1 flex-col pt-6">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex min-w-0 items-center gap-3">
                       <Avatar className="h-11 w-11 shrink-0">
@@ -130,7 +130,7 @@ export function SocialList({ users }: { users: GetUsersStats[] }) {
                     </DropdownMenu>
                   </div>
 
-                  <div className="flex items-center gap-4 text-muted-foreground text-sm">
+                  <div className="mt-4 flex items-center gap-4 text-muted-foreground text-sm">
                     <span className="inline-flex items-center gap-1.5">
                       <Trophy aria-hidden className="h-4 w-4" />
                       {user.numberOfAchievements}{" "}
@@ -143,11 +143,13 @@ export function SocialList({ users }: { users: GetUsersStats[] }) {
                     </span>
                   </div>
 
-                  <div className="mt-auto flex items-center gap-2 pt-1">
-                    {/* TODO: wire follow mutation */}
+                  <div className="mt-auto flex items-center gap-2 pt-6">
+                    {/* TODO: wire follow mutation — aria-disabled keeps the
+                        primary styling until the action exists */}
                     <Button
+                      aria-disabled="true"
                       className="flex-1 cursor-pointer transition-transform duration-150 ease-out active:scale-[0.97]"
-                      disabled
+                      onClick={(event) => event.preventDefault()}
                       title="Follow coming soon"
                     >
                       Follow

@@ -92,17 +92,23 @@ reference list" below).
 
 ## Presentation conventions
 
-- Keep mobile spacing compact: base (unprefixed) utilities target phones —
-  e.g. People page uses `py-4` / `px-3` / `mb-3`, cards use `p-3` / `gap-2`
-  and step up with `sm:py-10` / `sm:px-6` / `sm:p-5` / `sm:gap-4` /
-  `sm:mb-8`. Never ship desktop-first padding on mobile.
+- People (`/social`) copies the Lessons (`/lessons`) shell and rhythm so both
+  list pages feel like one surface. Shell: `min-h-[80vh] py-10`, container
+  `mx-auto max-w-7xl px-4 sm:px-6 lg:px-8`, content wrapped in `py-8`, list
+  grid `grid grid-cols-1 gap-6 sm:grid-cols-2` (`lg:grid-cols-3` on People
+  for the denser learner list). Card internals use the Lessons cadence:
+  default `CardContent` padding plus `pt-6` (the primitive is `p-6 pt-0`
+  because it expects a `CardHeader` above it — header-less cards must add
+  the top padding back), stats at `mt-4`, actions pinned with
+  `mt-auto pt-6` so cards stay equal height with no overlap (`li.h-full` +
+  `Card.flex.flex-col` + `CardContent.flex-1`).
 - All clickables use `cursor-pointer`: card buttons (Follow, View profile),
-  the card overflow trigger, and dropdown items. Disabled future placeholders
-  keep the pointer class so the affordance reads clickable when enabled.
-- People (`/social`) cards show the level once as minimal muted text
-  (`text-xs`), not a filled badge — the badge stole focus from the Follow /
-  View profile actions. Stats stay as badge/lesson counts with no
-  average-progress text.
+  the card overflow trigger, and dropdown items. The Follow placeholder uses
+  `aria-disabled` (not `disabled`) so it keeps its primary styling until the
+  mutation exists; dropdown items stay `disabled` until their actions exist.
+- People cards show the level once as minimal muted text (`text-xs`), not a
+  filled badge — the badge stole focus from the Follow / View profile
+  actions. Stats stay as badge/lesson counts with no average-progress text.
 
 ## Caching
 
