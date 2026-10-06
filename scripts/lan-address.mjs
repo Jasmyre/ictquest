@@ -77,12 +77,13 @@ export function getLanHost(nets) {
 /**
  * Non-virtual LAN addresses for `allowedDevOrigins`, plus loopbacks.
  * Honors an explicit `LAN_IP` env override first when it looks like IPv4.
+ * The resolved host is always present, even on virtual-only boxes.
  */
-export function getAllowedDevOrigins(nets) {
+export function getAllowedDevOrigins(nets, options = {}) {
+  const lanIpEnv = options.lanIpEnv ?? process.env.LAN_IP?.trim();
   const origins = new Set(["localhost", "127.0.0.1"]);
-  const override = process.env.LAN_IP?.trim();
-  if (override && IPV4_PATTERN.test(override)) {
-    origins.add(override);
+  if (lanIpEnv && IPV4_PATTERN.test(lanIpEnv)) {
+    origins.add(lanIpEnv);
   }
   for (const entry of getLanEntries(nets)) {
     if (!entry.virtual) {
@@ -96,4 +97,39 @@ export function getAllowedDevOrigins(nets) {
     origins.add(entries[0].address);
   }
   return [...origins];
+}
+
+/**
+ * Single owner of the LAN host decision.
+ * Precedence: `--ip` flag > `LAN_IP` env > ranked auto-detect.
+ * Returns `{ host, source }` where source is "flag" | "LAN_IP" |
+ * "auto-detect". Throws on an invalid flag; an invalid env value is
+ * ignored so a typo degrades to auto-detect instead of breaking boot.
+ */
+export function resolveLanHost(options = {}) {
+  const { flag, nets } = options;
+  const env =
+    options.lanIpEnv ?? options.env ?? process.env.LAN_IP?.trim() ?? "";
+  if (flag !== undefined && flag !== "") {
+    const trimmed = String(flag).trim();
+    if (!IPV4_PATTERN.test(trimmed)) {
+      throw new Error(
+        `Invalid --ip value "${flag}": expected an IPv4 address (e.g. --ip=192.168.1.67).`
+      );
+    }
+    return { host: trimmed, source: "flag" };
+  }
+  if (env && IPV4_PATTERN.test(env)) {
+    return { host: env, source: "LAN_IP" };
+  }
+  const entries = getLanEntries(nets);
+  const winner = entries[0];
+  if (!winner) {
+    throw new Error("No external IPv4 interface detected for LAN mode.");
+  }
+  return {
+    host: winner.address,
+    source: "auto-detect",
+    iface: winner.name,
+  };
 }

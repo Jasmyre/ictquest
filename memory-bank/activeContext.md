@@ -51,8 +51,14 @@ Shared LAN module (2026-10-06): `scripts/lan-address.mjs` is the single source
 for rank/select (`getLanEntries`/`getLanHost`/`getAllowedDevOrigins`);
 `dev-lan.mjs` and `next.config.ts` (`allowedDevOrigins`: loopbacks + all
 non-virtual LAN IPs + `LAN_IP` override) both use it, so the origin check
-agrees with the server URL. Covered by `tests/unit/lan-address.test.ts`
-(5 tests). Gates green: typecheck + biome clean, unit 36 files / 196 tests.
+agrees with the server URL. Covered by `tests/unit/lan-address.test.ts`.
+Gates green: typecheck + biome clean, unit 36 files / 202 tests.
+
+Single LAN host (2026-10-06, option A): `resolveLanHost()` owns the decision
+(`--ip=` flag > `LAN_IP` env > auto-detect); `dev-lan.mjs` hard-assigns
+`NEXTAUTH_URL`/`BASE_URL`/`AUTH_URL` to it with an old→new warning and
+publishes `LAN_IP` for the child so `allowedDevOrigins` resolves identically.
+`docs/setup.md` + `docs/pwa.md` updated (explicit env no longer wins).
 
 LAN dev redirect fix (2026-10-04, uncommitted): phones on the LAN bounced
 to localhost because `NEXTAUTH_URL`/`BASE_URL` stayed localhost and

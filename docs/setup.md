@@ -37,7 +37,7 @@ Verify with `npm run typecheck` and `npm run test` (full gates: `npm run validat
 | Phone PWA / install testing (worker on) | `npm run dev:https:lan:sw -- --ip=<lan-ip>` (cert auto-generated; trust it on the phone) |
 | Production check | `npm run build && npm run start` (worker always registers here) |
 
-`dev-lan` scripts auto-point `NEXTAUTH_URL`/`BASE_URL` at the detected LAN IP for the spawned server only — `.env` stays `localhost`. OAuth needs a registered LAN callback at the provider; credentials login is the supported phone path (details in [`pwa.md`](pwa.md)).
+`dev-lan` scripts set `NEXTAUTH_URL`/`BASE_URL`/`AUTH_URL` to the resolved LAN host (`--ip=` flag > `LAN_IP` env > auto-detect) for the spawned server only — `.env` stays `localhost`. An explicit parent value is overwritten with a warning, so the auth host and the LAN host stay identical. OAuth needs a registered LAN callback at the provider; credentials login is the supported phone path (details in [`pwa.md`](pwa.md)).
 
 ## Phone PWA testing (one CA trust + `--ip` each run)
 

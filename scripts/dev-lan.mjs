@@ -25,7 +25,7 @@ import { existsSync } from "node:fs";
  */
 import { join } from "node:path";
 import { buildLanCert, lanCertCoversIp } from "./gen-lan-cert.mjs";
-import { getLanEntries, IPV4_PATTERN } from "./lan-address.mjs";
+import { getLanEntries, resolveLanHost } from "./lan-address.mjs";
 
 const port = process.env.PORT ?? "3000";
 const host = process.env.HOSTNAME ?? "0.0.0.0";
@@ -60,10 +60,19 @@ const extraArgs = forwardedArgs;
 if (enableSw) {
   process.env.NEXT_PUBLIC_SW_IN_DEV ||= "1";
 }
-if (lanIpFlag !== undefined && !IPV4_PATTERN.test(lanIpFlag)) {
-  console.error(
-    `Invalid --ip value "${lanIpFlag}": expected an IPv4 address (e.g. --ip=192.168.1.67).`
-  );
+let lanHost;
+let lanSource = "auto-detect";
+try {
+  const resolved = resolveLanHost({ flag: lanIpFlag });
+  lanHost = resolved.host;
+  lanSource =
+    resolved.source === "flag"
+      ? "--ip"
+      : resolved.source === "LAN_IP"
+        ? "LAN_IP"
+        : `auto-detect ("${resolved.iface ?? "unknown"}")`;
+} catch (error) {
+  console.error(error instanceof Error ? error.message : error);
   process.exit(1);
 }
 
@@ -73,14 +82,14 @@ const addrs = lanEntries.map((entry) => entry.address);
 // Point auth + metadata URLs at the LAN address so phones don't bounce
 // to localhost: NextAuth derives its baseUrl from NEXTAUTH_URL and the
 // redirect callback returns it, so a localhost value redirects every
-// LAN sign-in to localhost. Overrides apply to the spawned server only
-// (explicit parent env still wins); `.env` stays localhost for `dev`.
+// LAN sign-in to localhost. LAN mode owns these three vars for the
+// spawned server only (`.env` stays localhost for `dev`): an explicit
+// parent value is overwritten with a warning so the auth host and the
+// LAN host can never silently diverge.
 const useHttps = extraArgs.some((arg) =>
   arg.startsWith("--experimental-https")
 );
 const scheme = useHttps ? "https" : "http";
-const detectedHost = addrs[0];
-const lanHost = lanIpFlag ?? detectedHost;
 if (lanIpFlag && !addrs.includes(lanIpFlag)) {
   console.warn(
     `  --ip=${lanIpFlag} is not among this machine's addresses (${addrs.join(", ") || "none detected"}); using the flag value anyway.`
@@ -88,9 +97,19 @@ if (lanIpFlag && !addrs.includes(lanIpFlag)) {
 }
 if (lanHost) {
   const lanUrl = `${scheme}://${lanHost}:${port}`;
-  process.env.NEXTAUTH_URL ||= lanUrl;
-  process.env.BASE_URL ||= lanUrl;
+  for (const key of ["NEXTAUTH_URL", "BASE_URL", "AUTH_URL"]) {
+    const prior = process.env[key];
+    if (prior && prior !== lanUrl) {
+      console.warn(
+        `  ${key} was "${prior}", now "${lanUrl}" (LAN mode owns it).`
+      );
+    }
+    process.env[key] = lanUrl;
+  }
   process.env.AUTH_TRUST_HOST ||= "true";
+  // Publish the single resolved host so `next.config.ts`
+  // (`allowedDevOrigins`) resolves identically in the child process.
+  process.env.LAN_IP = lanHost;
 }
 
 console.log(`Starting Next.js dev server on ${host}:${port} ...`);
@@ -153,14 +172,12 @@ if (lanEntries.length > 0) {
       `  LAN: ${scheme}://${entry.address}:${port} ("${entry.name}")`
     );
   }
-  if (detectedHost) {
-    const winner = lanEntries.find((entry) => entry.address === detectedHost);
-    console.log(
-      `  Detected LAN IP: ${detectedHost}${winner ? ` (from "${winner.name}")` : ""}`
-    );
+  if (lanHost) {
+    console.log(`  LAN host: ${lanHost} (source: ${lanSource})`);
   }
   console.log(`  NEXTAUTH_URL=${process.env.NEXTAUTH_URL}`);
   console.log(`  BASE_URL=${process.env.BASE_URL}`);
+  console.log(`  AUTH_URL=${process.env.AUTH_URL}`);
 } else {
   console.log("  (no external IPv4 interface detected)");
 }
