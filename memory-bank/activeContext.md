@@ -47,6 +47,13 @@ so WSL/Hyper-V virtual adapters (`172.25.x.x`) never win over real Wi-Fi
 skipped virtual adapters + `Detected LAN IP`. Bare `npm run dev:https:lan:sw`
 now points `NEXTAUTH_URL`/`BASE_URL` at `192.168.1.27`; `--ip=` override kept.
 
+Shared LAN module (2026-10-06): `scripts/lan-address.mjs` is the single source
+for rank/select (`getLanEntries`/`getLanHost`/`getAllowedDevOrigins`);
+`dev-lan.mjs` and `next.config.ts` (`allowedDevOrigins`: loopbacks + all
+non-virtual LAN IPs + `LAN_IP` override) both use it, so the origin check
+agrees with the server URL. Covered by `tests/unit/lan-address.test.ts`
+(5 tests). Gates green: typecheck + biome clean, unit 36 files / 196 tests.
+
 LAN dev redirect fix (2026-10-04, uncommitted): phones on the LAN bounced
 to localhost because `NEXTAUTH_URL`/`BASE_URL` stayed localhost and
 `src/auth.ts` `redirect` always returned `baseUrl`. `scripts/dev-lan.mjs`

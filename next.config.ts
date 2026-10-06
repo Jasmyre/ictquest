@@ -3,31 +3,17 @@
  * for Docker builds.
  */
 import "./src/env.js";
-import os from "node:os";
 import { withSerwist } from "@serwist/turbopack";
 import type { NextConfig } from "next";
+import { getAllowedDevOrigins } from "./scripts/lan-address.mjs";
 
-function getLocalIP() {
-  const interfaces = os.networkInterfaces();
-
-  for (const name of Object.keys(interfaces)) {
-    for (const net of interfaces[name] || []) {
-      if (net.family === "IPv4" && !net.internal) {
-        return net.address;
-      }
-    }
-  }
-
-  return "localhost";
-}
-
-const localIP = getLocalIP();
+const allowedDevOrigins = getAllowedDevOrigins() as string[];
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   cacheComponents: true,
   reactCompiler: true,
-  allowedDevOrigins: [localIP],
+  allowedDevOrigins,
   experimental: {
     turbopackFileSystemCacheForDev: true,
   },

@@ -23,9 +23,9 @@ import { existsSync } from "node:fs";
  * new phone step. Without `--experimental-https`, plain `npm run dev:lan`
  * stays cert-free.
  */
-import { networkInterfaces } from "node:os";
 import { join } from "node:path";
 import { buildLanCert, lanCertCoversIp } from "./gen-lan-cert.mjs";
+import { getLanEntries, IPV4_PATTERN } from "./lan-address.mjs";
 
 const port = process.env.PORT ?? "3000";
 const host = process.env.HOSTNAME ?? "0.0.0.0";
@@ -36,6 +36,7 @@ const rawArgs = process.argv.slice(2);
 // pins the LAN IP for this run (DHCP leases change); also stripped before
 // forwarding. Supports `--ip=1.2.3.4` and `--ip 1.2.3.4` forms.
 const enableSw = rawArgs.includes("--sw");
+const IP_FLAG_PATTERN = /^--(?:lan-)?ip=(.+)$/;
 let lanIpFlag;
 const forwardedArgs = [];
 for (let i = 0; i < rawArgs.length; i += 1) {
@@ -43,7 +44,7 @@ for (let i = 0; i < rawArgs.length; i += 1) {
   if (arg === "--sw") {
     continue;
   }
-  const eqMatch = arg.match(/^--(?:lan-)?ip=(.+)$/);
+  const eqMatch = arg.match(IP_FLAG_PATTERN);
   if (eqMatch) {
     lanIpFlag = eqMatch[1].trim();
     continue;
@@ -59,7 +60,6 @@ const extraArgs = forwardedArgs;
 if (enableSw) {
   process.env.NEXT_PUBLIC_SW_IN_DEV ||= "1";
 }
-const IPV4_PATTERN = /^\d{1,3}(\.\d{1,3}){3}$/;
 if (lanIpFlag !== undefined && !IPV4_PATTERN.test(lanIpFlag)) {
   console.error(
     `Invalid --ip value "${lanIpFlag}": expected an IPv4 address (e.g. --ip=192.168.1.67).`
@@ -67,56 +67,7 @@ if (lanIpFlag !== undefined && !IPV4_PATTERN.test(lanIpFlag)) {
   process.exit(1);
 }
 
-const VIRTUAL_IFACE_PATTERN =
-  /wsl|vethernet|hyper-?v|virtualbox|vmware|vbox|docker|br-|veth|tailscale|zerotier|loopback|isatap|teredo|\btun\d*|\btap\d*|\bvpn/i;
-const PRIVATE_172_PATTERN = /^172\.(\d{1,3})\./;
-
-function rankLanAddress(address, isVirtual) {
-  if (isVirtual) {
-    return 100;
-  }
-  if (address.startsWith("192.168.")) {
-    return 0;
-  }
-  if (address.startsWith("10.")) {
-    return 10;
-  }
-  const m172 = address.match(PRIVATE_172_PATTERN);
-  if (m172) {
-    const second = Number(m172[1]);
-    if (second >= 16 && second <= 31) {
-      // WSL/Hyper-V defaults cluster here; deprioritize them even when
-      // the adapter name doesn't reveal it.
-      if (second === 25 || second === 29 || second === 30) {
-        return 50;
-      }
-      return 20;
-    }
-  }
-  return 60;
-}
-
-function lanAddresses() {
-  const nets = networkInterfaces();
-  const entries = [];
-  for (const [name, list] of Object.entries(nets)) {
-    for (const net of list ?? []) {
-      if (net.family === "IPv4" && !net.internal) {
-        const virtual = VIRTUAL_IFACE_PATTERN.test(name);
-        entries.push({ address: net.address, name, virtual });
-      }
-    }
-  }
-  entries.sort(
-    (a, b) =>
-      rankLanAddress(a.address, a.virtual) -
-        rankLanAddress(b.address, b.virtual) ||
-      a.address.localeCompare(b.address)
-  );
-  return entries;
-}
-
-const lanEntries = lanAddresses();
+const lanEntries = getLanEntries();
 const addrs = lanEntries.map((entry) => entry.address);
 
 // Point auth + metadata URLs at the LAN address so phones don't bounce
