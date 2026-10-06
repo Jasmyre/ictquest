@@ -173,6 +173,9 @@ docs-correction spec); map Decisions-so-far updated, no open tickets remain.
   (PC certmgr step first, then phone trust, SAN check, `--ip=` restart);
   `SwProvider` logs one visible `console.error` via error/unhandledrejection
   listeners instead of a raw stack; `dev-lan.mjs` re-verifies SAN after
-  rebuild and forces `ALLOW_LAN=0` with `console.error` on failure (fixes
+  rebuild and forces   `ALLOW_LAN=0` with `console.error` on failure (fixes
   stale-cert-marked-valid bug) + PC trust wording. Gates: typecheck +
   biome clean, unit 36 files / 204 tests.
+- PWA setup doc (2026-10-06, user-confirmed working): `docs/pwa.md` full
+  LAN install flow (CA, PC certmgr + phone trust, per-run `--ip=`, env
+  table, command matrix, cleanup); `setup.md` trimmed to summary + link.

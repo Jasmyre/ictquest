@@ -63,6 +63,13 @@ error/unhandledrejection listeners; `dev-lan.mjs` re-verifies SAN after
 rebuild and forces `ALLOW_LAN=0` with `console.error` on failure.
 Gates green: typecheck + biome clean, unit 36 files / 204 tests.
 
+PWA setup doc (2026-10-06, user-confirmed working): `docs/pwa.md` now owns
+the full LAN install flow (prereqs, `.env` rules, per-machine CA, Windows
+certmgr PC trust, Android/iOS phone trust, per-run `--ip=`, verify steps,
+script-managed env table, command matrix, DHCP/cleanup/failure notes);
+`docs/setup.md` phone section trimmed to summary + link, `docs/env.md` PWA
+rows point at `pwa.md`.
+
 Single LAN host (2026-10-06, option A): `resolveLanHost()` owns the decision
 (`--ip=` flag > `LAN_IP` env > auto-detect); `dev-lan.mjs` hard-assigns
 `NEXTAUTH_URL`/`BASE_URL`/`AUTH_URL` to it with an old→new warning and

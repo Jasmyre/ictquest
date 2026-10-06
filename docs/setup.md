@@ -39,35 +39,21 @@ Verify with `npm run typecheck` and `npm run test` (full gates: `npm run validat
 
 `dev-lan` scripts set `NEXTAUTH_URL`/`BASE_URL`/`AUTH_URL` to the resolved LAN host (`--ip=` flag > `LAN_IP` env > auto-detect) for the spawned server only — `.env` stays `localhost`. An explicit parent value is overwritten with a warning, so the auth host and the LAN host stay identical. OAuth needs a registered LAN callback at the provider; credentials login is the supported phone path (details in [`pwa.md`](pwa.md)).
 
-## Phone PWA testing (one CA trust + `--ip` each run)
+## Phone PWA testing (service worker on LAN)
 
-The default dev cert covers `localhost` only, so a phone rejects the service worker with `SecurityError ... SSL certificate error`. The fix has two parts: a local CA the phone trusts **one time**, plus a per-IP certificate made from that CA (automatic).
-
-**One time per dev machine** — make the CA (or let the dev script make it for you on first run):
-
-```bash
-npm run pwa:lan-ca
-```
-
-**One time per phone** — trust `certificates/lan-ca.pem`:
-
-- Android: copy the file to the phone → Settings → Security → Install a certificate → CA certificate. (Vendor names differ; Samsung: Security and privacy → Other security settings → View security certificates.)
-- iOS: send via AirDrop/mail → install under Settings → General → VPN and Device Management → enable full trust under Settings → General → About → Certificate Trust Settings.
-
-**Each run** — pass the machine's current LAN IP (`ipconfig` on Windows, look at the Wi-Fi adapter's IPv4):
+Summary: one local CA per dev machine (trusted once per PC + phone), then
+`npm run dev:https:lan:sw -- --ip=<lan-ip>` each run. The complete flow —
+prerequisites, `.env` rules, Windows certmgr steps, Android/iOS trust steps,
+the env table (`NEXT_PUBLIC_SW_IN_DEV`, `NEXT_PUBLIC_SW_ALLOW_LAN`,
+`LAN_IP`, `AUTH_TRUST_HOST`, owned `NEXTAUTH_URL`/`BASE_URL`), DHCP IP
+changes, verification, and cleanup — lives in
+[`pwa.md`](pwa.md#full-setup-service-worker-on-lan-pc--phone) (single source
+of truth, not repeated here).
 
 ```bash
-npm run dev:https:lan:sw -- --ip=192.168.100.74
+npm run pwa:lan-ca                              # one time per dev machine
+npm run dev:https:lan:sw -- --ip=192.168.100.74  # each run, with the live LAN IP
 ```
-
-The script rebuilds the LAN-IP certificate from the CA when missing or stale — **no new phone step at an IP change**, and the phone holds one entry instead of one per IP. Then Add to Home Screen.
-
-**After testing** — remove the CA from the phone (under one minute):
-
-- Android: Settings → Security → Trusted credentials (or View security certificates) → User tab → `ICTQuest LAN CA` → Remove (or Forget).
-- iOS: Settings → General → VPN and Device Management → `ICTQuest LAN CA` → Remove Downloaded Profile.
-
-**Safety note (including daily-use phones):** while installed, the phone trusts LAN certificates made by your dev machine. The CA key never leaves `certificates/` (gitignored, never committed) and signs LAN names only. Still, remove the entry when the test session ends — that is the full cleanup.
 
 ## Per-machine files (never committed, always regenerate)
 
