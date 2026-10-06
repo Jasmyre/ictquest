@@ -33,7 +33,7 @@
 ## PWA / worker
 
 - Worker absent under plain `npm run dev` is by design — verify against `build + start` or `dev:https:lan:sw`.
-- Phone `SecurityError ... when fetching the script`: LAN cert SANs mismatch or untrusted cert — re-run with the machine's current IP (`npm run dev:https:lan:sw -- --ip=<LAN_IP>`; the cert auto-regenerates when stale), install the new `certificates/lan-cert.pem` as trusted on the phone, then reload.
+- Phone `SecurityError ... when fetching the script`: LAN cert SANs mismatch or untrusted cert — make sure the phone trusts this machine's CA (`certificates/lan-ca.pem`, see `docs/setup.md`), then re-run with the machine's current IP (`npm run dev:https:lan:sw -- --ip=<LAN_IP>`; the leaf cert auto-rebuilds from the CA when stale, no new phone step).
 - Route flipped fully dynamic: check for `auth()`/`headers()` outside `<Suspense>`; keep dynamic holes narrow (`connection()` + `auth()` inside the async component).
 
 ## E2E flakes

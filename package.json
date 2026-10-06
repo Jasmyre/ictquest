@@ -30,6 +30,7 @@
     "postinstall": "prisma generate",
     "preview": "next build && next start",
     "pwa:assets": "node scripts/pwa-assets.mjs",
+    "pwa:lan-ca": "node scripts/gen-lan-ca.mjs",
     "pwa:lan-cert": "node scripts/gen-lan-cert.mjs",
     "start": "next start",
     "typecheck": "tsc --noEmit",

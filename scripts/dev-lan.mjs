@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { execFileSync, spawn } from "node:child_process";
+import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 /**
  * Run the Next.js dev server bound to the LAN.
@@ -15,14 +15,17 @@ import { existsSync } from "node:fs";
  * The LAN IP is an input (`--ip=` / `--lan-ip=`): DHCP leases change, so
  * pass the machine's current IPv4 each run and this script points
  * NEXTAUTH_URL/BASE_URL at it. When `--experimental-https` is passed, a
- * SAN-covering cert for that IP is auto-generated if missing or stale
- * (requires `openssl`), served automatically, and
- * `NEXT_PUBLIC_SW_ALLOW_LAN=1` is set so `SwProvider` registers the worker.
- * Trust `certificates/lan-cert.pem` on the phone once per cert.
- * Without `--experimental-https`, plain `npm run dev:lan` stays cert-free.
+ * SAN-covering cert for that IP is auto-built from the local CA
+ * (`scripts/gen-lan-ca.mjs`, one time per machine) if missing or stale,
+ * served automatically, and `NEXT_PUBLIC_SW_ALLOW_LAN=1` is set so
+ * `SwProvider` registers the worker. Trust the CA file
+ * (`certificates/lan-ca.pem`) on the phone ONE time — IP changes need no
+ * new phone step. Without `--experimental-https`, plain `npm run dev:lan`
+ * stays cert-free.
  */
 import { networkInterfaces } from "node:os";
 import { join } from "node:path";
+import { buildLanCert, lanCertCoversIp } from "./gen-lan-cert.mjs";
 
 const port = process.env.PORT ?? "3000";
 const host = process.env.HOSTNAME ?? "0.0.0.0";
@@ -103,72 +106,22 @@ if (lanHost) {
 }
 
 console.log(`Starting Next.js dev server on ${host}:${port} ...`);
-const lanKeyPath = join(
-  import.meta.dirname,
-  "..",
-  "certificates",
-  "lan-key.pem"
-);
-const lanCertPath = join(
-  import.meta.dirname,
-  "..",
-  "certificates",
-  "lan-cert.pem"
-);
-
-function lanCertCoversIp(certPath, ip) {
-  try {
-    const out = execFileSync(
-      "openssl",
-      ["x509", "-in", certPath, "-noout", "-ext", "subjectAltName"],
-      { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }
-    );
-    return out.includes(ip);
-  } catch {
-    return false;
-  }
-}
-
-function generateLanCert(ip) {
-  execFileSync(
-    "openssl",
-    [
-      "req",
-      "-x509",
-      "-newkey",
-      "rsa:2048",
-      "-sha256",
-      "-days",
-      "825",
-      "-nodes",
-      "-keyout",
-      lanKeyPath,
-      "-out",
-      lanCertPath,
-      "-subj",
-      `/CN=${ip}`,
-      "-addext",
-      `subjectAltName=DNS:localhost,DNS:*.localhost,IP:127.0.0.1,IP:${ip},DNS:${ip}`,
-    ],
-    { stdio: "inherit" }
-  );
-}
+const certificatesDir = join(import.meta.dirname, "..", "certificates");
+const lanKeyPath = join(certificatesDir, "lan-key.pem");
+const lanCertPath = join(certificatesDir, "lan-cert.pem");
 
 let hasLanCert = existsSync(lanKeyPath) && existsSync(lanCertPath);
 if (useHttps && lanHost && !lanCertCoversIp(lanCertPath, lanHost)) {
-  // Missing or stale (IP changed) cert: regenerate so the phone stops
-  // failing with `SecurityError ... SSL certificate error`. Re-trust the
-  // new cert on the phone afterwards.
+  // Missing or stale (IP changed) cert: rebuild from the local CA so the
+  // phone stops failing with `SecurityError ... SSL certificate error`.
+  // The phone needs no new trust step — it already trusts the CA.
   try {
-    console.log(`  LAN cert missing/stale for ${lanHost}; generating ...`);
-    generateLanCert(lanHost);
+    console.log(`  LAN cert missing/stale for ${lanHost}; rebuilding ...`);
+    buildLanCert(lanHost);
     hasLanCert = existsSync(lanKeyPath) && existsSync(lanCertPath);
-    console.warn(
-      "  New LAN cert generated — re-install certificates/lan-cert.pem as trusted on the phone."
-    );
   } catch {
     console.error(
-      "  Failed to generate LAN cert (openssl required). Continuing without it; worker registration will be skipped."
+      "  Failed to build LAN cert (openssl required). Continuing without it; service worker registration will be skipped."
     );
   }
 }
@@ -185,18 +138,18 @@ if (useHttps && hasLanCert && !hasExplicitCert) {
 }
 if (enableSw && useHttps) {
   if (hasLanCert || hasExplicitCert) {
-    // SAN-covering cert is served, so the phone can register the worker once
-    // the cert is trusted on the device.
+    // SAN-covering cert is served, so the phone can install the service
+    // worker once the local CA is trusted on the device.
     process.env.NEXT_PUBLIC_SW_ALLOW_LAN ||= "1";
     console.log(
-      "  SW on LAN: enabled (serving LAN cert — trust it on the phone)."
+      "  SW on LAN: enabled (serving LAN cert — trust the local CA on the phone)."
     );
   } else {
     console.warn(
-      "[serwist] --sw + --experimental-https without a LAN cert will skip worker registration: " +
+      "[serwist] --sw + --experimental-https without a LAN cert will skip service worker registration: " +
         "the default dev cert is localhost-only (SSL certificate error on LAN). " +
-        "Run node scripts/gen-lan-cert.mjs <LAN_IP>, trust certificates/lan-cert.pem " +
-        "on the phone, and restart — or use plain HTTP `npm run dev:lan`."
+        "Trust certificates/lan-ca.pem on the phone once (npm run pwa:lan-ca), " +
+        "then restart — or use plain HTTP `npm run dev:lan`."
     );
   }
 }

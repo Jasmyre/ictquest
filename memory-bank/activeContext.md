@@ -34,6 +34,13 @@ missing/stale for that IP. Local cert currently minted for the live
 each regeneration. `docs/setup.md`, `docs/pwa.md`, `docs/troubleshooting.md`
 updated.
 
+One local CA, trust one time (2026-10-06, user confirmed): new
+`scripts/gen-lan-ca.mjs` (`npm run pwa:lan-ca`) makes one CA per machine;
+`gen-lan-cert.mjs` now signs the leaf from the CA (shared helpers, no
+duplicated openssl); `dev-lan.mjs` auto-creates CA + rebuilds stale leaf —
+phone trusts `lan-ca.pem` once, IP changes need zero phone steps, one store
+entry, removal steps + daily-use safety note in `docs/setup.md`.
+
 LAN dev redirect fix (2026-10-04, uncommitted): phones on the LAN bounced
 to localhost because `NEXTAUTH_URL`/`BASE_URL` stayed localhost and
 `src/auth.ts` `redirect` always returned `baseUrl`. `scripts/dev-lan.mjs`

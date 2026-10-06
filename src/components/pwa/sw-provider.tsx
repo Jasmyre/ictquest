@@ -46,10 +46,10 @@ export function SwProvider({
         `[serwist] SW registration skipped on "${window.location.host}": ` +
           "dev worker requires localhost + secure context, or a trusted LAN " +
           "cert (localhost-only self-signed cert fails on LAN IPs with SSL " +
-          "certificate error). Run node scripts/gen-lan-cert.mjs, trust " +
-          "certificates/lan-cert.pem on the phone, and restart with " +
-          "npm run dev:https:lan:sw — or use plain HTTP npm run dev:lan " +
-          "for non-PWA LAN testing."
+          "certificate error). Trust certificates/lan-ca.pem on the phone once " +
+          "(npm run pwa:lan-ca), then restart with " +
+          "npm run dev:https:lan:sw -- --ip=<lan-ip> — or use plain HTTP " +
+          "npm run dev:lan for non-PWA LAN testing."
       );
     }
   }, [envDisable]);
