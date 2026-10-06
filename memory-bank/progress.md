@@ -177,5 +177,10 @@ docs-correction spec); map Decisions-so-far updated, no open tickets remain.
   stale-cert-marked-valid bug) + PC trust wording. Gates: typecheck +
   biome clean, unit 36 files / 204 tests.
 - PWA setup doc (2026-10-06, user-confirmed working): `docs/pwa.md` full
-  LAN install flow (CA, PC certmgr + phone trust, per-run `--ip=`, env
-  table, command matrix, cleanup); `setup.md` trimmed to summary + link.
+LAN install flow (CA, PC certmgr + phone trust, per-run `--ip=`, env
+table, command matrix, cleanup); `setup.md` trimmed to summary + link.
+- ADR 0009 (2026-10-06, code-review follow-up): mock `social/new` retired
+deliberately (dead compose, no UGC entity per #23 out-of-scope); `/social`
+is the server-rendered People list; Follow/Report/Block disabled TODOs;
+LAN CA/SAN-leaf phone flow + SW-skip-on-untrusted-LAN accepted as
+post-#23 follow-ups.

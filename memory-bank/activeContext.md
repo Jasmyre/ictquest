@@ -76,6 +76,14 @@ Single LAN host (2026-10-06, option A): `resolveLanHost()` owns the decision
 publishes `LAN_IP` for the child so `allowedDevOrigins` resolves identically.
 `docs/setup.md` + `docs/pwa.md` updated (explicit env no longer wins).
 
+Social-new retired (2026-10-06, ADR 0009): mock `social/new` deleted on
+purpose (hardcoded sample users, dead compose, no backing entity — #23 keeps
+UGC out of scope); `/social` is now a server-rendered People list
+(`getUsersStats()` + `"use cache"`, narrow `SocialList` client leaf);
+Follow/Report/Block stay disabled TODOs until a real UGC entity lands. LAN
+CA + SAN-leaf phone flow and SW-skip-on-untrusted-LAN accepted as
+deliberate follow-ups beyond the closed #23 map.
+
 LAN dev redirect fix (2026-10-04, uncommitted): phones on the LAN bounced
 to localhost because `NEXTAUTH_URL`/`BASE_URL` stayed localhost and
 `src/auth.ts` `redirect` always returned `baseUrl`. `scripts/dev-lan.mjs`
