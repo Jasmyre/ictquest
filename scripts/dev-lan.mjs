@@ -67,20 +67,57 @@ if (lanIpFlag !== undefined && !IPV4_PATTERN.test(lanIpFlag)) {
   process.exit(1);
 }
 
+const VIRTUAL_IFACE_PATTERN =
+  /wsl|vethernet|hyper-?v|virtualbox|vmware|vbox|docker|br-|veth|tailscale|zerotier|loopback|isatap|teredo|\btun\d*|\btap\d*|\bvpn/i;
+const PRIVATE_172_PATTERN = /^172\.(\d{1,3})\./;
+
+function rankLanAddress(address, isVirtual) {
+  if (isVirtual) {
+    return 100;
+  }
+  if (address.startsWith("192.168.")) {
+    return 0;
+  }
+  if (address.startsWith("10.")) {
+    return 10;
+  }
+  const m172 = address.match(PRIVATE_172_PATTERN);
+  if (m172) {
+    const second = Number(m172[1]);
+    if (second >= 16 && second <= 31) {
+      // WSL/Hyper-V defaults cluster here; deprioritize them even when
+      // the adapter name doesn't reveal it.
+      if (second === 25 || second === 29 || second === 30) {
+        return 50;
+      }
+      return 20;
+    }
+  }
+  return 60;
+}
+
 function lanAddresses() {
   const nets = networkInterfaces();
-  const addrs = [];
-  for (const list of Object.values(nets)) {
+  const entries = [];
+  for (const [name, list] of Object.entries(nets)) {
     for (const net of list ?? []) {
       if (net.family === "IPv4" && !net.internal) {
-        addrs.push(net.address);
+        const virtual = VIRTUAL_IFACE_PATTERN.test(name);
+        entries.push({ address: net.address, name, virtual });
       }
     }
   }
-  return addrs;
+  entries.sort(
+    (a, b) =>
+      rankLanAddress(a.address, a.virtual) -
+        rankLanAddress(b.address, b.virtual) ||
+      a.address.localeCompare(b.address)
+  );
+  return entries;
 }
 
-const addrs = lanAddresses();
+const lanEntries = lanAddresses();
+const addrs = lanEntries.map((entry) => entry.address);
 
 // Point auth + metadata URLs at the LAN address so phones don't bounce
 // to localhost: NextAuth derives its baseUrl from NEXTAUTH_URL and the
@@ -153,9 +190,23 @@ if (enableSw && useHttps) {
     );
   }
 }
-if (addrs.length > 0) {
-  for (const addr of addrs) {
-    console.log(`  LAN: ${scheme}://${addr}:${port}`);
+if (lanEntries.length > 0) {
+  for (const entry of lanEntries) {
+    if (entry.virtual) {
+      console.log(
+        `  skipped virtual: ${scheme}://${entry.address}:${port} ("${entry.name}")`
+      );
+      continue;
+    }
+    console.log(
+      `  LAN: ${scheme}://${entry.address}:${port} ("${entry.name}")`
+    );
+  }
+  if (detectedHost) {
+    const winner = lanEntries.find((entry) => entry.address === detectedHost);
+    console.log(
+      `  Detected LAN IP: ${detectedHost}${winner ? ` (from "${winner.name}")` : ""}`
+    );
   }
   console.log(`  NEXTAUTH_URL=${process.env.NEXTAUTH_URL}`);
   console.log(`  BASE_URL=${process.env.BASE_URL}`);

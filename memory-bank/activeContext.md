@@ -41,6 +41,12 @@ duplicated openssl); `dev-lan.mjs` auto-creates CA + rebuilds stale leaf —
 phone trusts `lan-ca.pem` once, IP changes need zero phone steps, one store
 entry, removal steps + daily-use safety note in `docs/setup.md`.
 
+LAN auto-detect fix (2026-10-06): `dev-lan.mjs` sorted `os.networkInterfaces()`
+so WSL/Hyper-V virtual adapters (`172.25.x.x`) never win over real Wi-Fi
+(`192.168.x` > `10.x` > `172.16-31.x`, virtual names deprioritized); log tags
+skipped virtual adapters + `Detected LAN IP`. Bare `npm run dev:https:lan:sw`
+now points `NEXTAUTH_URL`/`BASE_URL` at `192.168.1.27`; `--ip=` override kept.
+
 LAN dev redirect fix (2026-10-04, uncommitted): phones on the LAN bounced
 to localhost because `NEXTAUTH_URL`/`BASE_URL` stayed localhost and
 `src/auth.ts` `redirect` always returned `baseUrl`. `scripts/dev-lan.mjs`
