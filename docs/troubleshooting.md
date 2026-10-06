@@ -33,7 +33,7 @@
 ## PWA / worker
 
 - Worker absent under plain `npm run dev` is by design — verify against `build + start` or `dev:https:lan:sw`.
-- Phone `SecurityError ... when fetching the script`: LAN cert SANs mismatch or untrusted cert — make sure the phone trusts this machine's CA (`certificates/lan-ca.pem`, see `docs/setup.md`), then re-run with the machine's current IP (`npm run dev:https:lan:sw -- --ip=<LAN_IP>`; the leaf cert auto-rebuilds from the CA when stale, no new phone step).
+- `SecurityError ... SSL certificate error` on PC **and** phone: the SAN covers the IP but neither device trusts the local CA yet. PC: install `certificates/lan-ca.pem` into Windows Trusted Root CA (certmgr) and restart Chrome. Phone: install the same file once as trusted (Android: Trusted credentials > User; iOS: profile + full trust). Verify with `openssl x509 -in certificates/lan-cert.pem -noout -ext subjectAltName` (must list the live IP), then `npm run dev:https:lan:sw -- --ip=<LAN_IP>`. The browser now logs one actionable `[serwist] SW registration failed ...` error (kept visible by design) with these steps; a stale leaf auto-rebuilds from the CA, no new phone step.
 - Route flipped fully dynamic: check for `auth()`/`headers()` outside `<Suspense>`; keep dynamic holes narrow (`connection()` + `auth()` inside the async component).
 
 ## E2E flakes

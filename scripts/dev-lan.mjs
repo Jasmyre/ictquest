@@ -120,15 +120,32 @@ const lanCertPath = join(certificatesDir, "lan-cert.pem");
 let hasLanCert = existsSync(lanKeyPath) && existsSync(lanCertPath);
 if (useHttps && lanHost && !lanCertCoversIp(lanCertPath, lanHost)) {
   // Missing or stale (IP changed) cert: rebuild from the local CA so the
-  // phone stops failing with `SecurityError ... SSL certificate error`.
+  // browser stops failing with `SecurityError ... SSL certificate error`.
   // The phone needs no new trust step — it already trusts the CA.
   try {
     console.log(`  LAN cert missing/stale for ${lanHost}; rebuilding ...`);
     buildLanCert(lanHost);
-    hasLanCert = existsSync(lanKeyPath) && existsSync(lanCertPath);
+    // Re-verify: a failed build must not leave a stale pair marked valid.
+    hasLanCert =
+      existsSync(lanKeyPath) &&
+      existsSync(lanCertPath) &&
+      lanCertCoversIp(lanCertPath, lanHost);
+    if (!hasLanCert) {
+      console.error(
+        `  [serwist] Rebuilt LAN cert still does not cover ${lanHost}; ` +
+          "service worker registration will fail visibly in the browser. " +
+          `Re-run npm run pwa:lan-cert for ${lanHost} and check openssl output.`
+      );
+    }
   } catch {
+    // A stale pair plus a failed rebuild is still stale: never enable SW
+    // against it (the browser would throw a visible SecurityError).
+    hasLanCert = false;
     console.error(
-      "  Failed to build LAN cert (openssl required). Continuing without it; service worker registration will be skipped."
+      "  [serwist] Failed to build LAN cert (openssl required). " +
+        "Service worker registration stays disabled; fix openssl, then " +
+        `re-run with --ip=${lanHost} — or use plain HTTP \`npm run dev:lan\` ` +
+        "for non-PWA LAN testing."
     );
   }
 }
@@ -145,18 +162,32 @@ if (useHttps && hasLanCert && !hasExplicitCert) {
 }
 if (enableSw && useHttps) {
   if (hasLanCert || hasExplicitCert) {
-    // SAN-covering cert is served, so the phone can install the service
-    // worker once the local CA is trusted on the device.
+    // SAN-covering cert is served, so the browser can install the service
+    // worker once the local CA is trusted on the device (PC via certmgr +
+    // Chrome restart, phone via one-time CA install).
     process.env.NEXT_PUBLIC_SW_ALLOW_LAN ||= "1";
     console.log(
-      "  SW on LAN: enabled (serving LAN cert — trust the local CA on the phone)."
+      "  SW on LAN: enabled (serving LAN cert — trust the local CA on the PC + phone)."
     );
   } else {
-    console.warn(
-      "[serwist] --sw + --experimental-https without a LAN cert will skip service worker registration: " +
-        "the default dev cert is localhost-only (SSL certificate error on LAN). " +
-        "Trust certificates/lan-ca.pem on the phone once (npm run pwa:lan-ca), " +
-        "then restart — or use plain HTTP `npm run dev:lan`."
+    // No usable LAN cert: a stale parent ALLOW_LAN=1 must not survive —
+    // LAN mode owns this flag for the child (same pattern as
+    // NEXTAUTH_URL/BASE_URL above), otherwise the browser throws a raw
+    // SecurityError instead of the actionable message.
+    if (process.env.NEXT_PUBLIC_SW_ALLOW_LAN === "1") {
+      console.warn(
+        '  NEXT_PUBLIC_SW_ALLOW_LAN was "1", now "0" (no LAN cert).'
+      );
+    }
+    process.env.NEXT_PUBLIC_SW_ALLOW_LAN = "0";
+    console.error(
+      "[serwist] --sw + --experimental-https without a LAN cert: service worker " +
+        "registration stays disabled and the browser will report a visible " +
+        "`SecurityError ... SSL certificate error` on LAN. " +
+        "PC: install certificates/lan-ca.pem into Windows Trusted Root CA " +
+        "(certmgr) and restart Chrome; phone: trust certificates/lan-ca.pem " +
+        "once (npm run pwa:lan-ca), then restart with --ip=<lan-ip> — " +
+        "or use plain HTTP `npm run dev:lan`."
     );
   }
 }

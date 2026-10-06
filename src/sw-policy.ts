@@ -142,6 +142,8 @@ export function shouldServeOfflineFallback(request: {
 }
 
 const TRAILING_DOT = /\.$/;
+const SW_SECURITY_ERROR_PATTERN = /securityerror/i;
+const SW_SSL_CERT_PATTERN = /ssl certificate/i;
 
 /** Hostnames where dev SW registration is safe (localhost-only cert). */
 export function isLoopbackHostname(hostname: string): boolean {
@@ -189,4 +191,71 @@ export function shouldDisableSwRegistration(
     return false;
   }
   return !isLoopbackHostname(snapshot.hostname);
+}
+
+/**
+ * Detects the LAN-TLS cert failure thrown when the browser rejects the
+ * worker script (`SecurityError: ... SSL certificate error ...`). Pure so
+ * the provider can map it to one actionable `console.error` instead of a
+ * raw stack. Accepts `Error`/`DOMException` instances (duck-typed via
+ * `name`/`message` because `DOMException instanceof Error` is false in
+ * browsers), plain strings, and `unhandledrejection`-style `{ reason }` /
+ * `ErrorEvent`-style `{ error, message }` wrappers.
+ */
+export function isSwCertError(value: unknown): boolean {
+  const textOf = (candidate: unknown): string | null => {
+    if (candidate instanceof Error) {
+      return `${candidate.name} ${candidate.message}`;
+    }
+    if (typeof candidate === "string") {
+      return candidate;
+    }
+    if (typeof candidate === "object" && candidate !== null) {
+      const record = candidate as { message?: unknown; name?: unknown };
+      const name = typeof record.name === "string" ? record.name : "";
+      const message = typeof record.message === "string" ? record.message : "";
+      if (name !== "" || message !== "") {
+        return `${name} ${message}`;
+      }
+    }
+    return null;
+  };
+  const matches = (candidate: unknown): boolean => {
+    const text = textOf(candidate);
+    return (
+      text !== null &&
+      SW_SECURITY_ERROR_PATTERN.test(text) &&
+      SW_SSL_CERT_PATTERN.test(text)
+    );
+  };
+  if (matches(value)) {
+    return true;
+  }
+  if (typeof value === "object" && value !== null) {
+    const wrapper = value as { error?: unknown; reason?: unknown };
+    return matches(wrapper.reason) || matches(wrapper.error);
+  }
+  return false;
+}
+
+/**
+ * Visible remediation for a LAN cert failure. Kept pure (and unit-pinned)
+ * so every surface — provider listener, dev-server log — prints identical
+ * steps. PC trust is listed first: the same error on the dev machine means
+ * Windows itself doesn't trust the local CA yet.
+ */
+export function buildSwCertErrorMessage(host: string): string {
+  return (
+    `[serwist] SW registration failed on "${host}": the browser rejected ` +
+    "/serwist/sw.js with `SecurityError: SSL certificate error`. " +
+    "The LAN cert covers this IP but the device does not trust the local CA. " +
+    "1) PC: install certificates/lan-ca.pem into Windows Trusted Root CA " +
+    "(certmgr) and restart Chrome. " +
+    "2) Phone: install certificates/lan-ca.pem once as trusted " +
+    "(Android: Trusted credentials > User; iOS: profile + full trust). " +
+    "3) Verify: openssl x509 -in certificates/lan-cert.pem -noout " +
+    "-ext subjectAltName must list this IP. " +
+    "4) Restart: npm run dev:https:lan:sw -- --ip=<lan-ip>. " +
+    "Non-PWA LAN testing needs no cert: npm run dev:lan."
+  );
 }

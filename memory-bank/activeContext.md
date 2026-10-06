@@ -54,6 +54,15 @@ non-virtual LAN IPs + `LAN_IP` override) both use it, so the origin check
 agrees with the server URL. Covered by `tests/unit/lan-address.test.ts`.
 Gates green: typecheck + biome clean, unit 36 files / 202 tests.
 
+SW cert-error visibility (2026-10-06): live leaf SAN covers `192.168.1.27`
+(verified via openssl), so the PC+phone `SecurityError` is untrusted CA, not
+a stale cert. `sw-policy.ts` owns pure `isSwCertError` +
+`buildSwCertErrorMessage` (PC certmgr + Chrome restart first, then phone
+trust); `SwProvider` reports one visible `console.error` via
+error/unhandledrejection listeners; `dev-lan.mjs` re-verifies SAN after
+rebuild and forces `ALLOW_LAN=0` with `console.error` on failure.
+Gates green: typecheck + biome clean, unit 36 files / 204 tests.
+
 Single LAN host (2026-10-06, option A): `resolveLanHost()` owns the decision
 (`--ip=` flag > `LAN_IP` env > auto-detect); `dev-lan.mjs` hard-assigns
 `NEXTAUTH_URL`/`BASE_URL`/`AUTH_URL` to it with an old→new warning and

@@ -167,3 +167,12 @@ docs-correction spec); map Decisions-so-far updated, no open tickets remain.
   `--experimental-https`, `SwProvider` opts in via
   `NEXT_PUBLIC_SW_IN_DEV=1`, `/certificates/` gitignored. Gates:
   typecheck + ultracite clean, `test:all` 40 files / 208 tests.
+- SW LAN cert-error hardening (2026-10-06, uncommitted): live SAN verified
+  covering `192.168.1.27`, so PC+phone failure is untrusted CA, not a stale
+  leaf. `sw-policy.ts` gains pure `isSwCertError` + `buildSwCertErrorMessage`
+  (PC certmgr step first, then phone trust, SAN check, `--ip=` restart);
+  `SwProvider` logs one visible `console.error` via error/unhandledrejection
+  listeners instead of a raw stack; `dev-lan.mjs` re-verifies SAN after
+  rebuild and forces `ALLOW_LAN=0` with `console.error` on failure (fixes
+  stale-cert-marked-valid bug) + PC trust wording. Gates: typecheck +
+  biome clean, unit 36 files / 204 tests.

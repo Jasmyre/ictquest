@@ -3,7 +3,9 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import {
+  buildSwCertErrorMessage,
   decideSwRequest,
+  isSwCertError,
   OFFLINE_FALLBACK_URL,
   SW_PRECACHED_URLS,
   SW_SCOPE,
@@ -117,6 +119,41 @@ describe("Service-worker routing policy — pure offline decision", () => {
     for (const destination of ["image", "script", "style", "font", ""]) {
       expect(shouldServeOfflineFallback({ destination })).toBe(false);
     }
+  });
+
+  it("detects LAN-TLS cert failures for the visible error path", () => {
+    const certError = new DOMException(
+      "Failed to register a ServiceWorker for scope ('https://192.168.1.27:3000/') with script ('https://192.168.1.27:3000/serwist/sw.js'): An SSL certificate error occurred when fetching the script.",
+      "SecurityError"
+    );
+    expect(isSwCertError(certError)).toBe(true);
+    // DOMException is not `instanceof Error` in browsers: a plain
+    // name/message record must match too.
+    expect(
+      isSwCertError({
+        name: "SecurityError",
+        message: "An SSL certificate error occurred when fetching the script.",
+      })
+    ).toBe(true);
+    expect(
+      isSwCertError(
+        "SecurityError: Failed to register a ServiceWorker: An SSL certificate error occurred"
+      )
+    ).toBe(true);
+    expect(isSwCertError({ reason: certError })).toBe(true);
+    expect(isSwCertError(new Error("NetworkError: offline"))).toBe(false);
+    expect(isSwCertError("SecurityError: permission denied")).toBe(false);
+    expect(isSwCertError(null)).toBe(false);
+    expect(isSwCertError(undefined)).toBe(false);
+  });
+
+  it("builds a remediation naming the failing host and both trust stores", () => {
+    const message = buildSwCertErrorMessage("192.168.1.27:3000");
+    expect(message).toContain("192.168.1.27:3000");
+    expect(message).toContain("lan-ca.pem");
+    expect(message).toContain("certmgr");
+    expect(message).toContain("dev:https:lan:sw");
+    expect(message).toContain("dev:lan");
   });
 
   it("stays in sync with the worker source and the build precache", () => {
