@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 2.4.0 (2026-10-10)
+
+**Full Changelog**: https://github.com/Jasmyre/ictquest/compare/v2.3.0...v2.4.0
+
 ## 2.3.0 (2026-10-03)
 
 ## What's Changed
