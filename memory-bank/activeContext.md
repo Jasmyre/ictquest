@@ -7,6 +7,10 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 Standards split + pointers-only `AGENTS.md` (16 lines) landed (`f2f397e`):
 mechanical rules → `npm exec -- ultracite check`; judgement → `CODING_STANDARDS.md`.
 Pre-commit gate landed (`4aa3c96`): Husky + lint-staged blocks bad staged files.
+LAN/PWA agent-opacity fix (uncommitted): `docs/pwa.md` documents the
+`dev-lan.mjs` SAN re-verify `console.error` line as the grep contract
+(`Rebuilt LAN cert still does not cover`), so a future agent reads
+dev-server output instead of re-running openssl.
 Next: push the 5-commit stack to `origin/main` (`git push`).
 
 ## Open questions

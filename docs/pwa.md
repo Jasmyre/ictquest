@@ -147,7 +147,19 @@ when the session ends — that is the full cleanup.
 - Visible `[serwist] SW registration failed ... SSL certificate error`:
   the SAN covers the IP but a device does not trust the CA yet — redo
   steps 3–4, then restart with the current `--ip=`.
-- Check the SAN directly:
+- Agent log contract (grep dev-server output — no openssl re-run needed):
+  `scripts/dev-lan.mjs` re-verifies SAN coverage after every rebuild and
+  reports failure on stderr. Grep for
+  `Rebuilt LAN cert still does not cover` — the full line is
+  `  [serwist] Rebuilt LAN cert still does not cover <lan-ip>; service worker registration will fail visibly in the browser. Re-run npm run pwa:lan-cert for <lan-ip> and check openssl output.`
+  Its presence means the leaf still misses the live IP (rebuild failed);
+  its absence after the `LAN cert missing/stale for <lan-ip>; rebuilding ...`
+  line means the rebuild verified. The `--sw`-without-cert guard line
+  (`[serwist] --sw + --experimental-https without a LAN cert`) is the
+  separate no-cert case, not a SAN mismatch. Local certs
+  (`certificates/lan-*.pem`) are gitignored; this log line is the readable
+  artifact.
+- Check the SAN directly (human fallback):
   `openssl x509 -in certificates/lan-cert.pem -noout -ext subjectAltName`
   must list the live IP.
 - `dev:https` opened via a LAN IP always fails (localhost-only cert) — use
