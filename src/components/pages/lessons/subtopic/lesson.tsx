@@ -198,22 +198,23 @@ const Lesson = ({
   }
 
   return (
-    <main className="py-10">
-      <header>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="font-bold text-3xl text-gray-900 leading-tight dark:text-white">
-            {lessonSub?.title}
-          </h1>
-          <CustomProgress
-            className="mt-4"
-            delay={0}
-            finalValue={singleProgress * index}
-            initialValue={singleProgress * index - singleProgress}
-          />
-        </div>
+    <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <header className="max-w-2xl">
+        <p className="text-muted-foreground text-sm">
+          {lesson.title} · Step {index + 1} of {numberOfContent}
+        </p>
+        <h1 className="mt-1 font-bold text-2xl text-foreground leading-tight tracking-tight sm:text-3xl">
+          {lessonSub?.title}
+        </h1>
+        <CustomProgress
+          className="mt-4"
+          delay={0}
+          finalValue={singleProgress * index}
+          initialValue={singleProgress * index - singleProgress}
+        />
       </header>
-      <main className="mt-10">
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <section className="mt-6">
+        <div className="mx-auto w-full max-w-3xl">
           <LessonCard>
             <div className="flex min-h-[65vh] flex-col justify-between">
               <div className="prose dark:prose-invert max-w-none">
@@ -239,11 +240,11 @@ const Lesson = ({
               <div
                 className={`${
                   isBackEnabled === true ? "justify-between" : "justify-end"
-                } mt-6 flex`}
+                } mt-6 flex flex-col gap-2 border-t pt-6 sm:flex-row`}
               >
                 {isBackEnabled ? (
                   <Button
-                    className="cursor-pointer border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-200 hover:text-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+                    className="w-full transition-transform duration-150 ease-out active:scale-[0.98] sm:w-fit"
                     disabled={index === 0}
                     onClick={handleBackButton}
                     variant="outline"
@@ -253,7 +254,7 @@ const Lesson = ({
                   </Button>
                 ) : null}
                 <Button
-                  className="cursor-pointer bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
+                  className="w-full transition-transform duration-150 ease-out active:scale-[0.97] sm:w-fit"
                   disabled={!isFinished || isLoading}
                   onClick={handleNextButton}
                 >
@@ -264,7 +265,7 @@ const Lesson = ({
             </div>
           </LessonCard>
         </div>
-      </main>
+      </section>
     </main>
   );
 };

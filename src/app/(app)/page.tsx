@@ -197,21 +197,17 @@ function DashboardView({ stats }: { stats: DashboardData | null }) {
           {/* Stats */}
           <section
             aria-label="Learning statistics"
-            className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4"
+            className="stagger-enter mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4"
             data-testid="dashboard-stats"
           >
-            {STAT_META.map((meta, index) => {
+            {STAT_META.map((meta) => {
               const Icon = meta.icon;
               const testId =
                 meta.key === "progress" ? "stat-total-progress" : meta.testId;
               return (
                 <Card
-                  className="motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 motion-safe:hover:-translate-y-0.5 transition-[transform,box-shadow] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] motion-safe:animate-in motion-safe:hover:shadow-md"
+                  className="motion-safe:hover:-translate-y-0.5 transition-[transform,box-shadow] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] motion-safe:hover:shadow-md"
                   key={meta.key}
-                  style={{
-                    animationDelay: `${index * 50}ms`,
-                    animationFillMode: "both",
-                  }}
                 >
                   <CardHeader className="pb-2">
                     <CardDescription className="flex items-center gap-1.5">
@@ -234,7 +230,7 @@ function DashboardView({ stats }: { stats: DashboardData | null }) {
             })}
           </section>
 
-          <div className="sm:[&>*]:motion-safe:fade-in-0 sm:[&>*]:motion-safe:slide-in-from-bottom-2 mt-3 grid grid-cols-1 gap-3 sm:mt-4 sm:gap-4 lg:grid-cols-3 sm:[&>*]:motion-safe:animate-in">
+          <div className="stagger-enter mt-3 grid grid-cols-1 gap-3 sm:mt-4 sm:gap-4 lg:grid-cols-3">
             {/* Continue learning */}
             <Card className="lg:col-span-2">
               <CardHeader>

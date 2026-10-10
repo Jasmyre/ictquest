@@ -109,7 +109,7 @@ Keep new features aligned with these boundaries: controllers stay thin, business
 | `global-error.tsx` | Root-level error boundary | Catches errors in the root layout |
 | `default.tsx` | Fallback for parallel route segments | Required when using parallel routes |
 
-Status in this codebase: `page.tsx` (7), `layout.tsx` (4, incl. route-group layouts), `loading.tsx` (1), `route.ts` (2), root `not-found.tsx` + root `forbidden.tsx` (both live in `src/app/` and are session-aware). `error.tsx` and `global-error.tsx` are not yet implemented.
+Status in this codebase: `page.tsx` (7), `layout.tsx` (4, incl. route-group layouts), `loading.tsx` (2: `(app)/profile`, `auth` — the generic `(app)/loading.tsx` was removed 2026-10-10 because it double-flashed under `/profile`'s own skeleton; `/` keeps its inline `Suspense` skeleton), `route.ts` (2), root `not-found.tsx` + root `forbidden.tsx` (both live in `src/app/` and are session-aware). `error.tsx` and `global-error.tsx` are not yet implemented.
 
 ### Session-aware error pages (404 / 403)
 

@@ -85,13 +85,11 @@ export const LearningProgressCard = ({
      * If the API failed, show the server message and don't render progress UI.
      */
     return (
-      <Card className="w-full border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+      <Card className="w-full">
         <CardHeader>
-          <CardTitle className="flex flex-wrap items-center justify-between gap-4 font-semibold text-2xl text-gray-900 max-sm:flex-col max-sm:items-start max-sm:gap-4 dark:text-gray-100">
-            <div className="flex min-w-min flex-wrap items-center justify-start">
-              <Book className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-              Learning Progress
-            </div>
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Book className="h-5 w-5 text-primary" />
+            Learning progress
           </CardTitle>
         </CardHeader>
 
@@ -103,13 +101,13 @@ export const LearningProgressCard = ({
   }
 
   return (
-    <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+    <Card>
       <CardHeader>
-        <CardTitle className="flex flex-wrap items-center justify-between gap-4 font-semibold text-2xl text-gray-900 dark:text-gray-100">
-          <div className="flex items-center">
-            <Book className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-            Learning Progress
-          </div>
+        <CardTitle className="flex flex-wrap items-center justify-between gap-3 text-lg">
+          <span className="flex items-center gap-2">
+            <Book className="h-5 w-5 text-primary" />
+            Learning progress
+          </span>
           <CustomTooltip
             content={() =>
               overall < 33.33
@@ -127,10 +125,8 @@ export const LearningProgressCard = ({
         <div className="space-y-4">
           <div>
             <div className="mb-1 flex justify-between">
-              <span className="font-medium text-gray-700 text-sm dark:text-gray-300">
-                Overall HTML Mastery
-              </span>
-              <span className="font-medium text-gray-700 text-sm dark:text-gray-300">
+              <span className="font-medium text-sm">Overall HTML mastery</span>
+              <span className="font-medium text-sm tabular-nums">
                 {overall}%
               </span>
             </div>
@@ -150,10 +146,8 @@ export const LearningProgressCard = ({
             return (
               <div key={lesson.slug}>
                 <div className="mb-1 flex justify-between">
-                  <span className="font-medium text-gray-700 text-sm dark:text-gray-300">
-                    {lesson.title}
-                  </span>
-                  <span className="font-medium text-gray-700 text-sm dark:text-gray-300">
+                  <span className="font-medium text-sm">{lesson.title}</span>
+                  <span className="font-medium text-sm tabular-nums">
                     {percentage}%
                   </span>
                 </div>
@@ -165,9 +159,10 @@ export const LearningProgressCard = ({
             <div className="mt-4">
               <Button
                 asChild
-                className="border border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200 max-sm:w-full dark:border-gray-800 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                className="w-full transition-transform duration-150 ease-out active:scale-[0.98] sm:w-fit"
+                variant="outline"
               >
-                <Link href={"/progress"}>View All</Link>
+                <Link href={"/progress"}>View all</Link>
               </Button>
             </div>
           )}

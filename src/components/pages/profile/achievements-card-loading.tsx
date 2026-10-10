@@ -1,13 +1,27 @@
-import { Award } from "lucide-react";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const AchievementsCardLoading = () => (
-  <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+  <Card
+    aria-busy="true"
+    aria-label="Loading achievements"
+    data-testid="achievement-inventory"
+  >
     <CardHeader>
-      <CardTitle className="flex items-center font-semibold text-2xl text-gray-900 dark:text-gray-100">
-        <Award className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-        Achievements
-      </CardTitle>
+      <div className="flex items-center gap-2">
+        <Skeleton className="h-5 w-5 rounded-full" />
+        <Skeleton className="h-5 w-32" />
+      </div>
     </CardHeader>
+    <CardContent>
+      <ul className="divide-y divide-border">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <li className="flex items-center gap-3 py-3" key={i}>
+            <Skeleton className="h-5 w-5 shrink-0 rounded-full" />
+            <Skeleton className="h-4 w-3/4" />
+          </li>
+        ))}
+      </ul>
+    </CardContent>
   </Card>
 );

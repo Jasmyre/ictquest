@@ -1,72 +1,55 @@
-import { ArrowRight, Book } from "lucide-react";
-import MagicBackButton from "@/components/custom-ui/magic-back-button";
-import Loading from "@/components/loading";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function PageSkeleton() {
   return (
-    <main>
-      <div className="py-10">
-        <header>
-          <div className="mx-auto max-w-7xl px-4 lg:px-8">
-            <Loading className="h-[34px] sm:w-[325px]" />
-            <br />
-            <Loading className="h-[16px] max-sm:h-[45px]" />
-          </div>
-        </header>
-        <main className="min-h-[65vh]">
-          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="py-8">
-              <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
-                <CardHeader>
-                  <CardTitle className="font-semibold text-2xl text-gray-900 dark:text-gray-100">
-                    Subtopics
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-                    {[1, 2, 3].map((_, index) => (
-                      <li
-                        className="border-gray-200 border-b py-4 last:border-b-0 dark:border-gray-700"
-                        key={index}
-                      >
-                        <div className="flex items-center gap-4 max-sm:w-full max-sm:flex-col max-sm:justify-start">
-                          <div className="flex flex-1 items-center space-x-4 max-sm:w-full">
-                            <div className="flex-shrink-0">
-                              <Book className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <Loading className="h-[16px] sm:w-[325px]" />
-                            </div>
-                          </div>
-                          <div className="max-sm:w-full">
-                            <Button
-                              className="max-sm:flex max-sm:w-full max-sm:justify-between max-sm:py-6"
-                              disabled
-                              size="sm"
-                              variant={"card-button"}
-                            >
-                              Start Lesson
-                              <ArrowRight className="ml-2 h-4 w-4" />
-                            </Button>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-              <div className="mt-6">
-                <MagicBackButton
-                  className="cursor-pointer"
-                  variant={"outline"}
-                />
+    <main
+      aria-busy="true"
+      aria-label="Loading lesson"
+      className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+    >
+      <header className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div className="w-full min-w-0 max-w-2xl">
+          <Skeleton className="h-4 w-40" />
+          <Skeleton className="mt-3 h-9 w-64 sm:w-80" />
+          <Skeleton className="mt-2 h-4 w-52" />
+        </div>
+        <div className="w-full shrink-0 sm:w-48">
+          <Skeleton className="h-6 w-24 rounded-full" />
+          <Skeleton className="mt-2 h-1.5 w-full" />
+        </div>
+      </header>
+      <section aria-label="Loading subtopics" className="mt-6">
+        <Card>
+          <CardContent className="p-2 sm:p-3">
+            <div className="m-2 mb-3 rounded-lg border bg-muted/40 p-4 sm:m-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="min-w-0 flex-1">
+                  <Skeleton className="h-4 w-48" />
+                  <Skeleton className="mt-2 h-3 w-32" />
+                </div>
+                <Skeleton className="h-9 w-full sm:w-32" />
               </div>
             </div>
-          </div>
-        </main>
-      </div>
+            <ol className="divide-y divide-border">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <li
+                  className="flex items-center gap-3 rounded-lg p-3 sm:p-4"
+                  key={index}
+                >
+                  <Skeleton className="h-9 w-9 shrink-0 rounded-full" />
+                  <span className="min-w-0 flex-1">
+                    <Skeleton className="h-4 w-2/3" />
+                    <Skeleton className="mt-2 h-3 w-1/3" />
+                  </span>
+                  <Skeleton className="h-4 w-4 shrink-0 rounded-full" />
+                </li>
+              ))}
+            </ol>
+          </CardContent>
+        </Card>
+        <Skeleton className="mt-4 h-9 w-28" />
+      </section>
     </main>
   );
 }

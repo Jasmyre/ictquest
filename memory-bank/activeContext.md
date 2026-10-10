@@ -10,6 +10,14 @@ page shell, header, tokens, cards/grids, motion, states derived from
 (50ms) + `cubic-bezier(0.23,1,0.32,1)` hover lift. Gates: typecheck clean,
 ultracite fix applied, progress-stats 8/8.
 Next: push the stack to `origin/main` (`git push`).
+- Profile double-loading fixed (uncommitted): deleted generic
+  `src/app/(app)/loading.tsx` — it flashed before
+  `src/app/(app)/profile/loading.tsx` on `/profile` and duplicated `/`'s
+  inline `Suspense` skeleton. Each route now has exactly one loading state.
+- Stagger flicker fixed (uncommitted): new `.stagger-enter` in `globals.css`
+  (`rise-in`, hidden SSR base, forwards fill, nth-child delays,
+  no-preference-gated); `/profile` grid + `/` stats/content grids migrated
+  off `animate-in` + fill-mode combos that flashed visible-then-hidden.
 
 ## Open questions
 

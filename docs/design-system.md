@@ -87,9 +87,13 @@ the remaining legacy instances to migrate.
   (`0.98` for outline rows).
 - Gate motion: `motion-safe:` prefix on translate/shadow/enter animations;
   keep `animate-pulse` skeletons under `motion-safe:`.
-- Interruptible: CSS `transition` for hovers/toggles; keyframe `animate-in`
-  only for one-shot mount enter (stagger `30–80ms` between siblings), never for
-  rapidly retriggered state.
+- Interruptible: CSS `transition` for hovers/toggles; one-shot mount enter for
+  card grids uses the `.stagger-enter` class (`src/styles/globals.css`:
+  `rise-in` 250ms `cubic-bezier(0.23,1,0.32,1)`, `forwards` fill, 0/50/100/150ms
+  per `nth-child`), never `animate-in` utilities on SSR grids — the hidden base
+  state ships in the HTML so first paint can't flash visible.
+- Form cards (`/profile`) get mount-enter stagger only — no hover lift, since
+  they hold inputs and hover motion would fight interaction.
 - `prefers-reduced-motion`: opacity-only fallbacks; no translate.
 
 ## 6. States

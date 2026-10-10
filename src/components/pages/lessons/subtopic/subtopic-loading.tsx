@@ -1,42 +1,38 @@
-import { CustomProgress } from "@/components/custom-progress";
 import LessonCard from "@/components/lesson-card";
-import Loading from "@/components/loading";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const Skeleton = async () => (
-  <main>
-    <div className="py-10">
-      <header>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Loading className="h-[16px] rounded-md sm:w-[325px]" />
-          <br />
-          <CustomProgress delay={0} finalValue={0} initialValue={0} />
-        </div>
-      </header>
-      <main className="mt-10">
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <LessonCard>
-            <div className="flex min-h-[65vh] flex-col justify-between">
-              <div className="prose dark:prose-invert max-w-none">
-                <Loading className="h-[16px] rounded-md bg-gray-300 sm:w-[100%] dark:bg-gray-700" />
-                <br />
-                <Loading className="h-[16px] rounded-md bg-gray-300 sm:w-[100%] dark:bg-gray-700" />
-                <br />
-                <Loading className="h-[16px] rounded-md bg-gray-300 sm:w-[98%] dark:bg-gray-700" />
-                <br />
-                <Loading className="h-[16px] rounded-md bg-gray-300 sm:w-[95%] dark:bg-gray-700" />
-                <br />
-                <Loading className="h-[16px] rounded-md bg-gray-300 sm:w-[66%] dark:bg-gray-700" />
-                <br />
-                <Loading className="h-[25vh] rounded-md bg-gray-300 sm:w-[100%] dark:bg-gray-700" />
-                <br />
-              </div>
-              <br />
+const SkeletonView = async () => (
+  <main
+    aria-busy="true"
+    aria-label="Loading lesson content"
+    className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+  >
+    <header className="max-w-2xl">
+      <Skeleton className="h-4 w-44" />
+      <Skeleton className="mt-3 h-9 w-64 sm:w-96" />
+      <Skeleton className="mt-4 h-2.5 w-full" />
+    </header>
+    <section className="mt-6">
+      <div className="mx-auto w-full max-w-3xl">
+        <LessonCard>
+          <div className="flex min-h-[65vh] flex-col justify-between">
+            <div className="space-y-3">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-[98%]" />
+              <Skeleton className="h-4 w-[95%]" />
+              <Skeleton className="h-4 w-2/3" />
+              <Skeleton className="h-[25vh] w-full" />
             </div>
-          </LessonCard>
-        </div>
-      </main>
-    </div>
+            <div className="mt-6 flex flex-col gap-2 border-t pt-6 sm:flex-row sm:justify-between">
+              <Skeleton className="h-9 w-full sm:w-28" />
+              <Skeleton className="h-9 w-full sm:w-28" />
+            </div>
+          </div>
+        </LessonCard>
+      </div>
+    </section>
   </main>
 );
 
-export default Skeleton;
+export default SkeletonView;

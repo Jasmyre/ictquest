@@ -12,13 +12,10 @@ export const AchievementsCard = ({
 
   if (!getUserAchievements.success) {
     return (
-      <Card
-        className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
-        data-testid="achievement-inventory"
-      >
+      <Card data-testid="achievement-inventory">
         <CardHeader>
-          <CardTitle className="flex items-center font-semibold text-2xl text-gray-900 dark:text-gray-100">
-            <Award className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Award className="h-5 w-5 text-primary" />
             Achievements
           </CardTitle>
         </CardHeader>
@@ -30,27 +27,24 @@ export const AchievementsCard = ({
   }
 
   return (
-    <Card
-      className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
-      data-testid="achievement-inventory"
-    >
+    <Card data-testid="achievement-inventory">
       <CardHeader>
-        <CardTitle className="flex items-center font-semibold text-2xl text-gray-900 dark:text-gray-100">
-          <Award className="mr-2 h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <Award className="h-5 w-5 text-primary" />
           Achievements
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+        <ul className="divide-y divide-border">
           {achievements.length ? (
             achievements?.map((achievement) => (
               <li
-                className="flex py-4"
+                className="flex items-center gap-3 py-3"
                 data-testid="achievement-item"
                 key={achievement.achievementName}
               >
-                <Award className="mr-2 h-6 w-6 text-yellow-400" />
-                <span className="font-medium text-gray-900 text-sm dark:text-gray-100">
+                <Award className="h-5 w-5 shrink-0 text-primary" />
+                <span className="font-medium text-sm">
                   {String(
                     toastDescription(
                       achievement.achievementName,

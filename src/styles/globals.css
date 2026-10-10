@@ -87,6 +87,47 @@
   animation: float-delayed 8s ease-in-out infinite;
 }
 
+/*
+ * Staggered mount entrance for server-rendered card grids (/ dashboard stats,
+ * /profile cards). The hidden base state (opacity: 0) ships in the SSR HTML,
+ * so first paint is hidden and the animation can only reveal — never flicker.
+ * Do NOT rebuild this with `animate-in` + `[animation-fill-mode:both]`: the
+ * animation shorthand resets fill-mode and the cascade order is not
+ * guaranteed, which paints cards visible during the stagger delay and then
+ * jumps them back to hidden when the keyframes start (flash → hidden →
+ * visible flicker). Inline `style` fill-mode has the same fragility.
+ * Static under prefers-reduced-motion by construction (no-preference gate).
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .stagger-enter > * {
+    opacity: 0;
+    animation: rise-in 250ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  }
+
+  .stagger-enter > *:nth-child(2) {
+    animation-delay: 50ms;
+  }
+
+  .stagger-enter > *:nth-child(3) {
+    animation-delay: 100ms;
+  }
+
+  .stagger-enter > *:nth-child(4) {
+    animation-delay: 150ms;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

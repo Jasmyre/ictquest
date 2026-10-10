@@ -2,24 +2,25 @@ import { AchievementsCardLoading } from "@/components/pages/profile/achievements
 import { DeleteDataCardLoading } from "@/components/pages/profile/delete-data-card-loading";
 import { LearningProgressCardLoading } from "@/components/pages/profile/learning-progress-card-loading";
 import { ProfileInfoCardLoading } from "@/components/pages/profile/profile-info-card-loading";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function LoadingProfile() {
   return (
-    <main>
-      <div className="min-h-[80vh] py-10">
-        <header className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="font-bold text-3xl text-gray-900 leading-tight dark:text-gray-100">
-            Your Profile
-          </h1>
-        </header>
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <ProfileInfoCardLoading />
-            <LearningProgressCardLoading />
-            <AchievementsCardLoading />
-            <DeleteDataCardLoading />
-          </div>
-        </div>
+    <main
+      aria-busy="true"
+      aria-label="Loading profile"
+      className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+    >
+      <header className="max-w-2xl">
+        <Skeleton className="h-4 w-48" />
+        <Skeleton className="mt-3 h-9 w-56 sm:w-72" />
+        <Skeleton className="mt-2 h-4 w-64" />
+      </header>
+      <div className="mt-6 grid grid-cols-1 gap-3 sm:mt-4 sm:gap-4 lg:grid-cols-2">
+        <ProfileInfoCardLoading />
+        <LearningProgressCardLoading />
+        <AchievementsCardLoading />
+        <DeleteDataCardLoading />
       </div>
     </main>
   );

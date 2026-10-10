@@ -49,13 +49,11 @@ export const ProfileInfoCard = ({
   };
 
   return (
-    <Card className="border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+    <Card>
       <CardHeader>
-        <CardTitle className="flex items-center justify-between font-semibold text-2xl text-gray-900 dark:text-gray-100">
-          <div className="flex min-w-min flex-wrap gap-2">
-            <UserIcon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-            <p>Personal Information</p>
-          </div>
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <UserIcon className="h-5 w-5 text-primary" />
+          Personal information
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -106,11 +104,10 @@ export const ProfileInfoCard = ({
               />
               <div>
                 <Button
-                  className="cursor-pointer max-sm:w-full"
+                  className="w-full transition-transform duration-150 ease-out active:scale-[0.97] sm:w-fit"
                   type="submit"
-                  variant={"card-button"}
                 >
-                  Submit
+                  Save changes
                 </Button>
               </div>
             </FieldGroup>
