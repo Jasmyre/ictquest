@@ -129,3 +129,13 @@ _Avoid_: One fallback per page; there is exactly one.
 **Standalone styling**:
 Styling that applies only when the app runs installed, limited to safe-area and browser-chrome adjustments through native standalone display-mode media (or a small framework-native variant for composition). There is no second layout system for installed mode.
 _Avoid_: A legacy display-mode plugin; restyling layouts per display mode.
+
+## Standards language
+
+**Mechanical rule**:
+An automatically checkable pattern enforced by Biome/Ultracite configuration. Never documented in markdown standards; fix the config, not the docs.
+_Avoid_: Review-time rule, style guide entry for anything `npm exec -- ultracite check` already catches
+
+**Judgement standard**:
+A consistency or layering decision requiring human context, documented in `CODING_STANDARDS.md` and pointed at from `AGENTS.md`. Never duplicates a mechanical rule.
+_Avoid_: Mechanical rule; generic reviewer clichés ("meaningful naming") without a project-specific consistency call

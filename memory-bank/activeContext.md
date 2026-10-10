@@ -5,6 +5,14 @@ Decisions frozen in `docs/adr/0001–0005` (#24 baseline, closed).
 
 ## Current focus
 
+Standards split (2026-10-10, uncommitted): `AGENTS.md` shrunk to pointers-only
+(standards → ultracite check/fix + typecheck/test:all, judgement → `CODING_STANDARDS.md`;
+production-readiness paragraph retained); new `CODING_STANDARDS.md` holds
+judgement standards only (layering + sanctioned exceptions pointer, cross-file
+consistency); `CONTEXT.md` gains Standards language (`mechanical rule` vs
+`judgement standard`); no ADR (reversible, unsurprising). Grilling Q1–Q7 + domain
+correction (GLOSSARY.md rejected per `docs/agents/domain.md`, terms go in CONTEXT.md).
+
 Pre-commit gate (2026-10-10, uncommitted): Husky + lint-staged added —
 `.husky/pre-commit` runs `npx lint-staged`, staged JS/TS/JSON/CSS files
 must pass `ultracite check` (block-and-report; typecheck stays in CI).
