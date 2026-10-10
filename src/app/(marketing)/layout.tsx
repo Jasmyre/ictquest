@@ -15,7 +15,12 @@ export default function MarketingLayout({
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <SiteHeader />
-      <main className="mx-auto max-w-7xl px-4 py-6">{children}</main>
+      <main
+        className="mx-auto max-w-7xl scroll-mt-16 px-4 py-6"
+        id="main-content"
+      >
+        {children}
+      </main>
       <Footer />
     </div>
   );

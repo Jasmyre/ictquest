@@ -30,8 +30,24 @@
     @apply border-border;
   }
 
+  html {
+    color-scheme: light dark;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (pointer: fine) {
+    html {
+      overscroll-behavior: none;
+    }
+  }
+
   body {
     @apply bg-background text-foreground;
+    touch-action: manipulation;
+  }
+
+  :where(h1, h2, h3) {
+    scroll-margin-top: 4rem;
   }
 
   /* width */
@@ -85,6 +101,13 @@
 
 .animate-float-delayed {
   animation: float-delayed 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-float-delayed {
+    animation: none;
+  }
 }
 
 /*

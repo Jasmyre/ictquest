@@ -23,11 +23,11 @@ import {
 
 export default async function LandingPage() {
   return (
-    <main className="sm:px-6 lg:px-8">
+    <div className="sm:px-6 lg:px-8">
       <HeroSection />
       <section className="bg-gray-50 py-20 dark:bg-gray-900">
         <div className="container mx-auto px-4">
-          <h2 className="mb-12 text-center font-bold text-3xl text-gray-900 dark:text-gray-100">
+          <h2 className="mb-12 text-balance text-center font-bold text-3xl text-gray-900 dark:text-gray-100">
             Why Choose ICTQuest
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -57,7 +57,10 @@ export default async function LandingPage() {
               >
                 <CardHeader>
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-800">
-                    <feature.icon className="h-6 w-6 text-indigo-600 dark:text-indigo-300" />
+                    <feature.icon
+                      aria-hidden="true"
+                      className="h-6 w-6 text-indigo-600 dark:text-indigo-300"
+                    />
                   </div>
                   <CardTitle className="text-gray-900 text-xl dark:text-gray-100">
                     {feature.title}
@@ -75,7 +78,7 @@ export default async function LandingPage() {
       </section>
       <section className="bg-white py-20 dark:bg-gray-800">
         <div className="container mx-auto px-4">
-          <h2 className="mb-12 text-center font-bold text-3xl text-gray-900 dark:text-gray-100">
+          <h2 className="mb-12 text-balance text-center font-bold text-3xl text-gray-900 dark:text-gray-100">
             Your HTML Learning Journey
           </h2>
           <div className="relative">
@@ -127,7 +130,10 @@ export default async function LandingPage() {
                   </p>
                 </div>
                 <div className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-500 dark:bg-indigo-600">
-                  <step.icon className="h-6 w-6 text-white" />
+                  <step.icon
+                    aria-hidden="true"
+                    className="h-6 w-6 text-white"
+                  />
                 </div>
                 <div className="w-1/2" />
               </div>
@@ -137,7 +143,7 @@ export default async function LandingPage() {
       </section>
       <section className="bg-gray-50 py-20 dark:bg-gray-900">
         <div className="container mx-auto px-4">
-          <h2 className="mb-12 text-center font-bold text-3xl text-gray-900 dark:text-gray-100">
+          <h2 className="mb-12 text-balance text-center font-bold text-3xl text-gray-900 dark:text-gray-100">
             What Our Students Say
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -166,14 +172,16 @@ export default async function LandingPage() {
                 key={testimonial.name}
               >
                 <CardHeader>
-                  <div className="mb-4 flex items-center">
+                  <div aria-hidden="true" className="mb-4 flex items-center">
                     {[...new Array(5)].map((_, i) => (
                       <Star
+                        aria-hidden="true"
                         className="mr-1 h-5 w-5 text-yellow-400 dark:text-yellow-300"
                         key={i}
                       />
                     ))}
                   </div>
+                  <span className="sr-only">Rated 5 out of 5 stars</span>
                   <CardTitle className="font-semibold text-gray-900 text-lg dark:text-gray-100">
                     {testimonial.name}
                   </CardTitle>
@@ -183,7 +191,7 @@ export default async function LandingPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 italic dark:text-gray-300">
-                    &quot;{testimonial.quote}&quot;
+                    “{testimonial.quote}”
                   </p>
                 </CardContent>
               </Card>
@@ -193,7 +201,7 @@ export default async function LandingPage() {
       </section>
       <section className="relative overflow-hidden rounded-lg bg-gradient-to-br from-indigo-600 to-purple-700 py-20 text-white dark:from-indigo-900 dark:to-purple-950">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="mb-6 font-bold text-3xl">
+          <h2 className="mb-6 text-balance font-bold text-3xl">
             Ready to become an HTML master?
           </h2>
           <p className="mb-10 text-gray-100 text-xl">
@@ -205,14 +213,20 @@ export default async function LandingPage() {
               size="lg"
             >
               Start Learning
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight aria-hidden="true" className="ml-2 h-5 w-5" />
             </Button>
           </Link>
         </div>
 
-        <Coffee className="absolute bottom-5 left-10 h-8 w-8 animate-float text-indigo-200 dark:text-indigo-300" />
-        <Code className="absolute top-5 right-10 h-10 w-10 animate-float-delayed text-indigo-200 dark:text-indigo-300" />
+        <Coffee
+          aria-hidden="true"
+          className="absolute bottom-5 left-10 h-8 w-8 animate-float text-indigo-200 motion-reduce:hidden dark:text-indigo-300"
+        />
+        <Code
+          aria-hidden="true"
+          className="absolute top-5 right-10 h-10 w-10 animate-float-delayed text-indigo-200 motion-reduce:hidden dark:text-indigo-300"
+        />
       </section>
-    </main>
+    </div>
   );
 }

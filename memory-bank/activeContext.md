@@ -25,6 +25,17 @@ Next: push the stack to `origin/main` (`git push`).
   widths via props, zero visual change) adopted by `profile/loading.tsx`,
   `page-skeleton.tsx`, `subtopic-loading.tsx`. Gates: ultracite clean,
   typecheck clean, test:all 221/221.
+- Page-header cull + guideline pass (uncommitted): visual page-header blocks
+  removed on dashboard, lessons, profile, progress, social, admin home —
+  each keeps an `sr-only` h1; landmark ownership moved to group layouts
+  (`(app)`/`(marketing)` `<main id="main-content">`, new admin-shell `<main>`),
+  fixing nested-`<main>` on every touched page. Guideline fixes: skip link,
+  `focus-visible` ring in `desktopNavLink`, explicit transitions, `aria-hidden`
+  decorative icons, curly quotes, `tabular-nums` progress stats, `text-balance`
+  headings, reduced-motion gate on float loops, touch `manipulation` +
+  tap-highlight + overscroll + `color-scheme` + heading `scroll-margin` in
+  globals. Admin `AdminPageHeader` kept (operational rules, not redundant
+  labels). Gates: ultracite clean, typecheck clean, unit 204/204.
 
 ## Open questions
 

@@ -32,21 +32,13 @@ export default async function LessonsPage() {
   );
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-      <header className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-        <div className="min-w-0 max-w-2xl">
-          <p className="text-muted-foreground text-sm">
-            Structured HTML path · {courseLessons.length} lessons ·{" "}
-            {totalSubtopics} subtopics
-          </p>
-          <h1 className="mt-1 font-bold text-2xl text-foreground leading-tight tracking-tight sm:text-3xl">
-            HTML Lessons
-          </h1>
-          <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
-            Work through each lesson in order. Small steps compound — finish one
-            subtopic at a time.
-          </p>
-        </div>
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="sr-only">HTML Lessons</h1>
+        <p className="text-muted-foreground text-sm">
+          Structured HTML path · {courseLessons.length} lessons ·{" "}
+          {totalSubtopics} subtopics
+        </p>
         <Button
           asChild
           className="w-full shrink-0 transition-transform duration-150 ease-out active:scale-[0.97] sm:w-fit"
@@ -56,7 +48,7 @@ export default async function LessonsPage() {
             <ArrowRight aria-hidden="true" className="ml-1.5 h-4 w-4" />
           </Link>
         </Button>
-      </header>
+      </div>
 
       <section
         aria-label="Lessons"
@@ -176,6 +168,6 @@ export default async function LessonsPage() {
           </CardContent>
         </Card>
       </section>
-    </main>
+    </div>
   );
 }

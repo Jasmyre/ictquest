@@ -10,7 +10,7 @@ const HeroSection = async () => (
     <div className="container mx-auto px-4">
       <div className="flex flex-col items-center gap-4 lg:flex-row-reverse">
         <div className="z-10 lg:w-1/2 lg:pr-10">
-          <h1 className="mb-6 font-extrabold text-4xl tracking-tight sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+          <h1 className="mb-6 text-balance font-extrabold text-4xl tracking-tight sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
             Master HTML with{" "}
             <span className="text-yellow-300 dark:text-yellow-200">
               ICTQuest
@@ -27,7 +27,7 @@ const HeroSection = async () => (
                 size="lg"
               >
                 Explore Lessons
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight aria-hidden="true" className="ml-2 h-5 w-5" />
               </Button>
             </Link>
 
@@ -56,7 +56,10 @@ const HeroSection = async () => (
             src="/mockup/Frame 11.svg"
             width={600}
           />
-          <Zap className="absolute top-0 right-0 h-6 w-6 scale-[3.25] text-yellow-200 dark:text-yellow-300" />
+          <Zap
+            aria-hidden="true"
+            className="absolute top-0 right-0 h-6 w-6 scale-[3.25] text-yellow-200 motion-reduce:hidden dark:text-yellow-300"
+          />
         </div>
       </div>
     </div>

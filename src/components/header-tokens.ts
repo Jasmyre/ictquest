@@ -15,7 +15,7 @@ export const HEADER_ROW = "flex h-14 items-center justify-between px-4";
 export const HEADER_LEFT = "flex items-center space-x-6";
 
 export const BRAND_LINK =
-  "cursor-pointer font-bold text-xl opacity-90 transition-all duration-200 hover:opacity-100";
+  "cursor-pointer font-bold text-xl opacity-90 transition-[opacity] duration-200 hover:opacity-100 touch-manipulation";
 
 export const BRAND_INNER = "flex gap-2";
 
@@ -31,7 +31,7 @@ export function desktopNavLink(pathname: string, href: string): string {
   if (isExact) {
     tone = "border-indigo-500";
   }
-  return `group ${tone} inline-flex h-10 w-max cursor-pointer items-center justify-center rounded-none border-b bg-card px-3 py-2 font-medium text-sm opacity-80 transition-all duration-200 hover:rounded-md hover:bg-muted hover:text-muted-foreground hover:opacity-100 focus:rounded-md focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50`;
+  return `group ${tone} inline-flex h-10 w-max cursor-pointer items-center justify-center rounded-none border-b bg-card px-3 py-2 font-medium text-sm opacity-80 transition-[opacity,background-color,color,border-radius] duration-200 hover:rounded-md hover:bg-muted hover:text-muted-foreground hover:opacity-100 focus-visible:rounded-md focus-visible:bg-accent focus-visible:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50`;
 }
 
 export const NAV_LINK_INNER =

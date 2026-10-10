@@ -64,9 +64,9 @@ export default function AdminLayout({
       <Suspense
         fallback={
           <AdminShell navItems={adminNavItems}>
-            <main className="flex-1 p-4">
+            <div className="flex-1 p-4">
               <p>Loading admin…</p>
-            </main>
+            </div>
           </AdminShell>
         }
       >

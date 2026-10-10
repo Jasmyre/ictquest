@@ -146,22 +146,15 @@ function DashboardView({ stats }: { stats: DashboardData | null }) {
   const totalProgress = stats?.totalProgress ?? 0;
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-      {/* Header */}
-      <header className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-        <div className="min-w-0 max-w-2xl">
-          <p className="text-muted-foreground text-sm">
-            Your learning at a glance
-          </p>
-          <h1 className="mt-1 truncate font-bold text-2xl text-foreground leading-tight tracking-tight sm:text-3xl">
-            Welcome back, {name}
-          </h1>
-          <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
-            {upcoming
-              ? `Up next: ${upcoming.lessonTitle} — ${upcoming.topicName}. Keep the streak going.`
-              : "You're all caught up. Review a lesson or take the final assessment."}
-          </p>
-        </div>
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      {/* Contextual bar — content is self-evident, no page-header block */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="sr-only">Dashboard — Welcome back, {name}</h1>
+        <p className="min-w-0 max-w-2xl truncate text-muted-foreground text-sm">
+          {upcoming
+            ? `Up next: ${upcoming.lessonTitle} — ${upcoming.topicName}. Keep the streak going.`
+            : "You're all caught up. Review a lesson or take the final assessment."}
+        </p>
         {stats ? (
           <div className="flex shrink-0 items-center gap-3">
             <Avatar className="h-11 w-11 border">
@@ -190,7 +183,7 @@ function DashboardView({ stats }: { stats: DashboardData | null }) {
             </div>
           </div>
         ) : null}
-      </header>
+      </div>
 
       {stats ? (
         <>
@@ -340,10 +333,13 @@ function DashboardView({ stats }: { stats: DashboardData | null }) {
                                 ) : isCurrent ? (
                                   <Badge className="shrink-0">Up next</Badge>
                                 ) : (
-                                  <Lock
-                                    aria-label="Locked"
-                                    className="h-3.5 w-3.5 shrink-0 text-muted-foreground"
-                                  />
+                                  <span className="flex shrink-0 items-center">
+                                    <Lock
+                                      aria-hidden="true"
+                                      className="h-3.5 w-3.5 shrink-0 text-muted-foreground"
+                                    />
+                                    <span className="sr-only">Locked</span>
+                                  </span>
                                 )}
                               </span>
                               <span className="mt-1.5 flex items-center gap-2">
@@ -452,16 +448,16 @@ function DashboardView({ stats }: { stats: DashboardData | null }) {
           </CardContent>
         </Card>
       )}
-    </main>
+    </div>
   );
 }
 
 function DashboardSkeleton() {
   return (
-    <main
+    <output
       aria-busy="true"
       aria-label="Loading dashboard"
-      className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+      className="mx-auto block w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
     >
       <div className="max-w-2xl">
         <Skeleton className="h-4 w-40" />
@@ -501,7 +497,7 @@ function DashboardSkeleton() {
           </div>
         </div>
       </div>
-    </main>
+    </output>
   );
 }
 

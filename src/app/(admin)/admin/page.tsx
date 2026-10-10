@@ -43,13 +43,7 @@ export default async function AdminHomePage() {
 
   return (
     <div className="w-full min-w-0 flex-1 space-y-4 p-4 lg:px-8">
-      <h1 className="font-bold text-2xl text-gray-900 tracking-tight dark:text-white">
-        Admin Dashboard
-      </h1>
-      <p className="max-w-2xl text-gray-600 text-sm leading-relaxed dark:text-gray-300">
-        Focused admin area. Pick a section below to manage users, lesson
-        content, achievement definitions, and progress operations.
-      </p>
+      <h1 className="sr-only">Admin Dashboard</h1>
       <ul className="grid gap-3 sm:grid-cols-2">
         {cards.map((card) => (
           <li key={card.href}>

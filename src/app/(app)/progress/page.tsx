@@ -33,18 +33,14 @@ const Renderer = async ({
   const stats = userStats.success ? userStats.data : null;
 
   return (
-    <main className="min-h-[80vh]">
+    <div className="min-h-[80vh]">
       <div className="py-10">
-        <header>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="font-bold text-3xl text-gray-900 leading-tight dark:text-gray-100">
-              Your Progress
-            </h1>
-          </div>
-        </header>
-        <main>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h1 className="sr-only">Your Progress</h1>
+        </div>
+        <div>
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="px-4 py-8 sm:px-0">
+            <div className="space-y-6 px-4 py-8 sm:px-0">
               {stats ? (
                 <div
                   className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4"
@@ -52,28 +48,31 @@ const Renderer = async ({
                 >
                   <div data-testid="stat-subtopics">
                     <p className="text-gray-500 text-sm">Subtopics completed</p>
-                    <p className="font-bold text-2xl">
+                    <p className="font-bold text-2xl tabular-nums">
                       {stats.totalSubtopicsCompleted}
                     </p>
                   </div>
                   <div data-testid="stat-achievements">
                     <p className="text-gray-500 text-sm">Achievements</p>
-                    <p className="font-bold text-2xl">
+                    <p className="font-bold text-2xl tabular-nums">
                       {stats.totalAchievements}
                     </p>
                   </div>
                   <div data-testid="stat-level">
                     <p className="text-gray-500 text-sm">Level</p>
-                    <p className="font-bold text-2xl">{stats.level}</p>
+                    <p className="font-bold text-2xl tabular-nums">
+                      {stats.level}
+                    </p>
                   </div>
                   <div data-testid="stat-total-progress">
                     <p className="text-gray-500 text-sm">Total progress</p>
-                    <p className="font-bold text-2xl">{stats.totalProgress}%</p>
+                    <p className="font-bold text-2xl tabular-nums">
+                      {stats.totalProgress}%
+                    </p>
                   </div>
                 </div>
               ) : null}
               <ProgressCard userProgress={userProgress} />
-              <br />
               <div>
                 <BackButton className="cursor-pointer max-sm:w-full">
                   Go Back
@@ -81,9 +80,9 @@ const Renderer = async ({
               </div>
             </div>
           </div>
-        </main>
+        </div>
       </div>
-    </main>
+    </div>
   );
 };
 

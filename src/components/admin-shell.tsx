@@ -44,7 +44,9 @@ export function AdminShell({
             <SectionTitle />
           </Suspense>
         </header>
-        {children}
+        <main className="flex-1 scroll-mt-16" id="main-content">
+          {children}
+        </main>
       </SidebarInset>
     </SidebarProvider>
   );

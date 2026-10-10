@@ -13,7 +13,7 @@ export function AdminPageHeader({
   return (
     <div className="flex flex-wrap items-start justify-between gap-4">
       <div className="min-w-0 max-w-2xl">
-        <h1 className="font-bold text-2xl text-gray-900 tracking-tight dark:text-white">
+        <h1 className="text-balance font-bold text-2xl text-gray-900 tracking-tight dark:text-white">
           {title}
         </h1>
         <p className="mt-1 text-gray-600 text-sm leading-relaxed dark:text-gray-300">
@@ -37,7 +37,10 @@ export function AdminEmptyState({
   description: string;
 }) {
   return (
-    <output className="block rounded-lg border border-gray-300 border-dashed bg-white px-6 py-10 text-center dark:border-gray-700 dark:bg-gray-800">
+    <output
+      aria-live="polite"
+      className="block rounded-lg border border-gray-300 border-dashed bg-white px-6 py-10 text-center dark:border-gray-700 dark:bg-gray-800"
+    >
       <p className="font-medium text-gray-900 text-sm dark:text-white">
         {title}
       </p>

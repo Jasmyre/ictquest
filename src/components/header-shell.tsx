@@ -65,7 +65,7 @@ export function HeaderShell({
               <Link className={BRAND_LINK} href="/">
                 <span className={BRAND_INNER}>
                   <Image
-                    alt="Website logo"
+                    alt="ICTQuest home"
                     className="h-8 w-8"
                     height={100}
                     src="/logo.svg"
@@ -109,21 +109,27 @@ export function HeaderShell({
                   {showSearch ? (
                     <Button
                       aria-label="Search"
-                      className="relative cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
+                      className="relative cursor-pointer opacity-70 transition-[opacity] duration-200 hover:opacity-100"
                       size="icon"
                       variant="ghost"
                     >
-                      <Search className="h-4 w-4 transition-transform duration-200" />
+                      <Search
+                        aria-hidden="true"
+                        className="h-4 w-4 transition-transform duration-200"
+                      />
                       <span className="sr-only">Search</span>
                     </Button>
                   ) : null}
                   <Button
                     aria-label="Toggle theme"
-                    className="cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
+                    className="cursor-pointer opacity-70 transition-[opacity] duration-200 hover:opacity-100"
                     size="icon"
                     variant="ghost"
                   >
-                    <Sun className="h-4 w-4 rotate-0 scale-100 transition-all duration-300" />
+                    <Sun
+                      aria-hidden="true"
+                      className="h-4 w-4 rotate-0 scale-100 transition-[opacity] duration-300"
+                    />
                     <span className="sr-only">Toggle theme</span>
                   </Button>
                   <Button asChild variant="outline">
@@ -134,30 +140,39 @@ export function HeaderShell({
                   {showSearch ? (
                     <Button
                       aria-label="Search"
-                      className="cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
+                      className="cursor-pointer opacity-70 transition-[opacity] duration-200 hover:opacity-100"
                       size="icon"
                       variant="ghost"
                     >
-                      <Search className="h-4 w-4 transition-transform duration-200" />
+                      <Search
+                        aria-hidden="true"
+                        className="h-4 w-4 transition-transform duration-200"
+                      />
                       <span className="sr-only">Search</span>
                     </Button>
                   ) : null}
                   <Button
                     aria-label="Toggle theme"
-                    className="cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
+                    className="cursor-pointer opacity-70 transition-[opacity] duration-200 hover:opacity-100"
                     size="icon"
                     variant="ghost"
                   >
-                    <Sun className="h-4 w-4 rotate-0 scale-100 transition-all duration-300" />
+                    <Sun
+                      aria-hidden="true"
+                      className="h-4 w-4 rotate-0 scale-100 transition-[opacity] duration-300"
+                    />
                     <span className="sr-only">Toggle theme</span>
                   </Button>
                   <Button
                     aria-label="Toggle navigation menu"
-                    className="cursor-pointer opacity-70 transition-all duration-200 hover:opacity-100"
+                    className="cursor-pointer opacity-70 transition-[opacity] duration-200 hover:opacity-100"
                     size="icon"
                     variant="ghost"
                   >
-                    <Menu className="h-6 w-6 transition-transform duration-200" />
+                    <Menu
+                      aria-hidden="true"
+                      className="h-6 w-6 transition-transform duration-200"
+                    />
                     <span className="sr-only">Toggle navigation menu</span>
                   </Button>
                 </div>

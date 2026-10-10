@@ -14,7 +14,10 @@ export default function AppLayout({
   return (
     <div className="min-h-screen">
       <SiteHeader />
-      <main className="mx-auto max-w-7xl px-4 py-6 dark:bg-gray-900">
+      <main
+        className="mx-auto max-w-7xl scroll-mt-16 px-4 py-6 dark:bg-gray-900"
+        id="main-content"
+      >
         {children}
       </main>
       <Footer />
