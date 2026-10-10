@@ -199,6 +199,15 @@ same `var` violation. Gates: `check` 291 files clean, typecheck clean.
   plus the `--sw`-without-cert guard line as the separate no-cert case; no
   code change, no new tooling.
 - No-op cache purge (2026-10-10, uncommitted): systemPatterns Pattern Documentation Policy + Known patterns deleted (mechanical, ultracite-covered); production-readiness judgement moved to CODING_STANDARDS.md; AGENTS.md pointers-only (16 lines). Gate: check 291 files clean.
+- Code-review fixes (2026-10-10, uncommitted, grill-with-docs: grilling +
+  domain-modeling, no ADR — reversible, unsurprising): stale `stash@{0}`
+  ("migrate to trpc for subtopic page") dropped — targeted deleted route
+  tree, inline Prisma, missing `"use client"`, dead code; `/lessons`
+  assessment chips + `aria-label` count derived from the lesson registry
+  (kills 8-name fixture drift); new `PageHeaderSkeleton`
+  (`src/components/page-header-skeleton.tsx`, per-site width props)
+  adopted by the three loading headers. Gates: ultracite clean, typecheck
+  clean, test:all 41 files / 221 tests green.
 - Active-context archive (2026-10-10): resolved items moved out of
   `activeContext.md`, condensed here (no new ADRs — all reversible, unsurprising):
   - LAN stack (2026-10-04 → 10-06): SW LAN guard (`src/sw-policy.ts`

@@ -1,4 +1,5 @@
 import LessonCard from "@/components/lesson-card";
+import { PageHeaderSkeleton } from "@/components/page-header-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const SkeletonView = async () => (
@@ -8,9 +9,11 @@ const SkeletonView = async () => (
     className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
   >
     <header className="max-w-2xl">
-      <Skeleton className="h-4 w-44" />
-      <Skeleton className="mt-3 h-9 w-64 sm:w-96" />
-      <Skeleton className="mt-4 h-2.5 w-full" />
+      <PageHeaderSkeleton
+        eyebrowClassName="h-4 w-44"
+        subtitleClassName="mt-4 h-2.5 w-full"
+        titleClassName="mt-3 h-9 w-64 sm:w-96"
+      />
     </header>
     <section className="mt-6">
       <div className="mx-auto w-full max-w-3xl">

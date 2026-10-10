@@ -1,3 +1,4 @@
+import { PageHeaderSkeleton } from "@/components/page-header-skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -10,9 +11,7 @@ export default function PageSkeleton() {
     >
       <header className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div className="w-full min-w-0 max-w-2xl">
-          <Skeleton className="h-4 w-40" />
-          <Skeleton className="mt-3 h-9 w-64 sm:w-80" />
-          <Skeleton className="mt-2 h-4 w-52" />
+          <PageHeaderSkeleton />
         </div>
         <div className="w-full shrink-0 sm:w-48">
           <Skeleton className="h-6 w-24 rounded-full" />

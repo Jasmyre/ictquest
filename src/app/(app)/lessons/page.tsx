@@ -27,6 +27,9 @@ export default async function LessonsPage() {
     (sum, lesson) => sum + lesson.topics.length,
     0
   );
+  const assessmentTopics = courseLessons.flatMap((lesson) =>
+    lesson.topics.map((topic) => topic.name)
+  );
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
@@ -140,21 +143,12 @@ export default async function LessonsPage() {
             </div>
             <div className="p-6 sm:p-8">
               <Progress
-                aria-label="Assessment covers 8 topic areas"
+                aria-label={`Assessment covers ${assessmentTopics.length} topic areas`}
                 className="h-1.5"
                 value={100}
               />
               <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
-                {[
-                  "What is HTML",
-                  "Document structure",
-                  "Typography",
-                  "Containers",
-                  "Media elements",
-                  "Advanced elements",
-                  "Forms",
-                  "Beyond HTML",
-                ].map((topic) => (
+                {assessmentTopics.map((topic) => (
                   <li
                     className="rounded-md bg-muted/40 px-3 py-2 text-muted-foreground text-sm"
                     key={topic}

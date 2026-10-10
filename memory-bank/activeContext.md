@@ -18,6 +18,13 @@ Next: push the stack to `origin/main` (`git push`).
   (`rise-in`, hidden SSR base, forwards fill, nth-child delays,
   no-preference-gated); `/profile` grid + `/` stats/content grids migrated
   off `animate-in` + fill-mode combos that flashed visible-then-hidden.
+- Code-review fixes (uncommitted): stale `stash@{0}` dropped (targeted deleted
+  route tree); `/lessons` assessment chips + `aria-label` count derived from
+  the lesson registry (`assessmentTopics` flat-map); new shared
+  `src/components/page-header-skeleton.tsx` (`PageHeaderSkeleton`, per-site
+  widths via props, zero visual change) adopted by `profile/loading.tsx`,
+  `page-skeleton.tsx`, `subtopic-loading.tsx`. Gates: ultracite clean,
+  typecheck clean, test:all 221/221.
 
 ## Open questions
 
