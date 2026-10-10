@@ -193,3 +193,4 @@ probe fails lint-staged (exit 1) and blocks `git commit`; clean tree
 passes. Also removes stray `hook-probe.ts` (`6134fcf`) carrying that
 same `var` violation. Gates: `check` 291 files clean, typecheck clean.
 - Standards split (2026-10-10, uncommitted): `AGENTS.md` pointers-only + `CODING_STANDARDS.md` created + `CONTEXT.md` Standards language; no ADR.
+- No-op cache purge (2026-10-10, uncommitted): systemPatterns Pattern Documentation Policy + Known patterns deleted (mechanical, ultracite-covered); production-readiness judgement moved to CODING_STANDARDS.md; AGENTS.md pointers-only (16 lines). Gate: check 291 files clean.

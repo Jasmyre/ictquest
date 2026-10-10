@@ -10,3 +10,7 @@ Review-time judgement standards only. Mechanical rules live in the Biome/Ultraci
 ## Cross-file consistency
 
 - Match the surrounding module's established patterns (naming, error shape, result codes) over generic preference. When two local patterns conflict, follow the newer ADR or `systemPatterns.md`, and note the conflict in your review output.
+
+## Production readiness
+
+- Write production-ready logic and design only — no placeholder identity, data, or dead UI in committed code. Every merged surface resolves real session/data state plus loading/empty states.

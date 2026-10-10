@@ -330,17 +330,3 @@ REST-mount claims with the latest-before-byId ordering note, and the old
 route-catalog examples. The resource is deleted in code with no replacement.
 Role-join and dashboard-rename history lives in the ADR supersede notes
 (0001, 0002).
-
-## Pattern Documentation Policy
-
-When a **repetitive manual change** or recurring correction is identified (e.g., "use `const` instead of `let` in React components", consistent naming conventions, error handling patterns), **update this file** to codify the pattern so it is applied consistently going forward. This prevents the same correction from being repeated across sessions and serves as a living style guide.
-
-Known patterns:
-
-- **React components**: always use `const` for state setters and component declarations; never `let`.
-- **Hooks**: call at the top level only, never conditionally. Specify all dependencies in dependency arrays.strings
-- **Error handling**: throw `Error` objects with descriptive messages, not raw .
-- **Async**: use `async/await` instead of promise chains. Always `await` promises in async functions.
-- **Loops**: prefer `for...of` over `.forEach()` and indexed `for` loops.
-- **Accessors**: use optional chaining (`?.`) and nullish coalescing (`??`) for safer property access.
-- **Variables**: use `const` by default, `let` only when reassignment is needed, never `var`.

@@ -5,6 +5,13 @@ Decisions frozen in `docs/adr/0001–0005` (#24 baseline, closed).
 
 ## Current focus
 
+No-op cache purge (2026-10-10, uncommitted): `memory-bank/systemPatterns.md`
+`Pattern Documentation Policy` + Known patterns deleted outright (mechanical
+cache: const/let, hooks, Error objects, async/await, for...of, ?./?? —
+all ultracite-covered); production-readiness judgement moved to
+`CODING_STANDARDS.md` (`Production readiness`); `AGENTS.md` now pointers-only
+(16 lines). Gates green: ultracite check 291 files clean.
+
 Standards split (2026-10-10, uncommitted): `AGENTS.md` shrunk to pointers-only
 (standards → ultracite check/fix + typecheck/test:all, judgement → `CODING_STANDARDS.md`;
 production-readiness paragraph retained); new `CODING_STANDARDS.md` holds
