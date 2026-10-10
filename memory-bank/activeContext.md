@@ -4,14 +4,12 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
-Standards split + pointers-only `AGENTS.md` (16 lines) landed (`f2f397e`):
-mechanical rules → `npm exec -- ultracite check`; judgement → `CODING_STANDARDS.md`.
-Pre-commit gate landed (`4aa3c96`): Husky + lint-staged blocks bad staged files.
-LAN/PWA agent-opacity fix (uncommitted): `docs/pwa.md` documents the
-`dev-lan.mjs` SAN re-verify `console.error` line as the grep contract
-(`Rebuilt LAN cert still does not cover`), so a future agent reads
-dev-server output instead of re-running openssl.
-Next: push the 5-commit stack to `origin/main` (`git push`).
+Design-system + `/` polish (uncommitted): `docs/design-system.md` created —
+page shell, header, tokens, cards/grids, motion, states derived from
+`/lessons` + `/social` with `/` as canonical; `/` stats gain stagger
+(50ms) + `cubic-bezier(0.23,1,0.32,1)` hover lift. Gates: typecheck clean,
+ultracite fix applied, progress-stats 8/8.
+Next: push the stack to `origin/main` (`git push`).
 
 ## Open questions
 

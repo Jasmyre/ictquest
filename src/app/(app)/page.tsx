@@ -200,14 +200,18 @@ function DashboardView({ stats }: { stats: DashboardData | null }) {
             className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4"
             data-testid="dashboard-stats"
           >
-            {STAT_META.map((meta) => {
+            {STAT_META.map((meta, index) => {
               const Icon = meta.icon;
               const testId =
                 meta.key === "progress" ? "stat-total-progress" : meta.testId;
               return (
                 <Card
-                  className="motion-safe:hover:-translate-y-0.5 transition-[transform,box-shadow] duration-200 ease-out motion-safe:hover:shadow-md"
+                  className="motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 motion-safe:hover:-translate-y-0.5 transition-[transform,box-shadow] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] motion-safe:animate-in motion-safe:hover:shadow-md"
                   key={meta.key}
+                  style={{
+                    animationDelay: `${index * 50}ms`,
+                    animationFillMode: "both",
+                  }}
                 >
                   <CardHeader className="pb-2">
                     <CardDescription className="flex items-center gap-1.5">
