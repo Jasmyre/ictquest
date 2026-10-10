@@ -194,3 +194,24 @@ passes. Also removes stray `hook-probe.ts` (`6134fcf`) carrying that
 same `var` violation. Gates: `check` 291 files clean, typecheck clean.
 - Standards split (2026-10-10, uncommitted): `AGENTS.md` pointers-only + `CODING_STANDARDS.md` created + `CONTEXT.md` Standards language; no ADR.
 - No-op cache purge (2026-10-10, uncommitted): systemPatterns Pattern Documentation Policy + Known patterns deleted (mechanical, ultracite-covered); production-readiness judgement moved to CODING_STANDARDS.md; AGENTS.md pointers-only (16 lines). Gate: check 291 files clean.
+- Active-context archive (2026-10-10): resolved items moved out of
+  `activeContext.md`, condensed here (no new ADRs — all reversible, unsurprising):
+  - LAN stack (2026-10-04 → 10-06): SW LAN guard (`src/sw-policy.ts`
+    `shouldDisableSwRegistration`/`isLoopbackHostname`); phone SW testing
+    (`scripts/gen-lan-cert.mjs`, `pwa:lan-cert`); fresh-clone `docs/setup.md`;
+    `--ip=`/`--lan-ip=` override; one local CA (`scripts/gen-lan-ca.mjs`,
+    `pwa:lan-ca`, phone trusts once); LAN auto-detect fix (real Wi-Fi beats
+    WSL/Hyper-V virtual adapters); shared `scripts/lan-address.mjs`
+    (`getLanEntries`/`getLanHost`/`getAllowedDevOrigins`,
+    `tests/unit/lan-address.test.ts`); single-LAN-host `resolveLanHost()`
+    (`--ip=` flag > `LAN_IP` env > auto-detect); SW cert-error visibility
+    (`isSwCertError`/`buildSwCertErrorMessage`).
+  - Header/nav (2026-09-23 → 10-03): server-first header rework (server
+    `HeaderShell` + narrow client islands, 903-line client `NavigationBar`
+    deleted); shared session-aware `SiteHeader`; ABAC Admin header entry
+    (`hasPermission(user, "Admin", "manage")`); admin sidebar visual-state
+    fix (exclusive deepest-prefix active matching).
+  - Release-please hardening (2026-09-22): `pg` browser-bundle leak fix
+    (client-safe `src/lib/role-names.ts` split); CI build fix
+    (`http://localhost:3000` fallback + `BASE_URL`/`NEXTAUTH_URL` exports);
+    Biome scope fix (bot-managed `release-please-*.json` excluded).
