@@ -47,6 +47,7 @@ Next: push the stack to `origin/main` (`git push`).
 
 ## Open questions
 
+- Settings spec published as #81 (`ready-for-agent`): new owner-scoped `/settings` page (Profile/Appearance/Account/Danger live, Tokens disabled with `In development` badge; Danger duplicated, not moved; theme local-only; credentials production-ready via tRPC `permissionProcedure` seam).
 - DB split: create the `DATABASE_URL` secret + `production` environment in
   GitHub repo settings before the first merge to `main` triggers `deploy-prod`;
   decide whether to also set a shared `DATABASE_URL_DEV` for the team.

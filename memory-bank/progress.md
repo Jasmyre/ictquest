@@ -234,5 +234,10 @@ same `var` violation. Gates: `check` 291 files clean, typecheck clean.
     fix (exclusive deepest-prefix active matching).
   - Release-please hardening (2026-09-22): `pg` browser-bundle leak fix
     (client-safe `src/lib/role-names.ts` split); CI build fix
-    (`http://localhost:3000` fallback + `BASE_URL`/`NEXTAUTH_URL` exports);
-    Biome scope fix (bot-managed `release-please-*.json` excluded).
+     (`http://localhost:3000` fallback + `BASE_URL`/`NEXTAUTH_URL` exports);
+     Biome scope fix (bot-managed `release-please-*.json` excluded).
++  - Settings spec #81 (2026-10-10): grilled + published (`ready-for-agent`);
++    owner-scoped Settings page (Profile/Appearance/Account/Danger live, Tokens
++    disabled `In development`; Danger duplicated; local-only theme; tRPC seam).
++  - Settings tickets #82-#86 (2026-10-10): 5 tracer bullets under parent #81
++    (1 shell+profile; 2 appearance; 3 account; 4 danger; 5 polish+glossary+gates).
