@@ -5,6 +5,13 @@ Decisions frozen in `docs/adr/0001–0005` (#24 baseline, closed).
 
 ## Current focus
 
+Pre-commit gate (2026-10-10, uncommitted): Husky + lint-staged added —
+`.husky/pre-commit` runs `npx lint-staged`, staged JS/TS/JSON/CSS files
+must pass `ultracite check` (block-and-report; typecheck stays in CI).
+Verified blocking on a staged `var` probe; `prepare: husky` hook
+installs on `npm install`. Gates green: `check` 291 files clean,
+typecheck clean.
+
 SW LAN guard (2026-10-04): `SwProvider` skips registration on non-loopback
 dev hosts / insecure contexts with a `console.warn` (pure decision
 `shouldDisableSwRegistration` + `isLoopbackHostname` in `src/sw-policy.ts`);

@@ -184,3 +184,11 @@ deliberately (dead compose, no UGC entity per #23 out-of-scope); `/social`
 is the server-rendered People list; Follow/Report/Block disabled TODOs;
 LAN CA/SAN-leaf phone flow + SW-skip-on-untrusted-LAN accepted as
 post-#23 follow-ups.
+- Pre-commit gate (2026-10-10, uncommitted): Husky + lint-staged,
+`.husky/pre-commit` runs `npx lint-staged`, staged
+`*.{js,jsx,ts,tsx,json,jsonc,css}` blocked by `ultracite check`
+(block-and-report, no auto-fix; typecheck stays in CI + `validate`);
+`prepare: husky` installs on `npm install`. Verified: staged `var`
+probe fails lint-staged (exit 1) and blocks `git commit`; clean tree
+passes. Also removes stray `hook-probe.ts` (`6134fcf`) carrying that
+same `var` violation. Gates: `check` 291 files clean, typecheck clean.

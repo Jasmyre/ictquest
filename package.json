@@ -28,6 +28,7 @@
     "dev:lan": "node scripts/dev-lan.mjs",
     "lesson:parity": "node scripts/check-lesson-slug-parity.mjs",
     "postinstall": "prisma generate",
+    "prepare": "husky",
     "preview": "next build && next start",
     "pwa:assets": "node scripts/pwa-assets.mjs",
     "pwa:lan-ca": "node scripts/gen-lan-ca.mjs",
@@ -118,7 +119,9 @@
     "@vitest/coverage-v8": "^5.0.0",
     "baseline-browser-mapping": "^2.11.25",
     "esbuild": "^0.28.2",
+    "husky": "^9.1.7",
     "jsdom": "^30.0.1",
+    "lint-staged": "^17.6.0",
     "msw": "^2.11.1",
     "postcss": "^8",
     "prisma": "^7.2.0",
@@ -133,6 +136,9 @@
     "vitest": "^5.0.0"
   },
   "packageManager": "npm@11.5.2",
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,jsonc,css}": "ultracite check"
+  },
   "overrides": {
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2"
