@@ -208,6 +208,13 @@ same `var` violation. Gates: `check` 291 files clean, typecheck clean.
   (`src/components/page-header-skeleton.tsx`, per-site width props)
   adopted by the three loading headers. Gates: ultracite clean, typecheck
   clean, test:all 41 files / 221 tests green.
+- DropDrawer rollout + visual-bug fixes (2026-10-10, committed):
+  responsive dropdown/drawer primitive (`src/components/dropdrawer.tsx`,
+  `src/components/ui/drawer.tsx`, deps `cn`/`radix-ui`/`vaul`,
+  `dropdown-menu.tsx` rewritten on new primitives, `/social` migrated);
+  desktop icon drift fixed (flex label cell), mobile x-scrollbar fixed
+  (`w-[calc(100%-1rem)]`, `overflow-x-hidden` guards). Playwright-verified
+  (390px + desktop). Gates: typecheck + ultracite clean, test:all 221/221.
 - Active-context archive (2026-10-10): resolved items moved out of
   `activeContext.md`, condensed here (no new ADRs — all reversible, unsurprising):
   - LAN stack (2026-10-04 → 10-06): SW LAN guard (`src/sw-policy.ts`

@@ -25,6 +25,14 @@ Next: push the stack to `origin/main` (`git push`).
   widths via props, zero visual change) adopted by `profile/loading.tsx`,
   `page-skeleton.tsx`, `subtopic-loading.tsx`. Gates: ultracite clean,
   typecheck clean, test:all 221/221.
+- DropDrawer visual bugs fixed + committed: desktop item label cell is now
+  `flex min-w-0 flex-1` (was plain `div`, 19.6px icon drift + 3-line wrap);
+  mobile non-group rows `w-[calc(100%-1rem)]` (was `w-full` + `mx-2`, 8px
+  x-overflow) + `overflow-x-hidden` scroll guards. `/social` adopts DropDrawer
+  (new `src/components/dropdrawer.tsx`, `src/components/ui/drawer.tsx`;
+  `dropdown-menu.tsx` rewritten on `radix-ui`/`cn`; deps `cn`, `radix-ui`,
+  `vaul`). Playwright-verified at 390px + desktop. Gates: typecheck clean,
+  ultracite clean, test:all 221/221.
 - Page-header cull + guideline pass (uncommitted): visual page-header blocks
   removed on dashboard, lessons, profile, progress, social, admin home —
   each keeps an `sr-only` h1; landmark ownership moved to group layouts

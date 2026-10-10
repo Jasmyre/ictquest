@@ -14,16 +14,10 @@ async function SocialPage() {
   const users = await getUsersStats();
 
   return (
-    <div className="min-h-[80vh] py-10">
+    <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
       <h1 className="sr-only">People — Connect with fellow learners</h1>
-      <section>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="py-8">
-            <SocialList users={users} />
-          </div>
-        </div>
-      </section>
-    </div>
+      <SocialList users={users} />
+    </main>
   );
 }
 
