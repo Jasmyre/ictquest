@@ -47,8 +47,15 @@ describe("user-profile migration plus owner round-trip (#58)", () => {
   });
 
   it("persists an owner update round-trip (set/clear biography, toggle privacy)", async () => {
-    const store = new Map<string, { biography: string | null }>();
-    store.set("owner-1", { biography: null });
+    const store = new Map<
+      string,
+      { name: string; userName: string | null; biography: string | null }
+    >();
+    store.set("owner-1", {
+      name: "Owner One",
+      userName: "owner-1",
+      biography: null,
+    });
     const db = {
       user: {
         update: vi.fn(
@@ -57,13 +64,28 @@ describe("user-profile migration plus owner round-trip (#58)", () => {
             data,
           }: {
             where: { id: string };
-            data: { biography?: string | null; isPrivate?: boolean };
+            data: {
+              name?: string;
+              userName?: string | null;
+              biography?: string | null;
+              isPrivate?: boolean;
+            };
           }) => {
-            const current = store.get(where.id) ?? { biography: null };
+            const current = store.get(where.id) ?? {
+              name: "Owner One",
+              userName: "owner-1",
+              biography: null,
+            };
             const next = { ...current, ...data };
-            store.set(where.id, { biography: next.biography ?? null });
+            store.set(where.id, {
+              name: next.name ?? "Owner One",
+              userName: next.userName ?? null,
+              biography: next.biography ?? null,
+            });
             return Promise.resolve({
               id: where.id,
+              name: next.name ?? "Owner One",
+              userName: next.userName ?? null,
               biography: next.biography ?? null,
               isPrivate: next.isPrivate ?? false,
             });
@@ -79,6 +101,8 @@ describe("user-profile migration plus owner round-trip (#58)", () => {
     });
     expect(set.data).toEqual({
       id: "owner-1",
+      name: "Owner One",
+      userName: "owner-1",
       biography: "Hello ICT",
       isPrivate: true,
     });
@@ -89,6 +113,8 @@ describe("user-profile migration plus owner round-trip (#58)", () => {
     });
     expect(cleared.data).toEqual({
       id: "owner-1",
+      name: "Owner One",
+      userName: "owner-1",
       biography: null,
       isPrivate: false,
     });
