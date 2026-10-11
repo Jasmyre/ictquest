@@ -7,8 +7,14 @@ import {
 } from "@/server/api/trpc";
 import { requirePermission } from "@/server/permissions";
 import {
+  accountOutputSchema,
+  emailChangeOutputSchema,
   meOutputSchema,
+  passwordChangeOutputSchema,
   profileOutputSchema,
+  setPasswordInputSchema,
+  updateEmailInputSchema,
+  updatePasswordInputSchema,
   updateProfileInputSchema,
 } from "@/server/schemas/user";
 import {
@@ -21,6 +27,12 @@ import {
   deleteAllProgress,
   listProgress,
 } from "@/server/services/progress";
+import {
+  changeOwnPassword,
+  getOwnAccount,
+  setOwnPassword,
+  updateOwnEmail,
+} from "@/server/services/user-credentials";
 import {
   getOwnProfile,
   updateOwnProfile,
@@ -115,6 +127,127 @@ export const userRouter = createTRPCRouter({
       });
 
       return updateOwnProfile(ctx.db, userId, input);
+    }),
+
+  getAccount: permissionProcedure("User", "view")
+    .output(accountOutputSchema)
+    .query(async ({ ctx }) => {
+      // Owner-scoped Settings read (spec #81, ticket #84): tRPC-only,
+      // auto-excluded from the versioned Document. Exposes the sign-in
+      // email plus whether a password exists so the panel can pick the
+      // change-password or set-password form — never the hash itself.
+      const { user } = ctx;
+      const userId = requireUserId(user);
+
+      requirePermission({ id: userId, roles: user?.roles }, "User", "view", {
+        data: { id: userId },
+      });
+
+      try {
+        return await getOwnAccount(ctx.db, userId);
+      } catch (error) {
+        if (error instanceof TRPCError && error.code === "NOT_FOUND") {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "You do not have permission to perform this action.",
+          });
+        }
+        throw error;
+      }
+    }),
+
+  updateEmail: permissionProcedure("User", "update")
+    .input(updateEmailInputSchema)
+    .output(emailChangeOutputSchema)
+    .mutation(async ({ ctx, input }) => {
+      // Owner-scoped email change (spec #81, ticket #84): tRPC-only.
+      // Thin controller: coarse gate above, row-level re-check on the
+      // fetched record below; a missing record denies as FORBIDDEN.
+      // Uniqueness conflicts surface as CONFLICT for inline display.
+      const { user } = ctx;
+      const userId = requireUserId(user);
+
+      let existing: { id: string };
+      try {
+        const current = await getOwnAccount(ctx.db, userId);
+        existing = { id: current.data.id };
+      } catch (error) {
+        if (error instanceof TRPCError && error.code === "NOT_FOUND") {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "You do not have permission to perform this action.",
+          });
+        }
+        throw error;
+      }
+
+      requirePermission({ id: userId, roles: user?.roles }, "User", "update", {
+        data: { id: existing.id },
+      });
+
+      return updateOwnEmail(ctx.db, userId, input.email);
+    }),
+
+  updatePassword: permissionProcedure("User", "update")
+    .input(updatePasswordInputSchema)
+    .output(passwordChangeOutputSchema)
+    .mutation(async ({ ctx, input }) => {
+      // Credential password change (spec #81, ticket #84): tRPC-only.
+      // A wrong current password denies as UNAUTHORIZED; weak replacements
+      // reject as BAD_REQUEST with guidance. Same thin-controller shape.
+      const { user } = ctx;
+      const userId = requireUserId(user);
+
+      let existing: { id: string };
+      try {
+        const current = await getOwnAccount(ctx.db, userId);
+        existing = { id: current.data.id };
+      } catch (error) {
+        if (error instanceof TRPCError && error.code === "NOT_FOUND") {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "You do not have permission to perform this action.",
+          });
+        }
+        throw error;
+      }
+
+      requirePermission({ id: userId, roles: user?.roles }, "User", "update", {
+        data: { id: existing.id },
+      });
+
+      return changeOwnPassword(ctx.db, userId, input);
+    }),
+
+  setPassword: permissionProcedure("User", "update")
+    .input(setPasswordInputSchema)
+    .output(passwordChangeOutputSchema)
+    .mutation(async ({ ctx, input }) => {
+      // OAuth-only first password (spec #81, ticket #84): tRPC-only, no
+      // current-password field. Refuses with CONFLICT once a password
+      // already exists so the proof-bearing path stays mandatory there.
+      const { user } = ctx;
+      const userId = requireUserId(user);
+
+      let existing: { id: string };
+      try {
+        const current = await getOwnAccount(ctx.db, userId);
+        existing = { id: current.data.id };
+      } catch (error) {
+        if (error instanceof TRPCError && error.code === "NOT_FOUND") {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "You do not have permission to perform this action.",
+          });
+        }
+        throw error;
+      }
+
+      requirePermission({ id: userId, roles: user?.roles }, "User", "update", {
+        data: { id: existing.id },
+      });
+
+      return setOwnPassword(ctx.db, userId, input);
     }),
 
   addProgress: permissionProcedure("Progress", "create")

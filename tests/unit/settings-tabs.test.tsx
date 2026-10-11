@@ -8,23 +8,52 @@ vi.mock("@/lib/db", () => ({ db: {} }));
 vi.mock("@/lib/redis", () => ({ redis: {} }));
 vi.mock("@/env", () => ({ env: { NODE_ENV: "test" } }));
 
-const mutateAsync = vi.fn(async () => ({
-  success: true as const,
-  data: {
-    id: "learner-a",
-    name: "Learner A",
-    userName: "learner-a",
-    biography: null,
-    isPrivate: false,
-  },
-}));
+const { mutateAsync, updateEmail, updatePassword, setPassword } = vi.hoisted(
+  () => ({
+    mutateAsync: vi.fn(async () => ({
+      success: true as const,
+      data: {
+        id: "learner-a",
+        name: "Learner A",
+        userName: "learner-a",
+        biography: null,
+        isPrivate: false,
+      },
+    })),
+    updateEmail: vi.fn(async () => ({
+      success: true as const,
+      data: {
+        id: "learner-a",
+        email: "new@example.com",
+        emailVerified: null,
+        verificationRequired: true,
+      },
+    })),
+    updatePassword: vi.fn(async () => ({ success: true as const })),
+    setPassword: vi.fn(async () => ({ success: true as const })),
+  })
+);
 
 vi.mock("@/trpc/react", () => ({
   api: {
-    useUtils: () => ({ user: { getProfile: { invalidate: vi.fn() } } }),
+    useUtils: () => ({
+      user: {
+        getProfile: { invalidate: vi.fn() },
+        getAccount: { invalidate: vi.fn() },
+      },
+    }),
     user: {
       updateProfile: {
         useMutation: () => ({ mutateAsync, isPending: false }),
+      },
+      updateEmail: {
+        useMutation: () => ({ mutateAsync: updateEmail, isPending: false }),
+      },
+      updatePassword: {
+        useMutation: () => ({ mutateAsync: updatePassword, isPending: false }),
+      },
+      setPassword: {
+        useMutation: () => ({ mutateAsync: setPassword, isPending: false }),
       },
     },
   },
@@ -40,9 +69,23 @@ const initial = {
   isPrivate: false,
 };
 
+const account = {
+  id: "learner-a",
+  email: "learner@example.com",
+  emailVerified: new Date("2026-01-01T00:00:00.000Z"),
+  hasPassword: true,
+};
+
+const oauthAccount = {
+  id: "oauth-only",
+  email: "oauth@example.com",
+  emailVerified: new Date("2026-01-01T00:00:00.000Z"),
+  hasPassword: false,
+};
+
 describe("Settings tabs (#82)", () => {
   it("exposes a real tablist with all five tabs", () => {
-    render(<SettingsTabs profile={initial} />);
+    render(<SettingsTabs account={account} profile={initial} />);
     expect(screen.getByRole("tablist")).toBeInTheDocument();
     for (const name of ["Profile", "Appearance", "Account", "Danger"]) {
       expect(screen.getByRole("tab", { name })).toBeInTheDocument();
@@ -54,7 +97,7 @@ describe("Settings tabs (#82)", () => {
   });
 
   it("disables the Tokens tab with an In development badge", () => {
-    render(<SettingsTabs profile={initial} />);
+    render(<SettingsTabs account={account} profile={initial} />);
     const tokens = screen.getByRole("tab", { name: /tokens/i });
     expect(tokens).toHaveAttribute("aria-disabled", "true");
     expect(tokens).toBeDisabled();
@@ -62,7 +105,7 @@ describe("Settings tabs (#82)", () => {
   });
 
   it("keeps the Tokens tab unactivatable", () => {
-    render(<SettingsTabs profile={initial} />);
+    render(<SettingsTabs account={account} profile={initial} />);
     const tokens = screen.getByRole("tab", { name: /tokens/i });
     fireEvent.click(tokens);
     expect(tokens).toHaveAttribute("aria-selected", "false");
@@ -74,7 +117,7 @@ describe("Settings tabs (#82)", () => {
 
   it("switches live panels by keyboard and click", async () => {
     const user = userEvent.setup();
-    render(<SettingsTabs profile={initial} />);
+    render(<SettingsTabs account={account} profile={initial} />);
     await user.click(screen.getByRole("tab", { name: "Profile" }));
     await user.keyboard("{ArrowRight}");
     expect(screen.getByRole("tab", { name: "Appearance" })).toHaveAttribute(
@@ -89,23 +132,56 @@ describe("Settings tabs (#82)", () => {
   });
 
   it("renders the profile form with inline validation", async () => {
-    render(<SettingsTabs profile={initial} />);
+    render(<SettingsTabs account={account} profile={initial} />);
     expect(screen.getByLabelText(/display name/i)).toHaveValue("Learner A");
     expect(screen.getByLabelText(/handle/i)).toHaveValue("learner-a");
 
     const nameInput = screen.getByLabelText(/display name/i);
     fireEvent.change(nameInput, { target: { value: "" } });
-    fireEvent.click(screen.getByRole("button", { name: /save/i }));
+    fireEvent.click(screen.getByRole("button", { name: "Save changes" }));
     expect(
       await screen.findByText(/display name must not be empty/i)
     ).toBeInTheDocument();
     expect(mutateAsync).not.toHaveBeenCalled();
   });
 
+  it("renders the live Account panel (#84)", async () => {
+    const user = userEvent.setup();
+    render(<SettingsTabs account={account} profile={initial} />);
+    await user.click(screen.getByRole("tab", { name: "Account" }));
+    expect(screen.getByLabelText(/email address/i)).toHaveValue(
+      "learner@example.com"
+    );
+    expect(screen.getByLabelText(/current password/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/new password/i)).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /set password/i })
+    ).not.toBeInTheDocument();
+  });
+
+  it("renders set-password with no current field for OAuth-only learners (#84)", async () => {
+    const user = userEvent.setup();
+    render(<SettingsTabs account={oauthAccount} profile={initial} />);
+    await user.click(screen.getByRole("tab", { name: "Account" }));
+    expect(
+      screen.getByRole("button", { name: /set password/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(/current password/i)
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows account failures inline without throwing (#84)", async () => {
+    const user = userEvent.setup();
+    updateEmail.mockRejectedValueOnce(new Error("That email is taken."));
+    render(<SettingsTabs account={account} profile={initial} />);
+    await user.click(screen.getByRole("tab", { name: "Account" }));
+    await user.click(screen.getByRole("button", { name: /save email/i }));
+    expect(await screen.findByText("That email is taken.")).toBeInTheDocument();
+  });
+
   it("renders placeholders for tickets that come later", () => {
-    render(<SettingsTabs profile={initial} />);
-    fireEvent.click(screen.getByRole("tab", { name: "Account" }));
-    expect(screen.getByText(/account settings ship/i)).toBeInTheDocument();
+    render(<SettingsTabs account={account} profile={initial} />);
     fireEvent.click(screen.getByRole("tab", { name: "Danger" }));
     expect(screen.getByText(/danger actions ship/i)).toBeInTheDocument();
   });

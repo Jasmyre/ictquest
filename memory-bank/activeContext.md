@@ -4,6 +4,21 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- Ticket #84 done (branch `feat/settings-84`, worktree `../ictquest-84`,
+  pushed to origin, synced with `feat/settings-page` tip — already up to
+  date): live Settings Account tab — email change (normalize, uniqueness
+  CONFLICT, `emailVerified` reset + `verificationRequired` flag,
+  same-address no-op) + password change (bcrypt current-password proof as
+  UNAUTHORIZED, 8-char letter+number strength as BAD_REQUEST) + OAuth-only
+  set-password form (no current field, CONFLICT once a password exists).
+  Thin-controller `user.getAccount`/`updateEmail`/`updatePassword`/
+  `setPassword` (tRPC-only, permissionProcedure + row re-check, missing
+  row = FORBIDDEN); `user-credentials` service owns rules (bcrypt cost 10);
+  repository owns persistence (`findCredentials`/`findByEmail`/
+  `updateEmail`/`updatePassword`); legacy `update-user-name` action rerouted
+  through `updateOwnProfile`. Gates: ultracite clean, typecheck + test
+  typecheck clean, test:all 251/235→251 pass (13 account + 4 new tab tests).
+  Next: tickets #83 (Appearance), #85 (Danger), #86 (polish).
 - Ticket #83 built (branch `feat/settings-83`, worktree `../ictquest-83`,
   pushed, based on integration `feat/settings-page` tip 758c962): Appearance
   panel live (`AppearanceForm` — `useTheme` + mounted guard, light/dark/system

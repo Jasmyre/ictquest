@@ -47,3 +47,47 @@ export const profileOutputSchema = z.object({
     isPrivate: z.boolean(),
   }),
 });
+
+/**
+ * Owner-scoped Settings account inputs (ticket #84, spec #81).
+ *
+ * Email arrives raw — the service normalizes (trim + lowercase). Password
+ * strength is enforced in the service so the message stays identical on
+ * every entry point; the schemas only bound shape here.
+ */
+export const updateEmailInputSchema = z.object({
+  email: z.string().min(1).max(254),
+});
+
+export const updatePasswordInputSchema = z.object({
+  currentPassword: z.string().min(1),
+  newPassword: z.string().min(1).max(128),
+});
+
+export const setPasswordInputSchema = z.object({
+  newPassword: z.string().min(1).max(128),
+});
+
+export const accountOutputSchema = z.object({
+  success: z.literal(true),
+  data: z.object({
+    id: z.string(),
+    email: z.string().nullable(),
+    emailVerified: z.date().nullable(),
+    hasPassword: z.boolean(),
+  }),
+});
+
+export const emailChangeOutputSchema = z.object({
+  success: z.literal(true),
+  data: z.object({
+    id: z.string(),
+    email: z.string().nullable(),
+    emailVerified: z.date().nullable(),
+    verificationRequired: z.boolean(),
+  }),
+});
+
+export const passwordChangeOutputSchema = z.object({
+  success: z.literal(true),
+});

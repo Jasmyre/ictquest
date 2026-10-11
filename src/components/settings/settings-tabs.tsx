@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AccountForm, type SettingsAccount } from "./account-form";
 import { AppearanceForm } from "./appearance-form";
 import { ProfileForm, type SettingsProfile } from "./profile-form";
 
@@ -39,12 +40,18 @@ function PlaceholderPanel({
  * Real `tablist` semantics via Radix Tabs (arrow-key navigation built
  * in). Mobile renders the grouped-card row tokens (rounded card,
  * separators, reduced-motion safe); desktop docks the same list as a
- * sidebar. Profile (#82) and Appearance (#83, local-only via
- * `next-themes`, no server persistence) are live — Account and Danger
- * render placeholders, and Tokens stays disabled with an exact
+ * sidebar. Profile (#82), Appearance (#83, local-only via
+ * `next-themes`, no server persistence), and Account (#84) are live —
+ * Danger renders a placeholder, and Tokens stays disabled with an exact
  * `In development` badge.
  */
-export function SettingsTabs({ profile }: { profile: SettingsProfile }) {
+export function SettingsTabs({
+  profile,
+  account,
+}: {
+  profile: SettingsProfile;
+  account: SettingsAccount;
+}) {
   return (
     <Tabs
       className="flex w-full flex-col gap-4 md:flex-row md:items-start"
@@ -99,11 +106,7 @@ export function SettingsTabs({ profile }: { profile: SettingsProfile }) {
           <AppearanceForm />
         </TabsContent>
         <TabsContent className="mt-0" value="account">
-          <PlaceholderPanel
-            body="Account settings ship in a later ticket — email and password changes land there."
-            description="Manage your sign-in email and password."
-            title="Account"
-          />
+          <AccountForm account={account} />
         </TabsContent>
         <TabsContent className="mt-0" value="danger">
           <PlaceholderPanel

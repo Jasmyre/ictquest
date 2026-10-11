@@ -20,6 +20,12 @@ export type UserListRow = {
   roles: Array<{ name: string }>;
 };
 
+export type CredentialRow = {
+  id: string;
+  email: string | null;
+  password: string | null;
+  emailVerified: Date | null;
+};
 export type UserWithRoles = {
   id: string;
   roles: Array<{ name: string }>;
@@ -69,6 +75,10 @@ export type UserRepository = {
   connectRole(userId: string, roleId: string): Promise<void>;
   disconnectRole(userId: string, roleId: string): Promise<void>;
   updateUserName(userId: string, userName: string): Promise<void>;
+  findCredentials(userId: string): Promise<CredentialRow | null>;
+  findByEmail(email: string): Promise<{ id: string } | null>;
+  updateEmail(userId: string, email: string): Promise<CredentialRow>;
+  updatePassword(userId: string, passwordHash: string): Promise<void>;
   findSuspension(userId: string): Promise<UserSuspensionRow | null>;
   setSuspendedAt(userId: string, at: Date): Promise<UserSuspensionRow>;
   clearSuspendedAt(userId: string): Promise<UserSuspensionRow>;
@@ -174,6 +184,33 @@ export function createUserRepository(db: UserDb): UserRepository {
     },
     async updateUserName(userId: string, userName: string): Promise<void> {
       await db.user.update({ where: { id: userId }, data: { userName } });
+    },
+    findCredentials(userId: string): Promise<CredentialRow | null> {
+      return db.user.findUnique({
+        where: { id: userId },
+        select: { id: true, email: true, password: true, emailVerified: true },
+      });
+    },
+    findByEmail(email: string): Promise<{ id: string } | null> {
+      return db.user.findUnique({
+        where: { email },
+        select: { id: true },
+      });
+    },
+    updateEmail(userId: string, email: string): Promise<CredentialRow> {
+      // A changed address must verify before it takes effect: the write
+      // clears `emailVerified` so the new address starts unverified.
+      return db.user.update({
+        where: { id: userId },
+        data: { email, emailVerified: null },
+        select: { id: true, email: true, password: true, emailVerified: true },
+      });
+    },
+    async updatePassword(userId: string, passwordHash: string): Promise<void> {
+      await db.user.update({
+        where: { id: userId },
+        data: { password: passwordHash },
+      });
     },
     findSuspension(userId: string): Promise<UserSuspensionRow | null> {
       return db.user.findUnique({
