@@ -4,6 +4,11 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- Settings integration merged (`feat/settings-page` @ a247f6c): #83
+  Appearance + #84 Account + #85 Danger merged in order (d4c1681,
+  78fbf73, 37b5d82) plus follow-up a247f6c. All four panels live
+  (Profile/Appearance/Account/Danger); Tokens stays disabled. Gates:
+  typecheck clean, ultracite clean, test:all 256/256. Pushed to origin.
 - Ticket #84 done (branch `feat/settings-84`, worktree `../ictquest-84`,
   pushed to origin, synced with `feat/settings-page` tip — already up to
   date): live Settings Account tab — email change (normalize, uniqueness
