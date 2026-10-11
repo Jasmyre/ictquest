@@ -12,5 +12,6 @@ Architecture Decision Records. Format: lede + Considered / Rejected + Consequenc
 | [0007](0007-suspended-capability-and-admin-only-fresh-reads.md) | Suspended capability with preserved roles, admin-only fresh reads | Accepted |
 | [0008](0008-release-please-with-qoomon-commits.md) | Release-please with qoomon commits | Accepted |
 | [0009](0009-retire-social-new-people-list-lan-pwa.md) | Retire mock social-new, server-rendered People list, LAN-first PWA testing | Accepted |
+| [0010](0010-email-change-requires-reverification.md) | Email change takes effect only after re-verification | Accepted |
 
 Missing (write when touched): T3 stack choice, Auth.js v5 beta, ABAC exceptions (`post.list` scoping, self-demotion), 10s cache window, sidebar-as-primary-nav, `proxy.ts` vs `middleware.ts`.

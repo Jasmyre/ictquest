@@ -241,3 +241,13 @@ same `var` violation. Gates: `check` 291 files clean, typecheck clean.
 +    disabled `In development`; Danger duplicated; local-only theme; tRPC seam).
 +  - Settings tickets #82-#86 (2026-10-10): 5 tracer bullets under parent #81
 +    (1 shell+profile; 2 appearance; 3 account; 4 danger; 5 polish+glossary+gates).
++  - Settings code-review fix (2026-10-11, branch `feat/settings-fix`,
++    worktree `../ictquest-fix`): Tokens trigger keyboard-reachable
++    (`aria-disabled`, no native `disabled`, controlled-value guard blocks
++    activation); legacy `update-user-name` throws when signed out;
++    Danger split into two separate delete actions with per-action confirms;
++    `requireOwner` router guard + shared credential load/store +
++    TabsTrigger class consts; `verificationRequired` dropped (redundant
++    with `emailVerified === null`); CONTEXT.md trimmed to Settings term;
++    ADR-0010 (email re-verification); logged-out `/settings` e2e spec.
++    Gates: ultracite clean, typecheck clean, test:all 265/265.

@@ -56,6 +56,43 @@ export function assertStrongPassword(value: string): string {
   return value;
 }
 
+type CredentialRow = {
+  id: string;
+  email: string | null;
+  password: string | null;
+  emailVerified: Date | null;
+};
+
+type CredentialRepository = ReturnType<typeof createUserRepository>;
+
+/**
+ * Shared load-and-store shape for the password paths: fetch the
+ * credential row (NOT_FOUND when absent) and persist the hashed
+ * replacement. Strength grading stays with the caller so each path
+ * keeps its own error context.
+ */
+async function loadCredentials(
+  repository: CredentialRepository,
+  userId: string
+): Promise<CredentialRow> {
+  const row = await repository.findCredentials(userId);
+  if (!row) {
+    throw new TRPCError({ code: "NOT_FOUND", message: "User not found." });
+  }
+  return row;
+}
+
+async function storePassword(
+  repository: CredentialRepository,
+  userId: string,
+  newPassword: string
+): Promise<void> {
+  await repository.updatePassword(
+    userId,
+    await bcrypt.hash(newPassword, BCRYPT_COST)
+  );
+}
+
 export type AccountStatus = {
   id: string;
   email: string | null;
@@ -97,7 +134,6 @@ export type EmailChangeResult = {
   id: string;
   email: string | null;
   emailVerified: Date | null;
-  verificationRequired: boolean;
 };
 
 export async function updateOwnEmail(
@@ -119,7 +155,6 @@ export async function updateOwnEmail(
           id: current.id,
           email: current.email,
           emailVerified: current.emailVerified,
-          verificationRequired: false,
         },
       };
     }
@@ -137,7 +172,6 @@ export async function updateOwnEmail(
         id: row.id,
         email: row.email,
         emailVerified: row.emailVerified,
-        verificationRequired: true,
       },
     };
   } catch (error) {
@@ -159,10 +193,7 @@ export async function changeOwnPassword(
   assertStrongPassword(input.newPassword);
   const repository = createUserRepository(db);
   try {
-    const row = await repository.findCredentials(userId);
-    if (!row) {
-      throw new TRPCError({ code: "NOT_FOUND", message: "User not found." });
-    }
+    const row = await loadCredentials(repository, userId);
     if (!row.password) {
       throw new TRPCError({
         code: "CONFLICT",
@@ -177,10 +208,7 @@ export async function changeOwnPassword(
         message: "Your current password is incorrect.",
       });
     }
-    await repository.updatePassword(
-      userId,
-      await bcrypt.hash(input.newPassword, BCRYPT_COST)
-    );
+    await storePassword(repository, userId, input.newPassword);
     return { success: true as const };
   } catch (error) {
     if (error instanceof TRPCError) {
@@ -202,10 +230,7 @@ export async function setOwnPassword(
   assertStrongPassword(input.newPassword);
   const repository = createUserRepository(db);
   try {
-    const row = await repository.findCredentials(userId);
-    if (!row) {
-      throw new TRPCError({ code: "NOT_FOUND", message: "User not found." });
-    }
+    const row = await loadCredentials(repository, userId);
     if (row.password) {
       throw new TRPCError({
         code: "CONFLICT",
@@ -213,10 +238,7 @@ export async function setOwnPassword(
           "A password is already set — change it with your current password instead.",
       });
     }
-    await repository.updatePassword(
-      userId,
-      await bcrypt.hash(input.newPassword, BCRYPT_COST)
-    );
+    await storePassword(repository, userId, input.newPassword);
     return { success: true as const };
   } catch (error) {
     if (error instanceof TRPCError) {

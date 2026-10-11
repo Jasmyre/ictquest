@@ -7,13 +7,9 @@ import { updateOwnProfile } from "@/server/services/user-profile";
 
 export const updateUserName = async (name: string): Promise<void> => {
   const session = await auth();
-  if (!session) {
-    return;
-  }
-
-  const id = session.user.id;
+  const id = session?.user?.id;
   if (!id) {
-    return;
+    throw new Error("You must be signed in.");
   }
 
   // Legacy direct-update path rerouted through the profile service

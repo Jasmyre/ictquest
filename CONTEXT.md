@@ -134,15 +134,7 @@ _Avoid_: A legacy display-mode plugin; restyling layouts per display mode.
 
 **Settings**:
 The owner-scoped preference surface (`/settings`): profile fields, appearance, credentials, tokens, and danger actions for the signed-in learner's own account. Writes are owner-scoped and permission-guarded; nothing here grants access to another user.
-_Avoid_: Profile (the public-facing identity page), Admin manage (role grants)
-
-**Profile**:
-The public-facing identity page showing a learner's display name, handle, biography, and privacy state to others. Settings edits what Profile shows; Profile itself grants no preference controls.
-_Avoid_: Settings (the owner-scoped preference surface)
-
-**Admin manage**:
-Role-grant administration over other users. Distinct from Settings, which never touches another account.
-_Avoid_: Settings, Profile
+_Avoid_: Profile (the public-facing identity page), Admin manage (role grants over other users)
 
 ## Standards language
 

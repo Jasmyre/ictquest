@@ -26,7 +26,6 @@ const { mutateAsync, updateEmail, updatePassword, setPassword } = vi.hoisted(
         id: "learner-a",
         email: "new@example.com",
         emailVerified: null,
-        verificationRequired: true,
       },
     })),
     updatePassword: vi.fn(async () => ({ success: true as const })),
@@ -102,22 +101,60 @@ describe("Settings tabs (#82)", () => {
     ).toBeInTheDocument();
   });
 
-  it("disables the Tokens tab with an In development badge", () => {
+  it("announces the Tokens tab as aria-disabled without native disabled", () => {
     render(<SettingsTabs account={account} profile={initial} />);
     const tokens = screen.getByRole("tab", { name: /tokens/i });
     expect(tokens).toHaveAttribute("aria-disabled", "true");
-    expect(tokens).toBeDisabled();
+    expect(tokens).not.toBeDisabled();
+    expect(tokens).not.toHaveAttribute("disabled");
     expect(screen.getByText("In development")).toBeInTheDocument();
   });
 
-  it("keeps the Tokens tab unactivatable by pointer and keyboard (#86)", async () => {
+  it("keeps the Tokens tab focusable for keyboard users", () => {
+    render(<SettingsTabs account={account} profile={initial} />);
+    const tokens = screen.getByRole("tab", { name: /tokens/i });
+    tokens.focus();
+    expect(document.activeElement).toBe(tokens);
+    expect(tokens).toHaveAttribute("aria-selected", "false");
+  });
+
+  it("keeps the Tokens tab unactivatable by pointer and keyboard", async () => {
     const user = userEvent.setup();
     render(<SettingsTabs account={account} profile={initial} />);
     const tokens = screen.getByRole("tab", { name: /tokens/i });
     await user.click(tokens);
     expect(tokens).toHaveAttribute("aria-selected", "false");
-    // Arrow-key navigation skips the disabled Tokens tab (Account -> Danger).
+    expect(screen.getByRole("tab", { name: "Profile" })).toHaveAttribute(
+      "aria-selected",
+      "true"
+    );
+    // Keyboard activation (Enter/Space) on the focused Tokens tab selects
+    // nothing either.
+    tokens.focus();
+    await user.keyboard("{Enter}");
+    expect(tokens).toHaveAttribute("aria-selected", "false");
+    await user.keyboard(" ");
+    expect(tokens).toHaveAttribute("aria-selected", "false");
+    expect(screen.getByRole("tab", { name: "Profile" })).toHaveAttribute(
+      "aria-selected",
+      "true"
+    );
+  });
+
+  it("moves focus through Tokens without selecting it on arrow keys", async () => {
+    const user = userEvent.setup();
+    render(<SettingsTabs account={account} profile={initial} />);
+    const tokens = screen.getByRole("tab", { name: /tokens/i });
     await user.click(screen.getByRole("tab", { name: "Account" }));
+    // Arrow-key navigation reaches the Tokens trigger (it stays in the
+    // roving order) but the value guard refuses to select it.
+    await user.keyboard("{ArrowRight}");
+    expect(tokens).toHaveAttribute("aria-selected", "false");
+    expect(screen.getByRole("tab", { name: "Account" })).toHaveAttribute(
+      "aria-selected",
+      "true"
+    );
+    // One more step reaches Danger and selects it.
     await user.keyboard("{ArrowRight}");
     expect(screen.getByRole("tab", { name: "Danger" })).toHaveAttribute(
       "aria-selected",

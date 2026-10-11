@@ -84,7 +84,6 @@ export const emailChangeOutputSchema = z.object({
     id: z.string(),
     email: z.string().nullable(),
     emailVerified: z.date().nullable(),
-    verificationRequired: z.boolean(),
   }),
 });
 

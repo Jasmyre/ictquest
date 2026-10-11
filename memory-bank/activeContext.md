@@ -4,6 +4,13 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- Code-review fix for spec #81 (branch `feat/settings-fix`, worktree
+  `../ictquest-fix`, based on `feat/settings-page` tip): Tokens tab
+  keyboard-reachable but not activatable, legacy action throws when
+  signed out, Danger split into two separate delete actions, router +
+  service dedup, `verificationRequired` dropped, CONTEXT.md trimmed,
+  ADR-0010, logged-out `/settings` e2e spec. Gates: ultracite clean,
+  typecheck clean, test:all 265/265.
 - Ticket #86 done (branch `feat/settings-86`, worktree `../ictquest-86`,
   pushed to origin, synced with `feat/settings-page` tip — already up to
   date): Settings polish — Tokens tab verified disabled (`In development`

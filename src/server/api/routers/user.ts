@@ -38,6 +38,42 @@ import {
   updateOwnProfile,
 } from "@/server/services/user-profile";
 
+type SessionUser = { id?: string | null; roles?: string[] } | null;
+
+/**
+ * Owner-scoped User guard (spec #81): fetch the caller's row, deny a
+ * missing record as FORBIDDEN (no existence probing), then re-check the
+ * row-level grant before the resolver delegates to the service. Returns
+ * the caller id plus the loaded record so reads delegate without a
+ * second fetch.
+ */
+async function requireOwner<T extends { id: string }>(
+  user: SessionUser,
+  action: "view" | "update",
+  load: (userId: string) => Promise<{ success: true; data: T }>
+): Promise<{ userId: string; record: T }> {
+  const userId = requireUserId(user);
+
+  let record: T;
+  try {
+    record = (await load(userId)).data;
+  } catch (error) {
+    if (error instanceof TRPCError && error.code === "NOT_FOUND") {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "You do not have permission to perform this action.",
+      });
+    }
+    throw error;
+  }
+
+  requirePermission({ id: userId, roles: user?.roles }, "User", action, {
+    data: { id: record.id },
+  });
+
+  return { userId, record };
+}
+
 export const userRouter = createTRPCRouter({
   getUser: permissionProcedure("User", "view")
     .meta({
@@ -77,25 +113,11 @@ export const userRouter = createTRPCRouter({
       // Owner-scoped Settings read (spec #81, ticket #82): tRPC-only,
       // auto-excluded from the versioned Document.
       const { user } = ctx;
-      const userId = requireUserId(user);
+      const owned = await requireOwner(user, "view", (userId) =>
+        getOwnProfile(ctx.db, userId)
+      );
 
-      requirePermission({ id: userId, roles: user?.roles }, "User", "view", {
-        data: { id: userId },
-      });
-
-      try {
-        return await getOwnProfile(ctx.db, userId);
-      } catch (error) {
-        // Missing rows deny as FORBIDDEN so guarded reads never leak
-        // existence (anti-probing, same as row-level write checks).
-        if (error instanceof TRPCError && error.code === "NOT_FOUND") {
-          throw new TRPCError({
-            code: "FORBIDDEN",
-            message: "You do not have permission to perform this action.",
-          });
-        }
-        throw error;
-      }
+      return { success: true as const, data: owned.record };
     }),
 
   updateProfile: permissionProcedure("User", "update")
@@ -106,25 +128,9 @@ export const userRouter = createTRPCRouter({
       // Thin controller: coarse gate above, row-level re-check on the
       // fetched record below; a missing record denies as FORBIDDEN.
       const { user } = ctx;
-      const userId = requireUserId(user);
-
-      let existing: { id: string };
-      try {
-        const current = await getOwnProfile(ctx.db, userId);
-        existing = { id: current.data.id };
-      } catch (error) {
-        if (error instanceof TRPCError && error.code === "NOT_FOUND") {
-          throw new TRPCError({
-            code: "FORBIDDEN",
-            message: "You do not have permission to perform this action.",
-          });
-        }
-        throw error;
-      }
-
-      requirePermission({ id: userId, roles: user?.roles }, "User", "update", {
-        data: { id: existing.id },
-      });
+      const { userId } = await requireOwner(user, "update", (id) =>
+        getOwnProfile(ctx.db, id)
+      );
 
       return updateOwnProfile(ctx.db, userId, input);
     }),
@@ -137,23 +143,11 @@ export const userRouter = createTRPCRouter({
       // email plus whether a password exists so the panel can pick the
       // change-password or set-password form — never the hash itself.
       const { user } = ctx;
-      const userId = requireUserId(user);
+      const owned = await requireOwner(user, "view", (userId) =>
+        getOwnAccount(ctx.db, userId)
+      );
 
-      requirePermission({ id: userId, roles: user?.roles }, "User", "view", {
-        data: { id: userId },
-      });
-
-      try {
-        return await getOwnAccount(ctx.db, userId);
-      } catch (error) {
-        if (error instanceof TRPCError && error.code === "NOT_FOUND") {
-          throw new TRPCError({
-            code: "FORBIDDEN",
-            message: "You do not have permission to perform this action.",
-          });
-        }
-        throw error;
-      }
+      return { success: true as const, data: owned.record };
     }),
 
   updateEmail: permissionProcedure("User", "update")
@@ -165,25 +159,9 @@ export const userRouter = createTRPCRouter({
       // fetched record below; a missing record denies as FORBIDDEN.
       // Uniqueness conflicts surface as CONFLICT for inline display.
       const { user } = ctx;
-      const userId = requireUserId(user);
-
-      let existing: { id: string };
-      try {
-        const current = await getOwnAccount(ctx.db, userId);
-        existing = { id: current.data.id };
-      } catch (error) {
-        if (error instanceof TRPCError && error.code === "NOT_FOUND") {
-          throw new TRPCError({
-            code: "FORBIDDEN",
-            message: "You do not have permission to perform this action.",
-          });
-        }
-        throw error;
-      }
-
-      requirePermission({ id: userId, roles: user?.roles }, "User", "update", {
-        data: { id: existing.id },
-      });
+      const { userId } = await requireOwner(user, "update", (id) =>
+        getOwnAccount(ctx.db, id)
+      );
 
       return updateOwnEmail(ctx.db, userId, input.email);
     }),
@@ -196,25 +174,9 @@ export const userRouter = createTRPCRouter({
       // A wrong current password denies as UNAUTHORIZED; weak replacements
       // reject as BAD_REQUEST with guidance. Same thin-controller shape.
       const { user } = ctx;
-      const userId = requireUserId(user);
-
-      let existing: { id: string };
-      try {
-        const current = await getOwnAccount(ctx.db, userId);
-        existing = { id: current.data.id };
-      } catch (error) {
-        if (error instanceof TRPCError && error.code === "NOT_FOUND") {
-          throw new TRPCError({
-            code: "FORBIDDEN",
-            message: "You do not have permission to perform this action.",
-          });
-        }
-        throw error;
-      }
-
-      requirePermission({ id: userId, roles: user?.roles }, "User", "update", {
-        data: { id: existing.id },
-      });
+      const { userId } = await requireOwner(user, "update", (id) =>
+        getOwnAccount(ctx.db, id)
+      );
 
       return changeOwnPassword(ctx.db, userId, input);
     }),
@@ -227,25 +189,9 @@ export const userRouter = createTRPCRouter({
       // current-password field. Refuses with CONFLICT once a password
       // already exists so the proof-bearing path stays mandatory there.
       const { user } = ctx;
-      const userId = requireUserId(user);
-
-      let existing: { id: string };
-      try {
-        const current = await getOwnAccount(ctx.db, userId);
-        existing = { id: current.data.id };
-      } catch (error) {
-        if (error instanceof TRPCError && error.code === "NOT_FOUND") {
-          throw new TRPCError({
-            code: "FORBIDDEN",
-            message: "You do not have permission to perform this action.",
-          });
-        }
-        throw error;
-      }
-
-      requirePermission({ id: userId, roles: user?.roles }, "User", "update", {
-        data: { id: existing.id },
-      });
+      const { userId } = await requireOwner(user, "update", (id) =>
+        getOwnAccount(ctx.db, id)
+      );
 
       return setOwnPassword(ctx.db, userId, input);
     }),
