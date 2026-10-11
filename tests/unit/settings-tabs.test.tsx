@@ -55,6 +55,12 @@ vi.mock("@/trpc/react", () => ({
       setPassword: {
         useMutation: () => ({ mutateAsync: setPassword, isPending: false }),
       },
+      deleteAllUserProgress: {
+        useMutation: () => ({ mutateAsync: vi.fn(), isPending: false }),
+      },
+      deleteAllUserAchievements: {
+        useMutation: () => ({ mutateAsync: vi.fn(), isPending: false }),
+      },
     },
   },
 }));
@@ -180,9 +186,13 @@ describe("Settings tabs (#82)", () => {
     expect(await screen.findByText("That email is taken.")).toBeInTheDocument();
   });
 
-  it("renders placeholders for tickets that come later", () => {
+  it("renders the live Danger panel with no placeholders remaining (#85)", async () => {
+    const user = userEvent.setup();
     render(<SettingsTabs account={account} profile={initial} />);
-    fireEvent.click(screen.getByRole("tab", { name: "Danger" }));
-    expect(screen.getByText(/danger actions ship/i)).toBeInTheDocument();
+    await user.click(screen.getByRole("tab", { name: "Danger" }));
+    expect(screen.getByText(/danger zone/i)).toBeInTheDocument();
+    expect(
+      screen.queryByText(/ship in a later ticket/i)
+    ).not.toBeInTheDocument();
   });
 });

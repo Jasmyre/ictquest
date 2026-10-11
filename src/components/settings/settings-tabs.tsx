@@ -1,38 +1,10 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AccountForm, type SettingsAccount } from "./account-form";
 import { AppearanceForm } from "./appearance-form";
+import { DangerPanel } from "./danger-panel";
 import { ProfileForm, type SettingsProfile } from "./profile-form";
-
-function PlaceholderPanel({
-  title,
-  description,
-  body,
-}: {
-  title: string;
-  description: string;
-  body: string;
-}) {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg">{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="text-muted-foreground text-sm">{body}</p>
-      </CardContent>
-    </Card>
-  );
-}
 
 /**
  * Settings tab shell (spec #81, ticket #82).
@@ -41,9 +13,9 @@ function PlaceholderPanel({
  * in). Mobile renders the grouped-card row tokens (rounded card,
  * separators, reduced-motion safe); desktop docks the same list as a
  * sidebar. Profile (#82), Appearance (#83, local-only via
- * `next-themes`, no server persistence), and Account (#84) are live —
- * Danger renders a placeholder, and Tokens stays disabled with an exact
- * `In development` badge.
+ * `next-themes`, no server persistence), Account (#84), and Danger
+ * (#85, duplicates profile reset actions) are live — Tokens stays
+ * disabled with an exact `In development` badge.
  */
 export function SettingsTabs({
   profile,
@@ -109,11 +81,7 @@ export function SettingsTabs({
           <AccountForm account={account} />
         </TabsContent>
         <TabsContent className="mt-0" value="danger">
-          <PlaceholderPanel
-            body="Danger actions ship in a later ticket — they will duplicate the profile reset actions."
-            description="Reset your learning data."
-            title="Danger"
-          />
+          <DangerPanel />
         </TabsContent>
       </div>
     </Tabs>
