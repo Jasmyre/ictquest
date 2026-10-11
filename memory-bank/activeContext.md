@@ -4,6 +4,16 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- Ticket #86 done (branch `feat/settings-86`, worktree `../ictquest-86`,
+  pushed to origin, synced with `feat/settings-page` tip — already up to
+  date): Settings polish — Tokens tab verified disabled (`In development`
+  badge, `aria-disabled`, no activatable panel, pointer + ArrowRight-skip
+  keyboard coverage), grouped-card/sidebar/reduced-motion/focus-visible
+  class pins, Settings/Profile/Admin-manage glossary in CONTEXT.md. No
+  production code change (shell already met spec). Gates: ultracite clean,
+  typecheck clean, test:all 258/258. Playwright authed pass skipped: repo
+  has no auth-setup/storageState pattern (Playwright has no seeded
+  sessions per dashboard.spec.ts), so building it was out of scope.
 - Settings integration merged (`feat/settings-page` @ a247f6c): #83
   Appearance + #84 Account + #85 Danger merged in order (d4c1681,
   78fbf73, 37b5d82) plus follow-up a247f6c. All four panels live

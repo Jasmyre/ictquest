@@ -110,15 +110,59 @@ describe("Settings tabs (#82)", () => {
     expect(screen.getByText("In development")).toBeInTheDocument();
   });
 
-  it("keeps the Tokens tab unactivatable", () => {
+  it("keeps the Tokens tab unactivatable by pointer and keyboard (#86)", async () => {
+    const user = userEvent.setup();
     render(<SettingsTabs account={account} profile={initial} />);
     const tokens = screen.getByRole("tab", { name: /tokens/i });
-    fireEvent.click(tokens);
+    await user.click(tokens);
     expect(tokens).toHaveAttribute("aria-selected", "false");
-    expect(screen.getByRole("tab", { name: "Profile" })).toHaveAttribute(
+    // Arrow-key navigation skips the disabled Tokens tab (Account -> Danger).
+    await user.click(screen.getByRole("tab", { name: "Account" }));
+    await user.keyboard("{ArrowRight}");
+    expect(screen.getByRole("tab", { name: "Danger" })).toHaveAttribute(
       "aria-selected",
       "true"
     );
+    expect(tokens).toHaveAttribute("aria-selected", "false");
+  });
+
+  it("renders no activatable panel for the Tokens tab (#86)", async () => {
+    const user = userEvent.setup();
+    render(<SettingsTabs account={account} profile={initial} />);
+    await user.click(screen.getByRole("tab", { name: "Danger" }));
+    // Every live tab owns a tabpanel; the disabled Tokens trigger points at
+    // no panel element, so there is nothing to activate.
+    const tokens = screen.getByRole("tab", { name: /tokens/i });
+    const panelId = tokens.getAttribute("aria-controls");
+    expect(panelId).toBeTruthy();
+    expect(
+      panelId ? document.getElementById(panelId) : null
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "Danger" })).toHaveAttribute(
+      "aria-selected",
+      "true"
+    );
+  });
+
+  it("keeps grouped-card parity on mobile plus sidebar tablist on desktop (#86)", () => {
+    render(<SettingsTabs account={account} profile={initial} />);
+    const tablist = screen.getByRole("tablist");
+    for (const token of [
+      "rounded-xl",
+      "border",
+      "bg-card",
+      "motion-reduce:transition-none",
+      "md:w-56",
+    ]) {
+      expect(tablist).toHaveClass(token);
+    }
+    const tokens = screen.getByRole("tab", { name: /tokens/i });
+    for (const token of [
+      "focus-visible:ring-2",
+      "motion-reduce:transition-none",
+    ]) {
+      expect(tokens).toHaveClass(token);
+    }
   });
 
   it("switches live panels by keyboard and click", async () => {
