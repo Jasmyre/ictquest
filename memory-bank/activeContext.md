@@ -100,7 +100,13 @@ Next: push the stack to `origin/main` (`git push`).
 
 ## Open questions
 
-- Settings spec published as #81 (`ready-for-agent`): new owner-scoped `/settings` page (Profile/Appearance/Account/Danger live, Tokens disabled with `In development` badge; Danger duplicated, not moved; theme local-only; credentials production-ready via tRPC `permissionProcedure` seam).
+- Settings spec #81 implemented on `feat/settings-page` (tickets #82–#86
+  merged + code-review fixes; ADR-0010 for email re-verification):
+  owner-scoped `/settings` (Profile/Appearance/Account/Danger live, Tokens
+  disabled `In development`; Danger duplicates profile actions; local-only
+  theme; credentials via tRPC `permissionProcedure` seam). PR #87 ready for
+  review (closes #81–#86). Gates: ultracite clean, typecheck clean,
+  test:all 265/265.
 - DB split: create the `DATABASE_URL` secret + `production` environment in
   GitHub repo settings before the first merge to `main` triggers `deploy-prod`;
   decide whether to also set a shared `DATABASE_URL_DEV` for the team.
