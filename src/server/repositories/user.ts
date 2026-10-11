@@ -5,6 +5,8 @@ export type UserDb = Pick<PrismaClient, "user" | "role">;
 
 export type ProfileRow = {
   id: string;
+  name: string;
+  userName: string | null;
   biography: string | null;
   isPrivate: boolean;
 };
@@ -51,7 +53,12 @@ export type UserRepository = {
   findProfile(userId: string): Promise<ProfileRow | null>;
   updateProfile(
     userId: string,
-    data: { biography?: string | null; isPrivate?: boolean }
+    data: {
+      name?: string;
+      userName?: string | null;
+      biography?: string | null;
+      isPrivate?: boolean;
+    }
   ): Promise<ProfileRow>;
   findById(userId: string): Promise<{ id: string } | null>;
   findSessionOwner(userId: string): Promise<SessionOwnerRow | null>;
@@ -72,17 +79,34 @@ export function createUserRepository(db: UserDb): UserRepository {
     findProfile(userId: string): Promise<ProfileRow | null> {
       return db.user.findUnique({
         where: { id: userId },
-        select: { id: true, biography: true, isPrivate: true },
+        select: {
+          id: true,
+          name: true,
+          userName: true,
+          biography: true,
+          isPrivate: true,
+        },
       });
     },
     updateProfile(
       userId: string,
-      data: { biography?: string | null; isPrivate?: boolean }
+      data: {
+        name?: string;
+        userName?: string | null;
+        biography?: string | null;
+        isPrivate?: boolean;
+      }
     ): Promise<ProfileRow> {
       return db.user.update({
         where: { id: userId },
         data,
-        select: { id: true, biography: true, isPrivate: true },
+        select: {
+          id: true,
+          name: true,
+          userName: true,
+          biography: true,
+          isPrivate: true,
+        },
       });
     },
     findById(userId: string): Promise<{ id: string } | null> {

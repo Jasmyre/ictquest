@@ -4,6 +4,15 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- Ticket #82 landed (branch `feat/settings-82`, worktree `../ictquest-82`):
+  owner-scoped `/settings` with tab shell (Profile live; Appearance/Account/
+  Danger placeholders; Tokens disabled with exact `In development` badge) and
+  functional Profile panel (display name, userName, biography 500-char
+  empty→null, isPrivate toggle) through thin-controller `user.getProfile` /
+  `user.updateProfile` (permissionProcedure + row re-check, missing row =
+  FORBIDDEN). Gates: ultracite clean, typecheck clean, test:all 235/235.
+  Next: tickets #83+ (Appearance, Account, Tokens, Danger).
+
 Design-system + `/` polish (uncommitted): `docs/design-system.md` created —
 page shell, header, tokens, cards/grids, motion, states derived from
 `/lessons` + `/social` with `/` as canonical; `/` stats gain stagger

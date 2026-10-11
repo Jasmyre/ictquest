@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -5,7 +6,11 @@ import {
   requireUserId,
 } from "@/server/api/trpc";
 import { requirePermission } from "@/server/permissions";
-import { meOutputSchema } from "@/server/schemas/user";
+import {
+  meOutputSchema,
+  profileOutputSchema,
+  updateProfileInputSchema,
+} from "@/server/schemas/user";
 import {
   deleteAllAchievements,
   listAchievements,
@@ -16,6 +21,10 @@ import {
   deleteAllProgress,
   listProgress,
 } from "@/server/services/progress";
+import {
+  getOwnProfile,
+  updateOwnProfile,
+} from "@/server/services/user-profile";
 
 export const userRouter = createTRPCRouter({
   getUser: permissionProcedure("User", "view")
@@ -48,6 +57,64 @@ export const userRouter = createTRPCRouter({
           roles: Array.isArray(user?.roles) ? [...user.roles] : undefined,
         },
       };
+    }),
+
+  getProfile: permissionProcedure("User", "view")
+    .output(profileOutputSchema)
+    .query(async ({ ctx }) => {
+      // Owner-scoped Settings read (spec #81, ticket #82): tRPC-only,
+      // auto-excluded from the versioned Document.
+      const { user } = ctx;
+      const userId = requireUserId(user);
+
+      requirePermission({ id: userId, roles: user?.roles }, "User", "view", {
+        data: { id: userId },
+      });
+
+      try {
+        return await getOwnProfile(ctx.db, userId);
+      } catch (error) {
+        // Missing rows deny as FORBIDDEN so guarded reads never leak
+        // existence (anti-probing, same as row-level write checks).
+        if (error instanceof TRPCError && error.code === "NOT_FOUND") {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "You do not have permission to perform this action.",
+          });
+        }
+        throw error;
+      }
+    }),
+
+  updateProfile: permissionProcedure("User", "update")
+    .input(updateProfileInputSchema)
+    .output(profileOutputSchema)
+    .mutation(async ({ ctx, input }) => {
+      // Owner-scoped Settings write (spec #81, ticket #82): tRPC-only.
+      // Thin controller: coarse gate above, row-level re-check on the
+      // fetched record below; a missing record denies as FORBIDDEN.
+      const { user } = ctx;
+      const userId = requireUserId(user);
+
+      let existing: { id: string };
+      try {
+        const current = await getOwnProfile(ctx.db, userId);
+        existing = { id: current.data.id };
+      } catch (error) {
+        if (error instanceof TRPCError && error.code === "NOT_FOUND") {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "You do not have permission to perform this action.",
+          });
+        }
+        throw error;
+      }
+
+      requirePermission({ id: userId, roles: user?.roles }, "User", "update", {
+        data: { id: existing.id },
+      });
+
+      return updateOwnProfile(ctx.db, userId, input);
     }),
 
   addProgress: permissionProcedure("Progress", "create")
