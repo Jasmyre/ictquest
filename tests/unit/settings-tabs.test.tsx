@@ -104,9 +104,9 @@ describe("Settings tabs (#82)", () => {
 
   it("renders placeholders for tickets that come later", () => {
     render(<SettingsTabs profile={initial} />);
-    fireEvent.click(screen.getByRole("tab", { name: "Appearance" }));
-    expect(screen.getByText(/appearance settings ship/i)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("tab", { name: "Account" }));
     expect(screen.getByText(/account settings ship/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("tab", { name: "Danger" }));
+    expect(screen.getByText(/danger actions ship/i)).toBeInTheDocument();
   });
 });

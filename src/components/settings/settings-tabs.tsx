@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AppearanceForm } from "./appearance-form";
 import { ProfileForm, type SettingsProfile } from "./profile-form";
 
 function PlaceholderPanel({
@@ -38,9 +39,10 @@ function PlaceholderPanel({
  * Real `tablist` semantics via Radix Tabs (arrow-key navigation built
  * in). Mobile renders the grouped-card row tokens (rounded card,
  * separators, reduced-motion safe); desktop docks the same list as a
- * sidebar. Only the Profile panel is live in this ticket — Appearance,
- * Account, and Danger render placeholders, and Tokens stays disabled
- * with an exact `In development` badge.
+ * sidebar. Profile (#82) and Appearance (#83, local-only via
+ * `next-themes`, no server persistence) are live — Account and Danger
+ * render placeholders, and Tokens stays disabled with an exact
+ * `In development` badge.
  */
 export function SettingsTabs({ profile }: { profile: SettingsProfile }) {
   return (
@@ -94,11 +96,7 @@ export function SettingsTabs({ profile }: { profile: SettingsProfile }) {
           <ProfileForm profile={profile} />
         </TabsContent>
         <TabsContent className="mt-0" value="appearance">
-          <PlaceholderPanel
-            body="Appearance settings ship in a later ticket — theme stays local-only until then."
-            description="Switch light, dark, or system theme."
-            title="Appearance"
-          />
+          <AppearanceForm />
         </TabsContent>
         <TabsContent className="mt-0" value="account">
           <PlaceholderPanel

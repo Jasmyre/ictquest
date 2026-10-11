@@ -4,6 +4,13 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- Ticket #83 built (branch `feat/settings-83`, worktree `../ictquest-83`,
+  pushed, based on integration `feat/settings-page` tip 758c962): Appearance
+  panel live (`AppearanceForm` — `useTheme` + mounted guard, light/dark/system
+  radio, applies immediately, persists to `localStorage` via next-themes, never
+  hits the server). Gates: ultracite clean, typecheck clean, test:all 238/238
+  (3 new appearance component tests). Next: tickets #84+ (Account, Tokens,
+  Danger).
 - Ticket #82 landed (branch `feat/settings-82`, worktree `../ictquest-82`):
   owner-scoped `/settings` with tab shell (Profile live; Appearance/Account/
   Danger placeholders; Tokens disabled with exact `In development` badge) and
