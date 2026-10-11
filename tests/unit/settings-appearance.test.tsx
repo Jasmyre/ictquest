@@ -21,10 +21,30 @@ const mutateAsync = vi.fn(async () => ({
 
 vi.mock("@/trpc/react", () => ({
   api: {
-    useUtils: () => ({ user: { getProfile: { invalidate: vi.fn() } } }),
+    useUtils: () => ({
+      user: {
+        getProfile: { invalidate: vi.fn() },
+        getAccount: { invalidate: vi.fn() },
+      },
+    }),
     user: {
       updateProfile: {
         useMutation: () => ({ mutateAsync, isPending: false }),
+      },
+      updateEmail: {
+        useMutation: () => ({ mutateAsync: vi.fn(), isPending: false }),
+      },
+      updatePassword: {
+        useMutation: () => ({ mutateAsync: vi.fn(), isPending: false }),
+      },
+      setPassword: {
+        useMutation: () => ({ mutateAsync: vi.fn(), isPending: false }),
+      },
+      deleteAllUserProgress: {
+        useMutation: () => ({ mutateAsync: vi.fn(), isPending: false }),
+      },
+      deleteAllUserAchievements: {
+        useMutation: () => ({ mutateAsync: vi.fn(), isPending: false }),
       },
     },
   },
@@ -41,10 +61,17 @@ const initial = {
   isPrivate: false,
 };
 
+const account = {
+  id: "learner-a",
+  email: "learner@example.com",
+  emailVerified: new Date("2026-01-01T00:00:00.000Z"),
+  hasPassword: true,
+};
+
 function renderAppearance() {
   return render(
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <SettingsTabs profile={initial} />
+      <SettingsTabs account={account} profile={initial} />
     </ThemeProvider>
   );
 }
