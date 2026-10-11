@@ -29,8 +29,10 @@ import { api } from "@/trpc/react";
  * Settings Danger panel (spec #81, ticket #85).
  *
  * Duplicate (not move) of the profile `DeleteDataCard` reset-data flow:
- * sequential `deleteAllUserAchievements` then `deleteAllUserProgress`
- * against the SAME Procedures. The profile buttons stay untouched.
+ * the same two Procedures (`deleteAllUserAchievements`,
+ * `deleteAllUserProgress`) exposed as SEPARATE actions, each with its
+ * own confirm flow and per-action failure handling. The profile buttons
+ * stay untouched.
  */
 export function DangerPanel() {
   const [isPending, startTransition] = useTransition();
@@ -41,25 +43,48 @@ export function DangerPanel() {
   const deleteAllUserAchievementsMutation =
     api.user.deleteAllUserAchievements.useMutation();
 
-  const handleReset = () => {
+  const handleDeleteProgress = () => {
     startTransition(async () => {
       try {
-        await deleteAllUserAchievementsMutation.mutateAsync();
         await deleteAllUserProgressMutation.mutateAsync();
 
         router.refresh();
 
         toast({
-          description: "Data reset successfully",
+          description: "Learning progress deleted.",
           className: toastStyle,
         });
       } catch (error: unknown) {
-        console.error("Reset data error:", error);
+        console.error("Delete progress error:", error);
         toast({
           description:
             error instanceof Error
               ? error?.message
-              : "Failed to reset data. Please try again later.",
+              : "Failed to delete progress. Please try again later.",
+          className: toastStyle,
+        });
+      }
+    });
+  };
+
+  const handleDeleteAchievements = () => {
+    startTransition(async () => {
+      try {
+        await deleteAllUserAchievementsMutation.mutateAsync();
+
+        router.refresh();
+
+        toast({
+          description: "Achievements deleted.",
+          className: toastStyle,
+        });
+      } catch (error: unknown) {
+        console.error("Delete achievements error:", error);
+        toast({
+          description:
+            error instanceof Error
+              ? error?.message
+              : "Failed to delete achievements. Please try again later.",
           className: toastStyle,
         });
       }
@@ -70,7 +95,10 @@ export function DangerPanel() {
     <Card>
       <CardHeader>
         <CardTitle className="text-lg">Danger zone</CardTitle>
-        <CardDescription>Reset your learning data.</CardDescription>
+        <CardDescription>
+          Delete your learning data. Each action is separate and cannot be
+          undone.
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
         <AlertDialog>
@@ -80,22 +108,50 @@ export function DangerPanel() {
               disabled={isPending}
               variant="outline"
             >
-              Reset data
+              Delete learning progress
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogTitle>Delete learning progress?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will permanently reset your
-                data.
+                This action cannot be undone. This will permanently delete your
+                learning progress.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
-              <AlertDialogAction asChild onClick={handleReset}>
+              <AlertDialogAction asChild onClick={handleDeleteProgress}>
                 <Button disabled={isPending} variant="destructive">
-                  Reset data
+                  Delete progress
+                </Button>
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              className="w-full justify-between transition-transform duration-150 ease-out active:scale-[0.98]"
+              disabled={isPending}
+              variant="outline"
+            >
+              Delete achievements
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete achievements?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your
+                achievements.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+              <AlertDialogAction asChild onClick={handleDeleteAchievements}>
+                <Button disabled={isPending} variant="destructive">
+                  Delete achievements
                 </Button>
               </AlertDialogAction>
             </AlertDialogFooter>

@@ -106,7 +106,7 @@ describe("Settings account procedures (#84)", () => {
     });
   });
 
-  it("normalizes email, resets verification, and reports pending verification", async () => {
+  it("normalizes email and resets verification on change", async () => {
     const { db } = fakeAccountDb(await seedRows());
     const caller = await callerFor(db, learner);
     const result = await caller.user.updateEmail({
@@ -118,7 +118,6 @@ describe("Settings account procedures (#84)", () => {
         id: "learner-a",
         email: "new@example.com",
         emailVerified: null,
-        verificationRequired: true,
       },
     });
   });
@@ -263,6 +262,6 @@ describe("credential domain rules (#84)", () => {
     expect(result.data.emailVerified).toEqual(
       new Date("2026-01-01T00:00:00.000Z")
     );
-    expect(result.data.verificationRequired).toBe(false);
+    expect(result.data).not.toHaveProperty("verificationRequired");
   });
 });

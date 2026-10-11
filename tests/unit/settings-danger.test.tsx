@@ -20,6 +20,7 @@ const profileMutate = vi.fn(async () => ({
     isPrivate: false,
   },
 }));
+const toast = vi.fn();
 
 vi.mock("@/trpc/react", () => ({
   api: {
@@ -55,7 +56,9 @@ vi.mock("@/trpc/react", () => ({
   },
 }));
 
-vi.mock("@/hooks/use-toast", () => ({ toast: vi.fn() }));
+vi.mock("@/hooks/use-toast", () => ({
+  toast: (...args: unknown[]) => toast(...args),
+}));
 
 import { SettingsTabs } from "@/components/settings/settings-tabs";
 
@@ -74,35 +77,83 @@ const account = {
   hasPassword: true,
 };
 
+async function openDanger() {
+  const user = userEvent.setup();
+  render(<SettingsTabs account={account} profile={initial} />);
+  await user.click(screen.getByRole("tab", { name: "Danger" }));
+  return user;
+}
+
 describe("Settings Danger tab (#85)", () => {
-  it("renders a Reset data confirm flow in the Danger panel", async () => {
-    const user = userEvent.setup();
-    render(<SettingsTabs account={account} profile={initial} />);
-    await user.click(screen.getByRole("tab", { name: "Danger" }));
+  it("renders two separate delete actions, each with its own confirm flow", async () => {
+    await openDanger();
     expect(
-      screen.getByRole("button", { name: /reset data/i })
+      screen.getByRole("button", { name: "Delete learning progress" })
     ).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: /^reset data$/i }));
     expect(
-      await screen.findByText(/this action cannot be undone/i)
+      screen.getByRole("button", { name: "Delete achievements" })
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /^reset data$/i })
+    ).not.toBeInTheDocument();
   });
 
-  it("calls the same Procedures as the profile reset (achievements then progress)", async () => {
-    const user = userEvent.setup();
-    render(<SettingsTabs account={account} profile={initial} />);
-    await user.click(screen.getByRole("tab", { name: "Danger" }));
-    await user.click(screen.getByRole("button", { name: /^reset data$/i }));
-    const confirm = await screen.findByRole("button", {
-      name: /^reset data$/i,
-    });
-    fireEvent.click(confirm);
+  it("deletes only progress through the progress confirm flow", async () => {
+    deleteProgress.mockClear();
+    deleteAchievements.mockClear();
+    await openDanger();
+    await userEvent
+      .setup()
+      .click(screen.getByRole("button", { name: "Delete learning progress" }));
+    expect(
+      await screen.findByText(/permanently delete your learning progress/i)
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Delete progress" }));
     await waitFor(() => {
-      expect(deleteAchievements).toHaveBeenCalled();
       expect(deleteProgress).toHaveBeenCalled();
     });
-    expect(deleteAchievements.mock.invocationCallOrder[0]).toBeLessThan(
-      deleteProgress.mock.invocationCallOrder[0]
+    expect(deleteAchievements).not.toHaveBeenCalled();
+  });
+
+  it("deletes only achievements through the achievements confirm flow", async () => {
+    deleteProgress.mockClear();
+    deleteAchievements.mockClear();
+    await openDanger();
+    await userEvent
+      .setup()
+      .click(screen.getByRole("button", { name: "Delete achievements" }));
+    expect(
+      await screen.findByText(/permanently delete your achievements/i)
+    ).toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole("button", { name: /^delete achievements$/i })
     );
+    await waitFor(() => {
+      expect(deleteAchievements).toHaveBeenCalled();
+    });
+    expect(deleteProgress).not.toHaveBeenCalled();
+  });
+
+  it("reports a progress failure per-action without touching achievements", async () => {
+    deleteProgress.mockClear();
+    deleteAchievements.mockClear();
+    toast.mockClear();
+    deleteProgress.mockRejectedValueOnce(new Error("Progress store is down."));
+    await openDanger();
+    await userEvent
+      .setup()
+      .click(screen.getByRole("button", { name: "Delete learning progress" }));
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Delete progress" })
+    );
+    await waitFor(() => {
+      expect(deleteProgress).toHaveBeenCalled();
+    });
+    expect(deleteAchievements).not.toHaveBeenCalled();
+    await waitFor(() => {
+      expect(toast).toHaveBeenCalledWith(
+        expect.objectContaining({ description: "Progress store is down." })
+      );
+    });
   });
 });

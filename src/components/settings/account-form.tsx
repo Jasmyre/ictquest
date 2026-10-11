@@ -94,9 +94,10 @@ export function AccountForm({ account }: { account: SettingsAccount }) {
       await utils.user.getAccount.invalidate();
       router.refresh();
       toast({
-        description: result.data.verificationRequired
-          ? "Email updated — verify your new address before it takes effect."
-          : "Email is already up to date.",
+        description:
+          result.data.emailVerified === null
+            ? "Email updated — verify your new address before it takes effect."
+            : "Email is already up to date.",
         className: toastStyle,
       });
     } catch (error: unknown) {
