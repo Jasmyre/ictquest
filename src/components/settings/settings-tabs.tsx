@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DangerPanel } from "./danger-panel";
 import { ProfileForm, type SettingsProfile } from "./profile-form";
 
 function PlaceholderPanel({
@@ -108,11 +109,7 @@ export function SettingsTabs({ profile }: { profile: SettingsProfile }) {
           />
         </TabsContent>
         <TabsContent className="mt-0" value="danger">
-          <PlaceholderPanel
-            body="Danger actions ship in a later ticket — they will duplicate the profile reset actions."
-            description="Reset your learning data."
-            title="Danger"
-          />
+          <DangerPanel />
         </TabsContent>
       </div>
     </Tabs>

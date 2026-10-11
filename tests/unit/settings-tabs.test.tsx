@@ -26,6 +26,12 @@ vi.mock("@/trpc/react", () => ({
       updateProfile: {
         useMutation: () => ({ mutateAsync, isPending: false }),
       },
+      deleteAllUserProgress: {
+        useMutation: () => ({ mutateAsync: vi.fn(), isPending: false }),
+      },
+      deleteAllUserAchievements: {
+        useMutation: () => ({ mutateAsync: vi.fn(), isPending: false }),
+      },
     },
   },
 }));
