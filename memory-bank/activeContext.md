@@ -4,7 +4,13 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
-Design-system + `/` polish (uncommitted): `docs/design-system.md` created —
+- shadcn MCP for opencode (branch `chore/shadcn-mcp-opencode`, merged to
+  `main`): `npx shadcn@latest mcp init --client opencode` adds the `shadcn`
+  local MCP server (`["npx", "shadcn@latest", "mcp"]`) to `opencode.json`
+  plus the `shadcn` CLI dep; formatter pinned to single-line `command`
+  arrays. Gates: ultracite clean, typecheck clean, test:all 221/221.
+  Restart opencode to load the new server.
+- Design-system + `/` polish (uncommitted): `docs/design-system.md` created —
 page shell, header, tokens, cards/grids, motion, states derived from
 `/lessons` + `/social` with `/` as canonical; `/` stats gain stagger
 (50ms) + `cubic-bezier(0.23,1,0.32,1)` hover lift. Gates: typecheck clean,

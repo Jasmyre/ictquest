@@ -236,7 +236,12 @@ same `var` violation. Gates: `check` 291 files clean, typecheck clean.
     (client-safe `src/lib/role-names.ts` split); CI build fix
      (`http://localhost:3000` fallback + `BASE_URL`/`NEXTAUTH_URL` exports);
      Biome scope fix (bot-managed `release-please-*.json` excluded).
-+  - Settings spec #81 (2026-10-10): grilled + published (`ready-for-agent`);
++  - shadcn MCP for opencode (2026-10-13, branch `chore/shadcn-mcp-opencode`,
+  merged to `main`): official `mcp init --client opencode` per
+  `ui.shadcn.com/docs/registry/mcp` — `shadcn` local MCP server in
+  `opencode.json`, `shadcn` CLI dep in `package.json`. Gates: ultracite
+  clean, typecheck clean, test:all 221/221.
+- Settings spec #81 (2026-10-10): grilled + published (`ready-for-agent`);
 +    owner-scoped Settings page (Profile/Appearance/Account/Danger live, Tokens
 +    disabled `In development`; Danger duplicated; local-only theme; tRPC seam).
 +  - Settings tickets #82-#86 (2026-10-10): 5 tracer bullets under parent #81
