@@ -1,6 +1,11 @@
 import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { createUserRepository } from "@/server/repositories/user";
+import {
+  BIOGRAPHY_MAX_LENGTH,
+  DISPLAY_NAME_MAX_LENGTH,
+  USER_NAME_MAX_LENGTH,
+} from "@/server/schemas/user";
 
 /**
  * User profile service (Slice 1, #58; repository tier in Slice 6, #63).
@@ -11,10 +16,6 @@ import { createUserRepository } from "@/server/repositories/user";
  * public redaction lives in a later slice — this one covers
  * normalization, defaults, and owner round-trip.
  */
-
-export const BIOGRAPHY_MAX_LENGTH = 500;
-export const DISPLAY_NAME_MAX_LENGTH = 100;
-export const USER_NAME_MAX_LENGTH = 32;
 
 type Db = Pick<PrismaClient, "user" | "role">;
 

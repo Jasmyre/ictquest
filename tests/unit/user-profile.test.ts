@@ -3,11 +3,13 @@ import { describe, expect, it, vi } from "vitest";
 import {
   BIOGRAPHY_MAX_LENGTH,
   DISPLAY_NAME_MAX_LENGTH,
+  USER_NAME_MAX_LENGTH,
+} from "@/server/schemas/user";
+import {
   getOwnProfile,
   normalizeBiography,
   normalizeDisplayName,
   normalizeUserName,
-  USER_NAME_MAX_LENGTH,
   updateOwnProfile,
 } from "@/server/services/user-profile";
 

@@ -4,6 +4,19 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- `npm run validate` green 2026-10-13 (uncommitted): `node_modules` was
+  gutted (all real deps UNMET, only extraneous leftovers) — restored via
+  `npm ci`. Build then failed on `server-only` leaking into the client
+  bundle: `profile-form.tsx` ("use client") imported length limits from
+  `@/server/services/user-profile`, which pulls the repository chain.
+  Fix keeps tier boundaries: limits now live in client-safe
+  `src/server/schemas/user.ts`, service imports them, form + unit test
+  import from schemas. Gates: typecheck clean, ultracite clean, test:all
+  265/265, build green. Note: a rogue global `node` shim in
+  `%AppData%/Roaming/npm` (a different Node build whose `util.styleText`
+  rejects arrays) crashes vitest startup — prefix
+  `C:\Program Files\nodejs` in PATH when running npm scripts from pwsh.
+
 - Code-review fix for spec #81 (branch `feat/settings-fix`, worktree
   `../ictquest-fix`, based on `feat/settings-page` tip): Tokens tab
   keyboard-reachable but not activatable, legacy action throws when

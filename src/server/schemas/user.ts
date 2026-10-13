@@ -1,6 +1,17 @@
 import { z } from "zod";
 
 /**
+ * Shared profile length limits (ticket #82, spec #81).
+ *
+ * Client-safe: this module imports only `zod`, so Client Components
+ * (e.g. the settings profile form) import the limits from here instead
+ * of the server-only profile service.
+ */
+export const BIOGRAPHY_MAX_LENGTH = 500;
+export const DISPLAY_NAME_MAX_LENGTH = 100;
+export const USER_NAME_MAX_LENGTH = 32;
+
+/**
  * REST output schemas for the session summary (Migration 18, #41).
  *
  * `GET /v1/me` serves the bearer-or-cookie session summary. Passthrough

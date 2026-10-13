@@ -25,7 +25,7 @@ import { toastStyle } from "@/lib/utils";
 import {
   BIOGRAPHY_MAX_LENGTH,
   USER_NAME_MAX_LENGTH,
-} from "@/server/services/user-profile";
+} from "@/server/schemas/user";
 import { api } from "@/trpc/react";
 
 const profileFormSchema = z.object({
