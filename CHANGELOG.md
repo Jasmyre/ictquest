@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 2.4.0 (2026-10-14)
+
+## What's Changed
+* feat: implement settings page with profile, appearance, account, and danger tabs by @Jasmyre in https://github.com/Jasmyre/ictquest/pull/89
+
+
+**Full Changelog**: https://github.com/Jasmyre/ictquest/compare/v2.3.0...v2.4.0
+
 ## 2.3.0 (2026-10-03)
 
 ## What's Changed
