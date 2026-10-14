@@ -4,6 +4,29 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- Settings page built (#81, uncommitted): owner-scoped `/settings` with
+  sidebar tablist (Profile/Appearance/Account/Tokens-disabled/Danger),
+  new `user-settings` service + `User` router procedures
+  (`getSettings`/`updateSettings`/`updateEmail`/`updatePassword`/`setPassword`)
+  behind `permissionProcedure("User", …)` with service-seam row re-check
+  (FORBIDDEN on missing); email locked when `password` is null (OAuth-only),
+  password strength reuses the auth credential rule (min 6); shadcn
+  `switch`/`textarea`/`toggle-group` added; `cursor-pointer` on all
+  clickables. Gates: typecheck clean, ultracite clean, test:all 221/221,
+  build green (`/settings` PPR).
+- Settings hydration fix + handle removal (2026-10-13, uncommitted):
+  `AppearanceSettingsCard` mounted-gate (next-themes resolves client-side;
+  SSR skeleton placeholder kills the `data-state`/`aria-checked` mismatch,
+  verified 0 console errors in real browser); handle editable removed from
+  Settings (display name stays the identity; `userName` column untouched for
+  nav/profile/admin); tab hint now `Name, bio, visibility`.
+- Settings tabs redesign (2026-10-13, uncommitted): rail rows full-width
+  (`w-full` triggers, wrapper divs replaced with Fragments); mobile gets a
+  `DropDrawer` section switcher (bottom drawer, active check, disabled
+  Tokens) instead of the long vertical list; top-left identity card removed
+  (avatar/name/email/credential badge all duplicated in the cards below).
+  Verified in real browser at 390px (drawer open/select) and 1280px
+  (rail screenshot) with 0 console errors.
 - shadcn MCP for opencode (branch `chore/shadcn-mcp-opencode`, merged to
   `main`): `npx shadcn@latest mcp init --client opencode` adds the `shadcn`
   local MCP server (`["npx", "shadcn@latest", "mcp"]`) to `opencode.json`

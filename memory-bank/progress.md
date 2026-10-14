@@ -246,3 +246,12 @@ same `var` violation. Gates: `check` 291 files clean, typecheck clean.
 +    disabled `In development`; Danger duplicated; local-only theme; tRPC seam).
 +  - Settings tickets #82-#86 (2026-10-10): 5 tracer bullets under parent #81
 +    (1 shell+profile; 2 appearance; 3 account; 4 danger; 5 polish+glossary+gates).
++  - Settings implemented (2026-10-13, uncommitted): full #81 surface —
++    `user-settings` service (email-uniqueness, bcrypt proof, OAuth
++    set-password path, biography normalize), repository `SettingsRow`
++    with derived `hasPassword`, five `User` router procedures with
++    service-seam row re-check; email change blocked when password null;
++    password strength reuses auth rule (min 6); sidebar tablist +
++    `switch`/`textarea`/`toggle-group` shadcn cards, Tokens disabled with
++    `In development` badge, Danger duplicates profile resets. Gates:
++    typecheck clean, ultracite clean, test:all 221/221, build green.
