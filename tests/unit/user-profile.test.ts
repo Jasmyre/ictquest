@@ -2,23 +2,12 @@ import { TRPCError } from "@trpc/server";
 import { describe, expect, it, vi } from "vitest";
 import {
   BIOGRAPHY_MAX_LENGTH,
-  DISPLAY_NAME_MAX_LENGTH,
-  USER_NAME_MAX_LENGTH,
-} from "@/server/schemas/user";
-import {
   getOwnProfile,
   normalizeBiography,
-  normalizeDisplayName,
-  normalizeUserName,
   updateOwnProfile,
 } from "@/server/services/user-profile";
 
-function fakeDb(initial: {
-  name: string;
-  userName: string | null;
-  biography: string | null;
-  isPrivate: boolean;
-}) {
+function fakeDb(initial: { biography: string | null; isPrivate: boolean }) {
   const state = { id: "u1", ...initial };
   return {
     state,
@@ -33,13 +22,6 @@ function fakeDb(initial: {
     },
   };
 }
-
-const seed = {
-  name: "Learner One",
-  userName: "learner-one",
-  biography: null as string | null,
-  isPrivate: false,
-};
 
 describe("user-profile normalization (#58)", () => {
   it("maps empty and whitespace-only biography to unset (null)", () => {
@@ -66,41 +48,21 @@ describe("user-profile normalization (#58)", () => {
   });
 
   it("reads pre-migration rows back as unset plus public", async () => {
-    const { db } = fakeDb(seed);
+    const { db } = fakeDb({ biography: null, isPrivate: false });
     const result = await getOwnProfile(
       db as unknown as Parameters<typeof getOwnProfile>[0],
       "u1"
     );
     expect(result).toEqual({
       success: true,
-      data: { id: "u1", ...seed },
+      data: { id: "u1", biography: null, isPrivate: false },
     });
-  });
-
-  it("normalizes identity fields (trim, empty rules, limits)", () => {
-    expect(normalizeDisplayName("  Ada  ")).toBe("Ada");
-    expect(() => normalizeDisplayName("   ")).toThrowError(TRPCError);
-    expect(normalizeDisplayName("a".repeat(DISPLAY_NAME_MAX_LENGTH))).toBe(
-      "a".repeat(DISPLAY_NAME_MAX_LENGTH)
-    );
-    expect(() =>
-      normalizeDisplayName("a".repeat(DISPLAY_NAME_MAX_LENGTH + 1))
-    ).toThrowError(TRPCError);
-    expect(normalizeUserName("")).toBeNull();
-    expect(normalizeUserName("   ")).toBeNull();
-    expect(normalizeUserName(null)).toBeNull();
-    expect(normalizeUserName("  handle  ")).toBe("handle");
-    expect(() =>
-      normalizeUserName("a".repeat(USER_NAME_MAX_LENGTH + 1))
-    ).toThrowError(TRPCError);
-    expect(normalizeUserName(undefined)).toBeUndefined();
-    expect(normalizeDisplayName(undefined)).toBeUndefined();
   });
 });
 
 describe("user-profile owner update round-trip (#58)", () => {
   it("sets and clears biography while toggling privacy", async () => {
-    const { db, state } = fakeDb(seed);
+    const { db, state } = fakeDb({ biography: null, isPrivate: false });
     const typed = db as unknown as Parameters<typeof updateOwnProfile>[0];
 
     const set = await updateOwnProfile(typed, "u1", {
@@ -109,8 +71,6 @@ describe("user-profile owner update round-trip (#58)", () => {
     });
     expect(set.data).toEqual({
       id: "u1",
-      name: "Learner One",
-      userName: "learner-one",
       biography: "I love ICT",
       isPrivate: true,
     });
@@ -122,33 +82,16 @@ describe("user-profile owner update round-trip (#58)", () => {
     });
     expect(cleared.data).toEqual({
       id: "u1",
-      name: "Learner One",
-      userName: "learner-one",
       biography: null,
       isPrivate: false,
     });
   });
 
-  it("updates display name and handle", async () => {
-    const { db } = fakeDb(seed);
-    const typed = db as unknown as Parameters<typeof updateOwnProfile>[0];
-    const result = await updateOwnProfile(typed, "u1", {
-      name: "  New Name  ",
-      userName: "new-handle",
-    });
-    expect(result.data).toMatchObject({
-      name: "New Name",
-      userName: "new-handle",
-      biography: null,
-    });
-  });
-
   it("leaves untouched fields alone on partial update", async () => {
-    const { db } = fakeDb({ ...seed, biography: "keep me", isPrivate: true });
+    const { db } = fakeDb({ biography: "keep me", isPrivate: true });
     const typed = db as unknown as Parameters<typeof updateOwnProfile>[0];
     const result = await updateOwnProfile(typed, "u1", { isPrivate: false });
     expect(result.data.biography).toBe("keep me");
     expect(result.data.isPrivate).toBe(false);
-    expect(result.data.name).toBe("Learner One");
   });
 });

@@ -1,11 +1,14 @@
 # Email change takes effect only after re-verification
 
-Changing the sign-in email (`user.updateEmail`, spec #81) writes the new
-address immediately but clears `emailVerified`, so the account reads as
-unverified until the new address is verified. A changed email is therefore
-not effective immediately: credential sign-in keeps working, but the
-verified flag stays null and the UI prompts for verification. The
-same-address resubmission is a no-op that preserves the existing flag.
+Changing the sign-in email (`user.updateEmail`, spec #81, `user-settings`
+service) writes the new address immediately but clears `emailVerified`,
+so the account reads as unverified until the new address is verified. A
+changed email is therefore not effective immediately: credential sign-in
+keeps working, but the verified flag stays null and the Email card
+prompts for verification. OAuth-only accounts (no credential password)
+cannot change the email until they set one — the address is the provider
+identity and stays fixed, and resubmissions always reset the flag (no
+same-address no-op).
 
 ## Considered Options
 
@@ -28,15 +31,18 @@ same-address resubmission is a no-op that preserves the existing flag.
 
 ## Consequences
 
-- `updateEmail` normalizes (trim + lowercase), rejects taken addresses
-  as CONFLICT, and persists `{ email, emailVerified: null }` in a
-  single repository write (`user.updateEmail`). The tRPC output carries
-  the null `emailVerified` so the client distinguishes a change from a
-  no-op without a redundant flag field.
+- `updateEmail` normalizes (trim + lowercase), requires a credential
+  password (`BAD_REQUEST` for OAuth-only accounts), rejects taken
+  addresses as CONFLICT, and persists `{ email, emailVerified: null }`
+  in a single repository write (`user.updateEmail`). The unified
+  `settingsOutputSchema` carries the null `emailVerified` so the Email
+  card renders its Verified/Unverified badge without a redundant flag
+  field.
 - Trade-off accepted: a learner who mistypes the new address is locked
   into the unverified state until they correct it — there is no
-  automatic revert to the old address. The Account panel's verify
-  prompt is the recovery path.
+  automatic revert to the old address, and resubmitting even the same
+  address resets the flag. The Email card's verify prompt is the
+  recovery path.
 - If a pending-address flow is ever proposed, this record is the
   baseline it must beat: same safety (never flag an unproven address)
   with a smoother typo recovery.

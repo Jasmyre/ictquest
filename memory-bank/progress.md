@@ -246,13 +246,21 @@ same `var` violation. Gates: `check` 291 files clean, typecheck clean.
 +    disabled `In development`; Danger duplicated; local-only theme; tRPC seam).
 +  - Settings tickets #82-#86 (2026-10-10): 5 tracer bullets under parent #81
 +    (1 shell+profile; 2 appearance; 3 account; 4 danger; 5 polish+glossary+gates).
-+  - Settings code-review fix (2026-10-11, branch `feat/settings-fix`,
-+    worktree `../ictquest-fix`): Tokens trigger keyboard-reachable
-+    (`aria-disabled`, no native `disabled`, controlled-value guard blocks
-+    activation); legacy `update-user-name` throws when signed out;
-+    Danger split into two separate delete actions with per-action confirms;
-+    `requireOwner` router guard + shared credential load/store +
-+    TabsTrigger class consts; `verificationRequired` dropped (redundant
-+    with `emailVerified === null`); CONTEXT.md trimmed to Settings term;
-+    ADR-0010 (email re-verification); logged-out `/settings` e2e spec.
-+    Gates: ultracite clean, typecheck clean, test:all 265/265.
++  - Settings implemented (2026-10-13, uncommitted): full #81 surface —
++    `user-settings` service (email-uniqueness, bcrypt proof, OAuth
++    set-password path, biography normalize), repository `SettingsRow`
++    with derived `hasPassword`, five `User` router procedures with
++    service-seam row re-check; email change blocked when password null;
++    password strength reuses auth rule (min 6); sidebar tablist +
++    `switch`/`textarea`/`toggle-group` shadcn cards, Tokens disabled with
+  +    `In development` badge, Danger duplicates profile resets. Gates:
+  +    typecheck clean, ultracite clean, test:all 221/221, build green.
+  +  - Settings override (2026-10-14, branch `feat/settings-page`,
+  +    uncommitted): newer `chore/shadcn-mcp-opencode` surface wins over the
+  +    #82–#86 implementation — unified `getSettings` contract kept,
+  +    `components/settings/*` + `user-credentials` service + per-tab suites
+  +    removed, `user-profile`/`update-user-name` reverted to base, branch
+  +    merged with `origin/main` (shadcn MCP aboard); ADR-0010 amended to
+  +    the unified contract (OAuth-only email lock, always-reset flag).
+  +    Gates: ultracite clean, typecheck clean, test:all 221/221, build
+  +    green (`/settings` PPR).

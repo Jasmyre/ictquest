@@ -4,73 +4,62 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
-- `npm run validate` green 2026-10-13 (uncommitted): `node_modules` was
-  gutted (all real deps UNMET, only extraneous leftovers) — restored via
-  `npm ci`. Build then failed on `server-only` leaking into the client
-  bundle: `profile-form.tsx` ("use client") imported length limits from
-  `@/server/services/user-profile`, which pulls the repository chain.
-  Fix keeps tier boundaries: limits now live in client-safe
-  `src/server/schemas/user.ts`, service imports them, form + unit test
-  import from schemas. Gates: typecheck clean, ultracite clean, test:all
-  265/265, build green. Note: a rogue global `node` shim in
-  `%AppData%/Roaming/npm` (a different Node build whose `util.styleText`
-  rejects arrays) crashes vitest startup — prefix
-  `C:\Program Files\nodejs` in PATH when running npm scripts from pwsh.
-
-- Code-review fix for spec #81 (branch `feat/settings-fix`, worktree
-  `../ictquest-fix`, based on `feat/settings-page` tip): Tokens tab
-  keyboard-reachable but not activatable, legacy action throws when
-  signed out, Danger split into two separate delete actions, router +
-  service dedup, `verificationRequired` dropped, CONTEXT.md trimmed,
-  ADR-0010, logged-out `/settings` e2e spec. Gates: ultracite clean,
-  typecheck clean, test:all 265/265.
-- Ticket #86 done (branch `feat/settings-86`, worktree `../ictquest-86`,
-  pushed to origin, synced with `feat/settings-page` tip — already up to
-  date): Settings polish — Tokens tab verified disabled (`In development`
-  badge, `aria-disabled`, no activatable panel, pointer + ArrowRight-skip
-  keyboard coverage), grouped-card/sidebar/reduced-motion/focus-visible
-  class pins, Settings/Profile/Admin-manage glossary in CONTEXT.md. No
-  production code change (shell already met spec). Gates: ultracite clean,
-  typecheck clean, test:all 258/258. Playwright authed pass skipped: repo
-  has no auth-setup/storageState pattern (Playwright has no seeded
-  sessions per dashboard.spec.ts), so building it was out of scope.
-- Settings integration merged (`feat/settings-page` @ a247f6c): #83
-  Appearance + #84 Account + #85 Danger merged in order (d4c1681,
-  78fbf73, 37b5d82) plus follow-up a247f6c. All four panels live
-  (Profile/Appearance/Account/Danger); Tokens stays disabled. Gates:
-  typecheck clean, ultracite clean, test:all 256/256. Pushed to origin.
-- Ticket #84 done (branch `feat/settings-84`, worktree `../ictquest-84`,
-  pushed to origin, synced with `feat/settings-page` tip — already up to
-  date): live Settings Account tab — email change (normalize, uniqueness
-  CONFLICT, `emailVerified` reset + `verificationRequired` flag,
-  same-address no-op) + password change (bcrypt current-password proof as
-  UNAUTHORIZED, 8-char letter+number strength as BAD_REQUEST) + OAuth-only
-  set-password form (no current field, CONFLICT once a password exists).
-  Thin-controller `user.getAccount`/`updateEmail`/`updatePassword`/
-  `setPassword` (tRPC-only, permissionProcedure + row re-check, missing
-  row = FORBIDDEN); `user-credentials` service owns rules (bcrypt cost 10);
-  repository owns persistence (`findCredentials`/`findByEmail`/
-  `updateEmail`/`updatePassword`); legacy `update-user-name` action rerouted
-  through `updateOwnProfile`. Gates: ultracite clean, typecheck + test
-  typecheck clean, test:all 251/235→251 pass (13 account + 4 new tab tests).
-  Next: tickets #83 (Appearance), #85 (Danger), #86 (polish).
-- Ticket #83 built (branch `feat/settings-83`, worktree `../ictquest-83`,
-  pushed, based on integration `feat/settings-page` tip 758c962): Appearance
-  panel live (`AppearanceForm` — `useTheme` + mounted guard, light/dark/system
-  radio, applies immediately, persists to `localStorage` via next-themes, never
-  hits the server). Gates: ultracite clean, typecheck clean, test:all 238/238
-  (3 new appearance component tests). Next: tickets #84+ (Account, Tokens,
-  Danger).
-- Ticket #82 landed (branch `feat/settings-82`, worktree `../ictquest-82`):
-  owner-scoped `/settings` with tab shell (Profile live; Appearance/Account/
-  Danger placeholders; Tokens disabled with exact `In development` badge) and
-  functional Profile panel (display name, userName, biography 500-char
-  empty→null, isPrivate toggle) through thin-controller `user.getProfile` /
-  `user.updateProfile` (permissionProcedure + row re-check, missing row =
-  FORBIDDEN). Gates: ultracite clean, typecheck clean, test:all 235/235.
-  Next: tickets #83+ (Appearance, Account, Tokens, Danger).
-
-Design-system + `/` polish (uncommitted): `docs/design-system.md` created —
+- Settings override landed on `feat/settings-page` (2026-10-14,
+  uncommitted): the newer `chore/shadcn-mcp-opencode` settings surface
+  (unified `getSettings` contract, `user-settings` service,
+  `pages/settings/*` cards, `ui/switch`/`textarea`/`toggle`/`toggle-group`,
+  Settings nav entry) replaces the tickets #82–#86 implementation
+  (`components/settings/*`, `user-credentials` service, per-tab suites
+  removed; `user-profile`/`update-user-name`/ADR-0010-adjacent edits
+  reverted to base); branch merged with `origin/main` so the shadcn MCP
+  server ships on the same branch; ADR-0010 amended to the unified
+  contract (OAuth-only email lock, always-reset flag, Email-card prompt).
+  Gates: ultracite clean, typecheck clean, test:all 221/221, build
+  green (`/settings` PPR). Next: push `feat/settings-page`
+  (`--force-with-lease`), retire `chore/shadcn-mcp-opencode`.
+- Settings page built (#81, uncommitted): owner-scoped `/settings` with
+  sidebar tablist (Profile/Appearance/Account/Tokens-disabled/Danger),
+  new `user-settings` service + `User` router procedures
+  (`getSettings`/`updateSettings`/`updateEmail`/`updatePassword`/`setPassword`)
+  behind `permissionProcedure("User", …)` with service-seam row re-check
+  (FORBIDDEN on missing); email locked when `password` is null (OAuth-only),
+  password strength reuses the auth credential rule (min 6); shadcn
+  `switch`/`textarea`/`toggle-group` added; `cursor-pointer` on all
+  clickables. Gates: typecheck clean, ultracite clean, test:all 221/221,
+  build green (`/settings` PPR).
+- Settings hydration fix + handle removal (2026-10-13, uncommitted):
+  `AppearanceSettingsCard` mounted-gate (next-themes resolves client-side;
+  SSR skeleton placeholder kills the `data-state`/`aria-checked` mismatch,
+  verified 0 console errors in real browser); handle editable removed from
+  Settings (display name stays the identity; `userName` column untouched for
+  nav/profile/admin); tab hint now `Name, bio, visibility`.
+- Settings tabs redesign (2026-10-13, uncommitted): rail rows full-width
+  (`w-full` triggers, wrapper divs replaced with Fragments); mobile gets a
+  `DropDrawer` section switcher (bottom drawer, active check) instead of
+  the long vertical list; top-left identity card removed
+  (avatar/name/email/credential badge all duplicated in the cards below).
+  Verified in real browser at 390px (drawer open/select) and 1280px
+  (rail screenshot) with 0 console errors.
+- Tokens tab removed from Settings (2026-10-14, uncommitted): disabled
+  `tokens` entry + `TokensPlaceholderCard` deleted (PAT backend in
+  `src/server/auth/personal-access-tokens.ts` untouched); `disabled` /
+  `In development` badge scaffolding removed from `settings-tabs.tsx`
+  (rail + drawer). Tabs now Profile/Appearance/Account/Danger. Gates:
+  typecheck clean, ultracite clean, unit 204/204.
+- shadcn MCP for opencode (branch `chore/shadcn-mcp-opencode`, merged to
+  `main`): `npx shadcn@latest mcp init --client opencode` adds the `shadcn`
+  local MCP server (`["npx", "shadcn@latest", "mcp"]`) to `opencode.json`
+  plus the `shadcn` CLI dep; formatter pinned to single-line `command`
+  arrays. Gates: ultracite clean, typecheck clean, test:all 221/221.
+  Restart opencode to load the new server.
+- Header Settings link (2026-10-14, uncommitted): `Settings` (`/settings`,
+  `settings` icon) added to `AUTHED_NAV` in `site-header.ts` (+ `Settings`
+  lucide mapping in `header-icon.tsx`) so desktop nav, mobile sheet, and
+  ⌘K palette all list it; dead Settings menu items in `header-actions.tsx`
+  (desktop user dropdown) and `mobile-menu.tsx` (quick action + account
+  menu) now link to `/settings`. Gates: typecheck clean, ultracite clean,
+  unit 204/204.
+- Design-system + `/` polish (uncommitted): `docs/design-system.md` created —
 page shell, header, tokens, cards/grids, motion, states derived from
 `/lessons` + `/social` with `/` as canonical; `/` stats gain stagger
 (50ms) + `cubic-bezier(0.23,1,0.32,1)` hover lift. Gates: typecheck clean,
@@ -113,13 +102,7 @@ Next: push the stack to `origin/main` (`git push`).
 
 ## Open questions
 
-- Settings spec #81 implemented on `feat/settings-page` (tickets #82–#86
-  merged + code-review fixes; ADR-0010 for email re-verification):
-  owner-scoped `/settings` (Profile/Appearance/Account/Danger live, Tokens
-  disabled `In development`; Danger duplicates profile actions; local-only
-  theme; credentials via tRPC `permissionProcedure` seam). PR #87 ready for
-  review (closes #81–#86). Gates: ultracite clean, typecheck clean,
-  test:all 265/265.
+- Settings spec published as #81 (`ready-for-agent`): new owner-scoped `/settings` page (Profile/Appearance/Account/Danger live; theme local-only; credentials production-ready via tRPC `permissionProcedure` seam; email change resets `emailVerified` per ADR-0010).
 - DB split: create the `DATABASE_URL` secret + `production` environment in
   GitHub repo settings before the first merge to `main` triggers `deploy-prod`;
   decide whether to also set a shared `DATABASE_URL_DEV` for the team.

@@ -1,29 +1,24 @@
 import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { createUserRepository } from "@/server/repositories/user";
-import {
-  BIOGRAPHY_MAX_LENGTH,
-  DISPLAY_NAME_MAX_LENGTH,
-  USER_NAME_MAX_LENGTH,
-} from "@/server/schemas/user";
 
 /**
  * User profile service (Slice 1, #58; repository tier in Slice 6, #63).
  *
- * Owns display-name/handle/biography/privacy domain rules; persistence lives in
+ * Owns biography/isPrivate domain rules; persistence lives in
  * `src/server/repositories/user.ts` so unit tests can mock the
  * repository seam. Biography and privacy never enter session tokens;
  * public redaction lives in a later slice — this one covers
  * normalization, defaults, and owner round-trip.
  */
 
+export const BIOGRAPHY_MAX_LENGTH = 500;
+
 type Db = Pick<PrismaClient, "user" | "role">;
 
 export type ProfileRow = import("@/server/repositories/user").ProfileRow;
 
 export type UpdateOwnProfileInput = {
-  name?: string;
-  userName?: string | null;
   biography?: string | null;
   isPrivate?: boolean;
 };
@@ -62,54 +57,6 @@ function normalizeIsPrivate(value: boolean | undefined): boolean | undefined {
   return value;
 }
 
-/**
- * Normalize a display name: trim, reject empty, 100-char limit.
- * Returns `undefined` when the caller did not supply the field.
- */
-export function normalizeDisplayName(value: string | undefined) {
-  if (value === undefined) {
-    return;
-  }
-  const trimmed = value.trim();
-  if (trimmed.length === 0) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "Display name must not be empty.",
-    });
-  }
-  if (trimmed.length > DISPLAY_NAME_MAX_LENGTH) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: `Display name must be at most ${DISPLAY_NAME_MAX_LENGTH} characters.`,
-    });
-  }
-  return trimmed;
-}
-
-/**
- * Normalize a handle: trim, empty-to-null, 32-char limit.
- * Returns `undefined` when the caller did not supply the field.
- */
-export function normalizeUserName(value: string | null | undefined) {
-  if (value === undefined) {
-    return;
-  }
-  if (value === null) {
-    return null;
-  }
-  const trimmed = value.trim();
-  if (trimmed.length === 0) {
-    return null;
-  }
-  if (trimmed.length > USER_NAME_MAX_LENGTH) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: `User name must be at most ${USER_NAME_MAX_LENGTH} characters.`,
-    });
-  }
-  return trimmed;
-}
-
 export async function getOwnProfile(
   db: Db,
   userId: string
@@ -126,8 +73,6 @@ export async function getOwnProfile(
       success: true as const,
       data: {
         id: row.id,
-        name: row.name,
-        userName: row.userName ?? null,
         biography: row.biography ?? null,
         isPrivate: row.isPrivate ?? false,
       },
@@ -148,20 +93,7 @@ export async function updateOwnProfile(
   userId: string,
   input: UpdateOwnProfileInput
 ): Promise<{ success: true; data: ProfileRow }> {
-  const data: {
-    name?: string;
-    userName?: string | null;
-    biography?: string | null;
-    isPrivate?: boolean;
-  } = {};
-  const name = normalizeDisplayName(input.name);
-  if (name !== undefined) {
-    data.name = name;
-  }
-  const userName = normalizeUserName(input.userName);
-  if (userName !== undefined) {
-    data.userName = userName;
-  }
+  const data: { biography?: string | null; isPrivate?: boolean } = {};
   const biography = normalizeBiography(input.biography);
   if (biography !== undefined) {
     data.biography = biography;
@@ -179,8 +111,6 @@ export async function updateOwnProfile(
       success: true as const,
       data: {
         id: row.id,
-        name: row.name,
-        userName: row.userName ?? null,
         biography: row.biography ?? null,
         isPrivate: row.isPrivate ?? false,
       },

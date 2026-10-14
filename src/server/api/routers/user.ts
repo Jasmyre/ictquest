@@ -7,15 +7,12 @@ import {
 } from "@/server/api/trpc";
 import { requirePermission } from "@/server/permissions";
 import {
-  accountOutputSchema,
-  emailChangeOutputSchema,
   meOutputSchema,
-  passwordChangeOutputSchema,
-  profileOutputSchema,
-  setPasswordInputSchema,
-  updateEmailInputSchema,
-  updatePasswordInputSchema,
-  updateProfileInputSchema,
+  setPasswordSchema,
+  settingsOutputSchema,
+  settingsProfileSchema,
+  updateEmailSchema,
+  updatePasswordSchema,
 } from "@/server/schemas/user";
 import {
   deleteAllAchievements,
@@ -28,51 +25,12 @@ import {
   listProgress,
 } from "@/server/services/progress";
 import {
-  changeOwnPassword,
-  getOwnAccount,
-  setOwnPassword,
-  updateOwnEmail,
-} from "@/server/services/user-credentials";
-import {
-  getOwnProfile,
-  updateOwnProfile,
-} from "@/server/services/user-profile";
-
-type SessionUser = { id?: string | null; roles?: string[] } | null;
-
-/**
- * Owner-scoped User guard (spec #81): fetch the caller's row, deny a
- * missing record as FORBIDDEN (no existence probing), then re-check the
- * row-level grant before the resolver delegates to the service. Returns
- * the caller id plus the loaded record so reads delegate without a
- * second fetch.
- */
-async function requireOwner<T extends { id: string }>(
-  user: SessionUser,
-  action: "view" | "update",
-  load: (userId: string) => Promise<{ success: true; data: T }>
-): Promise<{ userId: string; record: T }> {
-  const userId = requireUserId(user);
-
-  let record: T;
-  try {
-    record = (await load(userId)).data;
-  } catch (error) {
-    if (error instanceof TRPCError && error.code === "NOT_FOUND") {
-      throw new TRPCError({
-        code: "FORBIDDEN",
-        message: "You do not have permission to perform this action.",
-      });
-    }
-    throw error;
-  }
-
-  requirePermission({ id: userId, roles: user?.roles }, "User", action, {
-    data: { id: record.id },
-  });
-
-  return { userId, record };
-}
+  getSettings as getOwnSettings,
+  setPassword as setOwnPassword,
+  updateEmail as updateOwnEmail,
+  updatePassword as updateOwnPassword,
+  updateSettings as updateOwnSettings,
+} from "@/server/services/user-settings";
 
 export const userRouter = createTRPCRouter({
   getUser: permissionProcedure("User", "view")
@@ -105,95 +63,6 @@ export const userRouter = createTRPCRouter({
           roles: Array.isArray(user?.roles) ? [...user.roles] : undefined,
         },
       };
-    }),
-
-  getProfile: permissionProcedure("User", "view")
-    .output(profileOutputSchema)
-    .query(async ({ ctx }) => {
-      // Owner-scoped Settings read (spec #81, ticket #82): tRPC-only,
-      // auto-excluded from the versioned Document.
-      const { user } = ctx;
-      const owned = await requireOwner(user, "view", (userId) =>
-        getOwnProfile(ctx.db, userId)
-      );
-
-      return { success: true as const, data: owned.record };
-    }),
-
-  updateProfile: permissionProcedure("User", "update")
-    .input(updateProfileInputSchema)
-    .output(profileOutputSchema)
-    .mutation(async ({ ctx, input }) => {
-      // Owner-scoped Settings write (spec #81, ticket #82): tRPC-only.
-      // Thin controller: coarse gate above, row-level re-check on the
-      // fetched record below; a missing record denies as FORBIDDEN.
-      const { user } = ctx;
-      const { userId } = await requireOwner(user, "update", (id) =>
-        getOwnProfile(ctx.db, id)
-      );
-
-      return updateOwnProfile(ctx.db, userId, input);
-    }),
-
-  getAccount: permissionProcedure("User", "view")
-    .output(accountOutputSchema)
-    .query(async ({ ctx }) => {
-      // Owner-scoped Settings read (spec #81, ticket #84): tRPC-only,
-      // auto-excluded from the versioned Document. Exposes the sign-in
-      // email plus whether a password exists so the panel can pick the
-      // change-password or set-password form — never the hash itself.
-      const { user } = ctx;
-      const owned = await requireOwner(user, "view", (userId) =>
-        getOwnAccount(ctx.db, userId)
-      );
-
-      return { success: true as const, data: owned.record };
-    }),
-
-  updateEmail: permissionProcedure("User", "update")
-    .input(updateEmailInputSchema)
-    .output(emailChangeOutputSchema)
-    .mutation(async ({ ctx, input }) => {
-      // Owner-scoped email change (spec #81, ticket #84): tRPC-only.
-      // Thin controller: coarse gate above, row-level re-check on the
-      // fetched record below; a missing record denies as FORBIDDEN.
-      // Uniqueness conflicts surface as CONFLICT for inline display.
-      const { user } = ctx;
-      const { userId } = await requireOwner(user, "update", (id) =>
-        getOwnAccount(ctx.db, id)
-      );
-
-      return updateOwnEmail(ctx.db, userId, input.email);
-    }),
-
-  updatePassword: permissionProcedure("User", "update")
-    .input(updatePasswordInputSchema)
-    .output(passwordChangeOutputSchema)
-    .mutation(async ({ ctx, input }) => {
-      // Credential password change (spec #81, ticket #84): tRPC-only.
-      // A wrong current password denies as UNAUTHORIZED; weak replacements
-      // reject as BAD_REQUEST with guidance. Same thin-controller shape.
-      const { user } = ctx;
-      const { userId } = await requireOwner(user, "update", (id) =>
-        getOwnAccount(ctx.db, id)
-      );
-
-      return changeOwnPassword(ctx.db, userId, input);
-    }),
-
-  setPassword: permissionProcedure("User", "update")
-    .input(setPasswordInputSchema)
-    .output(passwordChangeOutputSchema)
-    .mutation(async ({ ctx, input }) => {
-      // OAuth-only first password (spec #81, ticket #84): tRPC-only, no
-      // current-password field. Refuses with CONFLICT once a password
-      // already exists so the proof-bearing path stays mandatory there.
-      const { user } = ctx;
-      const { userId } = await requireOwner(user, "update", (id) =>
-        getOwnAccount(ctx.db, id)
-      );
-
-      return setOwnPassword(ctx.db, userId, input);
     }),
 
   addProgress: permissionProcedure("Progress", "create")
@@ -256,4 +125,92 @@ export const userRouter = createTRPCRouter({
       // Backward-compatible alias fed by the canonical achievement service (#36).
       unlockAchievement(ctx.db, requireUserId(ctx.user), input)
     ),
+
+  getSettings: permissionProcedure("User", "view")
+    .output(settingsOutputSchema)
+    .query(async ({ ctx }) => {
+      const userId = requireUserId(ctx.user);
+      const current = await getOwnSettings(ctx.db, userId);
+      requirePermission(
+        { id: userId, roles: ctx.user?.roles },
+        "User",
+        "view",
+        {
+          data: { id: current.data.id },
+        }
+      );
+      return current;
+    }),
+
+  updateSettings: permissionProcedure("User", "update")
+    .input(settingsProfileSchema)
+    .output(settingsOutputSchema)
+    .mutation(async ({ ctx, input }) => {
+      const userId = requireUserId(ctx.user);
+      await requireOwnUserRow(ctx, userId, "update");
+      return updateOwnSettings(ctx.db, userId, input);
+    }),
+
+  updateEmail: permissionProcedure("User", "update")
+    .input(updateEmailSchema)
+    .output(settingsOutputSchema)
+    .mutation(async ({ ctx, input }) => {
+      const userId = requireUserId(ctx.user);
+      await requireOwnUserRow(ctx, userId, "update");
+      return updateOwnEmail(ctx.db, userId, input.email);
+    }),
+
+  updatePassword: permissionProcedure("User", "update")
+    .input(updatePasswordSchema)
+    .output(z.object({ success: z.literal(true) }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = requireUserId(ctx.user);
+      await requireOwnUserRow(ctx, userId, "update");
+      return updateOwnPassword(
+        ctx.db,
+        userId,
+        input.currentPassword,
+        input.newPassword
+      );
+    }),
+
+  setPassword: permissionProcedure("User", "update")
+    .input(setPasswordSchema)
+    .output(z.object({ success: z.literal(true) }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = requireUserId(ctx.user);
+      await requireOwnUserRow(ctx, userId, "update");
+      return setOwnPassword(ctx.db, userId, input.newPassword);
+    }),
 });
+
+/**
+ * Row-level re-check for owner-scoped settings writes (#81).
+ *
+ * Fetches the caller's row through the settings service (controllers never
+ * touch Prisma directly) and re-checks `hasPermission` against it. A
+ * missing record answers FORBIDDEN so callers cannot probe for existence.
+ */
+async function requireOwnUserRow(
+  ctx: {
+    db: Parameters<typeof getOwnSettings>[0];
+    user: { id?: string | null; roles?: readonly string[] | null } | null;
+  },
+  userId: string,
+  action: "view" | "update"
+): Promise<void> {
+  let rowId: string | null = null;
+  try {
+    const current = await getOwnSettings(ctx.db, userId);
+    rowId = current.data.id;
+  } catch (error) {
+    if (error instanceof TRPCError && error.code === "NOT_FOUND") {
+      rowId = null;
+    } else {
+      throw error;
+    }
+  }
+  requirePermission({ id: userId, roles: ctx.user?.roles }, "User", action, {
+    data: rowId ? { id: rowId } : null,
+  });
+}

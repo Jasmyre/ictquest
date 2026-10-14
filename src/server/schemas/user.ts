@@ -1,17 +1,6 @@
 import { z } from "zod";
 
 /**
- * Shared profile length limits (ticket #82, spec #81).
- *
- * Client-safe: this module imports only `zod`, so Client Components
- * (e.g. the settings profile form) import the limits from here instead
- * of the server-only profile service.
- */
-export const BIOGRAPHY_MAX_LENGTH = 500;
-export const DISPLAY_NAME_MAX_LENGTH = 100;
-export const USER_NAME_MAX_LENGTH = 32;
-
-/**
  * REST output schemas for the session summary (Migration 18, #41).
  *
  * `GET /v1/me` serves the bearer-or-cookie session summary. Passthrough
@@ -35,69 +24,45 @@ export const meOutputSchema = z.object({
 });
 
 /**
- * Owner-scoped Settings profile input (ticket #82, spec #81).
+ * Owner-scoped settings contracts (#81).
  *
- * All fields optional: `undefined` means "leave untouched". `null` on
- * `biography`/`userName` clears the field. Length rules mirror the
- * profile card (32-char identity fields, 500-char biography).
+ * Password strength reuses the auth credential rule (`registerSchema`
+ * password: min 6) so settings never accepts a weaker secret than
+ * sign-up. Email is normalized (trim + lowercase) in the service;
+ * biography follows the profile normalize (trim, empty-to-null, 500 max).
  */
-export const updateProfileInputSchema = z.object({
-  name: z.string().min(1).max(100).optional(),
-  userName: z.string().max(32).nullable().optional(),
+export const settingsProfileSchema = z.object({
+  name: z.string().trim().min(6).max(32),
   biography: z.string().max(500).nullable().optional(),
   isPrivate: z.boolean().optional(),
 });
 
-export const profileOutputSchema = z.object({
-  success: z.literal(true),
-  data: z.object({
-    id: z.string(),
-    name: z.string(),
-    userName: z.string().nullable(),
-    biography: z.string().nullable(),
-    isPrivate: z.boolean(),
-  }),
+export const updateEmailSchema = z.object({
+  email: z.string().trim().toLowerCase().email(),
 });
 
-/**
- * Owner-scoped Settings account inputs (ticket #84, spec #81).
- *
- * Email arrives raw — the service normalizes (trim + lowercase). Password
- * strength is enforced in the service so the message stays identical on
- * every entry point; the schemas only bound shape here.
- */
-export const updateEmailInputSchema = z.object({
-  email: z.string().min(1).max(254),
-});
-
-export const updatePasswordInputSchema = z.object({
+export const updatePasswordSchema = z.object({
   currentPassword: z.string().min(1),
-  newPassword: z.string().min(1).max(128),
+  newPassword: z.string().min(6),
 });
 
-export const setPasswordInputSchema = z.object({
-  newPassword: z.string().min(1).max(128),
+export const setPasswordSchema = z.object({
+  newPassword: z.string().min(6),
 });
 
-export const accountOutputSchema = z.object({
+export const settingsRowSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().nullable(),
+  emailVerified: z.date().nullable(),
+  image: z.string().nullable(),
+  userName: z.string().nullable(),
+  biography: z.string().nullable(),
+  isPrivate: z.boolean(),
+  hasPassword: z.boolean(),
+});
+
+export const settingsOutputSchema = z.object({
   success: z.literal(true),
-  data: z.object({
-    id: z.string(),
-    email: z.string().nullable(),
-    emailVerified: z.date().nullable(),
-    hasPassword: z.boolean(),
-  }),
-});
-
-export const emailChangeOutputSchema = z.object({
-  success: z.literal(true),
-  data: z.object({
-    id: z.string(),
-    email: z.string().nullable(),
-    emailVerified: z.date().nullable(),
-  }),
-});
-
-export const passwordChangeOutputSchema = z.object({
-  success: z.literal(true),
+  data: settingsRowSchema,
 });
