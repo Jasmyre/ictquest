@@ -16,6 +16,7 @@ describe("site header nav visibility by session state", () => {
       "Lessons",
       "Profile",
       "People",
+      "Settings",
     ]);
     expect(nav.navItems[0]?.href).toBe("/");
     expect(nav.showSearch).toBe(true);
@@ -33,6 +34,7 @@ describe("site header nav visibility by session state", () => {
       "lessons",
       "profile",
       "people",
+      "settings",
     ]);
     expect(authed.pageItems.map((item) => item.icon)).toEqual([
       "terms",

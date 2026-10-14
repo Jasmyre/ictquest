@@ -246,3 +246,28 @@ same `var` violation. Gates: `check` 291 files clean, typecheck clean.
 +    disabled `In development`; Danger duplicated; local-only theme; tRPC seam).
 +  - Settings tickets #82-#86 (2026-10-10): 5 tracer bullets under parent #81
 +    (1 shell+profile; 2 appearance; 3 account; 4 danger; 5 polish+glossary+gates).
++  - Settings implemented (2026-10-13, uncommitted): full #81 surface —
++    `user-settings` service (email-uniqueness, bcrypt proof, OAuth
++    set-password path, biography normalize), repository `SettingsRow`
++    with derived `hasPassword`, five `User` router procedures with
++    service-seam row re-check; email change blocked when password null;
++    password strength reuses auth rule (min 6); sidebar tablist +
++    `switch`/`textarea`/`toggle-group` shadcn cards, Tokens disabled with
+  +    `In development` badge, Danger duplicates profile resets. Gates:
+  +    typecheck clean, ultracite clean, test:all 221/221, build green.
+  +  - Settings override (2026-10-14, branch `feat/settings-page`,
+  +    uncommitted): newer `chore/shadcn-mcp-opencode` surface wins over the
+  +    #82–#86 implementation — unified `getSettings` contract kept,
+  +    `components/settings/*` + `user-credentials` service + per-tab suites
+  +    removed, `user-profile`/`update-user-name` reverted to base, branch
+  +    merged with `origin/main` (shadcn MCP aboard); ADR-0010 amended to
+  +    the unified contract (OAuth-only email lock, always-reset flag).
+  +    Gates: ultracite clean, typecheck clean, test:all 221/221, build
+   +    green (`/settings` PPR).
++  - Settings tickets resolved (2026-10-14, branch `feat/settings-page`
++    @ f5d4e8d): #82–#85 closed as implemented via the unified surface;
++    #86 closed as intentionally deviated (Tokens tab removed, not
++    disabled — no dead tab; PAT backend untouched); #81 closed with
++    deviations recorded (tokens removal, userName handle removal,
++    unified surface supersedes split-contract). Gates at close:
++    typecheck clean, ultracite clean, unit 204/204.

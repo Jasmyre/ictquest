@@ -230,10 +230,12 @@ export function HeaderActions({
                   <span>Profile</span>
                 </DropdownMenuItem>
               </Link>
-              <DropdownMenuItem className="cursor-pointer opacity-80 transition-all duration-200 hover:opacity-100">
-                <Settings className="mr-2 h-4 w-4 transition-transform duration-200" />
-                <span>Settings</span>
-              </DropdownMenuItem>
+              <Link href="/settings">
+                <DropdownMenuItem className="cursor-pointer opacity-80 transition-all duration-200 hover:opacity-100">
+                  <Settings className="mr-2 h-4 w-4 transition-transform duration-200" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="cursor-pointer opacity-80 transition-all duration-200 hover:opacity-100"
