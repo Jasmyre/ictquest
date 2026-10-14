@@ -263,4 +263,11 @@ same `var` violation. Gates: `check` 291 files clean, typecheck clean.
   +    merged with `origin/main` (shadcn MCP aboard); ADR-0010 amended to
   +    the unified contract (OAuth-only email lock, always-reset flag).
   +    Gates: ultracite clean, typecheck clean, test:all 221/221, build
-  +    green (`/settings` PPR).
+   +    green (`/settings` PPR).
++  - Settings tickets resolved (2026-10-14, branch `feat/settings-page`
++    @ f5d4e8d): #82–#85 closed as implemented via the unified surface;
++    #86 closed as intentionally deviated (Tokens tab removed, not
++    disabled — no dead tab; PAT backend untouched); #81 closed with
++    deviations recorded (tokens removal, userName handle removal,
++    unified surface supersedes split-contract). Gates at close:
++    typecheck clean, ultracite clean, unit 204/204.

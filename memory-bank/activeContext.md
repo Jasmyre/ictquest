@@ -4,6 +4,12 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- Settings spec #81 + tickets #82–#86 resolved closed (2026-10-14,
+  `feat/settings-page` @ f5d4e8d): #82–#85 implemented via unified
+  surface; #86 deviated on purpose (Tokens tab removed, not disabled);
+  handle editing removed on purpose. Gates at close: typecheck clean,
+  ultracite clean, unit 204/204. Next: push `feat/settings-page`, open
+  PR to `main`.
 - Settings override landed on `feat/settings-page` (2026-10-14,
   uncommitted): the newer `chore/shadcn-mcp-opencode` settings surface
   (unified `getSettings` contract, `user-settings` service,
