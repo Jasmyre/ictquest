@@ -22,17 +22,30 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
   nav/profile/admin); tab hint now `Name, bio, visibility`.
 - Settings tabs redesign (2026-10-13, uncommitted): rail rows full-width
   (`w-full` triggers, wrapper divs replaced with Fragments); mobile gets a
-  `DropDrawer` section switcher (bottom drawer, active check, disabled
-  Tokens) instead of the long vertical list; top-left identity card removed
+  `DropDrawer` section switcher (bottom drawer, active check) instead of
+  the long vertical list; top-left identity card removed
   (avatar/name/email/credential badge all duplicated in the cards below).
   Verified in real browser at 390px (drawer open/select) and 1280px
   (rail screenshot) with 0 console errors.
+- Tokens tab removed from Settings (2026-10-14, uncommitted): disabled
+  `tokens` entry + `TokensPlaceholderCard` deleted (PAT backend in
+  `src/server/auth/personal-access-tokens.ts` untouched); `disabled` /
+  `In development` badge scaffolding removed from `settings-tabs.tsx`
+  (rail + drawer). Tabs now Profile/Appearance/Account/Danger. Gates:
+  typecheck clean, ultracite clean, unit 204/204.
 - shadcn MCP for opencode (branch `chore/shadcn-mcp-opencode`, merged to
   `main`): `npx shadcn@latest mcp init --client opencode` adds the `shadcn`
   local MCP server (`["npx", "shadcn@latest", "mcp"]`) to `opencode.json`
   plus the `shadcn` CLI dep; formatter pinned to single-line `command`
   arrays. Gates: ultracite clean, typecheck clean, test:all 221/221.
   Restart opencode to load the new server.
+- Header Settings link (2026-10-14, uncommitted): `Settings` (`/settings`,
+  `settings` icon) added to `AUTHED_NAV` in `site-header.ts` (+ `Settings`
+  lucide mapping in `header-icon.tsx`) so desktop nav, mobile sheet, and
+  ⌘K palette all list it; dead Settings menu items in `header-actions.tsx`
+  (desktop user dropdown) and `mobile-menu.tsx` (quick action + account
+  menu) now link to `/settings`. Gates: typecheck clean, ultracite clean,
+  unit 204/204.
 - Design-system + `/` polish (uncommitted): `docs/design-system.md` created —
 page shell, header, tokens, cards/grids, motion, states derived from
 `/lessons` + `/social` with `/` as canonical; `/` stats gain stagger

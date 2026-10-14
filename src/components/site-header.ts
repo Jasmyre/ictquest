@@ -3,6 +3,7 @@ export type HeaderIconName =
   | "lessons"
   | "profile"
   | "people"
+  | "settings"
   | "admin"
   | "terms"
   | "privacy";
@@ -29,6 +30,7 @@ const AUTHED_NAV: HeaderNavItem[] = [
   { name: "Lessons", href: "/lessons", icon: "lessons" },
   { name: "Profile", href: "/profile", icon: "profile" },
   { name: "People", href: "/social", icon: "people" },
+  { name: "Settings", href: "/settings", icon: "settings" },
 ];
 
 const ADMIN_NAV_ITEM: HeaderNavItem = {

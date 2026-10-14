@@ -4,7 +4,6 @@ import {
   Check,
   ChevronDown,
   KeyRound,
-  KeySquare,
   Palette,
   TriangleAlert,
   UserRound,
@@ -17,7 +16,6 @@ import {
   DropDrawerLabel,
   DropDrawerTrigger,
 } from "@/components/dropdrawer";
-import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -27,18 +25,16 @@ import { DangerSettingsCard } from "./danger-settings-card";
 import { EmailSettingsCard } from "./email-settings-card";
 import { PasswordSettingsCard } from "./password-settings-card";
 import { ProfileSettingsCard } from "./profile-settings-card";
-import { TokensPlaceholderCard } from "./tokens-placeholder-card";
 
 type SettingsData = RouterOutputs["user"]["getSettings"]["data"];
 
-type TabValue = "profile" | "appearance" | "account" | "tokens" | "danger";
+type TabValue = "profile" | "appearance" | "account" | "danger";
 
 const TABS: Array<{
   value: TabValue;
   label: string;
   icon: typeof UserRound;
   hint: string;
-  disabled?: boolean;
 }> = [
   {
     value: "profile",
@@ -53,13 +49,6 @@ const TABS: Array<{
     icon: KeyRound,
     hint: "Email, password",
   },
-  {
-    value: "tokens",
-    label: "Tokens",
-    icon: KeySquare,
-    hint: "API access",
-    disabled: true,
-  },
   { value: "danger", label: "Danger", icon: TriangleAlert, hint: "Reset data" },
 ];
 
@@ -71,9 +60,7 @@ export function SettingsTabs({ initial }: { initial: SettingsData }) {
   const active = TABS.find((item) => item.value === tab) ?? TABS[0];
 
   const select = (value: TabValue) => {
-    if (value !== "tokens") {
-      setTab(value);
-    }
+    setTab(value);
   };
 
   return (
@@ -116,9 +103,8 @@ export function SettingsTabs({ initial }: { initial: SettingsData }) {
             <DropDrawerLabel>Sections</DropDrawerLabel>
             {TABS.map((item) => (
               <DropDrawerItem
-                disabled={item.disabled}
                 icon={
-                  tab === item.value && !item.disabled ? (
+                  tab === item.value ? (
                     <Check aria-hidden="true" className="size-4" />
                   ) : null
                 }
@@ -139,9 +125,6 @@ export function SettingsTabs({ initial }: { initial: SettingsData }) {
                     {item.hint}
                   </span>
                 </span>
-                {item.disabled ? (
-                  <Badge variant="secondary">In development</Badge>
-                ) : null}
               </DropDrawerItem>
             ))}
           </DropDrawerContent>
@@ -160,12 +143,7 @@ export function SettingsTabs({ initial }: { initial: SettingsData }) {
           {TABS.map((item, index) => (
             <Fragment key={item.value}>
               {index > 0 ? <Separator className="my-1" /> : null}
-              <TabsTrigger
-                {...(item.disabled ? { "aria-disabled": true as const } : {})}
-                className={TRIGGER}
-                disabled={item.disabled}
-                value={item.value}
-              >
+              <TabsTrigger className={TRIGGER} value={item.value}>
                 <item.icon
                   aria-hidden="true"
                   className="size-4 shrink-0 text-muted-foreground"
@@ -173,9 +151,6 @@ export function SettingsTabs({ initial }: { initial: SettingsData }) {
                 <span className="min-w-0 flex-1">
                   <span className="flex items-center gap-2 font-medium text-sm leading-tight">
                     {item.label}
-                    {item.disabled ? (
-                      <Badge variant="secondary">In development</Badge>
-                    ) : null}
                   </span>
                   <span className="block truncate text-muted-foreground text-xs">
                     {item.hint}
@@ -200,9 +175,6 @@ export function SettingsTabs({ initial }: { initial: SettingsData }) {
               <EmailSettingsCard initial={initial} />
               <PasswordSettingsCard initial={initial} />
             </div>
-          </TabsContent>
-          <TabsContent className="mt-0" value="tokens">
-            <TokensPlaceholderCard />
           </TabsContent>
           <TabsContent className="mt-0" value="danger">
             <DangerSettingsCard />

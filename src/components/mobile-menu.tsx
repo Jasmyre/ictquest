@@ -143,12 +143,14 @@ export function MobileMenu({ navItems, title, user }: MobileMenuProps) {
                 {user ? (
                   <Button
                     aria-label="Open settings"
+                    asChild
                     className="h-9 cursor-pointer justify-start px-3 opacity-80 transition-all duration-200 hover:opacity-100"
-                    onClick={close}
                     variant="ghost"
                   >
-                    <Settings className="mr-2 h-4 w-4 transition-transform duration-200" />
-                    Settings
+                    <Link href="/settings" onClick={close}>
+                      <Settings className="mr-2 h-4 w-4 transition-transform duration-200" />
+                      Settings
+                    </Link>
                   </Button>
                 ) : null}
               </div>
@@ -204,14 +206,13 @@ export function MobileMenu({ navItems, title, user }: MobileMenuProps) {
                     <User className="mr-2 h-4 w-4 transition-transform duration-200" />
                     <span>Profile</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="relative cursor-pointer pl-8 opacity-80 transition-all duration-200 hover:opacity-100"
-                    onClick={close}
-                  >
-                    <div className="absolute top-0 bottom-0 left-2 w-px bg-sidebar-border" />
-                    <Settings className="mr-2 h-4 w-4 transition-transform duration-200" />
-                    <span>Settings</span>
-                  </DropdownMenuItem>
+                  <Link href="/settings" onClick={close}>
+                    <DropdownMenuItem className="relative cursor-pointer pl-8 opacity-80 transition-all duration-200 hover:opacity-100">
+                      <div className="absolute top-0 bottom-0 left-2 w-px bg-sidebar-border" />
+                      <Settings className="mr-2 h-4 w-4 transition-transform duration-200" />
+                      <span>Settings</span>
+                    </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     className="relative cursor-pointer pl-8 opacity-80 transition-all duration-200 hover:opacity-100"
