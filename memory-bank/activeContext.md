@@ -10,6 +10,13 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
   handle editing removed on purpose. Gates at close: typecheck clean,
   ultracite clean, unit 204/204. Next: push `feat/settings-page`, open
   PR to `main`.
+- Standards cleanup (2026-10-14, `feat/settings-page`): shared settings
+  limits (`DISPLAY_NAME_*`, `BIOGRAPHY_MAX_LENGTH`, `PASSWORD_MIN_LENGTH`
+  in client-safe `schemas/user.ts`), shared repo `settingsSelect` +
+  `toSettingsRow`, shared `press-feedback.ts` classes, `select` middleman
+  cut, `active`/`TRIGGER`/`PRESS`/`ROW` renamed, dead `userName` dropped
+  from repo `updateSettings`. Gates: typecheck, ultracite, unit 204/204,
+  build green (`/settings` PPR).
 - Settings override landed on `feat/settings-page` (2026-10-14,
   uncommitted): the newer `chore/shadcn-mcp-opencode` settings surface
   (unified `getSettings` contract, `user-settings` service,
