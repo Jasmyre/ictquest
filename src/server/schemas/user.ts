@@ -30,10 +30,23 @@ export const meOutputSchema = z.object({
  * password: min 6) so settings never accepts a weaker secret than
  * sign-up. Email is normalized (trim + lowercase) in the service;
  * biography follows the profile normalize (trim, empty-to-null, 500 max).
+ *
+ * The limits below are client-safe (this module imports only `zod`), so
+ * Client Components import them from here instead of redeclaring the
+ * literals per form.
  */
+export const DISPLAY_NAME_MIN_LENGTH = 6;
+export const DISPLAY_NAME_MAX_LENGTH = 32;
+export const BIOGRAPHY_MAX_LENGTH = 500;
+export const PASSWORD_MIN_LENGTH = 6;
+
 export const settingsProfileSchema = z.object({
-  name: z.string().trim().min(6).max(32),
-  biography: z.string().max(500).nullable().optional(),
+  name: z
+    .string()
+    .trim()
+    .min(DISPLAY_NAME_MIN_LENGTH)
+    .max(DISPLAY_NAME_MAX_LENGTH),
+  biography: z.string().max(BIOGRAPHY_MAX_LENGTH).nullable().optional(),
   isPrivate: z.boolean().optional(),
 });
 
@@ -43,11 +56,11 @@ export const updateEmailSchema = z.object({
 
 export const updatePasswordSchema = z.object({
   currentPassword: z.string().min(1),
-  newPassword: z.string().min(6),
+  newPassword: z.string().min(PASSWORD_MIN_LENGTH),
 });
 
 export const setPasswordSchema = z.object({
-  newPassword: z.string().min(6),
+  newPassword: z.string().min(PASSWORD_MIN_LENGTH),
 });
 
 export const settingsRowSchema = z.object({

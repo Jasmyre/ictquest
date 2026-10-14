@@ -27,9 +27,7 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
 import { toastStyle } from "@/lib/utils";
 import { api } from "@/trpc/react";
-
-const ROW =
-  "cursor-pointer transition-transform duration-150 ease-out active:scale-[0.98]";
+import { SETTINGS_ROW_PRESS_CLASS } from "./press-feedback";
 
 export function DangerSettingsCard() {
   const [isPending, startTransition] = useTransition();
@@ -122,7 +120,7 @@ export function DangerSettingsCard() {
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button
-                  className={ROW}
+                  className={SETTINGS_ROW_PRESS_CLASS}
                   disabled={isPending}
                   variant="destructive"
                 >
@@ -174,7 +172,11 @@ function ConfirmButton({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className={ROW} disabled={busy} variant="outline">
+        <Button
+          className={SETTINGS_ROW_PRESS_CLASS}
+          disabled={busy}
+          variant="outline"
+        >
           Reset
         </Button>
       </AlertDialogTrigger>

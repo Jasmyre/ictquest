@@ -82,7 +82,6 @@ export type UserRepository = {
     userId: string,
     data: {
       name?: string;
-      userName?: string;
       biography?: string | null;
       isPrivate?: boolean;
     }
@@ -93,6 +92,40 @@ export type UserRepository = {
   setSuspendedAt(userId: string, at: Date): Promise<UserSuspensionRow>;
   clearSuspendedAt(userId: string): Promise<UserSuspensionRow>;
 };
+
+/**
+ * Shared settings select: every settings read/write returns the same
+ * row shape, with the password hash projected only to derive
+ * `hasPassword` (never exposed).
+ */
+const settingsSelect = {
+  id: true,
+  name: true,
+  email: true,
+  emailVerified: true,
+  image: true,
+  userName: true,
+  biography: true,
+  isPrivate: true,
+  password: true,
+} as const;
+
+type SettingsSelectRow = {
+  id: string;
+  name: string;
+  email: string | null;
+  emailVerified: Date | null;
+  image: string | null;
+  userName: string | null;
+  biography: string | null;
+  isPrivate: boolean;
+  password: string | null;
+};
+
+function toSettingsRow(row: SettingsSelectRow): SettingsRow {
+  const { password, ...rest } = row;
+  return { ...rest, hasPassword: password !== null };
+}
 
 export function createUserRepository(db: UserDb): UserRepository {
   return {
@@ -181,23 +214,12 @@ export function createUserRepository(db: UserDb): UserRepository {
     async findSettings(userId: string): Promise<SettingsRow | null> {
       const row = await db.user.findUnique({
         where: { id: userId },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          emailVerified: true,
-          image: true,
-          userName: true,
-          biography: true,
-          isPrivate: true,
-          password: true,
-        },
+        select: settingsSelect,
       });
       if (!row) {
         return null;
       }
-      const { password, ...rest } = row;
-      return { ...rest, hasPassword: password !== null };
+      return toSettingsRow(row);
     },
     findByEmail(email: string): Promise<{ id: string } | null> {
       return db.user.findUnique({
@@ -217,7 +239,6 @@ export function createUserRepository(db: UserDb): UserRepository {
       userId: string,
       data: {
         name?: string;
-        userName?: string;
         biography?: string | null;
         isPrivate?: boolean;
       }
@@ -225,39 +246,17 @@ export function createUserRepository(db: UserDb): UserRepository {
       const row = await db.user.update({
         where: { id: userId },
         data,
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          emailVerified: true,
-          image: true,
-          userName: true,
-          biography: true,
-          isPrivate: true,
-          password: true,
-        },
+        select: settingsSelect,
       });
-      const { password, ...rest } = row;
-      return { ...rest, hasPassword: password !== null };
+      return toSettingsRow(row);
     },
     async updateEmail(userId: string, email: string): Promise<SettingsRow> {
       const row = await db.user.update({
         where: { id: userId },
         data: { email, emailVerified: null },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          emailVerified: true,
-          image: true,
-          userName: true,
-          biography: true,
-          isPrivate: true,
-          password: true,
-        },
+        select: settingsSelect,
       });
-      const { password, ...rest } = row;
-      return { ...rest, hasPassword: password !== null };
+      return toSettingsRow(row);
     },
     async updatePasswordHash(userId: string, hash: string): Promise<void> {
       await db.user.update({ where: { id: userId }, data: { password: hash } });

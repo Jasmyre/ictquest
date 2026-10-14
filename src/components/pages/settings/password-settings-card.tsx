@@ -26,7 +26,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast, useToast } from "@/hooks/use-toast";
 import { toastStyle } from "@/lib/utils";
+import { PASSWORD_MIN_LENGTH } from "@/server/schemas/user";
 import { api, type RouterOutputs } from "@/trpc/react";
+import { SETTINGS_BUTTON_PRESS_CLASS } from "./press-feedback";
 
 type SettingsData = RouterOutputs["user"]["getSettings"]["data"];
 
@@ -34,7 +36,7 @@ type SettingsData = RouterOutputs["user"]["getSettings"]["data"];
 // min 6) so settings never accepts a weaker secret than sign-up.
 const authPasswordField = z
   .string()
-  .min(6, "Password must be at least 6 characters.");
+  .min(PASSWORD_MIN_LENGTH, "Password must be at least 6 characters.");
 
 const changeSchema = z.object({
   currentPassword: z.string().min(1, "Enter your current password."),
@@ -42,9 +44,6 @@ const changeSchema = z.object({
 });
 
 const setSchema = z.object({ newPassword: authPasswordField });
-
-const PRESS =
-  "cursor-pointer transition-transform duration-150 ease-out active:scale-[0.97]";
 
 export function PasswordSettingsCard({ initial }: { initial: SettingsData }) {
   const router = useRouter();
@@ -173,7 +172,11 @@ function ChangePasswordCard() {
                 )}
               />
               <div>
-                <Button className={PRESS} disabled={pending} type="submit">
+                <Button
+                  className={SETTINGS_BUTTON_PRESS_CLASS}
+                  disabled={pending}
+                  type="submit"
+                >
                   {pending ? "Changing…" : "Change password"}
                 </Button>
               </div>
@@ -264,7 +267,7 @@ function SetPasswordCard({ onDone }: { onDone: () => void }) {
               />
               <div>
                 <Button
-                  className={PRESS}
+                  className={SETTINGS_BUTTON_PRESS_CLASS}
                   disabled={setMutation.isPending}
                   type="submit"
                 >

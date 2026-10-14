@@ -27,15 +27,13 @@ import { Input } from "@/components/ui/input";
 import { toast, useToast } from "@/hooks/use-toast";
 import { toastStyle } from "@/lib/utils";
 import { api, type RouterOutputs } from "@/trpc/react";
+import { SETTINGS_BUTTON_PRESS_CLASS } from "./press-feedback";
 
 type SettingsData = RouterOutputs["user"]["getSettings"]["data"];
 
 const emailSchema = z.object({
   email: z.string().trim().toLowerCase().email("Enter a valid email address."),
 });
-
-const PRESS =
-  "cursor-pointer transition-transform duration-150 ease-out active:scale-[0.97]";
 
 export function EmailSettingsCard({ initial }: { initial: SettingsData }) {
   const router = useRouter();
@@ -123,7 +121,7 @@ export function EmailSettingsCard({ initial }: { initial: SettingsData }) {
                 />
                 <div>
                   <Button
-                    className={PRESS}
+                    className={SETTINGS_BUTTON_PRESS_CLASS}
                     disabled={mutation.isPending}
                     type="submit"
                   >

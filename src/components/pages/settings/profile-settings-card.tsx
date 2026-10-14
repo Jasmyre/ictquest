@@ -29,18 +29,25 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { toast, useToast } from "@/hooks/use-toast";
 import { toastStyle } from "@/lib/utils";
+import {
+  BIOGRAPHY_MAX_LENGTH,
+  DISPLAY_NAME_MAX_LENGTH,
+  DISPLAY_NAME_MIN_LENGTH,
+} from "@/server/schemas/user";
 import { api, type RouterOutputs } from "@/trpc/react";
+import { SETTINGS_BUTTON_PRESS_CLASS } from "./press-feedback";
 
 type SettingsData = RouterOutputs["user"]["getSettings"]["data"];
 
 const profileSchema = z.object({
-  name: z.string().trim().min(6).max(32),
-  biography: z.string().max(500).nullable().optional(),
+  name: z
+    .string()
+    .trim()
+    .min(DISPLAY_NAME_MIN_LENGTH)
+    .max(DISPLAY_NAME_MAX_LENGTH),
+  biography: z.string().max(BIOGRAPHY_MAX_LENGTH).nullable().optional(),
   isPrivate: z.boolean(),
 });
-
-const PRESS =
-  "cursor-pointer transition-transform duration-150 ease-out active:scale-[0.97]";
 
 export function ProfileSettingsCard({ initial }: { initial: SettingsData }) {
   const router = useRouter();
@@ -58,7 +65,7 @@ export function ProfileSettingsCard({ initial }: { initial: SettingsData }) {
   });
 
   const biographyValue = form.watch("biography") ?? "";
-  const remaining = 500 - (biographyValue?.length ?? 0);
+  const remaining = BIOGRAPHY_MAX_LENGTH - (biographyValue?.length ?? 0);
 
   const onSubmit = (values: z.infer<typeof profileSchema>) => {
     const biography =
@@ -172,7 +179,7 @@ export function ProfileSettingsCard({ initial }: { initial: SettingsData }) {
                       {...field}
                       aria-invalid={fieldState.invalid}
                       id="settings-bio"
-                      maxLength={500}
+                      maxLength={BIOGRAPHY_MAX_LENGTH}
                       placeholder="What should fellow learners know about you?"
                       rows={4}
                       value={field.value ?? ""}
@@ -212,7 +219,7 @@ export function ProfileSettingsCard({ initial }: { initial: SettingsData }) {
               />
               <div>
                 <Button
-                  className={PRESS}
+                  className={SETTINGS_BUTTON_PRESS_CLASS}
                   disabled={mutation.isPending}
                   type="submit"
                 >
