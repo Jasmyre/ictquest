@@ -245,12 +245,12 @@ test.describe("design-system shell rhythm", () => {
     }
     await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
     await page.mouse.down();
-    await page.waitForTimeout(250);
-    const pressedTransform = await follow.evaluate(
-      (element) => getComputedStyle(element).transform
-    );
+    await expect
+      .poll(() =>
+        follow.evaluate((element) => getComputedStyle(element).transform)
+      )
+      .not.toBe("none");
     await page.mouse.up();
-    expect(pressedTransform).not.toBe("none");
 
     expect(consoleErrors).toEqual([]);
   });
