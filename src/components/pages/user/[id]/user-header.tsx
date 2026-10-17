@@ -1,76 +1,112 @@
-import { Flag, UserMinus, UserPlus } from "lucide-react";
+import { Ban, Flag, MoreVertical, UserPlus } from "lucide-react";
+import {
+  DropDrawer,
+  DropDrawerContent,
+  DropDrawerItem,
+  DropDrawerTrigger,
+} from "@/components/dropdrawer";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import type { api } from "@/trpc/server";
+import type { DashboardData } from "@/server/schemas/dashboard";
 
+/**
+ * Bannerless public profile header (#92).
+ *
+ * Card over card tokens only: avatar, real display name, a muted meta line,
+ * and the public biography when the account is public and has one. Follow,
+ * Report, and Block stay visibly disabled TODOs per ADR-0009 — no mutation
+ * or unlock handler ships, only the honest affordance.
+ */
 type UserHeaderProps = {
-  isFollowing: boolean;
-  user: Awaited<ReturnType<typeof api.dashboard.getDashboardById>>["data"];
+  user: DashboardData;
 };
 
-const UserHeader = ({ isFollowing, user }: UserHeaderProps) => (
-  <Card className="mb-8 overflow-hidden border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
-    <div className="h-32 bg-gradient-to-r from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-indigo-900/10" />
-    <CardContent className="relative pt-0">
-      <div className="-mt-12 md:-mt-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-        <div className="flex flex-col items-start gap-4 md:flex-row md:items-end">
-          <Avatar className="h-24 w-24 border-4 border-white md:h-32 md:w-32 dark:border-gray-800">
-            <AvatarImage alt="User avatar" src={user.image ?? undefined} />
-            <AvatarFallback className="text-6xl">
-              {user.userName?.split(" ").map((n) => n[0])[0] ??
-                "Unknown username"}
-            </AvatarFallback>
-          </Avatar>
-          <div className="text-left md:text-left">
-            <h1 className="font-bold text-2xl text-gray-900 dark:text-white">
-              {user.userName}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400">@{user?.id}</p>
-            <br className="hidden max-sm:block" />
-            <div className="mt-2 flex items-center gap-2">
-              <Badge
-                className="border-gray-200 bg-gray-100 text-gray-600 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300"
-                variant="outline"
-              >
-                Student
-              </Badge>
-              <Badge className="border-indigo-100 bg-indigo-100 text-indigo-700 dark:border-indigo-900/30 dark:bg-indigo-900/20 dark:text-indigo-300">
-                Level {user?.level}
-              </Badge>
+const WHITESPACE_PATTERN = /\s+/;
+
+function initials(name: string | null): string {
+  if (!name) {
+    return "?";
+  }
+  return name
+    .trim()
+    .split(WHITESPACE_PATTERN)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+const UserHeader = ({ user }: UserHeaderProps) => {
+  const displayName = user.userName ?? "Unnamed learner";
+  const showBiography = !user.isPrivate && user.biography !== null;
+
+  return (
+    <Card className="mb-8">
+      <CardContent className="pt-6">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex items-center gap-4">
+            <Avatar className="h-16 w-16 shrink-0 sm:h-20 sm:w-20">
+              <AvatarImage
+                alt={`${displayName} avatar`}
+                src={user.image ?? undefined}
+              />
+              <AvatarFallback aria-hidden="true" className="text-xl">
+                {initials(user.userName)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="min-w-0">
+              <h2 className="font-bold text-foreground text-xl tracking-tight sm:text-2xl">
+                {displayName}
+              </h2>
+              <p className="mt-1 text-muted-foreground text-sm">
+                Level {user.level} · {user.totalSubtopicsCompleted} lessons ·{" "}
+                {user.totalAchievements} achievements
+              </p>
             </div>
           </div>
+
+          <div className="flex items-center gap-2">
+            <Button
+              aria-disabled="true"
+              className="cursor-pointer transition-transform duration-150 ease-out active:scale-[0.97]"
+              onClick={(event) => event.preventDefault()}
+              title="Follow coming soon"
+            >
+              <UserPlus aria-hidden="true" className="h-4 w-4" />
+              Follow
+            </Button>
+            <DropDrawer>
+              <DropDrawerTrigger asChild>
+                <Button
+                  aria-label={`More actions for ${displayName}`}
+                  className="h-9 w-9 cursor-pointer p-0 transition-transform duration-150 ease-out active:scale-[0.97]"
+                  variant="ghost"
+                >
+                  <MoreVertical aria-hidden="true" className="h-4 w-4" />
+                </Button>
+              </DropDrawerTrigger>
+              <DropDrawerContent align="end">
+                <DropDrawerItem disabled>
+                  <Flag aria-hidden="true" className="h-4 w-4" />
+                  Report user
+                </DropDrawerItem>
+                <DropDrawerItem disabled>
+                  <Ban aria-hidden="true" className="h-4 w-4" />
+                  Block user
+                </DropDrawerItem>
+              </DropDrawerContent>
+            </DropDrawer>
+          </div>
         </div>
-        <div className="flex gap-3 md:self-center">
-          <Button
-            className="cursor-pointer bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600"
-            variant={isFollowing ? "secondary" : "default"}
-          >
-            {isFollowing ? (
-              <>
-                <UserMinus className="mr-2 h-4 w-4" />
-                Unfollow
-              </>
-            ) : (
-              <>
-                <UserPlus className="mr-2 h-4 w-4" />
-                Follow
-              </>
-            )}
-          </Button>
-          <Button
-            className="cursor-pointer hover:bg-red-50 hover:text-red-400 dark:hover:bg-red-900/20 dark:hover:text-red-400"
-            variant="card-button"
-          >
-            <Flag className="h-4 w-4" />
-            <span className="sr-only">Report user</span>
-          </Button>
-        </div>
-      </div>
-      <p className="mt-6 text-gray-600 dark:text-gray-400">Bio not available</p>
-    </CardContent>
-  </Card>
-);
+
+        {showBiography ? (
+          <p className="mt-4 text-balance text-muted-foreground text-sm leading-relaxed">
+            {user.biography}
+          </p>
+        ) : null}
+      </CardContent>
+    </Card>
+  );
+};
 
 export default UserHeader;

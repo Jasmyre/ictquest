@@ -27,7 +27,7 @@ const Renderer = async ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <div className="py-10" data-testid="dashboard-share">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <UserHeader isFollowing={false} user={dashboard} />
+        <UserHeader user={dashboard} />
         <UserStatSummary user={dashboard} />
       </div>
     </div>

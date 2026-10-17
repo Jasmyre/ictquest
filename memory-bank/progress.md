@@ -30,6 +30,15 @@ Status tracker. Execution spec: #23. Decisions: `docs/adr/0001–0005` (#24 base
 
 ## Current status
 
+Public profile header/shell #92 2026-10-17 (`ticket/92-header-shell`, based on
+`feat/user-public-profile`): `/user/[id]` page shell retokened + wired to the
+real `dashboard.getDashboardById` read, `user-header.tsx` rebuilt as a
+bannerless token Card (real name, meta line, conditional public biography,
+disabled Follow/Report/Block), `user-stat-summary.tsx` retokened, page mock
+deleted; `user-stats.tsx` Progress/Achievements boundary retokened with real
+achievements and no Activity tab (structure left for #93). New
+`tests/unit/user-header.test.tsx`; typecheck + ultracite clean, unit 214/214.
+
 Lessons-index placement 2026-09-20: the index stays in the authed `(app)`
 shell on purpose (whole `/lessons` tree needs a session); rule rewritten
 in `routes.ts`/`proxy.ts`, guard tests, e2e spec, and docs;

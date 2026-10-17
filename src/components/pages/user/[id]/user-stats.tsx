@@ -1,54 +1,40 @@
-import { Award, Book, GraduationCap, Sparkles, Trophy } from "lucide-react";
-import type { UserData } from "@/app/(app)/user/[id]/page";
+import { GraduationCap, Trophy } from "lucide-react";
 import { CustomProgress } from "@/components/custom-progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import lessons from "@/db/lessons";
-import type { api } from "@/trpc/server";
+import type { DashboardData } from "@/server/schemas/dashboard";
 
 type UserStatsProps = {
-  user: Awaited<ReturnType<typeof api.dashboard.getDashboardById>>["data"];
-  userData: UserData;
+  user: DashboardData;
 };
 
-const UserStats = ({ user, userData }: UserStatsProps) => (
+const UserStats = ({ user }: UserStatsProps) => (
   <Tabs className="w-full" defaultValue="progress">
-    <TabsList className="mx-auto w-full max-w-md border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
-      <TabsTrigger
-        className="flex-1 cursor-pointer data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
-        value="progress"
-      >
+    <TabsList className="mx-auto w-full max-w-md">
+      <TabsTrigger className="flex-1 cursor-pointer" value="progress">
         Progress
       </TabsTrigger>
-      <TabsTrigger
-        className="flex-1 cursor-pointer data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
-        value="achievements"
-      >
+      <TabsTrigger className="flex-1 cursor-pointer" value="achievements">
         Achievements
-      </TabsTrigger>
-      <TabsTrigger
-        className="flex-1 cursor-pointer data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
-        value="activity"
-      >
-        Activity
       </TabsTrigger>
     </TabsList>
 
     <TabsContent className="mt-6" value="progress">
-      <Card className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
-            <GraduationCap className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-foreground">
+            <GraduationCap aria-hidden="true" className="h-5 w-5" />
             Learning Progress
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
             <div className="mb-2 flex justify-between">
-              <span className="font-medium text-gray-900 text-sm dark:text-white">
+              <span className="font-medium text-foreground text-sm">
                 Overall HTML Mastery
               </span>
-              <span className="text-gray-600 text-sm dark:text-gray-400">
+              <span className="text-muted-foreground text-sm">
                 {user.totalProgress}%
               </span>
             </div>
@@ -74,10 +60,10 @@ const UserStats = ({ user, userData }: UserStatsProps) => (
             return (
               <div key={lesson.slug}>
                 <div className="mb-2 flex justify-between">
-                  <span className="font-medium text-gray-900 text-sm dark:text-white">
+                  <span className="font-medium text-foreground text-sm">
                     {lesson.title}
                   </span>
-                  <span className="text-gray-600 text-sm dark:text-gray-400">
+                  <span className="text-muted-foreground text-sm">
                     {percentage}%
                   </span>
                 </div>
@@ -90,79 +76,36 @@ const UserStats = ({ user, userData }: UserStatsProps) => (
     </TabsContent>
 
     <TabsContent className="mt-6" value="achievements">
-      <Card className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
-            <Trophy className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-foreground">
+            <Trophy aria-hidden="true" className="h-5 w-5" />
             Achievements
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">
-            {userData.achievements.map((achievement) => (
-              <Card
-                className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
-                key={achievement.name}
-              >
+            {user.achievements.map((achievement) => (
+              <Card key={achievement.id}>
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-4">
-                    <div className="rounded-lg bg-indigo-100 p-2 dark:bg-indigo-900/20">
-                      <achievement.icon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                    <div className="rounded-lg bg-muted p-2">
+                      <Trophy
+                        aria-hidden="true"
+                        className="h-6 w-6 text-primary"
+                      />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-white">
+                      <p className="font-semibold text-foreground">
                         {achievement.name}
                       </p>
-                      <p className="text-gray-600 text-sm dark:text-gray-400">
+                      <p className="text-muted-foreground text-sm">
                         {achievement.description}
                       </p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </TabsContent>
-
-    <TabsContent className="mt-6" value="activity">
-      <Card className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
-            <Award className="h-5 w-5" />
-            Recent Activity
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {userData.recentActivity.map((activity, index) => (
-              <div className="flex items-center gap-4" key={index}>
-                <div className="rounded-lg bg-indigo-100 p-2 dark:bg-indigo-900/20">
-                  {activity.type === "completed" && (
-                    <Book className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-                  )}
-                  {activity.type === "achieved" && (
-                    <Trophy className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-                  )}
-                  {activity.type === "started" && (
-                    <Sparkles className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-                  )}
-                </div>
-                <div>
-                  <p className="text-gray-900 text-sm dark:text-white">
-                    {activity.type === "completed" &&
-                      `Completed ${activity.lesson}`}
-                    {activity.type === "achieved" &&
-                      `Earned ${activity.achievement}`}
-                    {activity.type === "started" &&
-                      `Started ${activity.lesson}`}
-                  </p>
-                  <p className="text-gray-600 text-xs dark:text-gray-400">
-                    {activity.date}
-                  </p>
-                </div>
-              </div>
             ))}
           </div>
         </CardContent>

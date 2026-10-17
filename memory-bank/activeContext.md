@@ -4,6 +4,17 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- Public profile header/shell (#92, `ticket/92-header-shell`, based on
+  `feat/user-public-profile`): `(app)/user/[id]` page shell retokened to the
+  design-system `div` shell + `sr-only h1`, wired to the real
+  `dashboard.getDashboardById` read; `user-header.tsx` rewritten as a
+  bannerless token Card (avatar, `userName`, muted meta line
+  `Level X · N lessons · M achievements`, biography only when public + set),
+  Follow/Report/Block visibly disabled per ADR-0009; `user-stat-summary.tsx`
+  retokened; all page mock/`UserData` deleted; `user-stats.tsx` keeps the
+  Progress/Achievements boundary (props now `{ user }`, Activity tab + mock
+  gone, retokened) for #93. New `tests/unit/user-header.test.tsx`. Gates:
+  typecheck clean, ultracite clean, unit 214/214.
 - Settings spec #81 + tickets #82–#86 resolved closed (2026-10-14,
   `feat/settings-page` @ f5d4e8d): #82–#85 implemented via unified
   surface; #86 deviated on purpose (Tokens tab removed, not disabled);
