@@ -30,7 +30,17 @@ Status tracker. Execution spec: #23. Decisions: `docs/adr/0001–0005` (#24 base
 
 ## Current status
 
-Playwright sign-off #95 2026-10-17 (branch `ticket/95-playwright-signoff` @
+Spec #90 complete 2026-10-17 (integration `feat/user-public-profile`, head
+`ea341d1`, PR #96): tickets #91–#95 implemented, merged, code-reviewed
+(Standards + Spec axes), and review findings fixed. `/user/[id]` is a
+prod-ready public profile — single public read (`dashboard.getDashboardById`)
+with redacted biography + `isPrivate` + newest-first achievement inventory;
+bannerless token header; real Progress/Achievements tabs (Activity gone);
+private-account branch + loading/error/not-found states; anonymous share-twin
+parity. Gates: typecheck + typecheck:test clean, ultracite clean, unit 232/232,
+prod build green, `playwright test --list` 31 tests. e2e not executed locally
+(shared `DATABASE_URL_TEST` has a `db push` schema, no migration history;
+`db:migrate:test` fails on `relation "User" already exists`). Playwright sign-off #95 2026-10-17 (branch `ticket/95-playwright-signoff` @
 integration `feat/user-public-profile`): `/user/[id]` e2e suite added
 (`user-profile.spec.ts`) — signed-in public-with-bio / public-without-bio /
 private / not-found, anonymous share-twin parity (public/private/unknown),

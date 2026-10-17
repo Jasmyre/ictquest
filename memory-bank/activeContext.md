@@ -4,6 +4,23 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- **Spec #90 complete on `feat/user-public-profile`** (2026-10-17):
+  tickets #91–#95 all implemented, merged, and reviewed. Integration head
+  `ea341d1` (final: `chore/review-fixes` merge); PR #96 `feat/user-public-profile`
+  → `main` (marked ready, closes #90 + #91–#95). Commits: `09d1688` (#91 read),
+  `02b8f83` (#92 header/shell), `5b56407` (#93 tabs), `24c3879` (#94 private +
+  route states + twin), `e09ca0e` (#95 Playwright sign-off), `cd25a7d` (review
+  fixes). Gates at head: typecheck + typecheck:test clean, ultracite clean,
+  unit 232/232, prod build green (`/user/[id]` + `/dashboard/[id]` PPR),
+  `playwright test --list` 31 tests. Code review (Standards + Spec axes)
+  raised comment-accuracy + `TRPCError` consistency + an e2e fixed-sleep flake —
+  all fixed; the "dead `getStatsById`" and "`ui/progress.tsx` scope creep"
+  findings were dismissed (legacy reference shape is tested; retoken is
+  spec-allowed). **Known limitation:** the e2e suite was NOT executed in this
+  environment — the shared `DATABASE_URL_TEST` is a `db push` schema with no
+  `_prisma_migrations` history, so `db:migrate:test` aborts on
+  `relation "User" already exists`; `test.yml` does not run Playwright. Run
+  `db:migrate:test` on a clean test DB then `npm run test:e2e` to execute it.
 - Playwright sign-off (#95, branch `ticket/95-playwright-signoff` @
   `feat/user-public-profile`): `/user/[id]` e2e suite
   (`tests/e2e/user-profile.spec.ts`) covers signed-in public-with-bio,
