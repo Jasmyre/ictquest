@@ -28,7 +28,10 @@ async function page({ params }: { params: Promise<{ id: string }> }) {
   const displayName = user.userName ?? "Learner";
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+    <div
+      className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+      data-testid="user-profile-shell"
+    >
       <h1 className="sr-only">{displayName}'s profile</h1>
       <UserHeader user={user} />
       {user.isPrivate ? (

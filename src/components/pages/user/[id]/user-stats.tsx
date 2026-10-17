@@ -13,7 +13,7 @@ const TAB_TRIGGER_CLASS =
   "flex-1 cursor-pointer transition-colors duration-150 ease-out data-[state=active]:bg-primary data-[state=active]:text-primary-foreground";
 
 const UserStats = ({ user }: UserStatsProps) => (
-  <Tabs className="w-full" defaultValue="progress">
+  <Tabs className="w-full" data-testid="user-stats" defaultValue="progress">
     <TabsList className="mx-auto w-full max-w-md">
       <TabsTrigger className={TAB_TRIGGER_CLASS} value="progress">
         Progress
