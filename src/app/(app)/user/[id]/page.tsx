@@ -35,7 +35,7 @@ const Renderer = async ({ params }: { params: Promise<{ id: string }> }) => {
         <UserStatSummary user={user} />
 
         {/* user-stats */}
-        <UserStats user={user} userData={userData} />
+        <UserStats user={user} />
       </div>
     </div>
   );

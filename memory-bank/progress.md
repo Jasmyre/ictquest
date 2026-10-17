@@ -271,3 +271,13 @@ same `var` violation. Gates: `check` 291 files clean, typecheck clean.
 +    deviations recorded (tokens removal, userName handle removal,
 +    unified surface supersedes split-contract). Gates at close:
 +    typecheck clean, ultracite clean, unit 204/204.
+
+Public profile tabs (#93) 2026-10-17 (branch `ticket/93-tabs` @
+`feat/user-public-profile`): `user-stats.tsx` now two tabs (Progress +
+Achievements) reading the extended dashboard contract; Activity tab and
+the `userData` mock prop deleted; per-lesson rows loop the static
+`src/db/lessons.tsx` registry, overall from `user.totalProgress`;
+achievements newest-first with muted icon tile and dashed empty state at
+zero; `ui/progress.tsx` retokened to primary tokens. Presentation seam
+`tests/unit/user-stats.test.tsx` (jsdom + RTL). Gates: typecheck clean,
+ultracite clean, unit 215/215.
