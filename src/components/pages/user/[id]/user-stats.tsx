@@ -1,21 +1,24 @@
-import { GraduationCap, Trophy } from "lucide-react";
+import { Award, GraduationCap, Trophy } from "lucide-react";
 import { CustomProgress } from "@/components/custom-progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import lessons from "@/db/lessons";
-import type { DashboardData } from "@/server/schemas/dashboard";
+import type { api } from "@/trpc/server";
 
 type UserStatsProps = {
-  user: DashboardData;
+  user: Awaited<ReturnType<typeof api.dashboard.getDashboardById>>["data"];
 };
+
+const TAB_TRIGGER_CLASS =
+  "flex-1 cursor-pointer transition-colors duration-150 ease-out data-[state=active]:bg-primary data-[state=active]:text-primary-foreground";
 
 const UserStats = ({ user }: UserStatsProps) => (
   <Tabs className="w-full" defaultValue="progress">
     <TabsList className="mx-auto w-full max-w-md">
-      <TabsTrigger className="flex-1 cursor-pointer" value="progress">
+      <TabsTrigger className={TAB_TRIGGER_CLASS} value="progress">
         Progress
       </TabsTrigger>
-      <TabsTrigger className="flex-1 cursor-pointer" value="achievements">
+      <TabsTrigger className={TAB_TRIGGER_CLASS} value="achievements">
         Achievements
       </TabsTrigger>
     </TabsList>
@@ -23,25 +26,22 @@ const UserStats = ({ user }: UserStatsProps) => (
     <TabsContent className="mt-6" value="progress">
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-foreground">
-            <GraduationCap aria-hidden="true" className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2">
+            <GraduationCap aria-hidden="true" className="size-5 text-primary" />
             Learning Progress
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="stagger-enter space-y-6">
           <div>
             <div className="mb-2 flex justify-between">
               <span className="font-medium text-foreground text-sm">
                 Overall HTML Mastery
               </span>
-              <span className="text-muted-foreground text-sm">
+              <span className="text-muted-foreground text-sm tabular-nums">
                 {user.totalProgress}%
               </span>
             </div>
-            <CustomProgress
-              finalValue={user?.totalProgress ?? 0}
-              initialValue={0}
-            />
+            <CustomProgress finalValue={user.totalProgress} initialValue={0} />
           </div>
 
           {lessons.map((lesson) => {
@@ -49,7 +49,7 @@ const UserStats = ({ user }: UserStatsProps) => (
               (item) => item.topic === lesson.slug
             );
 
-            const completedSubtopics = progress?.subtopics?.length ?? 0;
+            const completedSubtopics = progress?.subtopics.length ?? 0;
             const totalSubtopics = lesson.topics.length;
 
             const percentage =
@@ -63,7 +63,7 @@ const UserStats = ({ user }: UserStatsProps) => (
                   <span className="font-medium text-foreground text-sm">
                     {lesson.title}
                   </span>
-                  <span className="text-muted-foreground text-sm">
+                  <span className="text-muted-foreground text-sm tabular-nums">
                     {percentage}%
                   </span>
                 </div>
@@ -78,36 +78,42 @@ const UserStats = ({ user }: UserStatsProps) => (
     <TabsContent className="mt-6" value="achievements">
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-foreground">
-            <Trophy aria-hidden="true" className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2">
+            <Trophy aria-hidden="true" className="size-5 text-primary" />
             Achievements
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
-            {user.achievements.map((achievement) => (
-              <Card key={achievement.id}>
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-4">
-                    <div className="rounded-lg bg-muted p-2">
-                      <Trophy
-                        aria-hidden="true"
-                        className="h-6 w-6 text-primary"
-                      />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-foreground">
-                        {achievement.name}
-                      </p>
-                      <p className="text-muted-foreground text-sm">
-                        {achievement.description}
-                      </p>
-                    </div>
+          {user.achievements.length === 0 ? (
+            <div className="rounded-xl border border-dashed px-6 py-16 text-center">
+              <p className="font-medium text-foreground">No achievements yet</p>
+              <p className="mt-1 text-muted-foreground text-sm">
+                Unlocked achievements will appear here.
+              </p>
+            </div>
+          ) : (
+            <ul className="stagger-enter divide-y divide-border">
+              {user.achievements.map((achievement) => (
+                <li
+                  className="flex items-center gap-4 py-4"
+                  data-testid="achievement-row"
+                  key={achievement.id}
+                >
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                    <Award aria-hidden="true" className="size-5 text-primary" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="font-medium text-foreground text-sm">
+                      {achievement.name}
+                    </p>
+                    <p className="text-muted-foreground text-sm">
+                      {achievement.description}
+                    </p>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </CardContent>
       </Card>
     </TabsContent>

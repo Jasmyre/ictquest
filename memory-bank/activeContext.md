@@ -4,6 +4,16 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- Public profile integration (#92 + #93 merged into
+  `feat/user-public-profile`): #92 (`ticket/92-header-shell`) contributes the
+  bannerless design-system page shell (`div` + `sr-only h1`), real
+  `dashboard.getDashboardById` read, `user-header.tsx` token Card,
+  retokened `user-stat-summary.tsx`, and full page mock/`UserData` deletion;
+  #93 (`ticket/93-tabs`) contributes the final `user-stats.tsx` two-tab
+  (Progress + Achievements) design with per-lesson bars, newest-first
+  achievements, dashed empty state, and the `ui/progress.tsx` primary-token
+  retoken. #92 wins the header/shell/wiring, #93 wins the tab internals.
+  New seams `tests/unit/user-header.test.tsx` + `tests/unit/user-stats.test.tsx`.
 - Public profile header/shell (#92, `ticket/92-header-shell`, based on
   `feat/user-public-profile`): `(app)/user/[id]` page shell retokened to the
   design-system `div` shell + `sr-only h1`, wired to the real
@@ -15,6 +25,17 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
   Progress/Achievements boundary (props now `{ user }`, Activity tab + mock
   gone, retokened) for #93. New `tests/unit/user-header.test.tsx`. Gates:
   typecheck clean, ultracite clean, unit 214/214.
+- Public profile tabs (#93, branch `ticket/93-tabs` @ integration
+  `feat/user-public-profile`): `components/pages/user/[id]/user-stats.tsx`
+  shrinks to two tabs (Progress + Achievements) driven directly by the
+  extended `dashboard.getDashboardById` read; Activity tab and the mock
+  `userData` prop removed; per-lesson bars still loop `src/db/lessons.tsx`
+  and the overall comes from `user.totalProgress`; achievements render
+  newest-first with a muted icon tile and a dashed empty state at zero.
+  `ui/progress.tsx` retokened (`bg-primary/20`, `bg-primary`,
+  `motion-safe:transition-transform`). New component seam
+  `tests/unit/user-stats.test.tsx` (jsdom + RTL). Gates: typecheck clean,
+  ultracite clean, unit 215/215.
 - Settings spec #81 + tickets #82–#86 resolved closed (2026-10-14,
   `feat/settings-page` @ f5d4e8d): #82–#85 implemented via unified
   surface; #86 deviated on purpose (Tokens tab removed, not disabled);
