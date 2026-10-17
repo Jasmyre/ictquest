@@ -109,14 +109,13 @@ Keep new features aligned with these boundaries: controllers stay thin, business
 | `global-error.tsx` | Root-level error boundary | Catches errors in the root layout |
 | `default.tsx` | Fallback for parallel route segments | Required when using parallel routes |
 
-Status in this codebase: `page.tsx` (7), `layout.tsx` (4, incl. route-group layouts), `loading.tsx` (2: `(app)/profile`, `auth` — the generic `(app)/loading.tsx` was removed 2026-10-10 because it double-flashed under `/profile`'s own skeleton; `/` keeps its inline `Suspense` skeleton), `route.ts` (2), root `not-found.tsx` + root `forbidden.tsx` (both live in `src/app/` and are session-aware). `error.tsx` and `global-error.tsx` are not yet implemented.
+Status in this codebase: `page.tsx` (7), `layout.tsx` (4, incl. route-group layouts), `loading.tsx` (4: `(app)/profile`, `(app)/settings`, `(app)/user/[id]`, `auth` — the generic `(app)/loading.tsx` was removed 2026-10-10 because it double-flashed under `/profile`'s own skeleton; `/` keeps its inline `Suspense` skeleton), `route.ts` (2), `error.tsx` (1: `(app)/user/[id]`, client, retry via `reset`), `not-found.tsx` (1: `(app)/user/[id]`, the missing-learner boundary). `global-error.tsx` is not yet implemented. (This tree carries no root `not-found.tsx`/`forbidden.tsx`.)
 
-### Session-aware error pages (404 / 403)
+### Route-level error / not-found states (404 / retry)
 
-- Root `src/app/not-found.tsx` (any unmatched URL) and `src/app/forbidden.tsx` (auth interruption) render the shared `src/components/error-page.tsx` shell — a centered `min-h-svh` flex column with a serif `h1` title and a children slot.
-- The action link is session-aware via `src/components/session-home-link.tsx`: an async Server Component wrapping `await connection()` + `await auth()` and resolving `homePathFor(session !== null)` from `src/routes.ts` (`/` authed, `/landing` signed out). Because it reads the session, it ships inside a `<Suspense>`;
-- The Suspense fallback is a disabled `<Button>` (`HomeLinkFallback`) — never a link — so the prerendered static shell doesn't flash the wrong destination while the session resolves. This is the same PPR dynamic-hole pattern as `AppShellAsync`/`HydrateClient`.
-- `forbidden()` requires `experimental.authInterrupts: true` in `next.config.ts` (in the installed Next 16.2.4 this sets `__NEXT_EXPERIMENTAL_AUTH_INTERRUPTS`). There is no `forbidden.tsx` in the `(admin)` group, so a `forbidden()` from the admin layout bubbles to the root boundary automatically.
+- The `(app)/user/[id]` segment carries its own `error.tsx`, `not-found.tsx`, and `loading.tsx` (#94). `page.tsx` maps only a `NOT_FOUND` read failure to `notFound()`; every other failure rethrows to `error.tsx`, which is a client component offering a real retry through `reset`. A missing learner renders the `not-found.tsx` card instead of leaking into the error boundary.
+- No root `not-found.tsx`/`forbidden.tsx` and no shared `error-page.tsx` shell exist in this tree; unseen URLs fall through to Next's default 404. Add route-level boundaries per segment as routes need them (this segment is the first).
+- A route `loading.tsx` is the Suspense boundary the async page needs under `cacheComponents` — it mirrors the shell (`ProfileSkeleton`, `aria-busy`/`aria-label`) so navigation never flashes a blank frame.
 
 ### Parallel and Intercepting Routes
 

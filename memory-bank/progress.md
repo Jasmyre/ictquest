@@ -30,6 +30,18 @@ Status tracker. Execution spec: #23. Decisions: `docs/adr/0001–0005` (#24 base
 
 ## Current status
 
+Public profile route states + private branch #94 2026-10-17 (branch
+`ticket/94-private-states` @ integration `feat/user-public-profile`):
+`/user/[id]` renders the header plus a single private card
+(`private-account-card.tsx`) when `isPrivate`, otherwise summary + tabs; only
+`NOT_FOUND` maps to `notFound()`, other load failures rethrow to a new route
+`error.tsx` (retry via `reset`); route `loading.tsx` mirrors the shell with
+`ProfileSkeleton` busy labelling; `not-found.tsx` covers the `[id]` segment;
+the `(marketing)/dashboard/[id]` share twin reuses the header + private branch
+without tabs and stays anonymous-readable. New seam
+`tests/unit/user-private-states.test.tsx`; typecheck + ultracite clean, unit
+232/232, prod build green.
+
 Public profile header/shell #92 2026-10-17 (`ticket/92-header-shell`, based on
 `feat/user-public-profile`): `/user/[id]` page shell retokened + wired to the
 real `dashboard.getDashboardById` read, `user-header.tsx` rebuilt as a
