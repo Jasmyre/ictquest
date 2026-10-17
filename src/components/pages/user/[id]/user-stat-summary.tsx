@@ -7,7 +7,10 @@ type UserStatSummaryProps = {
 };
 
 const UserStatSummary = ({ user }: UserStatSummaryProps) => (
-  <section className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+  <section
+    className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4"
+    data-testid="user-stat-summary"
+  >
     {[
       {
         icon: Book,

@@ -30,7 +30,20 @@ Status tracker. Execution spec: #23. Decisions: `docs/adr/0001–0005` (#24 base
 
 ## Current status
 
-Public profile route states + private branch #94 2026-10-17 (branch
+Playwright sign-off #95 2026-10-17 (branch `ticket/95-playwright-signoff` @
+integration `feat/user-public-profile`): `/user/[id]` e2e suite added
+(`user-profile.spec.ts`) — signed-in public-with-bio / public-without-bio /
+private / not-found, anonymous share-twin parity (public/private/unknown),
+mobile+desktop × light+dark matrix, shell rhythm, reduced-motion + press
+feedback, zero-console-error budget. Seed infra `fixtures/profile-accounts.ts`
++ `setup/profile.setup.ts` (direct Prisma on `DATABASE_URL_TEST`, credentials
+sign-in → `storageState`); `playwright.config.ts` gains `profile-setup` /
+`e2e` / `user-profile` projects; testids on shell/header/summary/stats. Gates
+run: typecheck, `typecheck:test`, ultracite, unit 232/232, prod build,
+`playwright test --list` (31 tests). e2e execution was NOT possible locally:
+the shared test DB is a `db push` schema with no migration history, so
+`db:migrate:test` errors on `relation "User" already exists`; e2e is not part
+of the CI gate. Public profile route states + private branch #94 2026-10-17 (branch
 `ticket/94-private-states` @ integration `feat/user-public-profile`):
 `/user/[id]` renders the header plus a single private card
 (`private-account-card.tsx`) when `isPrivate`, otherwise summary + tabs; only

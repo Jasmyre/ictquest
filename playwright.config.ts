@@ -1,4 +1,8 @@
 import { defineConfig } from "@playwright/test";
+import { STORAGE_STATE } from "./tests/e2e/fixtures/profile-accounts";
+
+const SETUP_MATCH = /profile\.setup\.ts/;
+const PROFILE_SPEC_MATCH = /user-profile\.spec\.ts/;
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -12,4 +16,22 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
   },
+  projects: [
+    {
+      name: "profile-setup",
+      testMatch: SETUP_MATCH,
+    },
+    {
+      name: "e2e",
+      testIgnore: PROFILE_SPEC_MATCH,
+    },
+    {
+      name: "user-profile",
+      dependencies: ["profile-setup"],
+      testMatch: PROFILE_SPEC_MATCH,
+      use: {
+        storageState: STORAGE_STATE,
+      },
+    },
+  ],
 });

@@ -41,7 +41,7 @@ const UserHeader = ({ user }: UserHeaderProps) => {
   const showBiography = !user.isPrivate && user.biography !== null;
 
   return (
-    <Card className="mb-8">
+    <Card className="mb-8" data-testid="user-header-card">
       <CardContent className="pt-6">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-center gap-4">

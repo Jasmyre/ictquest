@@ -4,6 +4,25 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- Playwright sign-off (#95, branch `ticket/95-playwright-signoff` @
+  `feat/user-public-profile`): `/user/[id]` e2e suite
+  (`tests/e2e/user-profile.spec.ts`) covers signed-in public-with-bio,
+  public-without-bio, private, and not-found; the anonymous share twin
+  (`/dashboard/[id]`) for public/private/unknown ids; a mobile/desktop ×
+  light/dark matrix; the design-system shell rhythm (max-width, padding,
+  header/summary/tab-panel gaps); reduced-motion (opacity-only rows) and
+  Follow press feedback; all with a zero-console-error budget. Seed infra:
+  `tests/e2e/fixtures/profile-accounts.ts` + `tests/e2e/setup/profile.setup.ts`
+  (direct Prisma on `DATABASE_URL_TEST`, real credentials sign-in →
+  `storageState` at `tests/e2e/.auth/`). `playwright.config.ts` gains three
+  projects (`profile-setup`, `e2e`, `user-profile`); testids added to the
+  shell/header/summary/stats. Gates run here: typecheck clean,
+  `typecheck:test` clean, ultracite clean, unit 232/232, prod build green,
+  `playwright test --list` collects 31 tests. NOTE: e2e was NOT executed in
+  this environment — the shared `DATABASE_URL_TEST` holds a `db push`-created
+  schema with no `_prisma_migrations` history, so `db:migrate:test` fails
+  (`relation "User" already exists`) and the setup cannot seed; e2e is not in
+  the CI gate (`test.yml` runs typecheck + check + test:all + build only).
 - Public profile route states + private branch (#94, branch
   `ticket/94-private-states` @ `feat/user-public-profile`): `/user/[id]` now
   branches on `isPrivate` — header plus a single `private-account-card.tsx`
