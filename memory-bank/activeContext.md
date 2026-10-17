@@ -4,6 +4,18 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- Public profile route states + private branch (#94, branch
+  `ticket/94-private-states` @ `feat/user-public-profile`): `/user/[id]` now
+  branches on `isPrivate` — header plus a single `private-account-card.tsx`
+  (lock, "This account is private", muted explainer) instead of the summary
+  and tabs; `page.tsx` maps only `NOT_FOUND` to `notFound()` and rethrows
+  real load failures; new route `loading.tsx` (`ProfileSkeleton`, shell
+  mirror, `aria-busy`), `error.tsx` (client, retry via `reset`), and
+  `not-found.tsx` for the `[id]` segment. The `(marketing)/dashboard/[id]`
+  share twin reuses the same header + private branch (no tabs, anonymous
+  readable). New seam `tests/unit/user-private-states.test.tsx`. Gates:
+  typecheck clean, ultracite clean, unit 232/232, prod build green
+  (`/user/[id]` + `/dashboard/[id]` PPR).
 - Public profile integration (#92 + #93 merged into
   `feat/user-public-profile`): #92 (`ticket/92-header-shell`) contributes the
   bannerless design-system page shell (`div` + `sr-only h1`), real
