@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { notFound } from "next/navigation";
 import PrivateAccountCard from "@/components/pages/user/[id]/private-account-card";
 import UserHeader from "@/components/pages/user/[id]/user-header";
@@ -19,7 +20,7 @@ async function page({ params }: { params: Promise<{ id: string }> }) {
   try {
     user = (await api.dashboard.getDashboardById({ id })).data;
   } catch (error) {
-    if (isNotFoundError(error)) {
+    if (error instanceof TRPCError && error.code === "NOT_FOUND") {
       notFound();
     }
     throw error;
@@ -43,15 +44,6 @@ async function page({ params }: { params: Promise<{ id: string }> }) {
         </>
       )}
     </div>
-  );
-}
-
-function isNotFoundError(error: unknown): boolean {
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    "code" in error &&
-    error.code === "NOT_FOUND"
   );
 }
 

@@ -12,13 +12,12 @@ import {
  * redacted public profile read in #91).
  *
  * Derived summary view over visible progress state. Thin delegation over
- * the closed dashboard repository select so owner and by-id reads stay
- * field-identical to the prior stats shapes, plus the public profile
- * additions (#91): redacted public biography (`null` when unset),
- * `isPrivate` flag, and the unlocked achievement inventory (name,
- * description, `unlockedAt` as a `Date`, newest-first). The controller
- * tier serializes `unlockedAt` to ISO so the strict output contract holds
- * on the typed transport.
+ * the closed dashboard repository select. Owner and by-id reads share the
+ * base summary fields and add the public profile fields (#91): redacted
+ * public biography (`null` when unset), `isPrivate` flag, and the unlocked
+ * achievement inventory (name, description, `unlockedAt` as a `Date`,
+ * newest-first). The controller tier serializes `unlockedAt` to ISO so the
+ * strict output contract holds on the typed transport.
  *
  * Persistence lives in `src/server/repositories/dashboard.ts` — this
  * module owns the derivation rule (level bands, totals) plus the
