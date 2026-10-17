@@ -92,6 +92,8 @@ function createFakeDb() {
         id,
         userName: `learner-${id}`,
         image: null,
+        biography: null,
+        isPrivate: false,
         userAchievements: [],
         progressData: owned.map((r) => ({
           topic: r.topic,

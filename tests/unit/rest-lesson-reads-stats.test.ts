@@ -110,6 +110,8 @@ describe("Migration 19 — REST lesson reads plus stats plus retire legacy (#42)
             id: "learner-a",
             userName: "learner-a",
             image: null,
+            biography: null,
+            isPrivate: false,
             userAchievements: [],
             progressData: [],
           }),

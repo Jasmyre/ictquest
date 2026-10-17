@@ -235,7 +235,16 @@ describe("Slice 6 — per-entity service/repository/schema triples (#63)", () =>
       id: "learner-a",
       userName: "learner-a",
       image: null,
-      userAchievements: [{ id: 1 }],
+      biography: "I love HTML.",
+      isPrivate: false,
+      userAchievements: [
+        {
+          id: 1,
+          achievementName: "First Steps",
+          achievementDescription: "Complete one subtopic",
+          unlockedAt: new Date("2026-01-01T00:00:00.000Z"),
+        },
+      ],
       progressData: [{ topic: "t", subtopics: ["s"] }],
     };
     const db = {
@@ -244,9 +253,35 @@ describe("Slice 6 — per-entity service/repository/schema triples (#63)", () =>
     };
 
     const mine = await getMyDashboard(db as never, "learner-a");
-    expect(dashboardOutputSchema.safeParse(mine).success).toBe(true);
-    expect(mine.data).not.toHaveProperty("biography");
-    expect(mine.data).not.toHaveProperty("isPrivate");
+    expect(mine.data).toHaveProperty("biography", "I love HTML.");
+    expect(mine.data).toHaveProperty("isPrivate", false);
+    // Domain tier keeps the raw `Date` on the achievement inventory.
+    expect(mine.data.achievements).toEqual([
+      {
+        id: 1,
+        name: "First Steps",
+        description: "Complete one subtopic",
+        unlockedAt: new Date("2026-01-01T00:00:00.000Z"),
+      },
+    ]);
+
+    // Controller tier serializes `unlockedAt` to the strict transport shape.
+    const { appRouter } = await import("@/server/api/root");
+    const caller = appRouter.createCaller({
+      db: db as never,
+      headers: new Headers(),
+      user: { id: "learner-a", roles: ["USER"] } as never,
+    });
+    const transport = await caller.dashboard.getMyDashboard();
+    expect(dashboardOutputSchema.safeParse(transport).success).toBe(true);
+    expect(transport.data.achievements).toEqual([
+      {
+        id: 1,
+        name: "First Steps",
+        description: "Complete one subtopic",
+        unlockedAt: "2026-01-01T00:00:00.000Z",
+      },
+    ]);
 
     const byId = await getDashboardById(db as never, "learner-a");
     expect(byId).toEqual(mine);
