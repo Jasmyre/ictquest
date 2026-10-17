@@ -12,7 +12,14 @@ export type StatsUserRow = {
   id: string;
   userName: string | null;
   image: string | null;
-  userAchievements: Array<{ id: number }>;
+  biography: string | null;
+  isPrivate: boolean;
+  userAchievements: Array<{
+    id: number;
+    achievementName: string;
+    achievementDescription: string;
+    unlockedAt: Date;
+  }>;
   progressData: Array<{ topic: string; subtopics: string[] }>;
 };
 
@@ -91,7 +98,17 @@ export function createProgressRepository(db: ProgressDb): ProgressRepository {
           id: true,
           userName: true,
           image: true,
-          userAchievements: { select: { id: true } },
+          biography: true,
+          isPrivate: true,
+          userAchievements: {
+            select: {
+              id: true,
+              achievementName: true,
+              achievementDescription: true,
+              unlockedAt: true,
+            },
+            orderBy: { unlockedAt: "desc" },
+          },
           progressData: { select: { subtopics: true, topic: true } },
         },
       });

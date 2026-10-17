@@ -22,8 +22,22 @@ type ProgressRow = {
   subtopics: string[];
 };
 
+type AchievementSeed = {
+  id: number;
+  achievementName: string;
+  achievementDescription: string;
+  unlockedAt: Date;
+};
+
+type ProfileSeed = {
+  biography: string | null;
+  isPrivate: boolean;
+  achievements: AchievementSeed[];
+};
+
 function createFakeDb() {
   const rows: ProgressRow[] = [];
+  const profiles: Record<string, ProfileSeed> = {};
   let seq = 0;
 
   const progressData = {
@@ -84,17 +98,37 @@ function createFakeDb() {
   };
 
   const user = {
-    findUnique(_args: { where: { id: string } }) {
-      const id = _args.where.id;
+    findUnique(args: {
+      where: { id: string };
+      select?: {
+        userAchievements?: { orderBy?: { unlockedAt?: "asc" | "desc" } };
+      };
+    }) {
+      const id = args.where.id;
       if (id === "missing") {
         return Promise.resolve(null);
       }
       const owned = rows.filter((r) => r.userId === id);
+      const profile = profiles[id];
+      const seeded = profile?.achievements ?? [];
+      const orderBy = args.select?.userAchievements?.orderBy?.unlockedAt;
+      const achievements =
+        orderBy === "desc"
+          ? [...seeded].sort(
+              (a, b) => b.unlockedAt.getTime() - a.unlockedAt.getTime()
+            )
+          : orderBy === "asc"
+            ? [...seeded].sort(
+                (a, b) => a.unlockedAt.getTime() - b.unlockedAt.getTime()
+              )
+            : [...seeded];
       return Promise.resolve({
         id,
         userName: `learner-${id}`,
         image: null,
-        userAchievements: [],
+        biography: profile?.biography ?? null,
+        isPrivate: profile?.isPrivate ?? false,
+        userAchievements: achievements,
         progressData: owned.map((r) => ({
           topic: r.topic,
           subtopics: [...r.subtopics],
@@ -103,7 +137,16 @@ function createFakeDb() {
     },
   };
 
-  return { progressData, user };
+  function seedProgress(userId: string, topic: string, subtopics: string[]) {
+    seq += 1;
+    rows.push({ id: `progress-${seq}`, userId, topic, subtopics });
+  }
+
+  function setProfile(userId: string, profile: ProfileSeed) {
+    profiles[userId] = profile;
+  }
+
+  return { progressData, user, seedProgress, setProfile };
 }
 
 async function callerFor(
@@ -121,7 +164,7 @@ async function callerFor(
 const learnerA = { id: "learner-a", roles: ["USER"] };
 
 describe("Slice 5 — Dashboard rename (derived view over progress) (#62)", () => {
-  it("enforces strict output contracts with no biography leak", async () => {
+  it("enforces strict output contracts on the dashboard payload", async () => {
     const { dashboardOutputSchema } = await import(
       "@/server/schemas/dashboard"
     );
@@ -132,21 +175,129 @@ describe("Slice 5 — Dashboard rename (derived view over progress) (#62)", () =
         userName: "learner-a",
         id: "learner-a",
         image: null,
-        totalAchievements: 0,
+        biography: "I love HTML.",
+        isPrivate: false,
+        totalAchievements: 1,
         totalSubtopicsCompleted: 1,
         level: "Beginner",
         totalProgress: 12.5,
         progressData: [{ topic: "t", subtopics: ["s"] }],
+        achievements: [
+          {
+            id: 1,
+            name: "First Steps",
+            description: "Complete one subtopic",
+            unlockedAt: "2026-01-01T00:00:00.000Z",
+          },
+        ],
       },
     };
     expect(dashboardOutputSchema.safeParse(valid).success).toBe(true);
 
-    // Unknown keys fail loudly — a biography payload never validates.
-    const withBio = {
+    // Unknown keys fail loudly.
+    const withUnknown = {
       ...valid,
-      data: { ...valid.data, biography: "hello", isPrivate: false },
+      data: { ...valid.data, email: "leak@example.com" },
     };
-    expect(dashboardOutputSchema.safeParse(withBio).success).toBe(false);
+    expect(dashboardOutputSchema.safeParse(withUnknown).success).toBe(false);
+
+    // Dates must already be ISO strings on the typed transport.
+    const withDate = {
+      ...valid,
+      data: {
+        ...valid.data,
+        achievements: [
+          { ...valid.data.achievements[0], unlockedAt: new Date() },
+        ],
+      },
+    };
+    expect(dashboardOutputSchema.safeParse(withDate).success).toBe(false);
+  });
+
+  it("returns a public account's biography, flag, progress, and newest-first achievements", async () => {
+    const db = createFakeDb();
+    db.seedProgress("learner-a", "introduction-to-html", ["html_introduction"]);
+    db.setProfile("learner-a", {
+      biography: "I love HTML.",
+      isPrivate: false,
+      achievements: [
+        {
+          id: 1,
+          achievementName: "First Steps",
+          achievementDescription: "Complete one subtopic",
+          unlockedAt: new Date("2026-01-01T00:00:00.000Z"),
+        },
+        {
+          id: 2,
+          achievementName: "HTML Hero",
+          achievementDescription: "Finish HTML",
+          unlockedAt: new Date("2026-02-01T00:00:00.000Z"),
+        },
+      ],
+    });
+
+    const caller = await callerFor(db, null);
+    const result = await caller.dashboard.getDashboardById({
+      id: "learner-a",
+    });
+
+    expect(result.data.biography).toBe("I love HTML.");
+    expect(result.data.isPrivate).toBe(false);
+    expect(result.data.totalSubtopicsCompleted).toBe(1);
+    expect(result.data.achievements.map((a) => a.name)).toEqual([
+      "HTML Hero",
+      "First Steps",
+    ]);
+    expect(result.data.achievements[0]).toEqual({
+      id: 2,
+      name: "HTML Hero",
+      description: "Finish HTML",
+      unlockedAt: "2026-02-01T00:00:00.000Z",
+    });
+  });
+
+  it("redacts a private account to header fields with no bio, progress, or achievements", async () => {
+    const db = createFakeDb();
+    db.seedProgress("learner-a", "introduction-to-html", ["html_introduction"]);
+    db.setProfile("learner-a", {
+      biography: "Private bio",
+      isPrivate: true,
+      achievements: [
+        {
+          id: 1,
+          achievementName: "First Steps",
+          achievementDescription: "Complete one subtopic",
+          unlockedAt: new Date("2026-01-01T00:00:00.000Z"),
+        },
+      ],
+    });
+
+    const caller = await callerFor(db, null);
+    const result = await caller.dashboard.getDashboardById({
+      id: "learner-a",
+    });
+
+    expect(result.data).toMatchObject({
+      id: "learner-a",
+      userName: "learner-learner-a",
+      image: null,
+      isPrivate: true,
+      biography: null,
+      progressData: [],
+      achievements: [],
+      totalAchievements: 0,
+      totalSubtopicsCompleted: 0,
+      totalProgress: 0,
+      level: "Beginner",
+    });
+  });
+
+  it("maps a missing id to NOT_FOUND at the public by-id seam", async () => {
+    const db = createFakeDb();
+    const caller = await callerFor(db, null);
+    await expect(
+      caller.dashboard.getDashboardById({ id: "missing" })
+    ).rejects.toMatchObject({ code: "NOT_FOUND" });
   });
 
   it("keeps the dashboard shape field-identical to the legacy stats shape", async () => {
@@ -166,7 +317,6 @@ describe("Slice 5 — Dashboard rename (derived view over progress) (#62)", () =
     expect(Object.keys(next.data).sort()).toEqual(
       Object.keys(legacy.data).sort()
     );
-    expect(next.data).not.toHaveProperty("biography");
   });
 
   it("serves the owner read round-trip plus by-id parity", async () => {
@@ -181,7 +331,8 @@ describe("Slice 5 — Dashboard rename (derived view over progress) (#62)", () =
     expect(mine.success).toBe(true);
     expect(mine.data.totalSubtopicsCompleted).toBe(1);
     expect(mine.data.level).toBe("Beginner");
-    expect(mine.data).not.toHaveProperty("biography");
+    expect(mine.data).toHaveProperty("biography", null);
+    expect(mine.data).toHaveProperty("isPrivate", false);
 
     const pub = await callerFor(db, null);
     const byId = await pub.dashboard.getDashboardById({ id: learnerA.id });
