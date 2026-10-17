@@ -30,6 +30,50 @@ Status tracker. Execution spec: #23. Decisions: `docs/adr/0001–0005` (#24 base
 
 ## Current status
 
+Spec #90 complete 2026-10-17 (integration `feat/user-public-profile`, head
+`ea341d1`, PR #96): tickets #91–#95 implemented, merged, code-reviewed
+(Standards + Spec axes), and review findings fixed. `/user/[id]` is a
+prod-ready public profile — single public read (`dashboard.getDashboardById`)
+with redacted biography + `isPrivate` + newest-first achievement inventory;
+bannerless token header; real Progress/Achievements tabs (Activity gone);
+private-account branch + loading/error/not-found states; anonymous share-twin
+parity. Gates: typecheck + typecheck:test clean, ultracite clean, unit 232/232,
+prod build green, `playwright test --list` 31 tests. e2e not executed locally
+(shared `DATABASE_URL_TEST` has a `db push` schema, no migration history;
+`db:migrate:test` fails on `relation "User" already exists`). Playwright sign-off #95 2026-10-17 (branch `ticket/95-playwright-signoff` @
+integration `feat/user-public-profile`): `/user/[id]` e2e suite added
+(`user-profile.spec.ts`) — signed-in public-with-bio / public-without-bio /
+private / not-found, anonymous share-twin parity (public/private/unknown),
+mobile+desktop × light+dark matrix, shell rhythm, reduced-motion + press
+feedback, zero-console-error budget. Seed infra `fixtures/profile-accounts.ts`
++ `setup/profile.setup.ts` (direct Prisma on `DATABASE_URL_TEST`, credentials
+sign-in → `storageState`); `playwright.config.ts` gains `profile-setup` /
+`e2e` / `user-profile` projects; testids on shell/header/summary/stats. Gates
+run: typecheck, `typecheck:test`, ultracite, unit 232/232, prod build,
+`playwright test --list` (31 tests). e2e execution was NOT possible locally:
+the shared test DB is a `db push` schema with no migration history, so
+`db:migrate:test` errors on `relation "User" already exists`; e2e is not part
+of the CI gate. Public profile route states + private branch #94 2026-10-17 (branch
+`ticket/94-private-states` @ integration `feat/user-public-profile`):
+`/user/[id]` renders the header plus a single private card
+(`private-account-card.tsx`) when `isPrivate`, otherwise summary + tabs; only
+`NOT_FOUND` maps to `notFound()`, other load failures rethrow to a new route
+`error.tsx` (retry via `reset`); route `loading.tsx` mirrors the shell with
+`ProfileSkeleton` busy labelling; `not-found.tsx` covers the `[id]` segment;
+the `(marketing)/dashboard/[id]` share twin reuses the header + private branch
+without tabs and stays anonymous-readable. New seam
+`tests/unit/user-private-states.test.tsx`; typecheck + ultracite clean, unit
+232/232, prod build green.
+
+Public profile header/shell #92 2026-10-17 (`ticket/92-header-shell`, based on
+`feat/user-public-profile`): `/user/[id]` page shell retokened + wired to the
+real `dashboard.getDashboardById` read, `user-header.tsx` rebuilt as a
+bannerless token Card (real name, meta line, conditional public biography,
+disabled Follow/Report/Block), `user-stat-summary.tsx` retokened, page mock
+deleted; `user-stats.tsx` Progress/Achievements boundary retokened with real
+achievements and no Activity tab (structure left for #93). New
+`tests/unit/user-header.test.tsx`; typecheck + ultracite clean, unit 214/214.
+
 Lessons-index placement 2026-09-20: the index stays in the authed `(app)`
 shell on purpose (whole `/lessons` tree needs a session); rule rewritten
 in `routes.ts`/`proxy.ts`, guard tests, e2e spec, and docs;
@@ -271,3 +315,13 @@ same `var` violation. Gates: `check` 291 files clean, typecheck clean.
 +    deviations recorded (tokens removal, userName handle removal,
 +    unified surface supersedes split-contract). Gates at close:
 +    typecheck clean, ultracite clean, unit 204/204.
+
+Public profile tabs (#93) 2026-10-17 (branch `ticket/93-tabs` @
+`feat/user-public-profile`): `user-stats.tsx` now two tabs (Progress +
+Achievements) reading the extended dashboard contract; Activity tab and
+the `userData` mock prop deleted; per-lesson rows loop the static
+`src/db/lessons.tsx` registry, overall from `user.totalProgress`;
+achievements newest-first with muted icon tile and dashed empty state at
+zero; `ui/progress.tsx` retokened to primary tokens. Presentation seam
+`tests/unit/user-stats.test.tsx` (jsdom + RTL). Gates: typecheck clean,
+ultracite clean, unit 215/215.

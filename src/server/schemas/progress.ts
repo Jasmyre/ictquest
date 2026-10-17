@@ -52,7 +52,8 @@ export const deleteAllProgressOutputSchema = z.object({
  * Canonical shape for the computed per-user summary. Slice 5 (#62) renames
  * the surface to the dashboard derived view: `src/server/schemas/dashboard.ts`
  * owns the strict live contracts (`GET /v1/dashboard/{id}`); these shapes
- * stay as the progress-owned reference and remain field-identical.
+ * stay as the progress-owned reference for the base summary fields (the
+ * dashboard shape extends them with the public profile additions).
  */
 export const statsDataSchema = z.object({
   userName: z.string().nullable(),

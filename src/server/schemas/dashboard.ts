@@ -1,13 +1,15 @@
 import { z } from "zod";
 
 /**
- * Dashboard contracts (Slice 5, #62).
+ * Dashboard contracts (Slice 5, #62; public profile read in #91).
  *
- * Derived summary view over visible progress state. Shapes are
- * field-identical to the prior progress `stats` shapes so the rename is a
- * vocabulary move with zero behavior change — except the approved additions
- * (dashboard rename itself). Strict objects: unknown fields fail loudly,
- * never strip-drift. No biography key ever enters this contract (share-safe).
+ * Derived summary view over visible progress state, extending the progress
+ * stats summary with a redacted public biography, `isPrivate` flag, and the
+ * unlocked achievement inventory. Strict objects: unknown fields fail
+ * loudly, never strip-drift. `unlockedAt` is pinned to the REST wire shape
+ * (ISO datetime) and is serialized at the controller tier
+ * (`src/server/api/routers/dashboard.ts`) so the contract holds on the
+ * typed tRPC transport too.
  */
 
 export const dashboardByIdSchema = z.strictObject({
@@ -16,10 +18,19 @@ export const dashboardByIdSchema = z.strictObject({
 
 export type DashboardByIdInput = z.infer<typeof dashboardByIdSchema>;
 
+export const dashboardAchievementSchema = z.strictObject({
+  id: z.number(),
+  name: z.string(),
+  description: z.string(),
+  unlockedAt: z.iso.datetime(),
+});
+
 export const dashboardDataSchema = z.strictObject({
   userName: z.string().nullable(),
   id: z.string(),
   image: z.string().nullable(),
+  biography: z.string().nullable(),
+  isPrivate: z.boolean(),
   totalAchievements: z.number(),
   totalSubtopicsCompleted: z.number(),
   level: z.string(),
@@ -30,6 +41,7 @@ export const dashboardDataSchema = z.strictObject({
       subtopics: z.array(z.string()),
     })
   ),
+  achievements: z.array(dashboardAchievementSchema),
 });
 
 export const dashboardOutputSchema = z.strictObject({

@@ -1,91 +1,50 @@
-import { Sparkles, Star, Trophy } from "lucide-react";
+import { TRPCError } from "@trpc/server";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import PrivateAccountCard from "@/components/pages/user/[id]/private-account-card";
 import UserHeader from "@/components/pages/user/[id]/user-header";
 import UserStatSummary from "@/components/pages/user/[id]/user-stat-summary";
 import UserStats from "@/components/pages/user/[id]/user-stats";
 import { api } from "@/trpc/server";
 
+/**
+ * Public profile by id (#90; private branch, route states in #94).
+ *
+ * The loading boundary lives in `loading.tsx` so the shell prerenders as a
+ * static skeleton. A missing learner maps to the `not-found.tsx` boundary;
+ * any other load failure propagates to `error.tsx` for a retry.
+ */
 async function page({ params }: { params: Promise<{ id: string }> }) {
-  return (
-    <Suspense>
-      <Renderer params={params} />
-    </Suspense>
-  );
-}
-
-const Renderer = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const isFollowing = userData.isFollowing;
   const { id } = await params;
 
   let user: Awaited<ReturnType<typeof api.dashboard.getDashboardById>>["data"];
   try {
     user = (await api.dashboard.getDashboardById({ id })).data;
-  } catch {
-    notFound();
+  } catch (error) {
+    if (error instanceof TRPCError && error.code === "NOT_FOUND") {
+      notFound();
+    }
+    throw error;
   }
 
+  const displayName = user.userName ?? "Learner";
+
   return (
-    <div className="py-10">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* user-header */}
-        <UserHeader isFollowing={isFollowing} user={user} />
-
-        {/* user-stat-summary */}
-        <UserStatSummary user={user} />
-
-        {/* user-stats */}
-        <UserStats user={user} userData={userData} />
-      </div>
+    <div
+      className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+      data-testid="user-profile-shell"
+    >
+      <h1 className="sr-only">{displayName}'s profile</h1>
+      <UserHeader user={user} />
+      {user.isPrivate ? (
+        <PrivateAccountCard />
+      ) : (
+        <>
+          <UserStatSummary user={user} />
+          <UserStats user={user} />
+        </>
+      )}
     </div>
   );
-};
-
-export type UserData = typeof userData;
-
-const userData = {
-  id: 1,
-  name: "Sarah Wilson",
-  username: "@sarahw",
-  role: "Student",
-  avatar: "/placeholder.svg?height=100&width=100",
-  level: "Beginner",
-  isFollowing: true,
-  bio: "Passionate about web development and learning new technologies. Currently focusing on mastering HTML and CSS.",
-  achievements: [
-    {
-      name: "Fast Learner",
-      description: "Completed 5 lessons in one day",
-      icon: Sparkles,
-    },
-    {
-      name: "Perfect Score",
-      description: "Achieved 100% in HTML Basics",
-      icon: Star,
-    },
-    {
-      name: "Consistent Learner",
-      description: "Logged in for 7 days straight",
-      icon: Trophy,
-    },
-  ],
-  stats: {
-    lessonsCompleted: 12,
-    achievementsEarned: 5,
-    daysStreak: 7,
-    totalPoints: 1250,
-  },
-  progress: {
-    "HTML Basics": 80,
-    "CSS Fundamentals": 60,
-    "JavaScript Essentials": 40,
-    "Responsive Design": 20,
-  },
-  recentActivity: [
-    { type: "completed", lesson: "HTML Tables", date: "2 days ago" },
-    { type: "achieved", achievement: "Fast Learner", date: "3 days ago" },
-    { type: "started", lesson: "CSS Grid", date: "4 days ago" },
-  ],
-};
+}
 
 export default page;

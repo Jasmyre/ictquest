@@ -4,6 +4,86 @@ Execution spec: #23 (source of truth). Decisions frozen in `docs/adr/0001–0009
 
 ## Current focus
 
+- **Spec #90 complete on `feat/user-public-profile`** (2026-10-17):
+  tickets #91–#95 all implemented, merged, and reviewed. Integration head
+  `ea341d1` (final: `chore/review-fixes` merge); PR #96 `feat/user-public-profile`
+  → `main` (marked ready, closes #90 + #91–#95). Commits: `09d1688` (#91 read),
+  `02b8f83` (#92 header/shell), `5b56407` (#93 tabs), `24c3879` (#94 private +
+  route states + twin), `e09ca0e` (#95 Playwright sign-off), `cd25a7d` (review
+  fixes). Gates at head: typecheck + typecheck:test clean, ultracite clean,
+  unit 232/232, prod build green (`/user/[id]` + `/dashboard/[id]` PPR),
+  `playwright test --list` 31 tests. Code review (Standards + Spec axes)
+  raised comment-accuracy + `TRPCError` consistency + an e2e fixed-sleep flake —
+  all fixed; the "dead `getStatsById`" and "`ui/progress.tsx` scope creep"
+  findings were dismissed (legacy reference shape is tested; retoken is
+  spec-allowed). **Known limitation:** the e2e suite was NOT executed in this
+  environment — the shared `DATABASE_URL_TEST` is a `db push` schema with no
+  `_prisma_migrations` history, so `db:migrate:test` aborts on
+  `relation "User" already exists`; `test.yml` does not run Playwright. Run
+  `db:migrate:test` on a clean test DB then `npm run test:e2e` to execute it.
+- Playwright sign-off (#95, branch `ticket/95-playwright-signoff` @
+  `feat/user-public-profile`): `/user/[id]` e2e suite
+  (`tests/e2e/user-profile.spec.ts`) covers signed-in public-with-bio,
+  public-without-bio, private, and not-found; the anonymous share twin
+  (`/dashboard/[id]`) for public/private/unknown ids; a mobile/desktop ×
+  light/dark matrix; the design-system shell rhythm (max-width, padding,
+  header/summary/tab-panel gaps); reduced-motion (opacity-only rows) and
+  Follow press feedback; all with a zero-console-error budget. Seed infra:
+  `tests/e2e/fixtures/profile-accounts.ts` + `tests/e2e/setup/profile.setup.ts`
+  (direct Prisma on `DATABASE_URL_TEST`, real credentials sign-in →
+  `storageState` at `tests/e2e/.auth/`). `playwright.config.ts` gains three
+  projects (`profile-setup`, `e2e`, `user-profile`); testids added to the
+  shell/header/summary/stats. Gates run here: typecheck clean,
+  `typecheck:test` clean, ultracite clean, unit 232/232, prod build green,
+  `playwright test --list` collects 31 tests. NOTE: e2e was NOT executed in
+  this environment — the shared `DATABASE_URL_TEST` holds a `db push`-created
+  schema with no `_prisma_migrations` history, so `db:migrate:test` fails
+  (`relation "User" already exists`) and the setup cannot seed; e2e is not in
+  the CI gate (`test.yml` runs typecheck + check + test:all + build only).
+- Public profile route states + private branch (#94, branch
+  `ticket/94-private-states` @ `feat/user-public-profile`): `/user/[id]` now
+  branches on `isPrivate` — header plus a single `private-account-card.tsx`
+  (lock, "This account is private", muted explainer) instead of the summary
+  and tabs; `page.tsx` maps only `NOT_FOUND` to `notFound()` and rethrows
+  real load failures; new route `loading.tsx` (`ProfileSkeleton`, shell
+  mirror, `aria-busy`), `error.tsx` (client, retry via `reset`), and
+  `not-found.tsx` for the `[id]` segment. The `(marketing)/dashboard/[id]`
+  share twin reuses the same header + private branch (no tabs, anonymous
+  readable). New seam `tests/unit/user-private-states.test.tsx`. Gates:
+  typecheck clean, ultracite clean, unit 232/232, prod build green
+  (`/user/[id]` + `/dashboard/[id]` PPR).
+- Public profile integration (#92 + #93 merged into
+  `feat/user-public-profile`): #92 (`ticket/92-header-shell`) contributes the
+  bannerless design-system page shell (`div` + `sr-only h1`), real
+  `dashboard.getDashboardById` read, `user-header.tsx` token Card,
+  retokened `user-stat-summary.tsx`, and full page mock/`UserData` deletion;
+  #93 (`ticket/93-tabs`) contributes the final `user-stats.tsx` two-tab
+  (Progress + Achievements) design with per-lesson bars, newest-first
+  achievements, dashed empty state, and the `ui/progress.tsx` primary-token
+  retoken. #92 wins the header/shell/wiring, #93 wins the tab internals.
+  New seams `tests/unit/user-header.test.tsx` + `tests/unit/user-stats.test.tsx`.
+- Public profile header/shell (#92, `ticket/92-header-shell`, based on
+  `feat/user-public-profile`): `(app)/user/[id]` page shell retokened to the
+  design-system `div` shell + `sr-only h1`, wired to the real
+  `dashboard.getDashboardById` read; `user-header.tsx` rewritten as a
+  bannerless token Card (avatar, `userName`, muted meta line
+  `Level X · N lessons · M achievements`, biography only when public + set),
+  Follow/Report/Block visibly disabled per ADR-0009; `user-stat-summary.tsx`
+  retokened; all page mock/`UserData` deleted; `user-stats.tsx` keeps the
+  Progress/Achievements boundary (props now `{ user }`, Activity tab + mock
+  gone, retokened) for #93. New `tests/unit/user-header.test.tsx`. Gates:
+  typecheck clean, ultracite clean, unit 214/214.
+- Public profile tabs (#93, branch `ticket/93-tabs` @ integration
+  `feat/user-public-profile`): `components/pages/user/[id]/user-stats.tsx`
+  shrinks to two tabs (Progress + Achievements) driven directly by the
+  extended `dashboard.getDashboardById` read; Activity tab and the mock
+  `userData` prop removed; per-lesson bars still loop `src/db/lessons.tsx`
+  and the overall comes from `user.totalProgress`; achievements render
+  newest-first with a muted icon tile and a dashed empty state at zero.
+  `ui/progress.tsx` retokened (`bg-primary/20`, `bg-primary`,
+  `motion-safe:transition-transform`). New component seam
+  `tests/unit/user-stats.test.tsx` (jsdom + RTL). Gates: typecheck clean,
+  ultracite clean, unit 215/215.
 - Settings spec #81 + tickets #82–#86 resolved closed (2026-10-14,
   `feat/settings-page` @ f5d4e8d): #82–#85 implemented via unified
   surface; #86 deviated on purpose (Tokens tab removed, not disabled);

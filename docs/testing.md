@@ -18,8 +18,9 @@ Three layers. Vitest 4 uses `test.projects` — filter with `--project unit` / `
 
 ## E2E (Playwright, `tests/e2e/**`) — `npm run test:e2e`
 
-- Projects: `setup` (sign-in → `storageState`), authed USER, logged-out, `chromium-admin` (own setup promotes via direct Prisma on `DATABASE_URL_TEST` **before** sign-in, then saves second state).
-- WebServer boots `npm run dev`. 404 spec is authed-only (logged-out unknown routes → `/landing`).
+- Projects: `e2e` (anonymous specs), `profile-setup` (seeds `/user/[id]` rows via direct Prisma on `DATABASE_URL_TEST`, signs in through the credentials form, saves `storageState` to `tests/e2e/.auth/`), and `user-profile` (depends on `profile-setup`, uses that `storageState`). The setup skips cleanly when `DATABASE_URL_TEST` is unset.
+- WebServer boots `npm run start` (needs a prior `npm run build`). 404 spec is authed-only (logged-out unknown routes → `/landing`).
+- Requires a migrated `DATABASE_URL_TEST` (run `npm run db:migrate:test`); a `db push`-created schema with no `_prisma_migrations` history cannot seed.
 - Instant-navigation rig (separate config): `playwright.instant.config.ts` + `instant-nav.rig.md` — prod `build → start → test`, 12 `instant()` guards, `AUTH_TRUST_HOST` wall. Run when touching shells/layouts/PPR.
 
 ## Type + coverage

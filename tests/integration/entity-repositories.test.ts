@@ -84,6 +84,8 @@ function progressDb() {
           id: args.where.id,
           userName: `learner-${args.where.id}`,
           image: null,
+          biography: null,
+          isPrivate: false,
           userAchievements: [],
           progressData: rows
             .filter((r) => r.userId === args.where.id)
@@ -308,8 +310,8 @@ describe("Slice 6 — repository CRUD round-trips (#63)", () => {
 
     const view = await repository.findDashboardUser("learner-a");
     expect(view?.id).toBe("learner-a");
-    expect(view).not.toHaveProperty("biography");
-    expect(view).not.toHaveProperty("isPrivate");
+    expect(view).toHaveProperty("biography", null);
+    expect(view).toHaveProperty("isPrivate", false);
     expect(view?.progressData).toHaveLength(1);
   });
 

@@ -8,17 +8,21 @@ import {
 } from "@/server/repositories/dashboard";
 
 /**
- * Dashboard service (Slice 5, #62; repository tier in Slice 6, #63).
+ * Dashboard service (Slice 5, #62; repository tier in Slice 6, #63;
+ * redacted public profile read in #91).
  *
  * Derived summary view over visible progress state. Thin delegation over
- * the closed dashboard repository select so owner and by-id reads stay
- * field-identical to the prior stats shapes. The underlying select stays
- * closed (`id`, `userName`, `image`, achievements, progress) — biography and
- * privacy never enter the dashboard output, so shared links stay safe.
+ * the closed dashboard repository select. Owner and by-id reads share the
+ * base summary fields and add the public profile fields (#91): redacted
+ * public biography (`null` when unset), `isPrivate` flag, and the unlocked
+ * achievement inventory (name, description, `unlockedAt` as a `Date`,
+ * newest-first). The controller tier serializes `unlockedAt` to ISO so the
+ * strict output contract holds on the typed transport.
  *
  * Persistence lives in `src/server/repositories/dashboard.ts` — this
- * module owns the derivation rule (level bands, totals) and never
- * touches Prisma directly.
+ * module owns the derivation rule (level bands, totals) plus the
+ * public-axis redaction used by the by-id read, and never touches Prisma
+ * directly.
  */
 
 type Db = Pick<PrismaClient, "progressData" | "user">;
@@ -50,13 +54,39 @@ export function deriveDashboard(user: DashboardUserRow) {
       userName: user.userName,
       id: user.id,
       image: user.image,
+      biography: user.biography,
+      isPrivate: user.isPrivate,
       totalAchievements: user.userAchievements.length,
       totalSubtopicsCompleted: totalSubtopicsCount,
       level,
       totalProgress: Number(averageProgress.toFixed(2)),
       progressData: user.progressData,
+      achievements: user.userAchievements.map((achievement) => ({
+        id: achievement.id,
+        name: achievement.achievementName,
+        description: achievement.achievementDescription,
+        unlockedAt: achievement.unlockedAt,
+      })),
     },
   };
+}
+
+/**
+ * Public-axis redaction (domain rule): a private account still resolves
+ * with its header fields (`userName`, `id`, `image`, `isPrivate`) but
+ * exposes no biography, progress, or achievements. Totals re-derive from
+ * the emptied data so zeros are shown rather than leaked real totals.
+ */
+function derivePublicDashboard(user: DashboardUserRow) {
+  if (!user.isPrivate) {
+    return deriveDashboard(user);
+  }
+  return deriveDashboard({
+    ...user,
+    biography: null,
+    progressData: [],
+    userAchievements: [],
+  });
 }
 
 export async function getMyDashboard(db: Db, userId: string) {
@@ -86,7 +116,7 @@ export async function getDashboardById(db: Db, id: string) {
     if (!user) {
       throw new TRPCError({ code: "NOT_FOUND", message: "User not found." });
     }
-    return deriveDashboard(user);
+    return derivePublicDashboard(user);
   } catch (error) {
     if (error instanceof TRPCError) {
       throw error;

@@ -3,22 +3,32 @@ import type { PrismaClient } from "@prisma/client";
 
 export type DashboardDb = Pick<PrismaClient, "progressData" | "user">;
 
+export type DashboardAchievementRow = {
+  id: number;
+  achievementName: string;
+  achievementDescription: string;
+  unlockedAt: Date;
+};
+
 export type DashboardUserRow = {
   id: string;
   userName: string | null;
   image: string | null;
-  userAchievements: Array<{ id: number }>;
+  biography: string | null;
+  isPrivate: boolean;
+  userAchievements: DashboardAchievementRow[];
   progressData: Array<{ topic: string; subtopics: string[] }>;
 };
 
 /**
- * Dashboard repository (Slice 6, #63).
+ * Dashboard repository (Slice 6, #63; public profile read in #91).
  *
  * Owns the derived-view reads over visible progress state. The dashboard
  * is not a table — it is a summary over the progress store — so this
  * repository exposes exactly one closed select (`id`, `userName`,
- * `image`, achievements, progress). Biography and privacy never enter
- * the dashboard output, so shared links stay safe.
+ * `image`, `biography`, `isPrivate`, achievements, progress). The public
+ * inventory rides the same closed select, newest-first, with no join
+ * needed because `UserAchievement` denormalizes name/description.
  */
 
 export type DashboardRepository = {
@@ -36,7 +46,17 @@ export function createDashboardRepository(
           id: true,
           userName: true,
           image: true,
-          userAchievements: { select: { id: true } },
+          biography: true,
+          isPrivate: true,
+          userAchievements: {
+            select: {
+              id: true,
+              achievementName: true,
+              achievementDescription: true,
+              unlockedAt: true,
+            },
+            orderBy: { unlockedAt: "desc" },
+          },
           progressData: { select: { subtopics: true, topic: true } },
         },
       });

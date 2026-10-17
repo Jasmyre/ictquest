@@ -11,6 +11,26 @@ import {
 import { getDashboardById, getMyDashboard } from "@/server/services/dashboard";
 
 /**
+ * Serialize the domain `Date` on the achievement inventory to the REST wire
+ * shape (ISO datetime) at the controller tier, so the strict output contract
+ * already holds on the typed transport.
+ */
+function serializeDashboard(
+  result: Awaited<ReturnType<typeof getMyDashboard>>
+) {
+  return {
+    ...result,
+    data: {
+      ...result.data,
+      achievements: result.data.achievements.map((achievement) => ({
+        ...achievement,
+        unlockedAt: achievement.unlockedAt.toISOString(),
+      })),
+    },
+  };
+}
+
+/**
  * Dashboard router (Slice 5, #62; ADR 0005 supersede note: stats-under-
  * progress renamed to dashboard derived view over progress).
  *
@@ -20,13 +40,17 @@ import { getDashboardById, getMyDashboard } from "@/server/services/dashboard";
  *   `/api/v1` catch-all and are network-only in the service worker (never
  *   precached).
  *
- * Output is share-safe: the strict dashboard contract carries no biography
- * key. Progress router keeps list/create/delete-only.
+ * Output is share-safe: biography is redacted (`null`) and progress and
+ * achievements resolve empty for private accounts, while email, roles, and
+ * session data never enter the contract. Progress router keeps
+ * list/create/delete-only.
  */
 export const dashboardRouter = createTRPCRouter({
   getMyDashboard: permissionProcedure("Progress", "view")
     .output(dashboardOutputSchema)
-    .query(({ ctx }) => getMyDashboard(ctx.db, requireUserId(ctx.user))),
+    .query(async ({ ctx }) =>
+      serializeDashboard(await getMyDashboard(ctx.db, requireUserId(ctx.user)))
+    ),
 
   getDashboardById: publicRateLimitedProcedure
     .meta({
@@ -39,5 +63,7 @@ export const dashboardRouter = createTRPCRouter({
     })
     .input(dashboardByIdSchema)
     .output(dashboardOutputSchema)
-    .query(({ ctx, input }) => getDashboardById(ctx.db, input.id)),
+    .query(async ({ ctx, input }) =>
+      serializeDashboard(await getDashboardById(ctx.db, input.id))
+    ),
 });
